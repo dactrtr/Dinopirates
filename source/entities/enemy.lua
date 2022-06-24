@@ -4,7 +4,7 @@ local gfx <const> = playdate.graphics
 class('Enemy').extends(gfx.sprite)
 
 function Enemy:init(x, y, moveSpeed)
-  local enemyImage = gfx.image.new("images/untitled.png")
+  local enemyImage = gfx.image.new("assets/untitled.png")
   self:setImage(enemyImage)
   self:moveTo(x,y)
   self:setCollideRect(0,0, self:getSize())

@@ -7,7 +7,7 @@ local gfx <const> = playdate.graphics
 
 class('PlayerHud').extends(gfx.sprite)
 
-local hud = gfx.image.new("images/player/hud.png")
+local hud = gfx.image.new("assets/player/hud.png")
 
 local eyes = PlayerEyes(58,34,status)
 local mouth = PlayerMouth(70,46,status)

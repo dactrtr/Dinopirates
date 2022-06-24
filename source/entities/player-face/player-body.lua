@@ -3,7 +3,7 @@ local gfx <const> = playdate.graphics
 
 class('PlayerBody').extends(gfx.sprite)
 
-local normal = gfx.image.new("images/player/body.png")
+local normal = gfx.image.new("assets/player/body.png")
 
 function PlayerBody:init(x,y,status)
   self:setImage(normal)

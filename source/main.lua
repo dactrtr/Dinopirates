@@ -1,4 +1,4 @@
-import "CoreLibs/graphics"
+-- import "CoreLibs/graphics"
 import "CoreLibs/object"
 import "CoreLibs/sprites"
 
@@ -19,27 +19,24 @@ enemy_1 = Enemy(150, 80, 1)
 enemy_2 = Enemy(430,60, 3)
 enemy_3 = Enemy(410,80, 2)
 
--- Mark: Images
-border = gfx.image.new("images/border.png")
-
+-- Mark: assets
+border = gfx.image.new("assets/border.png")
 
 function pd.update() 
   gfx.clear()
   gfx.sprite.update()
-  
+  border:draw(112,0)
   local collisions = gfx.sprite.allOverlappingSprites()
-  
-  player_hud.status = "normal"
   if collisions[1] then
     player_hud.status = "dead"
     toastbar.toasts -= 1
+    
   elseif collisions[1] == nil then
     player_hud.status = "normal"
   end
   
   -- print(collisions[1])
-  
-  border:draw(112,0)
+ 
 
   -- for i=1,6 do
   --   card_Holder:draw(0,100+20*i)
@@ -49,3 +46,4 @@ function pd.update()
   pd.drawFPS(380, 10)
 		
 end
+

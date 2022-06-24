@@ -4,8 +4,8 @@ local gfx <const> = playdate.graphics
 class('Player').extends(gfx.sprite)
 
 
-local Right = gfx.image.new("images/32_hero_right.png")
-local Left = gfx.image.new("images/32_hero_left.png")
+local Right = gfx.image.new("assets/32_hero_right.png")
+local Left = gfx.image.new("assets/32_hero_left.png")
 
 function Player:init(x, y, toasts, speed)
   self:setImage(Left)

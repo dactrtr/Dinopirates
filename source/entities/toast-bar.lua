@@ -3,10 +3,10 @@ local gfx <const> = playdate.graphics
 
 class('ToastBar').extends(gfx.sprite)
 
-local fullToast = gfx.image.new("images/toast/full.png")
-local quarterToast = gfx.image.new("images/toast/quarter.png")
-local halfToast = gfx.image.new("images/toast/half.png")
-local noToast = gfx.image.new("images/toast/none.png")
+local fullToast = gfx.image.new("assets/toast/full.png")
+local quarterToast = gfx.image.new("assets/toast/quarter.png")
+local halfToast = gfx.image.new("assets/toast/half.png")
+local noToast = gfx.image.new("assets/toast/none.png")
 
 function ToastBar:init(toasts)
 	self:moveTo(14, 92)
