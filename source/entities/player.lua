@@ -27,13 +27,15 @@ class('Player').extends(gfx.sprite)
 
 
 function Player:init(x, y, toasts, speed)
-  self:setImage(Right.animation:image())
-  self.speed = speed
+  self:setImage(Idle.animation:image())
+  self:setZIndex(2)
   self:moveTo(x,y)
   self:setCollideRect(0,0, 48,48)
-  self.toasts = toasts
-  self:setGroups(2)
   self:setCollidesWithGroups(1)
+  self:setGroups(2)
+  -- Mark: Custom properties
+  self.speed = speed
+  self.toasts = toasts
   self:add()   
 end 
 
