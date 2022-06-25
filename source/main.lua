@@ -1,6 +1,7 @@
 -- import "CoreLibs/graphics"
 import "CoreLibs/object"
 import "CoreLibs/sprites"
+import "CoreLibs/animation"
 
 
 import "entities/player"
@@ -23,6 +24,7 @@ enemy_3 = Enemy(410,80, 2)
 border = gfx.image.new("assets/border.png")
 
 function pd.update() 
+  
   gfx.clear()
   gfx.sprite.update()
   border:draw(112,0)
@@ -34,7 +36,6 @@ function pd.update()
   elseif collisions[1] == nil then
     player_hud.status = "normal"
   end
-  
   -- print(collisions[1])
  
 
@@ -42,8 +43,9 @@ function pd.update()
   --   card_Holder:draw(0,100+20*i)
   -- end
 
-  gfx.drawText("Cards List", 20, 104) -- make text smaller
+  gfx.drawText("TEST", 20, 104) -- make text smaller
   pd.drawFPS(380, 10)
 		
 end
+
 

@@ -1,4 +1,3 @@
-local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 class('Enemy').extends(gfx.sprite)
