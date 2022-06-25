@@ -3,11 +3,24 @@ local gfx <const> = playdate.graphics
 
 class('Player').extends(gfx.sprite)
 
--- Mark: imagetables
-local Right = gfx.sprite.new()
-Right.imagetable = gfx.imagetable.new('assets/player/player-right')
-Right.animation = gfx.animation.loop.new(100, Right.imagetable, true)
--- local Left = gfx.image.new("assets/32_hero_left.png")
+-- Mark: imagetables for movement animation
+  -- Right
+  local Right = gfx.sprite.new()
+  Right.imagetable = gfx.imagetable.new('assets/player/player-right')
+  Right.animation = gfx.animation.loop.new(100, Right.imagetable, true)
+  -- Left
+  local Left = gfx.sprite.new()
+  Left.imagetable = gfx.imagetable.new('assets/player/player-left')
+  Left.animation = gfx.animation.loop.new(100, Left.imagetable, true)
+  -- Up
+  local Up = gfx.sprite.new()
+  Up.imagetable = gfx.imagetable.new('assets/player/player-up')
+  Up.animation = gfx.animation.loop.new(100, Up.imagetable, true)
+  -- Right
+  local Down = gfx.sprite.new()
+  Down.imagetable = gfx.imagetable.new('assets/player/player-down')
+  Down.animation = gfx.animation.loop.new(100, Down.imagetable, true)
+
 
 function Player:init(x, y, toasts, speed)
   self:setImage(Right.animation:image())
@@ -30,17 +43,19 @@ function Player:update()
     self.toasts = 0
   end
   if pd.buttonIsPressed(pd.kButtonUp) then
+    self:setImage(Up.animation:image())
     if self.y > 18 then
       self:moveWithCollisions(self.x, self.y - self.speed)
     end
         
   elseif pd.buttonIsPressed(pd.kButtonDown) then
+    self:setImage(Down.animation:image())
     if self.y < 220 then
       self:moveWithCollisions(self.x, self.y + self.speed)
     end
         
   elseif pd.buttonIsPressed(pd.kButtonLeft) then
-    -- self:setImage(Left)
+    self:setImage(Left.animation:image())
       if self.x > 128 then
         self:moveWithCollisions(self.x - self.speed, self.y)
       end
