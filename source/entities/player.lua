@@ -16,10 +16,14 @@ class('Player').extends(gfx.sprite)
   local Up = gfx.sprite.new()
   Up.imagetable = gfx.imagetable.new('assets/player/player-up')
   Up.animation = gfx.animation.loop.new(100, Up.imagetable, true)
-  -- Right
+  -- Down
   local Down = gfx.sprite.new()
   Down.imagetable = gfx.imagetable.new('assets/player/player-down')
   Down.animation = gfx.animation.loop.new(100, Down.imagetable, true)
+  -- Idle
+  local Idle = gfx.sprite.new()
+  Idle.imagetable = gfx.imagetable.new('assets/player/player-idle')
+  Idle.animation = gfx.animation.loop.new(600, Idle.imagetable, true)
 
 
 function Player:init(x, y, toasts, speed)
@@ -39,6 +43,7 @@ end
 
 
 function Player:update()
+  self:setImage(Idle.animation:image())
   if self.toasts < 1 then
     self.toasts = 0
   end
