@@ -70,7 +70,7 @@ function Player:update()
 
       if self.x < 396-self:getSize()/2 then
         
-        -- turn this into a method
+        -- TODO:turn this into a method
          local actualX, actualY, collisions, lenght = self:moveWithCollisions(self.x + self.speed, self.y)
            if lenght > 0 then
              for index, collision in pairs(collisions) do
