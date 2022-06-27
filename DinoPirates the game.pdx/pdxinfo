@@ -1,0 +1,12 @@
+name=DinoPirates the game
+author=Tangara Studios
+description=Its Dinopirates against evilness from space
+bundleID=com.tangara.dinopirates
+version=1.0
+buildNumber=123
+imagePath=path/to/launcher/assets
+launchSoundPath=path/to/launch/sound/file
+contentWarning=This game contains dinosaurs.
+contentWarning2=This game contains brocolli
+pdxversion=11200
+buildtime=709514957
