@@ -28,7 +28,6 @@ function InitialScene:init()
 	InitialScene.super.init(self)
 
     player = Player(180, 80, 4, 4)
-    print("DEBUG player: " .. tostring(player) .. " " .. player.animation.currentName)
 
     -- toastbar = ToastBar(player.toasts)
     -- player_hud = PlayerHud("normal")
@@ -43,7 +42,6 @@ function InitialScene:init()
     border:moveTo(255, 120)
     self:addSprite(border)
 
-    self:addSprite(player)
     -- self.addSprite(player_hud)
 
 end
