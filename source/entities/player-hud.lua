@@ -5,19 +5,19 @@ import "entities/player-face/player-body"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
-class('PlayerHud').extends(gfx.sprite)
+PlayerHud = {}
+class('PlayerHud').extends(NobleSprite)
 
-local hud = gfx.image.new("assets/player/hud.png")
-
-local eyes = PlayerEyes(58,34,status)
-local mouth = PlayerMouth(70,46,status)
-local Body = PlayerBody(54,41,status)
-
+local eyes = PlayerEyes(58,34, status)
+local mouth = PlayerMouth(70,46, status)
+local Body = PlayerBody(54,41, status)
 
 function PlayerHud:init(status)
-  self:setImage(hud)
+  PlayerHud.super.init(self, "assets/images/player/hud.png")
+
   self:moveTo(56, 40)
   self.status = status
+
   self:add()
 end
 

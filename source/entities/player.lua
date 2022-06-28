@@ -1,43 +1,51 @@
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
-class('Player').extends(gfx.sprite)
+Player = {}
+class('Player').extends(Graphics.sprite)
 
 -- Mark: imagetables for movement animation
   -- Right
-  local Right = gfx.sprite.new()
-  Right.imagetable = gfx.imagetable.new('assets/player/player-right')
-  Right.animation = gfx.animation.loop.new(100, Right.imagetable, true)
+  local right = Noble.Animation.new("assets/images/player/player-right")
+  right:addState("right", 0, 2)
+  -- right:setState("right")
+
   -- Left
-  local Left = gfx.sprite.new()
-  Left.imagetable = gfx.imagetable.new('assets/player/player-left')
-  Left.animation = gfx.animation.loop.new(100, Left.imagetable, true)
+  local Left = Noble.Animation.new("assets/images/player/player-left")
+  Left:addState("left", 0, 2)
+  -- Left:setState("Left")
   -- Up
-  local Up = gfx.sprite.new()
-  Up.imagetable = gfx.imagetable.new('assets/player/player-up')
-  Up.animation = gfx.animation.loop.new(100, Up.imagetable, true)
+  local up = Noble.Animation.new("assets/images/player/player-up")
+  up:addState("up", 0, 2)
+  -- up:setState("up")
+  
   -- Down
-  local Down = gfx.sprite.new()
-  Down.imagetable = gfx.imagetable.new('assets/player/player-down')
-  Down.animation = gfx.animation.loop.new(100, Down.imagetable, true)
+  local down = Noble.Animation.new("assets/images/player/player-down")
+  down:addState("down", 0, 2)
+  -- down:setState("down")
+
   -- Idle
-  local Idle = gfx.sprite.new()
-  Idle.imagetable = gfx.imagetable.new('assets/player/player-idle')
-  Idle.animation = gfx.animation.loop.new(600, Idle.imagetable, true)
+  local idle = Noble.Animation.new("assets/images/player/player-idle")
+  idle:addState("idle", 0, 3)
+  -- idle:setState("idle")
 
 
 function Player:init(x, y, toasts, speed)
-  self:setImage(Idle.animation:image())
+  Player.super.init(self)
+
+  -- self:setImage(Idle.animation:image())
+  self.animation = idle
   self:setZIndex(2)
   self:moveTo(x,y)
-  self:setCollideRect(0,0, 48,48)
+  self:setCollideRect(0, 0, 48, 48)
   self:setCollidesWithGroups(1)
   self:setGroups(2)
+
   -- Mark: Custom properties
   self.speed = speed
   self.toasts = toasts
-  self:add()   
-end 
+
+end
 
 function Player:collisionResponse()
   return "overlap" 
@@ -45,45 +53,47 @@ end
 
 
 function Player:update()
-  self:setImage(Idle.animation:image())
+  self.animation = idle
+  
   if self.toasts < 1 then
     self.toasts = 0
   end
+
   if pd.buttonIsPressed(pd.kButtonUp) then
-    self:setImage(Up.animation:image())
+    self.animation = up
     if self.y > (4+self:getSize()/2) then
       self:moveWithCollisions(self.x, self.y - self.speed)
     end
         
   elseif pd.buttonIsPressed(pd.kButtonDown) then
-    self:setImage(Down.animation:image())
+    self.animation = down
     if self.y < 236-self:getSize()/2 then
       self:moveWithCollisions(self.x, self.y + self.speed)
     end
         
   elseif pd.buttonIsPressed(pd.kButtonLeft) then
-    self:setImage(Left.animation:image())
-      if self.x > 116+self:getSize()/2 then
-        self:moveWithCollisions(self.x - self.speed, self.y)
-      end
+    self.animation = left
+    
+    if self.x > 116+self:getSize()/2 then
+      self:moveWithCollisions(self.x - self.speed, self.y)
+    end
     
   elseif pd.buttonIsPressed(pd.kButtonRight) then
-    self:setImage(Right.animation:image())
+    self.animation = right
 
-      if self.x < 396-self:getSize()/2 then
-        
-        -- TODO:turn this into a method
-         local actualX, actualY, collisions, lenght = self:moveWithCollisions(self.x + self.speed, self.y)
-           if lenght > 0 then
-             for index, collision in pairs(collisions) do
-               local collideObject = collision['other']
-               if collideObject:isa(Enemy) then
-                 collideObject:remove()
-               end
-            end
+    if self.x < 396-self:getSize()/2 then
+      
+      -- TODO:turn this into a method
+        local actualX, actualY, collisions, lenght = self:moveWithCollisions(self.x + self.speed, self.y)
+          if lenght > 0 then
+            for index, collision in pairs(collisions) do
+              local collideObject = collision['other']
+              if collideObject:isa(Enemy) then
+                collideObject:remove()
+              end
           end
-      end
+        end
+    end
   end
-    
     
 end

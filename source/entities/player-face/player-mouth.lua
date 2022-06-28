@@ -1,15 +1,14 @@
-local pd <const> = playdate
-local gfx <const> = playdate.graphics
 
-class('PlayerMouth').extends(gfx.sprite)
-
-local normal = gfx.image.new("assets/player/mouth.png")
+PlayerMouth = {}
+class('PlayerMouth').extends(NobleSprite)
 
 function PlayerMouth:init(x,y,status)
-  self:setImage(normal)
+  PlayerMouth.super.init(self, "assets/images/player/mouth.png")
+
   self:setZIndex(2)
   self:moveTo(x, y)
   self.status = status
+
   self:add()
 end
 

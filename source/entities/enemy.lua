@@ -1,17 +1,15 @@
-local gfx <const> = playdate.graphics
 
-class('Enemy').extends(gfx.sprite)
+Enemy = {}
+class('Enemy').extends(NobleSprite)
 
 function Enemy:init(x, y, moveSpeed)
-  local enemyImage = gfx.image.new("assets/untitled.png")
-  self:setImage(enemyImage)
+  Enemy.super.init(self, "assets/images/untitled.png")
   self:moveTo(x,y)
   self:setCollideRect(0,0, self:getSize())
   self.moveSpeed = moveSpeed
   self:setGroups(1)
   
   self:add()
-  
 end
 
 function Enemy:update()

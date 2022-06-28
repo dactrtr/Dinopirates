@@ -1,15 +1,13 @@
-local pd <const> = playdate
-local gfx <const> = playdate.graphics
+PlayerBody = {}
+class('PlayerBody').extends(NobleSprite)
 
-class('PlayerBody').extends(gfx.sprite)
-
-local normal = gfx.image.new("assets/player/body.png")
-
-function PlayerBody:init(x,y,status)
-  self:setImage(normal)
+function PlayerBody:init(x, y, status)
+  PlayerBody.super.init(self, "assets/images/player/body.png")
+  
   self:setZIndex(1)
   self:moveTo(x, y)
   self.status = status
+
   self:add()
 end
 
