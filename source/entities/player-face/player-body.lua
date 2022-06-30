@@ -1,9 +1,9 @@
-PlayerBody = {}
-class('PlayerBody').extends(NobleSprite)
+class('PlayerBody').extends(Graphics.sprite)
+
+local normal = Graphics.image.new("assets/images/player/body.png")
 
 function PlayerBody:init(x, y, status)
-  PlayerBody.super.init(self, "assets/images/player/body.png")
-  
+  self:setImage(normal)
   self:setZIndex(1)
   self:moveTo(x, y)
   self.status = status

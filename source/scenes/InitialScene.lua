@@ -1,7 +1,6 @@
 InitialScene = {}
 class("InitialScene").extends(NobleScene)
 
-InitialScene.baseColor = Graphics.kColorWhite
 
 local player
 local toastbar
@@ -17,24 +16,19 @@ local border
 -- import "CoreLibs/animation"
 
 import "entities/player"
--- import "entities/player-hud"
+import "entities/player-hud"
 -- import "entities/enemy"
--- import "entities/toast-bar"
+import "entities/toast-bar"
 
-local pd <const> = playdate
-local gfx <const> = pd.graphics
 
 function InitialScene:init()
 	InitialScene.super.init(self)
 
     player = Player(180, 80, 4, 4)
 
-    -- toastbar = ToastBar(player.toasts)
-    -- player_hud = PlayerHud("normal")
+    toastbar = ToastBar(player.toasts)
+    player_hud = PlayerHud("normal")
 
-    -- enemy_1 = Enemy(150, 80, 1)
-    -- enemy_2 = Enemy(430,60, 3)
-    -- enemy_3 = Enemy(410,80, 2)
 
     -- Mark: assets
     border = NobleSprite("assets/images/border.png")
@@ -42,7 +36,6 @@ function InitialScene:init()
     border:moveTo(255, 120)
     self:addSprite(border)
 
-    -- self.addSprite(player_hud)
 
 end
 

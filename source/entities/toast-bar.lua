@@ -1,13 +1,10 @@
-local pd <const> = playdate
-local gfx <const> = playdate.graphics
 
-ToastBar = {}
-class('ToastBar').extends(NobleSprite)
+class('ToastBar').extends(Graphics.sprite)
 
-local fullToast = gfx.image.new("assets/images/toast/full.png")
-local quarterToast = gfx.image.new("assets/images/toast/quarter.png")
-local halfToast = gfx.image.new("assets/images/toast/half.png")
-local noToast = gfx.image.new("assets/images/toast/none.png")
+local fullToast = Graphics.image.new("assets/images/toast/full.png")
+local quarterToast = Graphics.image.new("assets/images/toast/quarter.png")
+local halfToast = Graphics.image.new("assets/images/toast/half.png")
+local noToast = Graphics.image.new("assets/images/toast/none.png")
 
 function ToastBar:init(toasts)
 	self:moveTo(14, 92)

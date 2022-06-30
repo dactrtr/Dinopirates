@@ -1,15 +1,14 @@
 
-local gfx <const> = playdate.graphics
 
 PlayerEyes = {}
-class('PlayerEyes').extends(NobleSprite)
+class('PlayerEyes').extends(Graphics.sprite)
 
-local normal = gfx.image.new("assets/images/player/eyes.png")
-local blink = gfx.image.new("assets/images/player/eyes-blink.png")
-local death = gfx.image.new("assets/images/player/eyes-death.png")
+local normal = Graphics.image.new("assets/images/player/eyes.png")
+local blink = Graphics.image.new("assets/images/player/eyes-blink.png")
+local death = Graphics.image.new("assets/images/player/eyes-death.png")
 
 function PlayerEyes:init(x,y,status)
-  PlayerEyes.super.init(self, "assets/images/player/body.png")
+  -- PlayerEyes.super.init(self, "assets/images/player/body.png")
 
   self:setImage(normal)
   self:setZIndex(2)
