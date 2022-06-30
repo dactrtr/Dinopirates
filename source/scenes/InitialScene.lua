@@ -1,6 +1,7 @@
 InitialScene = {}
 class("InitialScene").extends(NobleScene)
 
+InitialScene.backgroundColor = Graphics.kColorWhite
 
 local player
 local toastbar
@@ -10,14 +11,9 @@ local enemy_2
 local enemy_3
 local border
 
--- import "CoreLibs/graphics"
--- import "CoreLibs/object"
--- import "CoreLibs/sprites"
--- import "CoreLibs/animation"
 
 import "entities/player"
 import "entities/player-hud"
--- import "entities/enemy"
 import "entities/toast-bar"
 
 
@@ -35,7 +31,8 @@ function InitialScene:init()
     border:setZIndex(1)
     border:moveTo(255, 120)
     self:addSprite(border)
-
+    -- TODO: add colision borders and set as a class
+    
 
 end
 
@@ -104,4 +101,97 @@ function InitialScene:finish()
 	InitialScene.super.finish(self)
 end
 
+InitialScene.inputHandler = {
+
+    -- A button
+    --
+    AButtonDown = function()			-- Runs once when button is pressed.
+        -- Your code here
+    end,
+    AButtonHold = function()			-- Runs every frame while the player is holding button down.
+        -- Your code here
+    end,
+    AButtonHeld = function()			-- Runs after button is held for 1 second.
+        -- Your code here
+    end,
+    AButtonUp = function()				-- Runs once when button is released.
+        -- Your code here
+    end,
+
+    -- B button
+    --
+    BButtonDown = function()
+        -- Your code here
+    end,
+    BButtonHeld = function()
+        -- Your code here
+    end,
+    BButtonHold = function()
+        -- Your code here
+    end,
+    BButtonUp = function()
+        -- Your code here
+    end,
+
+    -- D-pad left
+    --
+    leftButtonDown = function()
+        -- Your code here
+    end,
+    leftButtonHold = function()
+        -- Your code here
+    end,
+    leftButtonUp = function()
+        -- Your code here
+    end,
+
+    -- D-pad right
+    --
+    rightButtonDown = function()
+        -- Your code here
+    end,
+    rightButtonHold = function()
+        -- Your code here
+    end,
+    rightButtonUp = function()
+        -- Your code here
+    end,
+
+    -- D-pad up
+    --
+    upButtonDown = function()
+        -- Your code here
+    end,
+    upButtonHold = function()
+        -- Your code here
+        
+    end,
+    upButtonUp = function()
+        -- Your code here
+    end,
+
+    -- D-pad down
+    --
+    downButtonDown = function()
+        -- Your code here
+    end,
+    downButtonHold = function()
+        -- Your code here
+    end,
+    downButtonUp = function()
+        -- Your code here
+    end,
+
+    -- Crank
+    --
+    cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
+        -- Your code here
+    end,
+    crankDocked = function()						-- Runs once when when crank is docked.
+        -- Your code here
+    end,
+    crankUndocked = function()						-- Runs once when when crank is undocked.
+        -- Your code here
+    end
+}
 
