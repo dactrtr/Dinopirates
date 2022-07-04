@@ -3,6 +3,7 @@ class("InitialScene").extends(NobleScene)
 
 InitialScene.backgroundColor = Graphics.kColorWhite
 
+
 local player
 local toastbar
 local player_hud
@@ -17,12 +18,14 @@ import "entities/player-hud"
 import "entities/toast-bar"
 
 
+
 function InitialScene:init()
 	InitialScene.super.init(self)
 
     player = Player(180, 80, 4, 4)
 
     toastbar = ToastBar(player.toasts)
+
     player_hud = PlayerHud("normal")
 
 
@@ -33,7 +36,22 @@ function InitialScene:init()
     self:addSprite(border)
     -- TODO: add colision borders and set as a class
     
-
+    tiles = Graphics.imagetable.new('assets/images/tile/vent')
+    
+    map = Graphics.tilemap.new()
+    
+    map:setImageTable(tiles)
+    map:setSize(11,9)
+    
+    for y = 1,9 do
+        for x = 1,11 do
+            map:setTileAtPosition(x,y,1)
+        end
+    end
+    floor = Graphics.sprite.new()
+    floor:setTilemap(map)
+    floor:moveTo(256, 120)
+    floor:add()
 end
 
 
@@ -65,7 +83,7 @@ end
 function InitialScene:update()
 	InitialScene.super.update(self)
 
-    -- gfx.clear()
+    -- Graphics.clear()
     -- gfx.sprite.update()
     -- border:draw(112,0)
     -- local collisions = gfx.sprite.allOverlappingSprites()
@@ -83,7 +101,7 @@ function InitialScene:update()
     -- --   card_Holder:draw(0,100+20*i)
     -- -- end
 
-    -- gfx.drawText("TEST", 20, 104) -- make text smaller
+    -- Graphics.drawText("TEST", 20, 104) -- make text smaller
     -- pd.drawFPS(380, 10)
 
 end
