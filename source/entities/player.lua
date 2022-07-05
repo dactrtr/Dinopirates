@@ -53,19 +53,19 @@ function Player:update()
   end
   if pd.buttonIsPressed(pd.kButtonUp) then
     self:setImage(Up.animation:image())
-    if self.y > (4+self:getSize()/2) then
+    if self.y > (8+self:getSize()/2) then
       self:moveWithCollisions(self.x, self.y - self.speed)
     end
         
   elseif pd.buttonIsPressed(pd.kButtonDown) then
     self:setImage(Down.animation:image())
-    if self.y < 236-self:getSize()/2 then
+    if self.y < 228-self:getSize()/2 then
       self:moveWithCollisions(self.x, self.y + self.speed)
     end
         
   elseif pd.buttonIsPressed(pd.kButtonLeft) then
     self:setImage(Left.animation:image())
-      if self.x > 116+self:getSize()/2 then
+      if self.x > 120+self:getSize()/2 then
         self:moveWithCollisions(self.x - self.speed, self.y)
       end
     

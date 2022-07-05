@@ -37,9 +37,7 @@ function InitialScene:init()
     -- TODO: add colision borders and set as a class
     
     tiles = Graphics.imagetable.new('assets/images/tile/vent')
-    
     map = Graphics.tilemap.new()
-    
     map:setImageTable(tiles)
     map:setSize(11,9)
     
@@ -48,6 +46,7 @@ function InitialScene:init()
             map:setTileAtPosition(x,y,1)
         end
     end
+    
     floor = Graphics.sprite.new()
     floor:setTilemap(map)
     floor:moveTo(256, 120)
