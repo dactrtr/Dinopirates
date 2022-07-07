@@ -36,14 +36,14 @@ function InitialScene:init()
     self:addSprite(border)
     -- TODO: add colision borders and set as a class
     
-    tiles = Graphics.imagetable.new('assets/images/tile/vent')
+    tiles = Graphics.imagetable.new('assets/images/tile/tile')
     map = Graphics.tilemap.new()
     map:setImageTable(tiles)
     map:setSize(11,9)
     
     for y = 1,9 do
         for x = 1,11 do
-            map:setTileAtPosition(x,y,1)
+            map:setTileAtPosition(x,y,5)
         end
     end
     
