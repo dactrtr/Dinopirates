@@ -42,7 +42,7 @@ function Player:init(x, y, toasts, speed)
 end 
 
 function Player:collisionResponse()
-  return "overlap" 
+  return "freeze"
 end
 
 function Player:move(direction)
@@ -67,9 +67,9 @@ function Player:move(direction)
   if lenght > 0 then
      for index, collision in pairs(collisions) do
        local collideObject = collision['other']
-       if collideObject:isa(Enemy) then
-         collideObject:remove()
-       end
+       -- if collideObject:isa(Enemy) then
+       --   collideObject:remove()
+       -- end
     end
   end
   
