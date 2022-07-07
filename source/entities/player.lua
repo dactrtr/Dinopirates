@@ -28,7 +28,7 @@ class('Player').extends(gfx.sprite)
 
 function Player:init(x, y, toasts, speed)
   self:setImage(Idle.animation:image())
-  self:setZIndex(2)
+  self:setZIndex(3)
   self:moveTo(x,y)
   self:setCollideRect(0,0, 48,48)
   self:setCollidesWithGroups(1)
@@ -45,6 +45,35 @@ function Player:collisionResponse()
   return "overlap" 
 end
 
+function Player:move(direction)
+  self.direction = direction
+  local movementX = 0
+  local movementY = 0
+  if (direction == "left") then
+    movementX = self.x - self.speed
+    movementY = self.y
+  elseif (direction == "right") then
+    movementX = self.x + self.speed
+    movementY = self.y
+  elseif (direction == "up") then
+    movementX = self.x 
+    movementY = self.y - self.speed
+  elseif (direction == "down") then
+    movementX = self.x 
+    movementY = self.y + self.speed
+  end
+  
+  local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
+  if lenght > 0 then
+     for index, collision in pairs(collisions) do
+       local collideObject = collision['other']
+       if collideObject:isa(Enemy) then
+         collideObject:remove()
+       end
+    end
+  end
+  
+end
 
 function Player:update()
   self:setImage(Idle.animation:image())
@@ -52,40 +81,22 @@ function Player:update()
     self.toasts = 0
   end
   if pd.buttonIsPressed(pd.kButtonUp) then
+    
     self:setImage(Up.animation:image())
-    if self.y > (8+self:getSize()/2) then
-      self:moveWithCollisions(self.x, self.y - self.speed)
-    end
+    self:move("up")
         
   elseif pd.buttonIsPressed(pd.kButtonDown) then
+    
     self:setImage(Down.animation:image())
-    if self.y < 228-self:getSize()/2 then
-      self:moveWithCollisions(self.x, self.y + self.speed)
-    end
+    self:move("down")
         
   elseif pd.buttonIsPressed(pd.kButtonLeft) then
     self:setImage(Left.animation:image())
-      if self.x > 120+self:getSize()/2 then
-        self:moveWithCollisions(self.x - self.speed, self.y)
-      end
+    self:move("left")
     
   elseif pd.buttonIsPressed(pd.kButtonRight) then
     self:setImage(Right.animation:image())
+    self:move("right")
 
-      if self.x < 396-self:getSize()/2 then
-        
-        -- TODO:turn this into a method
-         local actualX, actualY, collisions, lenght = self:moveWithCollisions(self.x + self.speed, self.y)
-           if lenght > 0 then
-             for index, collision in pairs(collisions) do
-               local collideObject = collision['other']
-               if collideObject:isa(Enemy) then
-                 collideObject:remove()
-               end
-            end
-          end
-      end
   end
-    
-    
 end
