@@ -10,20 +10,42 @@ local player_hud
 local enemy_1
 local enemy_2
 local enemy_3
-local border
+local border 
 
 
 import "entities/player"
 import "entities/player-hud"
 import "entities/toast-bar"
+import "entities/enemy"
 
+class('Box').extends(playdate.graphics.sprite)
+function Box:draw(x, y, width, height)
+    local cx, cy, width, height = self:getCollideBounds()
+    Graphics.setColor(playdate.graphics.kColorWhite)
+    Graphics.fillRect(cx, cy, width, height)
+    Graphics.setColor(playdate.graphics.kColorBlack)
+    Graphics.drawRect(cx, cy, width, height)
+end
+local function addBlock(x,y,w,h)
+    local block = Box()
+    block:setSize(w, h)
+    block:moveTo(x, y)
+    block:setCenter(0,0)
+    block:addSprite()
+    block:setCollideRect(0,0,w,h)
+    block:setGroups(1)
+end
+addBlock(112, 0, 286, 12)
+addBlock(112, 228, 286, 12)
+addBlock(112, 12, 12, 216)
+addBlock(386, 12, 12, 216)
 
 
 function InitialScene:init()
 	InitialScene.super.init(self)
 
     player = Player(180, 80, 4, 4)
-
+    enemy_1 = Enemy(80,80,1)
     toastbar = ToastBar(player.toasts)
 
     player_hud = PlayerHud("normal")
@@ -34,7 +56,6 @@ function InitialScene:init()
     border:setZIndex(1)
     border:moveTo(255, 120)
     self:addSprite(border)
-    -- TODO: add colision borders and set as a class
     
     tiles = Graphics.imagetable.new('assets/images/tile/tile')
     map = Graphics.tilemap.new()
@@ -48,6 +69,7 @@ function InitialScene:init()
     end
     
     floor = Graphics.sprite.new()
+    floor:setZIndex(1)
     floor:setTilemap(map)
     floor:moveTo(256, 120)
     floor:add()
