@@ -49,6 +49,7 @@ function Player:move(direction)
   self.direction = direction
   local movementX = 0
   local movementY = 0
+  
   if (direction == "left") then
     movementX = self.x - self.speed
     movementY = self.y

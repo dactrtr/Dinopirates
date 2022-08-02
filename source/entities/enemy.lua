@@ -16,14 +16,14 @@ end
 
 function Enemy:update()
   -- self:moveBy(-self.moveSpeed, 0)
-  -- print("enemy")
-  self:moveWithCollisions(self.x - self.moveSpeed, self.y)
-  -- if collisions['other']:isa(Player) then
-    -- print(self.x, collisions.type)
+  -- -- print("enemy")
+  -- local actualX, actualY, collisions, lenght = self:moveWithCollisions(self.x - self.moveSpeed, self.y)
+  -- if collisions['other'] then
+  --   print(self.x, collisions.type)
   -- end
-  if self.x<128 then
-    self:moveTo(400, self.y)
-  end
+  -- if self.x<128 then
+  --   self:moveTo(400, self.y)
+  -- end
 end
 
 function Enemy:collisionResponse()

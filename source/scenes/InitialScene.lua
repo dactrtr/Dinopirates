@@ -23,7 +23,6 @@ function Box:draw(x, y, width, height)
     local cx, cy, width, height = self:getCollideBounds()
     Graphics.setColor(playdate.graphics.kColorWhite)
     Graphics.fillRect(cx, cy, width, height)
-    Graphics.setColor(playdate.graphics.kColorBlack)
     Graphics.drawRect(cx, cy, width, height)
 end
 local function addBlock(x,y,w,h)
@@ -45,7 +44,7 @@ function InitialScene:init()
 	InitialScene.super.init(self)
 
     player = Player(180, 80, 4, 4)
-    enemy_1 = Enemy(80,80,1)
+    enemy_1 = Enemy(180,180,1)
     toastbar = ToastBar(player.toasts)
 
     player_hud = PlayerHud("normal")
