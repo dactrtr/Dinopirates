@@ -30,7 +30,7 @@ function Player:init(x, y, toasts, speed)
   self:setImage(Idle.animation:image())
   self:setZIndex(3)
   self:moveTo(x,y)
-  self:setCollideRect(0,0, 48,48)
+  self:setCollideRect(4,0, 40,48)
   self:setCollidesWithGroups(1)
   self:setGroups(2)
   

@@ -8,10 +8,7 @@ local player
 local toastbar
 local player_hud
 local enemy_1
-local enemy_2
-local enemy_3
 local border 
-
 
 import "entities/player"
 import "entities/player-hud"
@@ -19,6 +16,7 @@ import "entities/toast-bar"
 import "entities/enemy"
 
 class('Box').extends(playdate.graphics.sprite)
+
 function Box:draw(x, y, width, height)
     local cx, cy, width, height = self:getCollideBounds()
     Graphics.setColor(playdate.graphics.kColorWhite)
@@ -44,11 +42,12 @@ function InitialScene:init()
 	InitialScene.super.init(self)
 
     player = Player(180, 80, 4, 4)
-    enemy_1 = Enemy(180,180,1)
+    enemy_1 = Enemy(180,180,0)
     toastbar = ToastBar(player.toasts)
-
+    
+    -- Mark: screen
     player_hud = PlayerHud("normal")
-
+    
 
     -- Mark: assets
     border = NobleSprite("assets/images/border.png")
@@ -56,6 +55,7 @@ function InitialScene:init()
     border:moveTo(255, 120)
     self:addSprite(border)
     
+    -- MarK: Background/map
     tiles = Graphics.imagetable.new('assets/images/tile/tile')
     map = Graphics.tilemap.new()
     map:setImageTable(tiles)
@@ -102,7 +102,6 @@ end
 
 function InitialScene:update()
 	InitialScene.super.update(self)
-
     -- Graphics.clear()
     -- gfx.sprite.update()
     -- border:draw(112,0)
