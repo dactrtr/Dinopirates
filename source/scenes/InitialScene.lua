@@ -12,7 +12,6 @@ local border
 
 import "entities/player"
 import "entities/player-hud"
-import "entities/toast-bar"
 import "entities/enemy"
 
 class('Box').extends(playdate.graphics.sprite)
@@ -41,9 +40,9 @@ addBlock(386, 12, 12, 216)
 function InitialScene:init()
 	InitialScene.super.init(self)
 
-    player = Player(180, 80, 4, 4)
-    enemy_1 = Enemy(180,180,0)
-    toastbar = ToastBar(player.toasts)
+    player = Player(180, 80, 4, 2)
+    enemy_1 = Enemy(180,120,0.3)
+    enemy_2 = Enemy(280,60,0)
     
     -- Mark: screen
     player_hud = PlayerHud("normal")
@@ -80,7 +79,6 @@ function InitialScene:enter()
 
 	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
 	sequence:start()
-
 
     -- self:addSprite(player)
 end
@@ -167,7 +165,7 @@ InitialScene.inputHandler = {
         -- Your code here
     end,
     BButtonUp = function()
-        -- Your code here
+       
     end,
 
     -- D-pad left
@@ -179,7 +177,6 @@ InitialScene.inputHandler = {
         -- Your code here
     end,
     leftButtonUp = function()
-        -- Your code here
     end,
 
     -- D-pad right
@@ -191,7 +188,6 @@ InitialScene.inputHandler = {
         -- Your code here
     end,
     rightButtonUp = function()
-        -- Your code here
     end,
 
     -- D-pad up
@@ -204,7 +200,6 @@ InitialScene.inputHandler = {
         
     end,
     upButtonUp = function()
-        -- Your code here
     end,
 
     -- D-pad down
@@ -216,7 +211,6 @@ InitialScene.inputHandler = {
         -- Your code here
     end,
     downButtonUp = function()
-        -- Your code here
     end,
 
     -- Crank

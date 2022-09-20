@@ -23,14 +23,14 @@ class('Player').extends(gfx.sprite)
   -- Idle
   local Idle = gfx.sprite.new()
   Idle.imagetable = gfx.imagetable.new('assets/images/player/player-idle')
-  Idle.animation = gfx.animation.loop.new(600, Idle.imagetable, true)
+  Idle.animation = gfx.animation.loop.new(700, Idle.imagetable, true)
 
 
 function Player:init(x, y, toasts, speed)
   self:setImage(Idle.animation:image())
   self:setZIndex(3)
   self:moveTo(x,y)
-  self:setCollideRect(4,0, 40,48)
+  self:setCollideRect(4,24, 40,24)
   self:setCollidesWithGroups(1)
   self:setGroups(2)
   
@@ -51,15 +51,19 @@ function Player:move(direction)
   local movementY = 0
   
   if (direction == "left") then
+    self:setImage(Left.animation:image())
     movementX = self.x - self.speed
     movementY = self.y
   elseif (direction == "right") then
+    self:setImage(Right.animation:image())
     movementX = self.x + self.speed
     movementY = self.y
   elseif (direction == "up") then
+    self:setImage(Up.animation:image())
     movementX = self.x 
     movementY = self.y - self.speed
   elseif (direction == "down") then
+    self:setImage(Down.animation:image())
     movementX = self.x 
     movementY = self.y + self.speed
   end
@@ -83,20 +87,16 @@ function Player:update()
   end
   if pd.buttonIsPressed(pd.kButtonUp) then
     
-    self:setImage(Up.animation:image())
     self:move("up")
         
   elseif pd.buttonIsPressed(pd.kButtonDown) then
     
-    self:setImage(Down.animation:image())
     self:move("down")
         
   elseif pd.buttonIsPressed(pd.kButtonLeft) then
-    self:setImage(Left.animation:image())
     self:move("left")
     
   elseif pd.buttonIsPressed(pd.kButtonRight) then
-    self:setImage(Right.animation:image())
     self:move("right")
 
   end

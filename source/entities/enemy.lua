@@ -26,8 +26,8 @@ function Enemy:update()
   if collisions['other'] then
     print(self.x, collisions.type)
   end
-  if self.x<128 then
-    self:moveTo(400, self.y)
+  if self.x<140 then
+    self:moveTo(370, self.y)
   end
 end
 
