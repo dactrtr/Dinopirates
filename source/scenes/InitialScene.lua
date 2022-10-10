@@ -13,6 +13,7 @@ local border
 import "entities/player"
 import "entities/player-hud"
 import "entities/enemy"
+import "entities/toast-bar"
 
 class('Box').extends(playdate.graphics.sprite)
 
@@ -39,16 +40,18 @@ addBlock(386, 12, 12, 216)
 
 function InitialScene:init()
 	InitialScene.super.init(self)
-
+    
+    -- Mark: Entities
     player = Player(180, 80, 4, 2)
     enemy_1 = Enemy(180,120,0.3)
     enemy_2 = Enemy(280,60,0)
+    toastBar = ToastBar()
     
-    -- Mark: screen
+    -- Mark: Screen & HUDS
     player_hud = PlayerHud("normal")
     
 
-    -- Mark: assets
+    -- Mark: Non interactive elements
     border = NobleSprite("assets/images/border.png")
     border:setZIndex(1)
     border:moveTo(255, 120)
@@ -71,6 +74,8 @@ function InitialScene:init()
     floor:setTilemap(map)
     floor:moveTo(256, 120)
     floor:add()
+    
+    
 end
 
 
@@ -100,6 +105,8 @@ end
 
 function InitialScene:update()
 	InitialScene.super.update(self)
+    
+    
     -- Graphics.clear()
     -- gfx.sprite.update()
     -- border:draw(112,0)
@@ -118,7 +125,7 @@ function InitialScene:update()
     -- --   card_Holder:draw(0,100+20*i)
     -- -- end
 
-    -- Graphics.drawText("TEST", 20, 104) -- make text smaller
+    -- Graphics.drawText("TEST", 20, 104)
     -- pd.drawFPS(380, 10)
 
 end

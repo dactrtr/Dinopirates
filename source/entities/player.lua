@@ -72,9 +72,9 @@ function Player:move(direction)
   if lenght > 0 then
      for index, collision in pairs(collisions) do
        local collideObject = collision['other']
-       -- if collideObject:isa(Enemy) then
-       --   collideObject:remove()
-       -- end
+       if collideObject:isa(Enemy) then
+         collideObject:remove() --same method for the enemies
+       end
     end
   end
   
