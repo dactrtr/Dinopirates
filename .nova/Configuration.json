@@ -1,4 +1,5 @@
 {
+  "editor.default_syntax" : "lua",
   "workspace.art_style" : 0,
   "workspace.color" : 2,
   "workspace.name" : "DinoPirates the Broughlike & Card Game"
