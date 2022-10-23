@@ -1,29 +1,26 @@
-local pd <const> = playdate
-local gfx <const> = playdate.graphics
-
-class('Player').extends(gfx.sprite)
+class('Player').extends(Graphics.sprite)
 
 -- Mark: imagetables for movement animation
   -- Right
-  local Right = gfx.sprite.new()
-  Right.imagetable = gfx.imagetable.new('assets/images/player/player-right')
-  Right.animation = gfx.animation.loop.new(100, Right.imagetable, true)
+  local Right = Graphics.sprite.new()
+  Right.imagetable = Graphics.imagetable.new('assets/images/player/player-right')
+  Right.animation = Graphics.animation.loop.new(100, Right.imagetable, true)
   -- Left
-  local Left = gfx.sprite.new()
-  Left.imagetable = gfx.imagetable.new('assets/images/player/player-left')
-  Left.animation = gfx.animation.loop.new(100, Left.imagetable, true)
+  local Left = Graphics.sprite.new()
+  Left.imagetable = Graphics.imagetable.new('assets/images/player/player-left')
+  Left.animation = Graphics.animation.loop.new(100, Left.imagetable, true)
   -- Up
-  local Up = gfx.sprite.new()
-  Up.imagetable = gfx.imagetable.new('assets/images/player/player-up')
-  Up.animation = gfx.animation.loop.new(100, Up.imagetable, true)
+  local Up = Graphics.sprite.new()
+  Up.imagetable = Graphics.imagetable.new('assets/images/player/player-up')
+  Up.animation = Graphics.animation.loop.new(100, Up.imagetable, true)
   -- Down
-  local Down = gfx.sprite.new()
-  Down.imagetable = gfx.imagetable.new('assets/images/player/player-down')
-  Down.animation = gfx.animation.loop.new(100, Down.imagetable, true)
+  local Down = Graphics.sprite.new()
+  Down.imagetable = Graphics.imagetable.new('assets/images/player/player-down')
+  Down.animation = Graphics.animation.loop.new(100, Down.imagetable, true)
   -- Idle
-  local Idle = gfx.sprite.new()
-  Idle.imagetable = gfx.imagetable.new('assets/images/player/player-idle')
-  Idle.animation = gfx.animation.loop.new(700, Idle.imagetable, true)
+  local Idle = Graphics.sprite.new()
+  Idle.imagetable = Graphics.imagetable.new('assets/images/player/player-idle')
+  Idle.animation = Graphics.animation.loop.new(700, Idle.imagetable, true)
 
 
 function Player:init(x, y, toasts, speed)
@@ -85,18 +82,18 @@ function Player:update()
   if self.toasts < 1 then
     self.toasts = 0
   end
-  if pd.buttonIsPressed(pd.kButtonUp) then
+  if playdate.buttonIsPressed(playdate.kButtonUp) then
     
     self:move("up")
         
-  elseif pd.buttonIsPressed(pd.kButtonDown) then
+  elseif playdate.buttonIsPressed(playdate.kButtonDown) then
     
     self:move("down")
         
-  elseif pd.buttonIsPressed(pd.kButtonLeft) then
+  elseif playdate.buttonIsPressed(playdate.kButtonLeft) then
     self:move("left")
     
-  elseif pd.buttonIsPressed(pd.kButtonRight) then
+  elseif playdate.buttonIsPressed(playdate.kButtonRight) then
     self:move("right")
 
   end
