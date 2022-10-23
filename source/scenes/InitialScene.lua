@@ -15,27 +15,8 @@ import "entities/player-hud"
 import "entities/enemy"
 import "entities/toast-bar"
 
-class('Box').extends(playdate.graphics.sprite)
 
-function Box:draw(x, y, width, height)
-    local cx, cy, width, height = self:getCollideBounds()
-    Graphics.setColor(playdate.graphics.kColorWhite)
-    Graphics.fillRect(cx, cy, width, height)
-    Graphics.drawRect(cx, cy, width, height)
-end
-local function addBlock(x,y,w,h)
-    local block = Box()
-    block:setSize(w, h)
-    block:moveTo(x, y)
-    block:setCenter(0,0)
-    block:addSprite()
-    block:setCollideRect(0,0,w,h)
-    block:setGroups(1)
-end
-addBlock(112, 0, 286, 12)
-addBlock(112, 228, 286, 12)
-addBlock(112, 12, 12, 216)
-addBlock(386, 12, 12, 216)
+
 
 
 function InitialScene:init()
@@ -52,15 +33,20 @@ function InitialScene:init()
     
 
     -- Mark: Non interactive elements
-    border = NobleSprite("assets/images/border.png")
+    
+    addBlock(112, 0, 286, 12)
+    addBlock(112, 228, 286, 12)
+    addBlock(112, 12, 12, 216)
+    addBlock(386, 12, 12, 216)
+    border = NobleSprite("assets/images/border-map.png")
     border:setZIndex(1)
     border:moveTo(255, 120)
     self:addSprite(border)
     
     -- MarK: Background/map
-    tiles = Graphics.imagetable.new('assets/images/tile/tile')
+    tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
     map = Graphics.tilemap.new()
-    map:setImageTable(tiles)
+    map:setImageTable(tilesMap)
     map:setSize(11,9)
     
     for y = 1,9 do
@@ -105,29 +91,6 @@ end
 
 function InitialScene:update()
 	InitialScene.super.update(self)
-    
-    
-    -- Graphics.clear()
-    -- gfx.sprite.update()
-    -- border:draw(112,0)
-    -- local collisions = gfx.sprite.allOverlappingSprites()
-    -- if collisions[1] then
-    --     player_hud.status = "dead"
-    --     toastbar.toasts =  toastbar.toasts - 1
-        
-    -- elseif collisions[1] == nil then
-    --     player_hud.status = "normal"
-    -- end
-    -- -- print(collisions[1])
-    
-
-    -- -- for i=1,6 do
-    -- --   card_Holder:draw(0,100+20*i)
-    -- -- end
-
-    -- Graphics.drawText("TEST", 20, 104)
-    -- pd.drawFPS(380, 10)
-
 end
 
 function InitialScene:exit()
