@@ -15,10 +15,6 @@ import "entities/player-hud"
 import "entities/enemy"
 import "entities/toast-bar"
 
-
-
-
-
 function InitialScene:init()
 	InitialScene.super.init(self)
     

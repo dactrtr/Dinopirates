@@ -1,8 +1,7 @@
 SpaceScene = {}
 class("SpaceScene").extends(NobleScene)
 
-SpaceScene.backgroundColor = Graphics.kColorWhite
-
+SpaceScene.backgroundColor = Graphics.kColorBlack
 
 local playerCockpit
 local toastbar
@@ -10,30 +9,35 @@ local player_hud
 local enemy_1
 local border 
 
-import "entities/playerCockpit"
-
+import "entities/cockpit"
+import "entities/ship"
+import "entities/player"
 class('Box').extends(playdate.graphics.sprite)
 
-
-
+local playerX = 200
+local playerY = 232
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
-    
     -- Mark: Entities
-    player = PlayerCockpit(200, 220, 4, 2)
+    cockpit = Cockpit(playerX, playerY, 4)
+    ship = Ship(200, 100, 4)
+    player = Player(playerX, playerY ,4,0)
+   
     
     -- Mark: Screen & HUDS
-    
-
-    -- Mark: Non interactive elements
-
     border = NobleSprite("assets/images/border-space.png")
     border:setZIndex(1)
-    border:moveTo(255, 120)
+    border:moveTo(200, 120)
     self:addSprite(border)
+
+    -- Mark: Non interactive elements
+    
+    
     
     -- MarK: Background/map
+    
+    
     
 end
 
@@ -64,28 +68,6 @@ end
 
 function SpaceScene:update()
     SpaceScene.super.update(self)
-    
-    
-    -- Graphics.clear()
-    -- gfx.sprite.update()
-    -- border:draw(112,0)
-    -- local collisions = gfx.sprite.allOverlappingSprites()
-    -- if collisions[1] then
-    --     player_hud.status = "dead"
-    --     toastbar.toasts =  toastbar.toasts - 1
-        
-    -- elseif collisions[1] == nil then
-    --     player_hud.status = "normal"
-    -- end
-    -- -- print(collisions[1])
-    
-
-    -- -- for i=1,6 do
-    -- --   card_Holder:draw(0,100+20*i)
-    -- -- end
-
-    -- Graphics.drawText("TEST", 20, 104)
-    -- pd.drawFPS(380, 10)
 
 end
 
