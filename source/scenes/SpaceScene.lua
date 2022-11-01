@@ -16,14 +16,15 @@ class('Box').extends(playdate.graphics.sprite)
 
 local playerX = 200
 local playerY = 232
+local shipX = 200
+local shipy = 100
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
     -- Mark: Entities
     cockpit = Cockpit(playerX, playerY, 4)
-    ship = Ship(200, 100, 4)
+    ship = Ship(shipX, shipy, 4, "default")
     player = Player(playerX, playerY ,4,0)
-   
     
     -- Mark: Screen & HUDS
     border = NobleSprite("assets/images/border-space.png")
@@ -32,8 +33,6 @@ function SpaceScene:init()
     self:addSprite(border)
 
     -- Mark: Non interactive elements
-    
-    
     
     -- MarK: Background/map
     
@@ -120,45 +119,61 @@ SpaceScene.inputHandler = {
     --
     leftButtonDown = function()
         -- Your code here
+        ship:setRotation(-20)
+        cockpit:setRotation(20)
+        player:setRotation(20)
     end,
     leftButtonHold = function()
         -- Your code here
     end,
     leftButtonUp = function()
+        ship:setRotation(0)
+        cockpit:setRotation(0)
+        player:setRotation(0)
     end,
 
     -- D-pad right
     --
     rightButtonDown = function()
         -- Your code here
+        ship:setRotation(20)
+        cockpit:setRotation(-20)
+        player:setRotation(-20)
     end,
     rightButtonHold = function()
         -- Your code here
     end,
     rightButtonUp = function()
+        ship:setRotation(0)
+        cockpit:setRotation(0)
+        player:setRotation(0)
     end,
 
     -- D-pad up
     --
     upButtonDown = function()
         -- Your code here
+        ship:move("up")
     end,
     upButtonHold = function()
         -- Your code here
         
     end,
     upButtonUp = function()
+        ship:move("default")
     end,
 
     -- D-pad down
     --
     downButtonDown = function()
         -- Your code here
+        ship:move("down")
     end,
     downButtonHold = function()
         -- Your code here
     end,
     downButtonUp = function()
+        ship:move("default")
     end,
 
     -- Crank
@@ -172,5 +187,7 @@ SpaceScene.inputHandler = {
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
     end
+    
+    
 }
 

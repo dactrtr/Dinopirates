@@ -7,11 +7,12 @@ class('Ship').extends(Graphics.sprite)
   -- Idle.imagetable = Graphics.imagetable.new('assets/images/player/player-idle')
   -- Idle.animation = Graphics.animation.loop.new(700, Idle.imagetable, true)
   
-  local shipImage= Graphics.image.new("assets/ship/small-ship.png")
-
-
+  local shipDefault= Graphics.image.new("assets/ship/ship-default.png")
+  local shipDown= Graphics.image.new("assets/ship/ship-down.png")
+  local shipUp= Graphics.image.new("assets/ship/ship-up.png")
+  
 function Ship:init(x, y, hull, speed)
-  self:setImage(shipImage)
+  self:setImage(shipDefault)
   self:setZIndex(3)
   self:moveTo(x,y)
   -- self:setCollideRect(4,24, 40,24)
@@ -30,6 +31,13 @@ end
 
 function Ship:move(direction)
   self.direction = direction
+  if direction == "default" then
+    self:setImage(shipDefault)
+  elseif (direction== "down") then
+    self:setImage(shipDown)
+  elseif (direction== "up") then
+    self:setImage(shipUp)
+  end
   -- local movementX = 0
   -- local movementY = 0
   -- 
@@ -64,6 +72,7 @@ function Ship:move(direction)
 end
 
 function Ship:update()
+
   -- self:setImage(Idle.animation:image())
 --   if playdate.buttonIsPressed(playdate.kButtonUp) then
 --     
