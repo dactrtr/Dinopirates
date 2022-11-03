@@ -10,21 +10,24 @@ local enemy_1
 local border 
 
 import "entities/cockpit"
-import "entities/ship"
-import "entities/player"
+import "entities//ship/ship"
+import "entities/player/player"
+import "entities/ship/crosshair"
+
 class('Box').extends(playdate.graphics.sprite)
 
 local playerX = 200
 local playerY = 232
 local shipX = 200
-local shipy = 100
+local shipY = 120
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
     -- Mark: Entities
     cockpit = Cockpit(playerX, playerY, 4)
-    ship = Ship(shipX, shipy, 4, "default")
-    player = Player(playerX, playerY ,4,0)
+    ship = Ship(shipX, shipY, 4, "default")
+    player = Player(playerX, playerY , 4, 0)
+    crosshair = Crosshair(shipX, shipY-20, 0, 0)
     
     -- Mark: Screen & HUDS
     border = NobleSprite("assets/images/border-space.png")

@@ -38,37 +38,6 @@ function Ship:move(direction)
   elseif (direction== "up") then
     self:setImage(shipUp)
   end
-  -- local movementX = 0
-  -- local movementY = 0
-  -- 
-  -- if (direction == "left") then
-  --   self:setImage(Left.animation:image())
-  --   movementX = self.x - self.speed
-  --   movementY = self.y
-  -- elseif (direction == "right") then
-  --   self:setImage(Right.animation:image())
-  --   movementX = self.x + self.speed
-  --   movementY = self.y
-  -- elseif (direction == "up") then
-  --   self:setImage(Up.animation:image())
-  --   movementX = self.x 
-  --   movementY = self.y - self.speed
-  -- elseif (direction == "down") then
-  --   self:setImage(Down.animation:image())
-  --   movementX = self.x 
-  --   movementY = self.y + self.speed
-  -- end
-  -- 
-  -- local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
-  -- if lenght > 0 then
-  --    for index, collision in pairs(collisions) do
-  --      local collideObject = collision['other']
-  --      if collideObject:isa(Enemy) then
-  --        collideObject:remove() --same method for the enemies
-  --      end
-  --   end
-  -- end
-  -- 
 end
 
 function Ship:update()

@@ -1,6 +1,6 @@
-import "entities/player-face/player-eyes"
-import "entities/player-face/player-mouth"
-import "entities/player-face/player-body"
+import "entities/player/player-face/player-eyes"
+import "entities/player/player-face/player-mouth"
+import "entities/player/player-face/player-body"
 
 class('PlayerHud').extends(Graphics.sprite)
 

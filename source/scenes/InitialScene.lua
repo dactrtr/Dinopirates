@@ -10,8 +10,8 @@ local player_hud
 local enemy_1
 local border 
 
-import "entities/player"
-import "entities/player-hud"
+import "entities/player/player"
+import "entities/player/player-hud"
 import "entities/enemy"
 import "entities/toast-bar"
 
