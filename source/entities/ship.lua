@@ -7,9 +7,9 @@ class('Ship').extends(Graphics.sprite)
   -- Idle.imagetable = Graphics.imagetable.new('assets/images/player/player-idle')
   -- Idle.animation = Graphics.animation.loop.new(700, Idle.imagetable, true)
   
-  local shipDefault= Graphics.image.new("assets/ship/ship-default.png")
-  local shipDown= Graphics.image.new("assets/ship/ship-down.png")
-  local shipUp= Graphics.image.new("assets/ship/ship-up.png")
+  local shipDefault= Graphics.image.new("assets/images/ship/ship-default.png")
+  local shipDown= Graphics.image.new("assets/images/ship/ship-down.png")
+  local shipUp= Graphics.image.new("assets/images/ship/ship-up.png")
   
 function Ship:init(x, y, hull, speed)
   self:setImage(shipDefault)

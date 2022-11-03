@@ -42,6 +42,10 @@ function Player:collisionResponse()
   return "freeze"
 end
 
+function Player:idle()
+  self:setImage(Idle.animation:image())
+end
+
 function Player:move(direction)
   self.direction = direction
   local movementX = 0
@@ -78,23 +82,7 @@ function Player:move(direction)
 end
 
 function Player:update()
-  self:setImage(Idle.animation:image())
   if self.toasts < 1 then
     self.toasts = 0
-  end
-  if playdate.buttonIsPressed(playdate.kButtonUp) then
-    
-    self:move("up")
-        
-  elseif playdate.buttonIsPressed(playdate.kButtonDown) then
-    
-    self:move("down")
-        
-  elseif playdate.buttonIsPressed(playdate.kButtonLeft) then
-    self:move("left")
-    
-  elseif playdate.buttonIsPressed(playdate.kButtonRight) then
-    self:move("right")
-
   end
 end

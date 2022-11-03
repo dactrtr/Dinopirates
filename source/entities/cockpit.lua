@@ -4,7 +4,7 @@ class('Cockpit').extends(Graphics.sprite)
 -- local IdlePlayer = Graphics.sprite.new()
 -- IdlePlayer.imagetable = Graphics.imagetable.new('assets/ship/ship.png')
 -- IdlePlayer.animation = Graphics.animation.loop.new(700, IdlePlayer.imagetable, true)
-local CockpitImage= Graphics.image.new("assets/ship/ship.png")
+local CockpitImage= Graphics.image.new("assets/images/ship/ship.png")
 
 function Cockpit:init(x, y, hull)
   self:setImage(CockpitImage)

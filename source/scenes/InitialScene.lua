@@ -87,6 +87,7 @@ end
 
 function InitialScene:update()
 	InitialScene.super.update(self)
+    player:idle()
 end
 
 function InitialScene:exit()
@@ -141,8 +142,10 @@ InitialScene.inputHandler = {
     end,
     leftButtonHold = function()
         -- Your code here
+        player:move("left")
     end,
     leftButtonUp = function()
+        
     end,
 
     -- D-pad right
@@ -152,6 +155,7 @@ InitialScene.inputHandler = {
     end,
     rightButtonHold = function()
         -- Your code here
+        player:move("right")
     end,
     rightButtonUp = function()
     end,
@@ -163,6 +167,7 @@ InitialScene.inputHandler = {
     end,
     upButtonHold = function()
         -- Your code here
+        player:move("up")
         
     end,
     upButtonUp = function()
@@ -175,6 +180,7 @@ InitialScene.inputHandler = {
     end,
     downButtonHold = function()
         -- Your code here
+        player:move("down")
     end,
     downButtonUp = function()
     end,
