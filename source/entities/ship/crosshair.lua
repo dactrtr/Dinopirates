@@ -11,7 +11,7 @@ class('Crosshair').extends(Graphics.sprite)
   
 function Crosshair:init(x, y, xspeed, yspeed)
   self:setImage(crosshair)
-  self:setZIndex(4)
+  self:setZIndex(2)
   self:moveTo(x,y)  
   -- Mark: Custom properties
   self.xspeed = xspeed
@@ -25,14 +25,34 @@ end
 -- end
 
 function Crosshair:move(direction)
-  -- self.direction = direction
-  -- if direction == "default" then
-  --   self:setImage(shipDefault)
-  -- elseif (direction== "down") then
-  --   self:setImage(shipDown)
-  -- elseif (direction== "up") then
-  --   self:setImage(shipUp)
-  -- end
+  self.direction = direction
+  
+  local movementX = 0
+  local movementX = 0
+  
+  if (direction == "up") then
+    movementX = self.x 
+    movementY = self.y + self.yspeed
+    
+  elseif (direction == "down") then
+    movementX = self.x 
+    movementY = self.y - self.yspeed
+    
+  elseif (direction == "left") then
+    movementX = self.x - self.xspeed
+    movementY = self.y 
+  elseif (direction == "right") then
+    movementX = self.x + self.yspeed
+    movementY = self.y 
+  end
+  if movementY < 80 then
+    movementY = 80
+  end
+  if movementY > 150 then
+    movementY = 150
+  end
+  self:moveTo(movementX, movementY)
+  
 end
 
 function Crosshair:update()

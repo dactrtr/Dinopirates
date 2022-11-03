@@ -31,11 +31,11 @@ end
 
 function Ship:move(direction)
   self.direction = direction
-  if direction == "default" then
+  if (direction == "default") then
     self:setImage(shipDefault)
-  elseif (direction== "down") then
+  elseif (direction == "down") then
     self:setImage(shipDown)
-  elseif (direction== "up") then
+  elseif (direction == "up") then
     self:setImage(shipUp)
   end
 end
