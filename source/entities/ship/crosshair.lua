@@ -10,6 +10,8 @@ class('Crosshair').extends(Graphics.sprite)
   local crosshair= Graphics.image.new("assets/images/ui/crosshair.png")
   
 function Crosshair:init(x, y, xspeed, yspeed)
+  centerY = y
+  centerX = x
   self:setImage(crosshair)
   self:setZIndex(2)
   self:moveTo(x,y)  
@@ -29,6 +31,10 @@ function Crosshair:move(direction)
   
   local movementX = 0
   local movementX = 0
+  local topY = 176
+  local bottomY = 8
+  local leftX = 8
+  local rightX = 392
   
   if (direction == "up") then
     movementX = self.x 
@@ -41,20 +47,48 @@ function Crosshair:move(direction)
   elseif (direction == "left") then
     movementX = self.x - self.xspeed
     movementY = self.y 
+    self:setRotation(-20)
+    
   elseif (direction == "right") then
-    movementX = self.x + self.yspeed
-    movementY = self.y 
+    movementX = self.x + self.xspeed
+    movementY = self.y
+    self:setRotation(20) 
   end
-  if movementY < 80 then
-    movementY = 80
+  
+  -- Border block
+  if movementY < bottomY then
+    movementY = bottomY
+  elseif (movementY > topY) then
+    movementY = topY
   end
-  if movementY > 150 then
-    movementY = 150
+  
+  if movementX < leftX then
+    movementX = leftX
+  elseif (movementX > rightX) then
+    movementX = rightX
   end
+ 
+  
   self:moveTo(movementX, movementY)
   
 end
 
+function Crosshair:reset()
+  self:setRotation(0)
+    
+  if (self.y > centerY) then  
+    self:moveBy(0, -1)
+  elseif (self.y < centerY) then
+    self:moveBy(0, 1)
+  end
+  if (self.x > centerX) then
+    self:moveBy(-1, 0)
+  elseif (self.x < centerX) then
+    self:moveBy(1, 0)
+  end
+
+end
+
 function Crosshair:update()
--- print("active")
+  self:reset()
 end

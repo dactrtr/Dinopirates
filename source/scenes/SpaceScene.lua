@@ -27,7 +27,7 @@ function SpaceScene:init()
     cockpit = Cockpit(playerX, playerY, 4)
     ship = Ship(shipX, shipY, 4, "default")
     player = Player(playerX, playerY , 4, 0)
-    crosshair = Crosshair(shipX, shipY-20, 4, 4)
+    crosshair = Crosshair(shipX, shipY-24, 6, 6)
     
     -- Mark: Screen & HUDS
     border = NobleSprite("assets/images/border-space.png")
@@ -70,6 +70,7 @@ end
 
 function SpaceScene:update()
     SpaceScene.super.update(self)
+    
 
 end
 
@@ -123,8 +124,8 @@ SpaceScene.inputHandler = {
     leftButtonDown = function()
         -- Your code here
         ship:setRotation(-20)
-        cockpit:setRotation(20)
-        player:setRotation(20)
+        -- cockpit:setRotation(20)
+        -- player:setRotation(20)
     end,
     leftButtonHold = function()
         -- Your code here
@@ -132,8 +133,6 @@ SpaceScene.inputHandler = {
     end,
     leftButtonUp = function()
         ship:setRotation(0)
-        cockpit:setRotation(0)
-        player:setRotation(0)
     end,
 
     -- D-pad right
@@ -141,8 +140,7 @@ SpaceScene.inputHandler = {
     rightButtonDown = function()
         -- Your code here
         ship:setRotation(20)
-        cockpit:setRotation(-20)
-        player:setRotation(-20)
+        
     end,
     rightButtonHold = function()
         -- Your code here
@@ -150,8 +148,6 @@ SpaceScene.inputHandler = {
     end,
     rightButtonUp = function()
         ship:setRotation(0)
-        cockpit:setRotation(0)
-        player:setRotation(0)
     end,
 
     -- D-pad up
