@@ -85,4 +85,5 @@ function Player:update()
   if self.toasts < 1 then
     self.toasts = 0
   end
+  self:idle()
 end

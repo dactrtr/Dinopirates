@@ -21,6 +21,8 @@ local XXLarge = Graphics.sprite.new()
 XXLarge.imagetable = Graphics.imagetable.new('assets/images/space/xxlmeteorite')
 XXLarge.animation = Graphics.animation.loop.new(200, XXLarge.imagetable, true)
 
+local MeteoriteImage = Graphics.sprite.new()
+
 function Meteorite:init(x, y, moveSpeed)
   self:setImage(Small.animation:image())
   self:moveTo(x,y)
@@ -33,6 +35,7 @@ end
 
 function Meteorite:zoom(moveSpeed)
   self.moveSpeed = moveSpeed
+  
   if (self.moveSpeed < 200) then
     self:setImage(Small.animation:image())
   elseif (self.moveSpeed < 400) then
@@ -43,6 +46,8 @@ function Meteorite:zoom(moveSpeed)
     self:setImage(XLarge.animation:image())
   elseif (self.moveSpeed < 1000) then
     self:setImage(XXLarge.animation:image())
+  elseif(self.moveSpeed > 1100) then
+    self:remove() -- Reset function
   end
 end
 

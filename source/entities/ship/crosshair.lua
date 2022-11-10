@@ -76,16 +76,17 @@ end
 
 function Crosshair:reset()
   self:setRotation(0)
+  local speed = 2
     
   if (self.y > centerY) then  
-    self:moveBy(0, -1)
+    self:moveBy(0, -speed)
   elseif (self.y < centerY) then
-    self:moveBy(0, 1)
+    self:moveBy(0, speed)
   end
   if (self.x > centerX) then
-    self:moveBy(-1, 0)
+    self:moveBy(-speed, 0)
   elseif (self.x < centerX) then
-    self:moveBy(1, 0)
+    self:moveBy(speed, 0)
   end
 
 end
