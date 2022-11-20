@@ -27,6 +27,8 @@ local shipX = 200
 local shipY = 120
 local playerSpeed = 1
 local playerTranslation = 4
+local cheat = CheatCode("up", "up", "up")
+
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
@@ -47,7 +49,7 @@ function SpaceScene:init()
     -- Mark: Non interactive elements
     
     -- MarK: Background/map
-    
+    cheat.onComplete = function() print("cheat") end
     
     
 end
@@ -78,13 +80,18 @@ function SpaceScene:drawBackground()
 end
 
 function SpaceScene:update()
+    playdate.timer.updateTimers() -- uses timers so make sure you call this
+    cheat:update()
     SpaceScene.super.update(self)
     meteorite:zoom(playerSpeed)
-    meteorite2:zoom(playerSpeed+100)
+    meteorite2:zoom(playerSpeed + 100)
     -- fake timer
     if (playerSpeed > 0) then
-        playerSpeed = playerSpeed +1
+        playerSpeed = playerSpeed + 1
     end
+    if (playerSpeed > 1000) then
+        playerSpeed = 0
+    end 
 end
 
 function SpaceScene:exit()
