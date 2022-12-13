@@ -32,7 +32,7 @@ function Crosshair:move(direction)
   local movementX = 0
   local movementX = 0
   -- screen limits
-  local topY = 176
+  local topY = 230
   local bottomY = 8
   local leftX = 8
   local rightX = 392
