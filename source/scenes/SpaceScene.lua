@@ -9,7 +9,7 @@ local enemy_1
 local border
 
 -- TODO:
--- make vector meteorites
+-- make vector meteorites (must be like this)
 -- set a limit movement to the crosshair
 -- review the bottom UI (maybe is using too much space just for nothing)
 
@@ -24,33 +24,37 @@ class('Box').extends(playdate.graphics.sprite)
 local playerX = 200
 local playerY = 232
 local shipX = 200
-local shipY = 120
-local playerSpeed = 1
-local playerTranslation = 4
-local cheat = CheatCode("up", "up", "up")
+local shipY = 180
 
+local playerSpeed = 100
+local playerTranslation = 4
+
+local cheat = CheatCode("up", "up", "up", "down")
+
+local laserBlink =  Graphics.kColorClear
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
+    -- Mark: Utilities
+    cheat.onComplete = function() print("THATS A CHEAT CODE") end
     -- Mark: Entities
-    cockpit = Cockpit( playerX, playerY, 4)
-    ship = Ship( shipX, shipY, 4, "default")
-    player = Player( playerX, playerY , 4, 0)
+    -- cockpit = Cockpit( playerX, playerY, 4)
+    -- player = Player( playerX, playerY , 4, 0)
+    ship = Ship( shipX, shipY, 4, "default", 3)
     crosshair = Crosshair( shipX, shipY-24, 6, 6)
-    -- Mark: meteorites (should have their own function and be generated randomly in each init)
-    meteorite = Meteorite( 50, 50, playerSpeed)
-    meteorite2 = Meteorite( 100, 100, playerSpeed)
-    meteorite2:setImageFlip("flipX")
+    -- Mark: meteorites (should have their own function and be generated randomly in each init)    
+    
+    
+   
     -- Mark: Screen & HUDS
-    border = NobleSprite("assets/images/border-space.png")
-    border:setZIndex(1)
-    border:moveTo( 200, 120)
-    self:addSprite(border)
+   
     -- Mark: Non interactive elements
     
     -- MarK: Background/map
-    cheat.onComplete = function() print("cheat") end
     
+    
+    -- Mark: weird functions
+   
     
 end
 
@@ -77,23 +81,33 @@ function SpaceScene:drawBackground()
     SpaceScene.super.drawBackground(self)
 
     -- background:draw(0, 0)
+    -- backgroundTop = playdate.graphics.fillRect(0, 0, 400, 240)
+    -- backgroundBottom = playdate.graphics.fillRect(2, 192, 396, 44)
 end
 
 function SpaceScene:update()
     playdate.timer.updateTimers() -- uses timers so make sure you call this
     cheat:update()
     SpaceScene.super.update(self)
-    meteorite:zoom(playerSpeed)
-    meteorite2:zoom(playerSpeed + 100)
+    
+    -- meteorite:zoom(playerSpeed)
+    
     -- fake timer
-    if (playerSpeed > 0) then
-        playerSpeed = playerSpeed + 1
-    end
-    if (playerSpeed > 1000) then
-        playerSpeed = 0
-    end 
+    
+   -- print( crosshair:getPosition())
+   
+    Graphics.setColor(laserBlink)
+    Graphics.drawLine(ship.x-28,ship.y-8,crosshair.x,crosshair.y)
+    Graphics.drawLine(ship.x+28,ship.y+8,crosshair.x,crosshair.y)
+    Graphics.drawLine(ship.x-28,ship.y+8,crosshair.x,crosshair.y)
+    Graphics.drawLine(ship.x+28,ship.y-8,crosshair.x,crosshair.y)
+    laserBlink = Graphics.kColorClear
+    
 end
-
+function laser()
+    print("shoot the laser")
+    laserBlink = Graphics.kColorWhite
+end
 function SpaceScene:exit()
     SpaceScene.super.exit(self)
 
@@ -113,6 +127,7 @@ SpaceScene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
+       laser()
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
@@ -150,8 +165,7 @@ SpaceScene.inputHandler = {
     leftButtonHold = function()
         -- Your code here
         crosshair:move("left")
-        meteorite:moveBy(playerTranslation, 0)
-        meteorite2:moveBy(playerTranslation, 0)
+       -- meteorite:moveBy(playerTranslation, 0)
     end,
     leftButtonUp = function()
         ship:setRotation(0)
@@ -167,8 +181,6 @@ SpaceScene.inputHandler = {
     rightButtonHold = function()
         -- Your code here
         crosshair:move("right")
-        meteorite:moveBy(-playerTranslation, 0)
-        meteorite2:moveBy(-playerTranslation, 0)
     end,
     rightButtonUp = function()
         ship:setRotation(0)
@@ -183,8 +195,7 @@ SpaceScene.inputHandler = {
     upButtonHold = function()
         -- Your code here
         crosshair:move("up")
-        meteorite:moveBy(0, -playerTranslation)
-        meteorite2:moveBy(0, -playerTranslation)
+        -- meteorite:moveBy(0, -playerTranslation)
     end,
     upButtonUp = function()
         ship:move("default")
@@ -199,8 +210,6 @@ SpaceScene.inputHandler = {
     downButtonHold = function()
         -- Your code here
         crosshair:move("down")
-        meteorite:moveBy(0, playerTranslation)
-        meteorite2:moveBy(0, playerTranslation)
     end,
     downButtonUp = function()
         ship:move("default")
