@@ -28,7 +28,7 @@ function Meteorite:init(x, y, moveSpeed)
   self:moveTo(x,y)
   self.moveSpeed = moveSpeed
   self:setGroups(1)
-  self:setZIndex(2)
+  self:setZIndex(1)
   
   self:add()
 end
@@ -46,7 +46,7 @@ function Meteorite:zoom(moveSpeed)
     self:setImage(XLarge.animation:image())
   elseif (self.moveSpeed < 1000) then
     self:setImage(XXLarge.animation:image())
-  elseif(self.moveSpeed > 1100) then
+  elseif(self.moveSpeed > 1001) then
     self:remove() -- Reset function
   end
 end
