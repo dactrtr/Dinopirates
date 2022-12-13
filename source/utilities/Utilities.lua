@@ -7,6 +7,7 @@ class('Box').extends(playdate.graphics.sprite)
 function Utilities.getZero()
 	return 0
 end
+-- TODO: create random function
 
 -- mark: Draw collider boxes (walls)
 
