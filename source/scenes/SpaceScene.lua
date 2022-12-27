@@ -31,7 +31,7 @@ local playerTranslation = 4
 
 local cheat = CheatCode("up", "up", "up", "down")
 
-local laserBlink =  Graphics.kColorClear
+laserBlink =  Graphics.kColorClear
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
@@ -40,12 +40,10 @@ function SpaceScene:init()
     -- Mark: Entities
     -- cockpit = Cockpit( playerX, playerY, 4)
     -- player = Player( playerX, playerY , 4, 0)
-    ship = Ship( shipX, shipY, 4, "default", 3)
+    ship = Ship( shipX, shipY, 4, "default", 6)
     crosshair = Crosshair( shipX, shipY-24, 6, 6)
     -- Mark: meteorites (should have their own function and be generated randomly in each init)    
     
-    
-   
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
@@ -94,23 +92,40 @@ function SpaceScene:update()
     
     -- fake timer
     
-   -- print( crosshair:getPosition())
-   
-    Graphics.setColor(laserBlink)
-    Graphics.drawLine(ship.x-28,ship.y-8,crosshair.x,crosshair.y)
-    Graphics.drawLine(ship.x+28,ship.y+8,crosshair.x,crosshair.y)
-    Graphics.drawLine(ship.x-28,ship.y+8,crosshair.x,crosshair.y)
-    Graphics.drawLine(ship.x+28,ship.y-8,crosshair.x,crosshair.y)
-    laserBlink = Graphics.kColorClear
+    laser(laserBlink,ship)
+
     
 end
-function laser()
-    print("shoot the laser")
-    laserBlink = Graphics.kColorWhite
+function laser(laserBlink,ship)
+   local modX = 0
+   local modY = 0
+  
+    
+   if playdate.buttonIsPressed("left") then
+      modY = 8
+      modX = 2
+   end
+   if playdate.buttonIsPressed("right") then
+      modY = - 8
+      modX = - 2
+   end
+   
+   -- TODO: make this a vector
+   Graphics.setColor(laserBlink)
+   Graphics.setLineWidth(1)
+   Graphics.setLineCapStyle(Graphics.kLineCapStyleButt)
+   Graphics.drawLine(ship.x - 28, ship.y - 8 + modY,crosshair.x,crosshair.y)
+   Graphics.drawLine(ship.x - 28 + modX,ship.y + 8 + modY,crosshair.x,crosshair.y)
+   Graphics.drawLine(ship.x + 28, ship.y + 8 - modY,crosshair.x,crosshair.y)
+   Graphics.drawLine(ship.x + 28 - modX ,ship.y - 8 - modY,crosshair.x,crosshair.y)
+   
+end
+
+function laserSingle(ship)
+   print(ship.x)
 end
 function SpaceScene:exit()
     SpaceScene.super.exit(self)
-
     Noble.Input.setCrankIndicatorStatus(false)
     sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
     sequence:start();
@@ -127,7 +142,7 @@ SpaceScene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
-       laser()
+       laserBlink = Graphics.kColorWhite
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
@@ -137,12 +152,14 @@ SpaceScene.inputHandler = {
     end,
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
+        laserBlink = Graphics.kColorClear
     end,
 
     -- B button
     --
     BButtonDown = function()
         -- Your code here
+        laserSingle(ship)
     end,
     BButtonHeld = function()
         -- Your code here
