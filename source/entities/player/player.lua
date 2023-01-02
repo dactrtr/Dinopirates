@@ -6,9 +6,9 @@ class('Player').extends(Graphics.sprite)
   Right.imagetable = Graphics.imagetable.new('assets/images/player/player-right')
   Right.animation = Graphics.animation.loop.new(100, Right.imagetable, true)
   -- Left
-  local Left = Graphics.sprite.new()
-  Left.imagetable = Graphics.imagetable.new('assets/images/player/player-left')
-  Left.animation = Graphics.animation.loop.new(100, Left.imagetable, true)
+  -- Left = Graphics.sprite.new()
+  -- Left.imagetable = Graphics.imagetable.new('assets/images/player/player-left')
+  -- Left.animation = Graphics.animation.loop.new(100, Left.imagetable, true)
   -- Up
   local Up = Graphics.sprite.new()
   Up.imagetable = Graphics.imagetable.new('assets/images/player/player-up')
@@ -24,6 +24,7 @@ class('Player').extends(Graphics.sprite)
 
 
 function Player:init(x, y, toasts, speed)
+  
   self:setImage(Idle.animation:image())
   self:setZIndex(3)
   self:moveTo(x,y)
@@ -34,6 +35,10 @@ function Player:init(x, y, toasts, speed)
   -- Mark: Custom properties
   self.speed = speed
   self.toasts = toasts
+  
+  Left = Graphics.sprite.new()
+  Left.imagetable = Graphics.imagetable.new('assets/images/player/player-left')
+  Left.animation = Graphics.animation.loop.new(100, Left.imagetable, true)
   
   self:add()   
 end 
@@ -85,5 +90,4 @@ function Player:update()
   if self.toasts < 1 then
     self.toasts = 0
   end
-  self:idle()
 end
