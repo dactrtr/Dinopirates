@@ -3,7 +3,6 @@ class("InitialScene").extends(NobleScene)
 
 InitialScene.backgroundColor = Graphics.kColorWhite
 
-
 local player
 local toastbar
 local player_hud
@@ -26,7 +25,6 @@ function InitialScene:init()
     
     -- Mark: Screen & HUDS
     player_hud = PlayerHud("normal")
-    
 
     -- Mark: Non interactive elements
     
@@ -168,7 +166,6 @@ InitialScene.inputHandler = {
     upButtonHold = function()
         -- Your code here
         player:move("up")
-        
     end,
     upButtonUp = function()
     end,
