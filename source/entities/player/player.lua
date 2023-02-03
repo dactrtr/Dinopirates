@@ -6,9 +6,9 @@ class('Player').extends(Graphics.sprite)
   Right.imagetable = Graphics.imagetable.new('assets/images/player/player-right')
   Right.animation = Graphics.animation.loop.new(100, Right.imagetable, true)
   -- Left
-  -- Left = Graphics.sprite.new()
-  -- Left.imagetable = Graphics.imagetable.new('assets/images/player/player-left')
-  -- Left.animation = Graphics.animation.loop.new(100, Left.imagetable, true)
+  local Left = Graphics.sprite.new()
+  Left.imagetable = Graphics.imagetable.new('assets/images/player/player-left')
+  Left.animation = Graphics.animation.loop.new(100, Left.imagetable, true)
   -- Up
   local Up = Graphics.sprite.new()
   Up.imagetable = Graphics.imagetable.new('assets/images/player/player-up')

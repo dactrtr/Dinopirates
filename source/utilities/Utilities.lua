@@ -28,7 +28,7 @@ function addBlock(x,y,w,h)
 	block:setGroups(1)
 end
 
--- mark: Cheat codes
+-- MARK: Cheat codes
 
 local keys = {
 	a = playdate.kButtonA,

@@ -3,21 +3,20 @@ class("SpaceScene").extends(NobleScene)
 
 SpaceScene.backgroundColor = Graphics.kColorBlack
 
-local playerCockpit
-local player_hud
-local enemy_1
-local border
+-- local playerCockpit
+-- local player_hud
+-- local enemy_1
+-- local border
 
 -- TODO:
 -- make vector meteorites (must be like this)
 -- set a limit movement to the crosshair
 -- review the bottom UI (maybe is using too much space just for nothing)
 
-import "entities/cockpit"
+-- import "entities/cockpit"
 import "entities/ship/ship"
-import "entities/player/player"
 import "entities/ship/crosshair"
-import "entities/meteorite"
+import "entities/ship/laser"
 
 class('Box').extends(playdate.graphics.sprite)
 
@@ -26,7 +25,6 @@ local playerY = 232
 local shipX = 200
 local shipY = 180
 
-local playerSpeed = 100
 local playerTranslation = 4
 
 local cheat = CheatCode("up", "up", "up", "down")
@@ -38,10 +36,9 @@ function SpaceScene:init()
     -- Mark: Utilities
     cheat.onComplete = function() print("THATS A CHEAT CODE") end
     -- Mark: Entities
-    -- cockpit = Cockpit( playerX, playerY, 4)
-    -- player = Player( playerX, playerY , 4, 0)
     ship = Ship( shipX, shipY, 4, "default", 6)
     crosshair = Crosshair( shipX, shipY-24, 6, 6)
+    laser01 = Laser()
     -- Mark: meteorites (should have their own function and be generated randomly in each init)    
     
     -- Mark: Screen & HUDS
@@ -49,7 +46,6 @@ function SpaceScene:init()
     -- Mark: Non interactive elements
     
     -- MarK: Background/map
-    
     
     -- Mark: weird functions
    
@@ -63,73 +59,31 @@ function SpaceScene:enter()
     sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
     sequence:start()
 
-    -- self:addSprite(player)
 end
 
 function SpaceScene:start()
     SpaceScene.super.start(self)
-
-    -- menu:activate()
-    -- Noble.Input.setCrankIndicatorStatus(true)
-
 
 end
 
 function SpaceScene:drawBackground()
     SpaceScene.super.drawBackground(self)
 
-    -- background:draw(0, 0)
-    -- backgroundTop = playdate.graphics.fillRect(0, 0, 400, 240)
-    -- backgroundBottom = playdate.graphics.fillRect(2, 192, 396, 44)
 end
 
 function SpaceScene:update()
-    playdate.timer.updateTimers() -- uses timers so make sure you call this
+    playdate.timer.updateTimers()
     cheat:update()
     SpaceScene.super.update(self)
+    laser01:shoot(laserBlink, ship)
     
-    -- meteorite:zoom(playerSpeed)
-    
-    -- fake timer
-    
-    laser(laserBlink,ship)
-
-    
-end
-function laser(laserBlink,ship)
-   local modX = 0
-   local modY = 0
-  
-    
-   if playdate.buttonIsPressed("left") then
-      modY = 8
-      modX = 2
-   end
-   if playdate.buttonIsPressed("right") then
-      modY = - 8
-      modX = - 2
-   end
-   
-   -- TODO: make this a vector
-   Graphics.setColor(laserBlink)
-   Graphics.setLineWidth(1)
-   Graphics.setLineCapStyle(Graphics.kLineCapStyleButt)
-   Graphics.drawLine(ship.x - 28, ship.y - 8 + modY,crosshair.x,crosshair.y)
-   Graphics.drawLine(ship.x - 28 + modX,ship.y + 8 + modY,crosshair.x,crosshair.y)
-   Graphics.drawLine(ship.x + 28, ship.y + 8 - modY,crosshair.x,crosshair.y)
-   Graphics.drawLine(ship.x + 28 - modX ,ship.y - 8 - modY,crosshair.x,crosshair.y)
-   
 end
 
-function laserSingle(ship)
-   print(ship.x)
-end
 function SpaceScene:exit()
     SpaceScene.super.exit(self)
     Noble.Input.setCrankIndicatorStatus(false)
     sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
     sequence:start();
-
 end
 
 function SpaceScene:finish()
@@ -142,16 +96,23 @@ SpaceScene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
-       laserBlink = Graphics.kColorWhite
+        
+        laser01:Single(ship)
+        laser01:shoot(laserBlink,ship)
+        laserBlink = Graphics.kColorWhite
+        
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
+        laserBlink = Graphics.kColorClear
+        laser01:clearLasersFX()
     end,
     AButtonHeld = function()			-- Runs after button is held for 1 second.
         -- Your code here
     end,
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
+        laser01:clearLasersFX()
         laserBlink = Graphics.kColorClear
     end,
 
@@ -159,7 +120,6 @@ SpaceScene.inputHandler = {
     --
     BButtonDown = function()
         -- Your code here
-        laserSingle(ship)
     end,
     BButtonHeld = function()
         -- Your code here
