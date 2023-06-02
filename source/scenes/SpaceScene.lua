@@ -3,15 +3,10 @@ class("SpaceScene").extends(NobleScene)
 
 SpaceScene.backgroundColor = Graphics.kColorBlack
 
--- local playerCockpit
--- local player_hud
--- local enemy_1
--- local border
 
 -- TODO:
 -- make vector meteorites (must be like this)
 -- set a limit movement to the crosshair
--- review the bottom UI (maybe is using too much space just for nothing)
 
 -- import "entities/cockpit"
 import "entities/ship/ship"
@@ -23,7 +18,7 @@ class('Box').extends(playdate.graphics.sprite)
 local playerX = 200
 local playerY = 232
 local shipX = 200
-local shipY = 180
+local shipY = 150 --change this value with the crank
 
 local playerTranslation = 4
 
@@ -37,7 +32,7 @@ function SpaceScene:init()
     cheat.onComplete = function() print("THATS A CHEAT CODE") end
     -- Mark: Entities
     ship = Ship( shipX, shipY, 4, "default", 6)
-    crosshair = Crosshair( shipX, shipY-24, 6, 6)
+    crosshair = Crosshair( shipX, shipY - 16, 6, 6)
     laser01 = Laser()
     -- Mark: meteorites (should have their own function and be generated randomly in each init)    
     
@@ -75,7 +70,14 @@ function SpaceScene:update()
     playdate.timer.updateTimers()
     cheat:update()
     SpaceScene.super.update(self)
-    laser01:shoot(laserBlink, ship)
+    laser01:shoot(laserBlink, ship, ship.shooter01.x, ship.shooter01.y)
+   
+   
+    -- background
+    
+    
+    
+    
     
 end
 
@@ -97,6 +99,7 @@ SpaceScene.inputHandler = {
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
         
+        -- laser01:Single(ship)
         laser01:Single(ship)
         laser01:shoot(laserBlink,ship)
         laserBlink = Graphics.kColorWhite

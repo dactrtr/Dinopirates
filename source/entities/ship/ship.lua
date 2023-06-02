@@ -11,16 +11,22 @@ class('Ship').extends(Graphics.sprite)
   local shipDown= Graphics.image.new("assets/images/ship/ship-down.png")
   local shipUp= Graphics.image.new("assets/images/ship/ship-up.png")
   
-function Ship:init(x, y, hull, speed, zIndex)
+function Ship:init(startX, startY, hull, speed, zIndex)
   self:setImage(shipDefault)
   self:setZIndex(zIndex)
-  self:moveTo(x,y)
+  self:moveTo(startX,startY)
   -- self:setCollideRect(4,24, 40,24)
   -- self:setCollidesWithGroups(1)
   self:setGroups(2)
   
   -- Mark: Custom properties
   self.speed = speed
+  
+  self.shooter01 = { x = self.x - 28 ,y = self.y - 8 }
+  self.shooter02 = { x = self.x + 28 ,y = self.y - 8 }
+  self.shooter03 = { x = self.x - 28 ,y = self.y + 8 }
+  self.shooter04 = { x = self.x + 28 ,y = self.y + 8 }
+  -- Mark: Shooters
   
   self:add()   
 end 
