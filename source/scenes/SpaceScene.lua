@@ -19,7 +19,7 @@ local playerX = 200
 local playerY = 232
 local shipX = 200
 local shipY = 150 --change this value with the crank
-
+local shooterDisplacement = 8
 local playerTranslation = 4
 
 local cheat = CheatCode("up", "up", "up", "down")
@@ -41,6 +41,7 @@ function SpaceScene:init()
     fxlaser01 = FXlaser()
     fxlaser02 = FXlaser()
     fxlaser03 = FXlaser()
+    fxlaser04 = FXlaser()
     -- Mark: meteorites (should have their own function and be generated randomly in each init)    
     
     -- Mark: Screen & HUDS
@@ -106,9 +107,10 @@ SpaceScene.inputHandler = {
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
         
-        fxlaser01:Single(ship.shooter01.x,ship.shooter01.y)
-        fxlaser02:Single(ship.shooter02.x,ship.shooter02.y)
-        fxlaser03:Single(ship.shooter03.x, ship.shooter03.y)
+        fxlaser01:Single(ship.shooter01.x - shooterDisplacement,ship.shooter01.y - shooterDisplacement)
+        fxlaser02:Single(ship.shooter02.x + shooterDisplacement,ship.shooter02.y - shooterDisplacement)
+        fxlaser03:Single(ship.shooter03.x - shooterDisplacement, ship.shooter03.y + shooterDisplacement)
+        fxlaser04:Single(ship.shooter04.x + shooterDisplacement, ship.shooter04.y + shooterDisplacement )
         laser01:shoot(laserBlink,ship)
         laserBlink = Graphics.kColorWhite
         
@@ -119,6 +121,8 @@ SpaceScene.inputHandler = {
         fxlaser01:clearFX()
         fxlaser02:clearFX()
         fxlaser03:clearFX()
+        fxlaser04:clearFX()
+        
     end,
     AButtonHeld = function()			-- Runs after button is held for 1 second.
         -- Your code here
@@ -128,6 +132,8 @@ SpaceScene.inputHandler = {
         fxlaser01:clearFX()
         fxlaser02:clearFX()
         fxlaser03:clearFX()
+        fxlaser04:clearFX()
+        
         laserBlink = Graphics.kColorClear
     end,
 

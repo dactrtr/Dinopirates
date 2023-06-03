@@ -3,7 +3,6 @@ class('Laser').extends(Graphics.sprite)
 function Laser:init(...)
   
   local bgFX = Graphics.image.new(400, 240)
-  -- self:moveTo(ship.shooter01.x - 10, ship.shooter01.y + 10)
   self:setZIndex(1) 
 
 end
