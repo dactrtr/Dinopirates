@@ -3,11 +3,12 @@ class("TestScene").extends(NobleScene)
 
 TestScene.backgroundColor = Graphics.kColorWhite
 
+import "entities/testEntity"
+
 function TestScene:init()
 	TestScene.super.init(self)
     
-    
-    
+    test = TestEntity()
 end
 
 
@@ -25,7 +26,7 @@ function TestScene:start()
 
 	-- menu:activate()
 	-- Noble.Input.setCrankIndicatorStatus(true)
-
+ 
 
 end
 
@@ -58,6 +59,7 @@ TestScene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
+        test:draw()
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here

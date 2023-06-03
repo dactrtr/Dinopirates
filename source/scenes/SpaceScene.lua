@@ -13,7 +13,6 @@ import "entities/ship/ship"
 import "entities/ship/crosshair"
 import "entities/ship/laser"
 
-class('Box').extends(playdate.graphics.sprite)
 
 local playerX = 200
 local playerY = 232
@@ -29,11 +28,16 @@ laserBlink =  Graphics.kColorClear
 function SpaceScene:init()
     SpaceScene.super.init(self)
     -- Mark: Utilities
-    cheat.onComplete = function() print("THATS A CHEAT CODE") end
+    cheat.onComplete = function()
+        
+     print("THATS A CHEAT CODE") 
+     -- laserBlink = Graphics.KColorWhite
+    end
     -- Mark: Entities
     ship = Ship( shipX, shipY, 4, "default", 6)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
     laser01 = Laser()
+    laser02 = Laser()
     -- Mark: meteorites (should have their own function and be generated randomly in each init)    
     
     -- Mark: Screen & HUDS
@@ -99,8 +103,8 @@ SpaceScene.inputHandler = {
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
         
-        -- laser01:Single(ship)
-        laser01:Single(ship)
+        laser01:Single(ship.shooter01.x,ship.shooter01.y)
+        laser02:Single(ship.shooter02.x,ship.shooter02.y)
         laser01:shoot(laserBlink,ship)
         laserBlink = Graphics.kColorWhite
         
@@ -109,6 +113,7 @@ SpaceScene.inputHandler = {
         -- Your code here
         laserBlink = Graphics.kColorClear
         laser01:clearLasersFX()
+        laser02:clearLasersFX()
     end,
     AButtonHeld = function()			-- Runs after button is held for 1 second.
         -- Your code here
@@ -116,6 +121,7 @@ SpaceScene.inputHandler = {
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
         laser01:clearLasersFX()
+        laser02:clearLasersFX()
         laserBlink = Graphics.kColorClear
     end,
 
