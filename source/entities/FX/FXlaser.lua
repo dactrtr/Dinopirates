@@ -1,11 +1,11 @@
-class('FXLaser').extends(Graphics.sprite)
+class('FXlaser').extends(Graphics.sprite)
 
 local laserZapImg = Graphics.image.new('assets/images/fx/zap.png')
 local laserZipImg = Graphics.image.new('assets/images/fx/zip.png')
 local laserZopImg = Graphics.image.new('assets/images/fx/zop.png')
 local laserZupImg = Graphics.image.new('assets/images/fx/zup.png')
 
-function Laser:Single(x,y) --VFX
+function FXlaser:Single(x,y) --VFX
   random = math.random(1,4)
   if random  == 1 then
     self:setImage(laserZapImg)
@@ -17,20 +17,21 @@ function Laser:Single(x,y) --VFX
     self:setImage(laserZupImg)
  end
  self:moveTo(x,y)
- self:setZIndex(6)
  self:add()
 end
 
-function Laser:init(...)
+function FXlaser:init(...)
   
   local bgFX = Graphics.image.new(400, 240)
   -- self:moveTo(ship.shooter01.x - 10, ship.shooter01.y + 10)
-  self:setZIndex(1) 
-
+  self:setZIndex(6) 
+  
 end
 
-function Laser:clearLasersFX()
+function FXlaser:clearFX()
   self:remove()
 end
+
+
 
 

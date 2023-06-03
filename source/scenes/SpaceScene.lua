@@ -12,6 +12,7 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 import "entities/ship/ship"
 import "entities/ship/crosshair"
 import "entities/ship/laser"
+import "entities/FX/FXlaser"
 
 
 local playerX = 200
@@ -37,7 +38,9 @@ function SpaceScene:init()
     ship = Ship( shipX, shipY, 4, "default", 6)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
     laser01 = Laser()
-    laser02 = Laser()
+    fxlaser01 = FXlaser()
+    fxlaser02 = FXlaser()
+    fxlaser03 = FXlaser()
     -- Mark: meteorites (should have their own function and be generated randomly in each init)    
     
     -- Mark: Screen & HUDS
@@ -103,8 +106,9 @@ SpaceScene.inputHandler = {
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
         
-        laser01:Single(ship.shooter01.x,ship.shooter01.y)
-        laser02:Single(ship.shooter02.x,ship.shooter02.y)
+        fxlaser01:Single(ship.shooter01.x,ship.shooter01.y)
+        fxlaser02:Single(ship.shooter02.x,ship.shooter02.y)
+        fxlaser03:Single(ship.shooter03.x, ship.shooter03.y)
         laser01:shoot(laserBlink,ship)
         laserBlink = Graphics.kColorWhite
         
@@ -112,16 +116,18 @@ SpaceScene.inputHandler = {
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
         laserBlink = Graphics.kColorClear
-        laser01:clearLasersFX()
-        laser02:clearLasersFX()
+        fxlaser01:clearFX()
+        fxlaser02:clearFX()
+        fxlaser03:clearFX()
     end,
     AButtonHeld = function()			-- Runs after button is held for 1 second.
         -- Your code here
     end,
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
-        laser01:clearLasersFX()
-        laser02:clearLasersFX()
+        fxlaser01:clearFX()
+        fxlaser02:clearFX()
+        fxlaser03:clearFX()
         laserBlink = Graphics.kColorClear
     end,
 
