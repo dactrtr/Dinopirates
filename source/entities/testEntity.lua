@@ -2,9 +2,7 @@
 class('TestEntity').extends(Graphics.sprite)
 
 function TestEntity:init()
-	print("test initialized")
-	
-	
+	print("test initialized")	
 end
 
 function TestEntity:draw()
@@ -14,7 +12,8 @@ function TestEntity:draw()
 		Graphics.fillCircleAtPoint(50, 50, 20)
 	Graphics.popContext()
 	local BG = Graphics.sprite.new(background)
-	BG:moveTo(200, 120)
+	BG:setZIndex(0)
+	BG:moveTo(200, 140)
 	BG:add()
 		
 end

@@ -35,9 +35,9 @@ function FXlaser:Single(x,y) --VFX
   local posy = y + modY
   
   if (random % 2 == 0) then
-    self:setRotation(-20)
+    -- self:setRotation(-2)
   else 
-    self:setRotation(20)
+    -- self:setRotation(2)
   end
 -- Mark: end
  self:moveTo(posx,posy)

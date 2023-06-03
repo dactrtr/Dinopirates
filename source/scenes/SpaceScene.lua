@@ -1,7 +1,7 @@
 SpaceScene = {}
 class("SpaceScene").extends(NobleScene)
 
-SpaceScene.backgroundColor = Graphics.kColorBlack
+SpaceScene.backgroundColor = Graphics.kColorWhite
 
 
 -- TODO:
@@ -14,6 +14,8 @@ import "entities/ship/crosshair"
 import "entities/ship/laser"
 import "entities/FX/FXlaser"
 
+import "entities/testEntity"
+
 
 local playerX = 200
 local playerY = 232
@@ -24,7 +26,7 @@ local playerTranslation = 4
 
 local cheat = CheatCode("up", "up", "up", "down")
 
-laserBlink =  Graphics.kColorClear
+laserBlink =  Graphics.kColorWhite
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
@@ -35,6 +37,9 @@ function SpaceScene:init()
      -- laserBlink = Graphics.KColorWhite
     end
     -- Mark: Entities
+    
+    test = TestEntity()
+    
     ship = Ship( shipX, shipY, 4, "default", 6)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
     laser01 = Laser()
@@ -79,7 +84,7 @@ function SpaceScene:update()
     cheat:update()
     SpaceScene.super.update(self)
     laser01:shoot(laserBlink, ship, ship.shooter01.x, ship.shooter01.y)
-   
+   test:draw()
    
     -- background
     
