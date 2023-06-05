@@ -5,8 +5,12 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 
 
 -- TODO:
--- make vector meteorites (must be like this)
--- set a limit movement to the crosshair
+-- [ ] make vector meteorites (must be like this)
+-- [ ] set a limit movement to the crosshair
+-- [ ] fix laser positions and update for a new FX instead of words
+-- [ ] add rockets to the back of the ship
+-- [ ] think about a cat funcionality
+
 
 -- import "entities/cockpit"
 import "entities/ship/ship"
@@ -38,10 +42,10 @@ function SpaceScene:init()
     end
     -- Mark: Entities
     
-    -- test = TestEntity()
-    
     ship = Ship( shipX, shipY, 4, "default", 6)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
+    
+    -- Mark: Lasers
     laser = Laser()
     fxlaser01 = FXlaser()
     fxlaser02 = FXlaser()
@@ -57,8 +61,8 @@ function SpaceScene:init()
     -- MarK: Background/map
     
     -- Mark: weird functions
-   
     
+    -- test = TestEntity()
 end
 
 
@@ -81,7 +85,6 @@ function SpaceScene:drawBackground()
 end
 
 function SpaceScene:update()
-    playdate.timer.updateTimers()
     cheat:update()
     SpaceScene.super.update(self)
    
@@ -116,6 +119,7 @@ SpaceScene.inputHandler = {
         fxlaser02:Single(ship.shooter02.x + shooterDisplacement,ship.shooter02.y - shooterDisplacement)
         fxlaser03:Single(ship.shooter03.x - shooterDisplacement, ship.shooter03.y + shooterDisplacement)
         fxlaser04:Single(ship.shooter04.x + shooterDisplacement, ship.shooter04.y + shooterDisplacement )
+        
         laser:draw(laserColor,ship)
         -- laserBlink = Graphics.kColorWhite
         -- test:draw()
@@ -123,7 +127,7 @@ SpaceScene.inputHandler = {
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
-        -- laserBlink = Graphics.kColorClear
+        
         fxlaser01:clearFX()
         fxlaser02:clearFX()
         fxlaser03:clearFX()
@@ -136,13 +140,12 @@ SpaceScene.inputHandler = {
     end,
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
+        
         fxlaser01:clearFX()
         fxlaser02:clearFX()
         fxlaser03:clearFX()
         fxlaser04:clearFX()
         
-        laser:off()
-        -- test:clear()
     end,
 
     -- B button

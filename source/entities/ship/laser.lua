@@ -40,8 +40,13 @@ function Laser:draw(laserColor,ship)
      
    Graphics.popContext()
    
+  timers.performAfterDelay(6, clearLaser)
 end
 
 function Laser:off()
+  laserBG:clear(Graphics.kColorClear)
+end
+
+clearLaser = function ()
   laserBG:clear(Graphics.kColorClear)
 end
