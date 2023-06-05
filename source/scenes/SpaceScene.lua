@@ -1,7 +1,7 @@
 SpaceScene = {}
 class("SpaceScene").extends(NobleScene)
 
-SpaceScene.backgroundColor = Graphics.kColorClear
+SpaceScene.backgroundColor = Graphics.kColorBlack
 
 
 -- TODO:
@@ -26,7 +26,7 @@ local playerTranslation = 4
 
 local cheat = CheatCode("up", "up", "up", "down")
 
-laserBlink =  Graphics.kColorClear
+laserColor =  Graphics.kColorWhite
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
@@ -38,11 +38,11 @@ function SpaceScene:init()
     end
     -- Mark: Entities
     
-    test = TestEntity()
+    -- test = TestEntity()
     
     ship = Ship( shipX, shipY, 4, "default", 6)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
-    laser01 = Laser()
+    laser = Laser()
     fxlaser01 = FXlaser()
     fxlaser02 = FXlaser()
     fxlaser03 = FXlaser()
@@ -115,14 +115,14 @@ SpaceScene.inputHandler = {
         fxlaser02:Single(ship.shooter02.x + shooterDisplacement,ship.shooter02.y - shooterDisplacement)
         fxlaser03:Single(ship.shooter03.x - shooterDisplacement, ship.shooter03.y + shooterDisplacement)
         fxlaser04:Single(ship.shooter04.x + shooterDisplacement, ship.shooter04.y + shooterDisplacement )
-        laser01:draw(laserBlink,ship)
-        laserBlink = Graphics.kColorWhite
-        test:draw()
+        laser:draw(laserColor,ship)
+        -- laserBlink = Graphics.kColorWhite
+        -- test:draw()
         
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
-        laserBlink = Graphics.kColorClear
+        -- laserBlink = Graphics.kColorClear
         fxlaser01:clearFX()
         fxlaser02:clearFX()
         fxlaser03:clearFX()
@@ -139,7 +139,8 @@ SpaceScene.inputHandler = {
         fxlaser03:clearFX()
         fxlaser04:clearFX()
         
-        laserBlink = Graphics.kColorClear
+        laser:off()
+        -- test:clear()
     end,
 
     -- B button
