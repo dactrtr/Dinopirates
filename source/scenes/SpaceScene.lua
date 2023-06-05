@@ -47,6 +47,7 @@ function SpaceScene:init()
     fxlaser02 = FXlaser()
     fxlaser03 = FXlaser()
     fxlaser04 = FXlaser()
+    
     -- Mark: meteorites (should have their own function and be generated randomly in each init)    
     
     -- Mark: Screen & HUDS
@@ -131,6 +132,7 @@ SpaceScene.inputHandler = {
     end,
     AButtonHeld = function()			-- Runs after button is held for 1 second.
         -- Your code here
+        
     end,
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
