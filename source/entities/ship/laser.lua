@@ -7,7 +7,7 @@ function Laser:init(...)
 
 end
 
-function Laser:shoot(laserBlink,ship)
+function Laser:draw(laserBlink,ship)
   self.laserBlink = Graphics.kColorBlack
   local modX = 0
   local modY = 0
@@ -46,4 +46,6 @@ end
 
 function Laser:clear()
   self:remove()
+  
+  self.laserBlink = Graphics.kColorClear
 end

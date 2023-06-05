@@ -1,7 +1,7 @@
 SpaceScene = {}
 class("SpaceScene").extends(NobleScene)
 
-SpaceScene.backgroundColor = Graphics.kColorWhite
+SpaceScene.backgroundColor = Graphics.kColorClear
 
 
 -- TODO:
@@ -14,7 +14,7 @@ import "entities/ship/crosshair"
 import "entities/ship/laser"
 import "entities/FX/FXlaser"
 
-import "entities/testEntity"
+-- import "entities/testEntity"
 
 
 local playerX = 200
@@ -26,7 +26,7 @@ local playerTranslation = 4
 
 local cheat = CheatCode("up", "up", "up", "down")
 
-laserBlink =  Graphics.kColorWhite
+laserBlink =  Graphics.kColorClear
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
@@ -83,8 +83,7 @@ function SpaceScene:update()
     playdate.timer.updateTimers()
     cheat:update()
     SpaceScene.super.update(self)
-    laser01:shoot(laserBlink, ship, ship.shooter01.x, ship.shooter01.y)
-   test:draw()
+   
    
     -- background
     
@@ -116,8 +115,9 @@ SpaceScene.inputHandler = {
         fxlaser02:Single(ship.shooter02.x + shooterDisplacement,ship.shooter02.y - shooterDisplacement)
         fxlaser03:Single(ship.shooter03.x - shooterDisplacement, ship.shooter03.y + shooterDisplacement)
         fxlaser04:Single(ship.shooter04.x + shooterDisplacement, ship.shooter04.y + shooterDisplacement )
-        laser01:shoot(laserBlink,ship)
+        laser01:draw(laserBlink,ship)
         laserBlink = Graphics.kColorWhite
+        test:draw()
         
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
