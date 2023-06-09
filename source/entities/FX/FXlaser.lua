@@ -4,50 +4,31 @@ local laserZapImg = Graphics.image.new('assets/images/fx/zap.png')
 local laserZipImg = Graphics.image.new('assets/images/fx/zip.png')
 local laserZopImg = Graphics.image.new('assets/images/fx/zop.png')
 local laserZupImg = Graphics.image.new('assets/images/fx/zup.png')
+local shoot01 = Graphics.image.new('assets/images/fx/shoot01.png')
+local shoot02 = Graphics.image.new('assets/images/fx/shoot02.png')
 
-function FXlaser:Single(x,y) --VFX
+function FXlaser:Single(x,y,modx,mody) --VFX
   random = math.random(1,4)
-  seed = math.random(1,2)
   
-  local modX = 0
-  local modY = 0
+  -- importante, si esta es solo una animacion con los 4 shooters ya definidos lo unico que tengo que hacer es agregar una rotacio y una correccion cuando se dispara con el boton abajo/arriba presionado, que lo hace mucho mas sencillo, menos modular pero mucho mas sencillo
+  self.modY = mody
   
-  if random  == 1 then
-    self:setImage(laserZapImg)
-  elseif (random == 2) then
-    self:setImage(laserZipImg)
-  elseif (random == 3) then
-    self:setImage(laserZopImg)
-  elseif (random == 4) then
-    self:setImage(laserZupImg)
- end
- -- Mark: FX displacement (can be done better)
-  if playdate.buttonIsPressed("left") then
-     modY = 8
-     modX = 8
-  end
-  if playdate.buttonIsPressed("right") then
-     modY = - 8
-     modX = - 8
-  end
+  local posx = x + modx
+  local posy = y 
   
-  local posx = x + modX
-  local posy = y + modY
-  
-  if (random % 2 == 0) then
-    -- self:setRotation(-2)
-  else 
-    -- self:setRotation(2)
-  end
 -- Mark: end
  self:moveTo(posx,posy)
  self:add()
+ -- timer callback
+  -- timers.performAfterDelay(1000, clear)
+ print(modx)
+ print(posx)
 end
 
 function FXlaser:init(...)
   
-  local bgFX = Graphics.image.new(400, 240)
-  self:setZIndex(6) 
+  -- local bgFX = Graphics.image.new(400, 240)
+  self:setZIndex(2) 
   
 end
 
@@ -55,6 +36,10 @@ function FXlaser:clearFX()
   self:remove()
 end
 
+clear = function()
+  self:clearFX()
+  print("gone")
+end
 
 
 

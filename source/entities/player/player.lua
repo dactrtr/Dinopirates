@@ -21,6 +21,10 @@ class('Player').extends(Graphics.sprite)
   local Idle = Graphics.sprite.new()
   Idle.imagetable = Graphics.imagetable.new('assets/images/player/player-idle')
   Idle.animation = Graphics.animation.loop.new(700, Idle.imagetable, true)
+  -- Dead
+  local Dead = Graphics.sprite.new()
+  Dead.imagetable = Graphics.imagetable.new('assets/images/player/player-dead')
+  Dead.animation = Graphics.animation.loop.new(100, Dead.imagetable, true)
 
 
 function Player:init(x, y, toasts, speed)
@@ -44,11 +48,15 @@ function Player:init(x, y, toasts, speed)
 end 
 
 function Player:collisionResponse()
-  return "freeze"
+  -- self:dead()
+  return self:setImage(Dead.animation:image())
 end
 
 function Player:idle()
   self:setImage(Idle.animation:image())
+end
+function Player:dead()
+  self:setImage(Dead.animation:image())
 end
 
 function Player:move(direction)
@@ -79,7 +87,7 @@ function Player:move(direction)
      for index, collision in pairs(collisions) do
        local collideObject = collision['other']
        if collideObject:isa(Enemy) then
-         collideObject:remove() --same method for the enemies
+         collideObject:remove() -- same method for the enemies
        end
     end
   end

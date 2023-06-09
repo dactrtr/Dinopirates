@@ -6,10 +6,10 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 
 -- TODO:
 -- [ ] make vector meteorites (must be like this)
--- [ ] set a limit movement to the crosshair
--- [ ] fix laser positions and update for a new FX instead of words
--- [ ] add rockets to the back of the ship
--- [ ] think about a cat funcionality
+-- [x] set a limit movement to the crosshair
+-- [ ] fix laser positions and update for a new FX instead of words, smaller than 16px maybe?
+-- [-] add rockets to the back of the ship
+-- [ ] think about a cat functionality
 
 
 -- import "entities/cockpit"
@@ -25,7 +25,7 @@ local playerX = 200
 local playerY = 232
 local shipX = 200
 local shipY = 150 --change this value with the crank
-local shooterDisplacement = 8
+-- local  = 0
 local playerTranslation = 4
 
 local cheat = CheatCode("up", "up", "up", "down")
@@ -115,20 +115,18 @@ SpaceScene.inputHandler = {
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
         
-        fxlaser01:Single(ship.shooter01.x - shooterDisplacement,ship.shooter01.y - shooterDisplacement)
-        fxlaser02:Single(ship.shooter02.x + shooterDisplacement,ship.shooter02.y - shooterDisplacement)
-        fxlaser03:Single(ship.shooter03.x - shooterDisplacement, ship.shooter03.y + shooterDisplacement)
-        fxlaser04:Single(ship.shooter04.x + shooterDisplacement, ship.shooter04.y + shooterDisplacement )
+        fxlaser01:Single(ship.shooter01.x ,ship.shooter01.y,10,20)
+        -- fxlaser02:Single(ship.shooter02.x,ship.shooter02.y)
+       --  fxlaser03:Single(ship.shooter03.x, ship.shooter03.y)
+        -- fxlaser04:Single(ship.shooter04.x, ship.shooter04.y)
         
         laser:draw(laserColor,ship)
-        -- laserBlink = Graphics.kColorWhite
-        -- test:draw()
         
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
         
-        fxlaser01:clearFX()
+        fxlaser01:clearFX() -- this could be inside the A press or even the entity itself
         fxlaser02:clearFX()
         fxlaser03:clearFX()
         fxlaser04:clearFX()
