@@ -40,9 +40,6 @@ function Player:init(x, y, toasts, speed)
   self.speed = speed
   self.toasts = toasts
   
-  Left = Graphics.sprite.new()
-  Left.imagetable = Graphics.imagetable.new('assets/images/player/player-left')
-  Left.animation = Graphics.animation.loop.new(100, Left.imagetable, true)
   
   self:add()   
 end 

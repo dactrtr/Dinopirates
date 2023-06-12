@@ -47,12 +47,9 @@ function SpaceScene:init()
     
     -- Mark: Lasers
     laser = Laser()
-    fxlaser01 = FXlaser()
-    fxlaser02 = FXlaser()
-    fxlaser03 = FXlaser()
-    fxlaser04 = FXlaser()
+    fxlaser = FXlaser()
     
-    -- Mark: meteorites (should have their own function and be generated randomly in each init)    
+    -- Mark: meteorites (should have their own function and be generated randomly in each init) or a animation of a space   
     
     -- Mark: Screen & HUDS
    
@@ -115,7 +112,7 @@ SpaceScene.inputHandler = {
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
         
-        fxlaser01:Single(ship.shooter01.x ,ship.shooter01.y,10,20)
+        fxlaser:Single(shipX,shipY)
         -- fxlaser02:Single(ship.shooter02.x,ship.shooter02.y)
        --  fxlaser03:Single(ship.shooter03.x, ship.shooter03.y)
         -- fxlaser04:Single(ship.shooter04.x, ship.shooter04.y)
@@ -126,10 +123,8 @@ SpaceScene.inputHandler = {
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
         
-        fxlaser01:clearFX() -- this could be inside the A press or even the entity itself
-        fxlaser02:clearFX()
-        fxlaser03:clearFX()
-        fxlaser04:clearFX()
+        fxlaser:clearFX() -- this could be inside the A press or even the entity itself
+       
         
     end,
     AButtonHeld = function()			-- Runs after button is held for 1 second.
@@ -139,11 +134,8 @@ SpaceScene.inputHandler = {
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
         
-        fxlaser01:clearFX()
-        fxlaser02:clearFX()
-        fxlaser03:clearFX()
-        fxlaser04:clearFX()
-        
+        fxlaser:clearFX()
+      
     end,
 
     -- B button
@@ -166,6 +158,7 @@ SpaceScene.inputHandler = {
     leftButtonDown = function()
         -- Your code here
         ship:setRotation(-20)
+        fxlaser:setRotation(-20)
         -- cockpit:setRotation(20)
         -- player:setRotation(20)
     end,
@@ -176,6 +169,7 @@ SpaceScene.inputHandler = {
     end,
     leftButtonUp = function()
         ship:setRotation(0)
+        fxlaser:setRotation(0)
     end,
 
     -- D-pad right
@@ -183,7 +177,7 @@ SpaceScene.inputHandler = {
     rightButtonDown = function()
         -- Your code here
         ship:setRotation(20)
-        
+        fxlaser:setRotation(20)
     end,
     rightButtonHold = function()
         -- Your code here
@@ -191,6 +185,7 @@ SpaceScene.inputHandler = {
     end,
     rightButtonUp = function()
         ship:setRotation(0)
+        fxlaser:setRotation(0)
     end,
 
     -- D-pad up
