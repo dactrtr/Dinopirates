@@ -17,6 +17,7 @@ import "entities/ship/ship"
 import "entities/ship/crosshair"
 import "entities/ship/laser"
 import "entities/FX/FXlaser"
+import "entities/meteorite"
 
 -- import "entities/testEntity"
 
@@ -50,7 +51,7 @@ function SpaceScene:init()
     fxlaser = FXlaser()
     
     -- Mark: meteorites (should have their own function and be generated randomly in each init) or a animation of a space   
-    
+    meteo = Meteorite(210, 100, 520)
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
@@ -89,9 +90,6 @@ function SpaceScene:update()
     -- background
     
     
-    
-    
-    
 end
 
 function SpaceScene:exit()
@@ -113,10 +111,6 @@ SpaceScene.inputHandler = {
         -- Your code here
         
         fxlaser:Single(shipX,shipY)
-        -- fxlaser02:Single(ship.shooter02.x,ship.shooter02.y)
-       --  fxlaser03:Single(ship.shooter03.x, ship.shooter03.y)
-        -- fxlaser04:Single(ship.shooter04.x, ship.shooter04.y)
-        
         laser:draw(laserColor,ship)
         
     end,
@@ -134,7 +128,6 @@ SpaceScene.inputHandler = {
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
         
-        fxlaser:clearFX()
       
     end,
 
@@ -157,17 +150,18 @@ SpaceScene.inputHandler = {
     --
     leftButtonDown = function()
         -- Your code here
+        
         ship:setRotation(-20)
         fxlaser:setRotation(-20)
-        -- cockpit:setRotation(20)
-        -- player:setRotation(20)
+        
     end,
     leftButtonHold = function()
         -- Your code here
         crosshair:move("left")
-       -- meteorite:moveBy(playerTranslation, 0)
     end,
     leftButtonUp = function()
+        -- Your code here
+        
         ship:setRotation(0)
         fxlaser:setRotation(0)
     end,
@@ -184,6 +178,7 @@ SpaceScene.inputHandler = {
         crosshair:move("right")
     end,
     rightButtonUp = function()
+        -- Your code here
         ship:setRotation(0)
         fxlaser:setRotation(0)
     end,
@@ -197,7 +192,6 @@ SpaceScene.inputHandler = {
     upButtonHold = function()
         -- Your code here
         crosshair:move("up")
-        -- meteorite:moveBy(0, -playerTranslation)
     end,
     upButtonUp = function()
         ship:move("default")
@@ -224,6 +218,7 @@ SpaceScene.inputHandler = {
     end,
     crankDocked = function()						-- Runs once when when crank is docked.
         -- Your code here
+        print("docked")
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
