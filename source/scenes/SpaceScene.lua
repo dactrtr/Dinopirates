@@ -7,9 +7,10 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 -- TODO:
 -- [ ] make vector meteorites (must be like this)
 -- [x] set a limit movement to the crosshair
--- [ ] fix laser positions and update for a new FX instead of words, smaller than 16px maybe?
+-- [x] fix laser positions and update for a new FX instead of words, smaller than 16px maybe?
 -- [-] add rockets to the back of the ship
 -- [ ] think about a cat functionality
+-- [ ] find a way to fix the Z-index order
 
 
 -- import "entities/cockpit"
@@ -18,20 +19,27 @@ import "entities/ship/crosshair"
 import "entities/ship/laser"
 import "entities/FX/FXlaser"
 import "entities/meteorite"
+import "entities/star"
 
 -- import "entities/testEntity"
-
 
 local playerX = 200
 local playerY = 232
 local shipX = 200
 local shipY = 150 --change this value with the crank
+local shipSpeed = 100
 -- local  = 0
 local playerTranslation = 4
 
 local cheat = CheatCode("up", "up", "up", "down")
 
 laserColor =  Graphics.kColorWhite
+
+-- Zindex
+local zBG = 1
+local zMBG = 2
+local zFX = 3
+local zMain = 4
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
@@ -43,15 +51,17 @@ function SpaceScene:init()
     end
     -- Mark: Entities
     
-    ship = Ship( shipX, shipY, 4, "default", 6)
+    ship = Ship( shipX, shipY, 4, "default", zMain)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
     
     -- Mark: Lasers
-    laser = Laser()
-    fxlaser = FXlaser()
+    laser = Laser(zFX)
+    fxlaser = FXlaser(zFX)
     
     -- Mark: meteorites (should have their own function and be generated randomly in each init) or a animation of a space   
     meteo = Meteorite(210, 100, 520)
+    meteo2 = Meteorite(120,50,300)
+    s1 = Star(100,50)
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
@@ -85,7 +95,6 @@ end
 function SpaceScene:update()
     cheat:update()
     SpaceScene.super.update(self)
-   
    
     -- background
     

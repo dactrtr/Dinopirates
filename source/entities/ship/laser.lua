@@ -1,10 +1,10 @@
 class('Laser').extends(Graphics.sprite)
 
-function Laser:init(...)
+function Laser:init(zIndex)
   
   laserBG = Graphics.image.new(400, 240)
   laser = Graphics.sprite.new(laserBG)
-  laser:setZIndex(2)
+  laser:setZIndex(zIndex)
   laser:moveTo(200, 120)
   laser:add()
 

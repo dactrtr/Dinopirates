@@ -2,18 +2,14 @@ class('Crosshair').extends(Graphics.sprite)
 
 -- Mark: imagetables for movement animation
   
-  -- -- Idle
-  -- local Idle = Graphics.sprite.new()
-  -- Idle.imagetable = Graphics.imagetable.new('assets/images/player/player-idle')
-  -- Idle.animation = Graphics.animation.loop.new(700, Idle.imagetable, true)
-  
+
   local crosshair= Graphics.image.new("assets/images/ui/crosshair.png")
   
-function Crosshair:init(x, y, xspeed, yspeed)
+function Crosshair:init(x, y, xspeed, yspeed, zIndex)
   centerY = y
   centerX = x
   self:setImage(crosshair)
-  self:setZIndex(2)
+  self:setZIndex(3)
   self:moveTo(x,y)  
   -- Mark: Custom properties
   self.xspeed = xspeed

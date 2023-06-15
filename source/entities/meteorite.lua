@@ -15,12 +15,14 @@ function Meteorite:init(x, y, speed)
   -- self.Speed = speed nil
   -- self.moveSpeed = moveSpeed
   self:setGroups(1)
-  self:setZIndex(1)
+  self:setZIndex(2)
   self:add()
 end
 
 function Meteorite:update()
   self:setImage(Meteo.animation:image())
+  -- input handler
+  
 end
 
 function Meteorite:updateSpeed(speed)

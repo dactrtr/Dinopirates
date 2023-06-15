@@ -15,9 +15,9 @@ function FXlaser:Single(x,y) --VFX
   -- timers.performAfterDelay(1000, clear)
 end
 
-function FXlaser:init(...)
+function FXlaser:init(zIndex)
   self:setImage(shoot.animation:image())
-  self:setZIndex(2) 
+  self:setZIndex(zIndex) 
   
 end
 
