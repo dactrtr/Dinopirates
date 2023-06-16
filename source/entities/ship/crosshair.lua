@@ -44,12 +44,10 @@ function Crosshair:move(direction)
   elseif (direction == "left") then
     movementX = self.x - self.xspeed
     movementY = self.y 
-    self:setRotation(-20)
     
   elseif (direction == "right") then
     movementX = self.x + self.xspeed
     movementY = self.y
-    self:setRotation(20) 
   end
   
   -- Border block
