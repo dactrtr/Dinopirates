@@ -4,10 +4,8 @@ class('Meteorite').extends(Graphics.sprite)
 local Meteo = Graphics.sprite.new()
 Meteo.imagetable = Graphics.imagetable.new('assets/images/space/meteorite')
 
-
-
 function Meteorite:init(x, y, speed)
-  
+  self.speed = speed
   Meteo.animation = Graphics.animation.loop.new(speed, Meteo.imagetable, true)
   
   self:setImage(Meteo.animation:image())

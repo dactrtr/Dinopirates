@@ -1,5 +1,5 @@
 class('Star').extends(Graphics.sprite)
-
+-- this must be done as a vector graphics instead of sprites
 local Shiny = Graphics.sprite.new()
 Shiny.imagetable = Graphics.imagetable.new('assets/images/space/star')
 
@@ -28,6 +28,7 @@ function Star:init(x, y, speed)
 end
 
 function Star:update()
+  
   self:setImage(Shiny.animation:image())
   -- input handler
   local movementX = self.x
@@ -59,17 +60,17 @@ function Star:update()
     movementX = self.x - self.xspeed
   end
   
-  if movementY < bottomY then
-    movementY = bottomY
-  elseif (movementY > topY) then
-    movementY = topY
-  end
-  
-  if movementX < leftX then
-    movementX = leftX
-  elseif (movementX > rightX) then
-    movementX = rightX
-  end
+  -- if movementY < bottomY then
+  --   movementY = bottomY
+  -- elseif (movementY > topY) then
+  --   movementY = topY
+  -- end
+  -- 
+  -- if movementX < leftX then
+  --   movementX = leftX
+  -- elseif (movementX > rightX) then
+  --   movementX = rightX
+  -- end
   
   self:moveTo(movementX, movementY)
   --self:reset()

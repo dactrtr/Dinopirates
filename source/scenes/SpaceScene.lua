@@ -28,6 +28,7 @@ local playerY = 232
 local shipX = 200
 local shipY = 150 --change this value with the crank
 local shipSpeed = 100
+local spaceSpeed = shipSpeed/50
 -- local  = 0
 local playerTranslation = 4
 
@@ -59,14 +60,33 @@ function SpaceScene:init()
     fxlaser = FXlaser(zFX)
     
     -- Mark: meteorites (should have their own function and be generated randomly in each init) or a animation of a space   
-    meteo = Meteorite(210, 100, 520)
-    meteo2 = Meteorite(120,50,300)
-    s1 = Star(100,50)
+    -- meteo = Meteorite(210, 100, 1)
+    -- meteo2 = Meteorite(120, 50, 520)
+    
+    
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
     
     -- MarK: Background/map
+    
+    -- this crap has to be a vector graphics inside a iteration for more info check star.lua
+    
+    s10 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s11 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s12 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s13 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s14 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s15 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s16 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s17 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s18 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s19 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s100 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s101 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s102 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s103 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    
     
     -- Mark: weird functions
     
