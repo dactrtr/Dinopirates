@@ -18,8 +18,9 @@ import "entities/ship/ship"
 import "entities/ship/crosshair"
 import "entities/ship/laser"
 import "entities/FX/FXlaser"
-import "entities/meteorite"
-import "entities/star"
+import "entities/space/meteorite"
+import "entities/space/star"
+import "entities/space/planets"
 
 -- import "entities/testEntity"
 
@@ -63,7 +64,8 @@ function SpaceScene:init()
     -- meteo = Meteorite(210, 100, 1)
     -- meteo2 = Meteorite(120, 50, 520)
     
-    
+    -- Mark: Planets
+    p1 = Planet(150,100,"moon")
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
