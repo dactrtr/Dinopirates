@@ -41,26 +41,44 @@ function Planet:update()
   local bottomY = 0
   local leftX = 0
   local rightX = 400
-  -- button press
+  -- button press, cross direction
   if playdate.buttonIsPressed( playdate.kButtonUp ) 
   then
     movementX = self.x 
     movementY = self.y - self.yspeed
-    
   end
   if (playdate.buttonIsPressed( playdate.kButtonDown )) then
     movementX = self.x 
     movementY = self.y + self.yspeed
-    
   end
   if (playdate.buttonIsPressed( playdate.kButtonLeft )) then
     movementY = self.y 
     movementX = self.x + self.xspeed
-    
   end
   if (playdate.buttonIsPressed( playdate.kButtonRight )) then
     movementY = self.y 
     movementX = self.x - self.xspeed
+  end
+  -- button press, diagonal direction
+  if playdate.buttonIsPressed( playdate.kButtonUp ) and playdate.buttonIsPressed( playdate.kButtonLeft )
+  then
+    movementX = self.x + self.xspeed
+    movementY = self.y - self.yspeed
+  end
+  if playdate.buttonIsPressed( playdate.kButtonUp ) and playdate.buttonIsPressed( playdate.kButtonRight )
+  then
+    movementX = self.x - self.xspeed
+    movementY = self.y - self.yspeed
+  end
+  if (playdate.buttonIsPressed( playdate.kButtonDown )) and playdate.buttonIsPressed( playdate.kButtonRight )
+  then
+    movementX = self.x - self.xspeed
+    movementY = self.y + self.yspeed
+  end
+  if (playdate.buttonIsPressed( playdate.kButtonDown )) and playdate.buttonIsPressed( playdate.kButtonLeft )
+   then
+    movementX = self.x + self.xspeed
+    movementY = self.y + self.yspeed
   end
   -- Mark: out of bounds rules
   
