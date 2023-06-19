@@ -5,7 +5,8 @@ Shiny.imagetable = Graphics.imagetable.new('assets/images/space/star')
 
 function Star:init(x, y, speed)
   
-  Shiny.animation = Graphics.animation.loop.new(speed, Shiny.imagetable, true)
+  local blinkSpeed = math.random(10,500)
+  Shiny.animation = Graphics.animation.loop.new(blinkSpeed, Shiny.imagetable, true)
   
   initialX = x
   initialY = y
@@ -28,7 +29,6 @@ function Star:init(x, y, speed)
 end
 
 function Star:update()
-  
   self:setImage(Shiny.animation:image())
   -- input handler
   local movementX = self.x
@@ -60,17 +60,17 @@ function Star:update()
     movementX = self.x - self.xspeed
   end
   
-  -- if movementY < bottomY then
-  --   movementY = bottomY
-  -- elseif (movementY > topY) then
-  --   movementY = topY
-  -- end
-  -- 
-  -- if movementX < leftX then
-  --   movementX = leftX
-  -- elseif (movementX > rightX) then
-  --   movementX = rightX
-  -- end
+  if movementY < bottomY then
+    movementY = topY - 1
+  elseif (movementY > topY) then
+    movementY = bottomY + 1
+  end
+  
+  if movementX < leftX then
+    movementX = rightX - 1
+  elseif (movementX > rightX) then
+    movementX = leftX + 1
+  end
   
   self:moveTo(movementX, movementY)
   --self:reset()
