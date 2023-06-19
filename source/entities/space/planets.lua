@@ -2,10 +2,13 @@ class('Planet').extends(Graphics.sprite)
 
 local Moon = Graphics.sprite.new()
 Moon.imagetable = Graphics.imagetable.new('assets/images/space/planets/moon')
+local Phase = Graphics.sprite.new()
+Phase.imagetable = Graphics.imagetable.new('assets/images/space/planets/phase')
 
 function Planet:init(x, y, planet)
   
   Moon.animation = Graphics.animation.loop.new(100, Moon.imagetable, true)
+  Phase.animation = Graphics.animation.loop.new(100, Phase.imagetable, true)
   
   initialX = x
   initialY = y
@@ -30,16 +33,14 @@ function Planet:update()
   if planet == "moon" then
     self:setImage(Moon.animation:image())
   end
-  print(self.planet)
-  print(self.x)
   -- input handler
   local movementX = self.x
   local movementY = self.y
   -- borders
-  local topY = 230
-  local bottomY = 8
-  local leftX = 8
-  local rightX = 392
+  local topY = 240
+  local bottomY = 0
+  local leftX = 0
+  local rightX = 400
   -- button press
   if playdate.buttonIsPressed( playdate.kButtonUp ) 
   then
@@ -61,18 +62,15 @@ function Planet:update()
     movementY = self.y 
     movementX = self.x - self.xspeed
   end
+  -- Mark: out of bounds rules
   
-  if movementY < bottomY then
-    movementY = topY - 1
-  elseif (movementY > topY) then
-    movementY = bottomY + 1
-  end
-  
-  if movementX < leftX then
-    movementX = rightX - 1
-  elseif (movementX > rightX) then
-    movementX = leftX + 1
-  end
+  -- if movementY < bottomY then
+  -- elseif (movementY > topY) then
+  -- end
+  -- 
+  -- if movementX < leftX then
+  -- elseif (movementX > rightX) then
+  -- end
   
   self:moveTo(movementX, movementY)
 end
