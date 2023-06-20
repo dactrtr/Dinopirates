@@ -46,7 +46,7 @@ end
 
 function Player:collisionResponse()
   -- self:dead()
-  return self:setImage(Dead.animation:image())
+   self:setImage(Dead.animation:image())
 end
 
 function Player:idle()
@@ -92,7 +92,7 @@ function Player:move(direction)
 end
 
 function Player:update()
-  if self.toasts < 1 then
-    self.toasts = 0
-  end
+  -- if self.toasts < 1 then
+  --   self.toasts = 0
+  -- end
 end

@@ -2,17 +2,31 @@ class('Planet').extends(Graphics.sprite)
 
 local Moon = Graphics.sprite.new()
 Moon.imagetable = Graphics.imagetable.new('assets/images/space/planets/moon')
-local Phase = Graphics.sprite.new()
-Phase.imagetable = Graphics.imagetable.new('assets/images/space/planets/phase')
 
-function Planet:init(x, y, planet)
+local Destroyed = Graphics.sprite.new()
+Destroyed.imagetable = Graphics.imagetable.new('assets/images/space/planets/destroyed')
+
+local Prism = Graphics.sprite.new()
+Prism.imagetable = Graphics.imagetable.new('assets/images/space/planets/prism')
+
+local Ring = Graphics.sprite.new()
+Ring.imagetable = Graphics.imagetable.new('assets/images/space/planets/ring')
+
+
+function Planet:init(x, y, planetType, speed)
   
   Moon.animation = Graphics.animation.loop.new(100, Moon.imagetable, true)
-  Phase.animation = Graphics.animation.loop.new(100, Phase.imagetable, true)
+  
+  Destroyed.animation = Graphics.animation.loop.new(100, Destroyed.imagetable, true)
+  
+  Prism.animation = Graphics.animation.loop.new(100, Prism.imagetable, true)
+  
+  Ring.animation = Graphics.animation.loop.new(100, Ring.imagetable, true)
   
   initialX = x
   initialY = y
-  self.planet = planet
+  self.planet = planetType
+  
   if speed == nil then
     self.xspeed = 1
     self.yspeed = 1
@@ -21,7 +35,15 @@ function Planet:init(x, y, planet)
     self.yspeed = speed
   end
   
-  self:setImage(Moon.animation:image())
+  if self.planet == "moon" then
+    self:setImage(Moon.animation:image())
+  elseif self.planet == "destroyed" then
+    self:setImage(Destroyed.animation:image())
+  elseif self.planet == "prism" then
+    self:setImage(Prism.animation:image())
+  elseif self.planet == "ring" then
+    self:setImage(Ring.animation:image())
+  end
   self:moveTo(x,y)
   self:setGroups(1)
   self:setZIndex(2)
@@ -30,9 +52,6 @@ function Planet:init(x, y, planet)
 end
 
 function Planet:update()
-  if planet == "moon" then
-    self:setImage(Moon.animation:image())
-  end
   -- input handler
   local movementX = self.x
   local movementY = self.y

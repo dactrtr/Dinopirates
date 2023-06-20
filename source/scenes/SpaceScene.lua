@@ -65,7 +65,10 @@ function SpaceScene:init()
     -- meteo2 = Meteorite(120, 50, 520)
     
     -- Mark: Planets
-    p1 = Planet(150,100,"moon")
+    p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2))
+    p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2))
+    p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5)
+    print(p3.xspeed)
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
@@ -250,9 +253,11 @@ SpaceScene.inputHandler = {
     crankDocked = function()						-- Runs once when when crank is docked.
         -- Your code here
         print("docked")
+        ship:moveTo(shipX, shipY)
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
+        ship:moveTo(shipX, shipY+40)
     end
     
     
