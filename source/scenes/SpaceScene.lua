@@ -23,7 +23,6 @@ import "entities/space/star"
 import "entities/space/planets"
 
 -- import "entities/testEntity"
-
 local playerX = 200
 local playerY = 232
 local shipX = 200
@@ -143,16 +142,18 @@ SpaceScene.inputHandler = {
     --
     AButtonDown = function()			-- Runs once when button is pressed.
         -- Your code here
+        if(ship.mode == "fighter")then
+            fxlaser:Single(shipX,shipY)
+            laser:draw(laserColor,ship)
+        end
         
-        fxlaser:Single(shipX,shipY)
-        laser:draw(laserColor,ship)
         
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
         -- Your code here
-        
-        fxlaser:clearFX() -- this could be inside the A press or even the entity itself
-       
+        if(ship.mode == "fighter")then
+            fxlaser:clearFX() -- this could be inside the A press or even the entity itself
+        end
         
     end,
     AButtonHeld = function()			-- Runs after button is held for 1 second.
@@ -186,7 +187,9 @@ SpaceScene.inputHandler = {
         -- Your code here
         
         ship:setRotation(-20)
-        fxlaser:setRotation(-20)
+        if(ship.mode == "fighter")then
+            fxlaser:setRotation(-20)
+        end
         
     end,
     leftButtonHold = function()
@@ -197,7 +200,9 @@ SpaceScene.inputHandler = {
         -- Your code here
         
         ship:setRotation(0)
-        fxlaser:setRotation(0)
+        if(ship.mode == "fighter")then
+            fxlaser:setRotation(0)
+        end
     end,
 
     -- D-pad right
@@ -205,7 +210,9 @@ SpaceScene.inputHandler = {
     rightButtonDown = function()
         -- Your code here
         ship:setRotation(20)
-        fxlaser:setRotation(20)
+        if(ship.mode == "fighter")then
+            fxlaser:setRotation(20)
+        end
     end,
     rightButtonHold = function()
         -- Your code here
@@ -214,7 +221,9 @@ SpaceScene.inputHandler = {
     rightButtonUp = function()
         -- Your code here
         ship:setRotation(0)
-        fxlaser:setRotation(0)
+        if(ship.mode == "fighter")then
+            fxlaser:setRotation(0)
+        end
     end,
 
     -- D-pad up
@@ -252,12 +261,18 @@ SpaceScene.inputHandler = {
     end,
     crankDocked = function()						-- Runs once when when crank is docked.
         -- Your code here
-        print("docked")
+        ship.changeMode = true
+        ship.mode = "fighter"
+        
         ship:moveTo(shipX, shipY)
+        --mark ship:changeMode("fighter")
+        
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
-        ship:moveTo(shipX, shipY+40)
+        ship.changeMode = true
+        ship.mode = "travel"
+        ship:moveTo(shipX, shipY+10)
     end
     
     
