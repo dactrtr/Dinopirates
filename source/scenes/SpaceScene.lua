@@ -262,8 +262,9 @@ SpaceScene.inputHandler = {
     crankDocked = function()						-- Runs once when when crank is docked.
         -- Your code here
         ship.changeMode = true
+        crosshair.changeMode = true
         ship.mode = "fighter"
-        
+        crosshair.mode = "fighter"
         ship:moveTo(shipX, shipY)
         --mark ship:changeMode("fighter")
         
@@ -271,7 +272,9 @@ SpaceScene.inputHandler = {
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
         ship.changeMode = true
+        crosshair.changeMode = true
         ship.mode = "travel"
+        crosshair.mode = "travel"
         ship:moveTo(shipX, shipY+10)
     end
     

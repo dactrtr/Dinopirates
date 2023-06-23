@@ -14,6 +14,8 @@ function Crosshair:init(x, y, xspeed, yspeed, zIndex)
   -- Mark: Custom properties
   self.xspeed = xspeed
   self.yspeed = yspeed
+  self.mode = "fighter"
+  self.changeMode = false
   
   self:add()   
 end 
@@ -86,5 +88,14 @@ function Crosshair:reset()
 end
 
 function Crosshair:update()
-  self:reset()
+  if(self.changeMode == true)  then
+    self.changeMode= false
+  else
+    if(self.mode == "fighter") then
+      self:reset()
+    elseif (self.mode == "travel") then
+    end
+  end
+  
+  
 end

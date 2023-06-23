@@ -96,7 +96,6 @@ end
 function Ship:update()
   
   if(self.changeMode == true)  then
-    print("transforming")
     self.changeMode= false
   else
     if(self.mode == "fighter") and self.direction == "default" then
