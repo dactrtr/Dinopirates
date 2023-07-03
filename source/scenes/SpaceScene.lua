@@ -1,7 +1,7 @@
 SpaceScene = {}
 class("SpaceScene").extends(NobleScene)
 
-SpaceScene.backgroundColor = Graphics.kColorBlack
+SpaceScene.backgroundColor = Graphics.kColorWhite
 
 
 -- TODO:
@@ -27,7 +27,7 @@ local playerX = 200
 local playerY = 232
 local shipX = 200
 local shipY = 150 --change this value with the crank
-local shipSpeed = 100
+local shipSpeed = 0
 local spaceSpeed = shipSpeed/50
 -- local  = 0
 local playerTranslation = 4
@@ -36,7 +36,7 @@ local cheat = CheatCode("up", "up", "up", "down")
 
 laserColor =  Graphics.kColorWhite
 
--- Zindex
+-- MARK: Zindex
 local zBG = 1
 local zMBG = 2
 local zFX = 3
@@ -52,7 +52,7 @@ function SpaceScene:init()
     end
     -- Mark: Entities
     
-    ship = Ship( shipX, shipY, 4, "default", zMain)
+    ship = Ship( shipX, shipY, 4, shipSpeed, zMain)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
     
     -- Mark: Lasers
@@ -64,10 +64,10 @@ function SpaceScene:init()
     -- meteo2 = Meteorite(120, 50, 520)
     
     -- Mark: Planets
-    p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2))
-    p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2))
-    p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5)
-    print(p3.xspeed)
+    p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
+    p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
+    p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
+    p4 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 50)
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
@@ -119,9 +119,8 @@ end
 function SpaceScene:update()
     cheat:update()
     SpaceScene.super.update(self)
-   
-    -- background
-    
+    -- set custom font
+    Graphics.drawText(ship.speed .. ship.mode, 2, 16)
     
 end
 
@@ -147,6 +146,8 @@ SpaceScene.inputHandler = {
             laser:draw(laserColor,ship)
         end
         
+        
+        ship.speed = ship.speed + 1
         
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
@@ -266,7 +267,7 @@ SpaceScene.inputHandler = {
         ship.mode = "fighter"
         crosshair.mode = "fighter"
         ship:moveTo(shipX, shipY)
-        --mark ship:changeMode("fighter")
+        
         
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.

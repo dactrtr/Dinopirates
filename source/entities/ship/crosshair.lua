@@ -16,7 +16,6 @@ function Crosshair:init(x, y, xspeed, yspeed, zIndex)
   self.yspeed = yspeed
   self.mode = "fighter"
   self.changeMode = false
-  
   self:add()   
 end 
 
@@ -88,6 +87,7 @@ function Crosshair:reset()
 end
 
 function Crosshair:update()
+  
   if(self.changeMode == true)  then
     self.changeMode= false
   else
