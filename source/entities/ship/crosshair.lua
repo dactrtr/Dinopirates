@@ -1,7 +1,6 @@
 class('Crosshair').extends(Graphics.sprite)
 
 -- Mark: imagetables for movement animation
-  
 
   local crosshair= Graphics.image.new("assets/images/ui/crosshair.png")
   
@@ -14,7 +13,7 @@ function Crosshair:init(x, y, xspeed, yspeed, zIndex)
   -- Mark: Custom properties
   self.xspeed = xspeed
   self.yspeed = yspeed
-  self.mode = "fighter"
+  self.mode = ship.mode
   self.changeMode = false
   self:add()   
 end 
@@ -88,14 +87,9 @@ end
 
 function Crosshair:update()
   
-  if(self.changeMode == true)  then
-    self.changeMode= false
-  else
-    if(self.mode == "fighter") then
+    if(ship.mode == "fighter") then
       self:reset()
-    elseif (self.mode == "travel") then
+    elseif (ship.mode == "travel") then
     end
-  end
-  
   
 end

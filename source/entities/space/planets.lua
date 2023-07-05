@@ -20,8 +20,17 @@ local Meteor3 = Graphics.sprite.new()
 Meteor3.imagetable = Graphics.imagetable.new('assets/images/space/star-3')
 local Meteor4 = Graphics.sprite.new()
 Meteor4.imagetable = Graphics.imagetable.new('assets/images/space/star-4')
+local Meteor5 = Graphics.sprite.new()
+Meteor5.imagetable = Graphics.imagetable.new('assets/images/space/star-5')
+local Meteor6 = Graphics.sprite.new()
+Meteor6.imagetable = Graphics.imagetable.new('assets/images/space/star-6')
 
-function Planet:init(x, y, planetType, speed, ship, position)
+function Planet:init(x, y, planetType, speed, ship, position, repetition)
+  -- Info:
+  -- speed: how much the planet move in the X-Y axis compared to the ship, default 1 (this should change with the distance)
+  -- position : when the planet will get "closer" to the ship
+  -- repetition : amount of times the planet or asteroid will re appear randomly
+  local blinkSpeed = math.random(10,500)
   
   Moon.animation = Graphics.animation.loop.new(100, Moon.imagetable, true)
   
@@ -31,13 +40,18 @@ function Planet:init(x, y, planetType, speed, ship, position)
   
   Ring.animation = Graphics.animation.loop.new(100, Ring.imagetable, true)
   
-  Meteor1.animation = Graphics.animation.loop.new(100, Meteor1.imagetable, true)
-  Meteor2.animation = Graphics.animation.loop.new(100, Meteor2.imagetable, true)
-  Meteor3.animation = Graphics.animation.loop.new(100, Meteor3.imagetable, true)
-  Meteor4.animation = Graphics.animation.loop.new(100, Meteor4.imagetable, true)
+  Meteor1.animation = Graphics.animation.loop.new(blinkSpeed, Meteor1.imagetable, true)
+  Meteor2.animation = Graphics.animation.loop.new(600, Meteor2.imagetable, true)
+  Meteor3.animation = Graphics.animation.loop.new(600, Meteor3.imagetable, true)
+  Meteor4.animation = Graphics.animation.loop.new(600, Meteor4.imagetable, true)
+  Meteor5.animation = Graphics.animation.loop.new(600, Meteor5.imagetable, true)
+  Meteor6.animation = Graphics.animation.loop.new(600, Meteor6.imagetable, true)
   
+  
+  self.rep = 1
   initialX = x
   initialY = y
+  
   self.planet = planetType
   
   if speed == nil then
@@ -49,60 +63,91 @@ function Planet:init(x, y, planetType, speed, ship, position)
   end
   
   if position == nil then 
-    self.position = 0
+    self.positionZ = 0
   else
-    self.position = position
+    self.positionZ = position
   end
   
-  if self.planet == "moon" then
-    self:setImage(Moon.animation:image())
-  elseif self.planet == "destroyed" then
-    self:setImage(Destroyed.animation:image())
-  elseif self.planet == "prism" then
-    self:setImage(Prism.animation:image())
-  elseif self.planet == "ring" then
-    self:setImage(Ring.animation:image())
-  elseif self.planet == "meteor" then
-    self:setImage(Meteor1.animation:image())
+  if repetition == nil then 
+    self.repetition = 1
+  else
+    self.repetition = repetition
   end
+  -- checks the type of planet and assigns a initial image
+  if self.planet == "moon" then
+    planetImage = Moon.animation:image()
+  elseif self.planet == "destroyed" then
+    planetImage = Destroyed.animation:image()
+  elseif self.planet == "prism" then
+    planetImage = Prism.animation:image()
+  elseif self.planet == "ring" then
+    planetImage = Ring.animation:image()
+  elseif self.planet == "meteor" then
+    planetImage = Meteor1.animation:image()
+  end
+  
+  self:setImage(planetImage)
   
   self:moveTo(x,y)
   self:setGroups(1)
-  self:setZIndex(2)
+  self:setZIndex(zPlanets)
   self:add()
+  
 end
 
--- function Planet:status(position)
---   if position > 5 then
---     print("disappear")
---   end
--- end
+function Planet:restart()
+  self:setImage(Meteor1.animation:image())
+  self:moveTo(math.random(20,380),math.random(20,220))
+    
+end
 function Planet:update()
   
-  if self.planet == "meteor" then
-    print(self.x .. self.y)
-    if ship.speed > 10 then
-      self:setImage(Meteor2.animation:image())
-    end
-    if ship.speed > 20 then
-      self:setImage(Meteor3.animation:image())
-    end
-    if ship.speed > 30 then
-      self:setImage(Meteor4.animation:image())
-    end
-  end
-  -- self:status()
-  if ship.speed > self.position then
-    self:remove() -- this should be about the asset loading
-  end
   -- input handler
   local movementX = self.x
   local movementY = self.y
+  
   -- borders
   local topY = 240
   local bottomY = 0
   local leftX = 0
   local rightX = 400
+  
+  self.ownSpeed = ship.speed
+  
+  if self.planet == "meteor" then
+    
+    if (self.ownSpeed/self.rep) > self.positionZ then 
+      self:setImage(Meteor1.animation:image())
+    end
+    if self.ownSpeed/self.rep > self.positionZ * 2 then
+      self:setImage(Meteor2.animation:image())
+    end
+    
+    if self.ownSpeed/self.rep > self.positionZ * 3 then
+      self:setImage(Meteor3.animation:image())
+    end
+    if self.ownSpeed/self.rep > self.positionZ * 4 then
+      self:setImage(Meteor4.animation:image())
+    end
+    if self.ownSpeed/self.rep > self.positionZ * 5 then
+      self:setImage(Meteor5.animation:image())
+    end
+    if self.ownSpeed/self.rep > self.positionZ * 6 then
+      self:setImage(Meteor6.animation:image())
+    end
+    if self.ownSpeed/self.rep > self.positionZ * 7 then
+      if self.rep < self.repetition then
+        self.rep += 1
+        self:restart()
+      end
+      return
+    end
+    if self.rep == self.repetition then
+      self:remove()
+    end
+  end
+  
+  
   -- button press, cross direction
   if playdate.buttonIsPressed( playdate.kButtonUp ) 
   then

@@ -1,7 +1,7 @@
 SpaceScene = {}
 class("SpaceScene").extends(NobleScene)
 
-SpaceScene.backgroundColor = Graphics.kColorWhite
+SpaceScene.backgroundColor = Graphics.kColorBlack
 
 
 -- TODO:
@@ -26,8 +26,8 @@ import "entities/space/planets"
 local playerX = 200
 local playerY = 232
 local shipX = 200
-local shipY = 150 --change this value with the crank
-local shipSpeed = 0
+local shipY = 150 
+local shipSpeed = 0 -- change this value with the crank
 local spaceSpeed = shipSpeed/50
 -- local  = 0
 local playerTranslation = 4
@@ -38,9 +38,9 @@ laserColor =  Graphics.kColorWhite
 
 -- MARK: Zindex
 local zBG = 1
-local zMBG = 2
-local zFX = 3
-local zMain = 4
+zPlanets = 2
+local zFX = 10
+local zMain = 12
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
@@ -48,7 +48,6 @@ function SpaceScene:init()
     cheat.onComplete = function()
         
      print("THATS A CHEAT CODE") 
-     -- laserBlink = Graphics.KColorWhite
     end
     -- Mark: Entities
     
@@ -59,15 +58,14 @@ function SpaceScene:init()
     laser = Laser(zFX)
     fxlaser = FXlaser(zFX)
     
-    -- Mark: meteorites (should have their own function and be generated randomly in each init) or a animation of a space   
-    -- meteo = Meteorite(210, 100, 1)
-    -- meteo2 = Meteorite(120, 50, 520)
-    
     -- Mark: Planets
     p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
     p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
     p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
-    p4 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 50)
+    
+    local p4 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 5, 3)
+    local p5 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 8, 4)
+    local p6 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 12, 9)
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
@@ -76,20 +74,16 @@ function SpaceScene:init()
     
     -- this crap has to be a vector graphics inside a iteration for more info check star.lua
     
-    s10 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s11 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s12 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s13 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s14 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s15 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s16 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s17 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s18 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s19 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s100 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s101 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s102 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
-    s103 = Star(math.random(20,380),math.random(20,220), spaceSpeed)
+    s10 = Star(math.random(20,380),math.random(20,220))
+    s11 = Star(math.random(20,380),math.random(20,220))
+    s12 = Star(math.random(20,380),math.random(20,220))
+    s13 = Star(math.random(20,380),math.random(20,220))
+    s14 = Star(math.random(20,380),math.random(20,220))
+    s15 = Star(math.random(20,380),math.random(20,220))
+    s16 = Star(math.random(20,380),math.random(20,220))
+    s17 = Star(math.random(20,380),math.random(20,220))
+    s18 = Star(math.random(20,380),math.random(20,220))
+    s19 = Star(math.random(20,380),math.random(20,220))
     
     
     -- Mark: weird functions
@@ -119,8 +113,10 @@ end
 function SpaceScene:update()
     cheat:update()
     SpaceScene.super.update(self)
+    
     -- set custom font
-    Graphics.drawText(ship.speed .. ship.mode, 2, 16)
+    Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+    Graphics.drawText(ship.speed .. ship.mode, 2, 20)
     
 end
 
@@ -145,9 +141,8 @@ SpaceScene.inputHandler = {
             fxlaser:Single(shipX,shipY)
             laser:draw(laserColor,ship)
         end
-        
-        
-        ship.speed = ship.speed + 1
+        -- print("Prep" .. " " .. "pSpeed" .. " " .. "speed/rep" .. " " .. "distance-gap" .. " " .. ship.speed)
+        -- print(p4.rep .. " " .. p4.ownSpeed .. " " .. p4.ownSpeed/p4.rep .. " " .. p4.positionZ)
         
     end,
     AButtonHold = function()			-- Runs every frame while the player is holding button down.
@@ -174,9 +169,11 @@ SpaceScene.inputHandler = {
     end,
     BButtonHeld = function()
         -- Your code here
+        
     end,
     BButtonHold = function()
         -- Your code here
+        ship.speed = ship.speed + 1
     end,
     BButtonUp = function()
        
@@ -265,18 +262,15 @@ SpaceScene.inputHandler = {
         ship.changeMode = true
         crosshair.changeMode = true
         ship.mode = "fighter"
-        crosshair.mode = "fighter"
         ship:moveTo(shipX, shipY)
-        
-        
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
         ship.changeMode = true
         crosshair.changeMode = true
         ship.mode = "travel"
-        crosshair.mode = "travel"
         ship:moveTo(shipX, shipY+10)
+        ship.speed = 0
     end
     
     

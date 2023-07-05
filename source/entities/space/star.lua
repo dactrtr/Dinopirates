@@ -1,12 +1,12 @@
 class('Star').extends(Graphics.sprite)
 -- this must be done as a vector graphics instead of sprites
 local Shiny = Graphics.sprite.new()
-Shiny.imagetable = Graphics.imagetable.new('assets/images/space/star')
+Shiny.imagetable = Graphics.imagetable.new('assets/images/space/star-1')
 
 function Star:init(x, y, speed)
   
   local blinkSpeed = math.random(10,500)
-  Shiny.animation = Graphics.animation.loop.new(blinkSpeed, Shiny.imagetable, true)
+  Shiny.animation = Graphics.animation.loop.new(self.blinkSpeed, Shiny.imagetable, true)
   
   initialX = x
   initialY = y
