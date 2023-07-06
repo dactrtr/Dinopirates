@@ -5,9 +5,9 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 
 
 -- TODO:
+-- [ ] create a graphic ui to show the energy of the ship
 -- [ ] make vector meteorites (must be like this, check animators
 -- [ ] think about a cat functionality
--- [ ] add a energy system to the engine and lasers
 -- [ ] move the shooting logic to the ship (?)
  
 -- SCRAPPED:
@@ -17,8 +17,10 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 -- DONE:
 -- [x] fix laser positions and update for a new FX instead of words, smaller than 16px maybe?
 -- [x] set a limit movement to the crosshair
+-- [x] add a energy system to the engine and lasers
 
 
+debug = false
 
 
 
@@ -57,7 +59,10 @@ function SpaceScene:init()
     SpaceScene.super.init(self)
     -- Mark: Utilities
     cheat.onComplete = function()
-        
+        if debug ~= true then
+            debug = true
+            print("debug mode activated")
+        end
      print("THATS A CHEAT CODE") 
     end
     -- Mark: Entities
@@ -70,13 +75,13 @@ function SpaceScene:init()
     fxlaser = FXlaser(zFX)
     
     -- Mark: Planets
-    -- p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
-    -- p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
-    -- p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
+    p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
+    p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
+    p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
     
-    -- local p4 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 5, 3)
-    -- local p5 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 8, 4)
-    p6 = Planet(250,120, "meteor", 1, ship, 12, 9)
+    p4 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 5)
+    p5 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 8)
+    p6 = Planet(250,120, "meteor", 1, ship, 12)
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
@@ -85,16 +90,16 @@ function SpaceScene:init()
     
     -- this crap has to be a vector graphics inside a iteration for more info check star.lua
     
-    -- s10 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s11 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s12 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s13 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s14 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s15 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s16 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s17 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s18 = Star(RandomScreen("x"),RandomScreen("y"))
-    -- s19 = Star(RandomScreen("x"),RandomScreen("y"))
+    s10 = Star(RandomScreen("x"),RandomScreen("y"))
+    s11 = Star(RandomScreen("x"),RandomScreen("y"))
+    s12 = Star(RandomScreen("x"),RandomScreen("y"))
+    s13 = Star(RandomScreen("x"),RandomScreen("y"))
+    s14 = Star(RandomScreen("x"),RandomScreen("y"))
+    s15 = Star(RandomScreen("x"),RandomScreen("y"))
+    s16 = Star(RandomScreen("x"),RandomScreen("y"))
+    s17 = Star(RandomScreen("x"),RandomScreen("y"))
+    s18 = Star(RandomScreen("x"),RandomScreen("y"))
+    s19 = Star(RandomScreen("x"),RandomScreen("y"))
     
     
     -- Mark: weird functions
@@ -126,14 +131,16 @@ function SpaceScene:update()
     SpaceScene.super.update(self)
     
     -- set custom font
-    Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-    Graphics.drawText("Energy: " .. ship.energy, 2, 20)
-    Graphics.drawText("Speed: " .. ship.speed, 2, 44)
-    Graphics.drawText("Mode: " .. ship.mode, 2, 68)
-    Graphics.drawText("P6 Index: " .. p6.indexlayer, 2, 90)
-    Graphics.drawText("P6 Speed: " .. p6.ownSpeed, 2, 112)
-    Graphics.drawText("P6 Distance: " .. p6.distance, 2, 134)
-    Graphics.drawText("P6 - Ship Distance: " .. p6.distance-ship.speed, 2, 156)
+    if debug then
+        Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+        Graphics.drawText("Energy: " .. ship.energy, 2, 20)
+        Graphics.drawText("Speed: " .. ship.speed, 2, 44)
+        Graphics.drawText("Mode: " .. ship.mode, 2, 68)
+        Graphics.drawText("P6 Index: " .. p6.indexlayer, 2, 90)
+        Graphics.drawText("P6 Speed: " .. p6.ownSpeed, 2, 112)
+        Graphics.drawText("P6 Distance: " .. p6.distance, 2, 134)
+        Graphics.drawText("P6 - Ship Distance: " .. p6.distance-ship.speed, 2, 156)
+    end
 end
 
 function SpaceScene:exit()

@@ -68,11 +68,7 @@ function Planet:init(x, y, planetType, speed, ship, position, repetition)
     self.positionZ = position
   end
   
-  if repetition == nil then 
-    self.repetition = 1
-  else
-    self.repetition = repetition
-  end
+  
   -- checks the type of planet and assigns a initial image
   if self.planet == "moon" then
     planetImage = Moon.animation:image()
@@ -119,7 +115,6 @@ function Planet:update()
   
   self.ownSpeed = ship.speed
   
-  
   if self.planet == "meteor" then
     
     if ship.energy >= 0 then
@@ -151,21 +146,23 @@ function Planet:update()
       if ((self.distance - ship.speed) <= self.positionZ * 1) then
         self.indexlayer = 7
         self:setImage(Meteor6.animation:image())
+        -- esta es la parte donde si se repetir el elemento llama al restart, pero cae en este if cada frame, deberian poner un flag para que corra solo una vez?
+        
         -- if self.rep < self.repetition then
         --   self.rep += 1
         --   self:restart()
         -- end
       end
+      if (self.distance - ship.speed) < 0 then
+        self:remove()
+      end
       
     end
     
-    if self.rep == self.repetition then
-      print("removed")
-      self:remove()
-    end
+    
   end
   
-  
+  if ship.mode == "fighter" then
   -- button press, cross direction
   if playdate.buttonIsPressed( playdate.kButtonUp ) 
   then
@@ -205,6 +202,7 @@ function Planet:update()
     movementX = self.x + self.xspeed
     movementY = self.y + self.yspeed
   end
+   
   -- Mark: out of bounds rules
   
   -- if movementY < bottomY then
@@ -216,6 +214,7 @@ function Planet:update()
   -- end
   
   self:moveTo(movementX, movementY)
+  end
 end
 
 
