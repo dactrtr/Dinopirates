@@ -94,10 +94,17 @@ function Ship:move(direction)
   end
 end
 
+function Ship:boost()
+  if self.energy > 0 then
+    self.speed += 1
+    self.energy -= 1 
+  end
+end
+
 function Ship:update()
   -- fuel
   if self.energy <= 0 then
-    print("no fuel")
+    -- print("no fuel")
   end
   
   if(self.changeMode == true)  then

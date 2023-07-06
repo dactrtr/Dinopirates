@@ -41,11 +41,11 @@ function Planet:init(x, y, planetType, speed, ship, position, repetition)
   Ring.animation = Graphics.animation.loop.new(100, Ring.imagetable, true)
   
   Meteor1.animation = Graphics.animation.loop.new(blinkSpeed, Meteor1.imagetable, true)
-  Meteor2.animation = Graphics.animation.loop.new(600, Meteor2.imagetable, true)
-  Meteor3.animation = Graphics.animation.loop.new(600, Meteor3.imagetable, true)
-  Meteor4.animation = Graphics.animation.loop.new(600, Meteor4.imagetable, true)
-  Meteor5.animation = Graphics.animation.loop.new(600, Meteor5.imagetable, true)
-  Meteor6.animation = Graphics.animation.loop.new(600, Meteor6.imagetable, true)
+  Meteor2.animation = Graphics.animation.loop.new(100, Meteor2.imagetable, true)
+  Meteor3.animation = Graphics.animation.loop.new(200, Meteor3.imagetable, true)
+  Meteor4.animation = Graphics.animation.loop.new(300, Meteor4.imagetable, true)
+  Meteor5.animation = Graphics.animation.loop.new(400, Meteor5.imagetable, true)
+  Meteor6.animation = Graphics.animation.loop.new(500, Meteor6.imagetable, true)
   
   
   self.rep = 1
@@ -86,6 +86,9 @@ function Planet:init(x, y, planetType, speed, ship, position, repetition)
     planetImage = Meteor1.animation:image()
   end
   
+  self.indexlayer = 0
+  self.distance = self.positionZ * 7
+  
   self:setImage(planetImage)
   
   self:moveTo(x,y)
@@ -98,7 +101,9 @@ end
 function Planet:restart()
   self:setImage(Meteor1.animation:image())
   self:moveTo(math.random(20,380),math.random(20,220))
-    
+  self.distance = self.positionZ * 7
+  print("restarted")
+  -- restart speed
 end
 function Planet:update()
   
@@ -114,36 +119,48 @@ function Planet:update()
   
   self.ownSpeed = ship.speed
   
+  
   if self.planet == "meteor" then
     
-    if (self.ownSpeed/self.rep) > self.positionZ then 
-      self:setImage(Meteor1.animation:image())
-    end
-    if self.ownSpeed/self.rep > self.positionZ * 2 then
-      self:setImage(Meteor2.animation:image())
-    end
-    
-    if self.ownSpeed/self.rep > self.positionZ * 3 then
-      self:setImage(Meteor3.animation:image())
-    end
-    if self.ownSpeed/self.rep > self.positionZ * 4 then
-      self:setImage(Meteor4.animation:image())
-    end
-    if self.ownSpeed/self.rep > self.positionZ * 5 then
-      self:setImage(Meteor5.animation:image())
-    end
-    if self.ownSpeed/self.rep > self.positionZ * 6 then
-      self:setImage(Meteor6.animation:image())
-    end
-    
-    if self.ownSpeed/self.rep > self.positionZ * 7 then
-      if self.rep < self.repetition then
-        self.rep += 1
-        self:restart()
+    if ship.energy >= 0 then
+      
+      if (self.distance - ship.speed) <= self.positionZ * 7 then
+        self.indexlayer = 1
+        self:setImage(Meteor1.animation:image())
       end
-      return
+      if ((self.distance - ship.speed) <= self.positionZ * 6) and ((self.distance - ship.speed) <= self.positionZ * 7)then
+        self.indexlayer = 2
+        self:setImage(Meteor2.animation:image())
+      end
+      if ((self.distance - ship.speed) <= self.positionZ * 5) and ((self.distance - ship.speed) <= self.positionZ * 6)then
+        self.indexlayer = 3
+        self:setImage(Meteor3.animation:image())
+      end
+      if ((self.distance - ship.speed) <= self.positionZ * 4) and ((self.distance - ship.speed) <= self.positionZ * 5)then
+        self.indexlayer = 4
+        self:setImage(Meteor4.animation:image())
+      end
+      if ((self.distance - ship.speed) <= self.positionZ * 3) and ((self.distance - ship.speed) <= self.positionZ * 4)then
+        self.indexlayer = 5
+        self:setImage(Meteor5.animation:image())
+      end
+      if ((self.distance - ship.speed) <= self.positionZ * 2) and ((self.distance - ship.speed) <= self.positionZ * 3)then
+        self.indexlayer = 6
+        self:setImage(Meteor6.animation:image())
+      end
+      if ((self.distance - ship.speed) <= self.positionZ * 1) then
+        self.indexlayer = 7
+        self:setImage(Meteor6.animation:image())
+        -- if self.rep < self.repetition then
+        --   self.rep += 1
+        --   self:restart()
+        -- end
+      end
+      
     end
+    
     if self.rep == self.repetition then
+      print("removed")
       self:remove()
     end
   end
