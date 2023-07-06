@@ -30,7 +30,7 @@ function Planet:init(x, y, planetType, speed, ship, position, repetition)
   -- speed: how much the planet move in the X-Y axis compared to the ship, default 1 (this should change with the distance)
   -- position : when the planet will get "closer" to the ship
   -- repetition : amount of times the planet or asteroid will re appear randomly
-  local blinkSpeed = math.random(10,500)
+  
   
   Moon.animation = Graphics.animation.loop.new(100, Moon.imagetable, true)
   
@@ -135,6 +135,7 @@ function Planet:update()
     if self.ownSpeed/self.rep > self.positionZ * 6 then
       self:setImage(Meteor6.animation:image())
     end
+    
     if self.ownSpeed/self.rep > self.positionZ * 7 then
       if self.rep < self.repetition then
         self.rep += 1

@@ -56,6 +56,7 @@ function Ship:init(startX, startY, hull, speed, zIndex)
   self.mode = "fighter"
   self.changeMode = false
   self.direction = "default"
+  self.energy = 100
   
   -- Mark: Shooters
   self.shooter01 = { x = self.x - 28 ,y = self.y - 8 }
@@ -94,6 +95,10 @@ function Ship:move(direction)
 end
 
 function Ship:update()
+  -- fuel
+  if self.energy <= 0 then
+    print("no fuel")
+  end
   
   if(self.changeMode == true)  then
     self.changeMode= false

@@ -94,3 +94,11 @@ end
 function CheatCode:nextIs(key)
   return keys[key] == self._seq[self.progress]
 end
+
+function RandomScreen(axis)
+	if axis == "x" then
+		return math.random(20,380)
+	elseif axis == "y" then
+		return math.random(20,220)
+	end
+end

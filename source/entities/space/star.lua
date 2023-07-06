@@ -5,7 +5,6 @@ Shiny.imagetable = Graphics.imagetable.new('assets/images/space/star-1')
 
 function Star:init(x, y, speed)
   
-  local blinkSpeed = math.random(10,500)
   Shiny.animation = Graphics.animation.loop.new(self.blinkSpeed, Shiny.imagetable, true)
   
   initialX = x
