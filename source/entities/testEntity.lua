@@ -10,8 +10,5 @@ function TestEntity:draw()
 	
 end
 function TestEntity:update()
-
-end
-function TestEntity:clear()
-
+	
 end

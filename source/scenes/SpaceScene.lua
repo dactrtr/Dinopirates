@@ -29,12 +29,14 @@ debug = false
 import "entities/ship/ship"
 import "entities/ship/crosshair"
 import "entities/ship/laser"
+import "entities/ship/energyMeter"
 import "entities/FX/FXlaser"
 import "entities/space/meteorite"
 import "entities/space/star"
 import "entities/space/planets"
 
 -- import "entities/testEntity"
+
 local playerX = 200
 local playerY = 232
 local shipX = 200
@@ -52,32 +54,31 @@ laserColor =  Graphics.kColorWhite
 local zBG = 1
 zPlanets = 2
 local zFX = 10
-local zMain = 12
+zMain = 12
 blinkSpeed = math.random(10,500)
 
 function SpaceScene:init()
     SpaceScene.super.init(self)
     -- Mark: Utilities
     cheat.onComplete = function()
-        if debug ~= true then
-            debug = true
-            print("debug mode activated")
-        end
+        Noble.showFPS = true
+        debug = true
+        print("debug mode activated")
      print("THATS A CHEAT CODE") 
     end
     -- Mark: Entities
     
     ship = Ship( shipX, shipY, 4, shipSpeed, zMain)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
-    
+    energyMeter = EnergyMeter(ship)
     -- Mark: Lasers
     laser = Laser(zFX)
     fxlaser = FXlaser(zFX)
     
     -- Mark: Planets
-    p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
-    p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
-    p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
+    -- p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
+    -- p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
+    -- p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
     
     p4 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 5)
     p5 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 8)
@@ -128,19 +129,11 @@ end
 
 function SpaceScene:update()
     cheat:update()
+    debugScreen()
     SpaceScene.super.update(self)
-    
     -- set custom font
-    if debug then
-        Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-        Graphics.drawText("Energy: " .. ship.energy, 2, 20)
-        Graphics.drawText("Speed: " .. ship.speed, 2, 44)
-        Graphics.drawText("Mode: " .. ship.mode, 2, 68)
-        Graphics.drawText("P6 Index: " .. p6.indexlayer, 2, 90)
-        Graphics.drawText("P6 Speed: " .. p6.ownSpeed, 2, 112)
-        Graphics.drawText("P6 Distance: " .. p6.distance, 2, 134)
-        Graphics.drawText("P6 - Ship Distance: " .. p6.distance-ship.speed, 2, 156)
-    end
+    -- Graphics.fillRect(20,20,20,50)
+    
 end
 
 function SpaceScene:exit()
@@ -179,7 +172,6 @@ SpaceScene.inputHandler = {
     end,
     AButtonUp = function()				-- Runs once when button is released.
         -- Your code here
-        print(ship.energy)
     end,
 
     -- B button
@@ -194,6 +186,8 @@ SpaceScene.inputHandler = {
     BButtonHold = function()
         -- Your code here
         ship:boost()
+        energyMeter:drain()
+        
     end,
     BButtonUp = function()
        
@@ -283,6 +277,7 @@ SpaceScene.inputHandler = {
         crosshair.changeMode = true
         ship.mode = "fighter"
         ship:moveTo(shipX, shipY)
+        energyMeter:resetPosition()
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here

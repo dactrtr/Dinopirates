@@ -57,6 +57,7 @@ function Ship:init(startX, startY, hull, speed, zIndex)
   self.changeMode = false
   self.direction = "default"
   self.energy = 100
+  self.energyTotal = 100
   
   -- Mark: Shooters
   self.shooter01 = { x = self.x - 28 ,y = self.y - 8 }
