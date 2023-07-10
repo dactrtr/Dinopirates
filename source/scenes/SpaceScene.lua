@@ -76,9 +76,9 @@ function SpaceScene:init()
     fxlaser = FXlaser(zFX)
     
     -- Mark: Planets
-    -- p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
-    -- p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
-    -- p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
+    p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
+    p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
+    p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
     
     p4 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 5)
     p5 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 8)
