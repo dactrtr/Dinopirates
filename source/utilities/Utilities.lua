@@ -105,12 +105,7 @@ end
 function debugScreen()
 	if debug then
 		Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-		Graphics.drawText("Energy: " .. ship.energy, 2, 20)
-		Graphics.drawText("Speed: " .. ship.speed, 2, 44)
-		Graphics.drawText("Ship pos: " .. ship.width .. " " .. ship.y, 2, 68)
-		Graphics.drawText("P6 Index: " .. p6.indexlayer, 2, 90)
-		Graphics.drawText("P6 Speed: " .. p6.ownSpeed, 2, 112)
-		Graphics.drawText("P6 Distance: " .. p6.distance, 2, 134)
-		Graphics.drawText("P6 - Ship Distance: " .. p6.distance-ship.speed, 2, 156)
+		Graphics.drawText("Energy: " .. ship.energy .. "/Speed: " .. ship.speed .. "/Ship pos: " .. ship.width .. " " .. ship.y, 2, 20)
+		Graphics.drawText("crank: " .. playdate.getCrankChange(), 2, 40)
 	end
 end

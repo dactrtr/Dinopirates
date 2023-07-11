@@ -5,10 +5,10 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 
 
 -- TODO:
--- [ ] create a graphic ui to show the energy of the ship
 -- [ ] make vector meteorites (must be like this, check animators
 -- [ ] think about a cat functionality
 -- [ ] move the shooting logic to the ship (?)
+
  
 -- SCRAPPED:
 -- [-] find a way to fix the Z-index order
@@ -18,6 +18,8 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 -- [x] fix laser positions and update for a new FX instead of words, smaller than 16px maybe?
 -- [x] set a limit movement to the crosshair
 -- [x] add a energy system to the engine and lasers
+-- [x] create a graphic ui to show the energy of the ship
+
 
 
 debug = false
@@ -76,13 +78,13 @@ function SpaceScene:init()
     fxlaser = FXlaser(zFX)
     
     -- Mark: Planets
-    p1 = Planet(math.random(20,380),math.random(20,220), "ring", math.random(1,2), ship, 40)
-    p2 = Planet(math.random(20,380),math.random(20,220), "moon", math.random(1,2), ship, 5)
-    p3 = Planet(math.random(20,380),math.random(20,220), "prism", 0.5, ship, 25)
+    p1 = Planet(RandomScreen("x"),RandomScreen("y"), "ring", math.random(1,2), ship, 40)
+    p2 = Planet(RandomScreen("x"),RandomScreen("y"), "moon", math.random(1,2), ship, 5)
+    p3 = Planet(RandomScreen("x"),RandomScreen("y"), "prism", 0.5, ship, 25)
     
-    p4 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 5)
-    p5 = Planet(math.random(20,380),math.random(20,220), "meteor", 1, ship, 8)
-    p6 = Planet(250,120, "meteor", 1, ship, 12)
+    p4 = Planet(RandomScreen("x"),RandomScreen("y"), "meteor", 1, ship, 5)
+    p5 = Planet(RandomScreen("x"),RandomScreen("y"), "meteor", 1, ship, 8)
+    p6 = Planet(RandomScreen("x"),RandomScreen("y"), "meteor", 1, ship, 12)
     -- Mark: Screen & HUDS
    
     -- Mark: Non interactive elements
@@ -102,7 +104,7 @@ function SpaceScene:init()
     s18 = Star(RandomScreen("x"),RandomScreen("y"))
     s19 = Star(RandomScreen("x"),RandomScreen("y"))
     
-    
+   
     -- Mark: weird functions
     
     -- test = TestEntity()
@@ -131,8 +133,14 @@ function SpaceScene:update()
     cheat:update()
     debugScreen()
     SpaceScene.super.update(self)
-    -- set custom font
-    -- Graphics.fillRect(20,20,20,50)
+    -- dunno if this is the proper use also should be a custom message, preferably bulbi the cat
+       if ship.energy <= 0 then
+           playdate.ui.crankIndicator:start()
+           playdate.ui.crankIndicator:update()
+       end
+       if ship.mode == "travel" and playdate.getCrankChange() == 0.0 and energyMeter:getRotation() ~= 0 then
+           energyMeter:resetRotations()
+       end
     
 end
 
@@ -185,7 +193,7 @@ SpaceScene.inputHandler = {
     end,
     BButtonHold = function()
         -- Your code here
-        ship:boost()
+        ship:boost("fighter")
         energyMeter:drain()
         
     end,
@@ -270,6 +278,11 @@ SpaceScene.inputHandler = {
     --
     cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
         -- Your code here
+        
+        if ship.mode == "travel" and ship.energy <= 100 then
+            energyMeter:fill(playdate.getCrankTicks(3))
+        end
+        
     end,
     crankDocked = function()						-- Runs once when when crank is docked.
         -- Your code here
@@ -284,7 +297,6 @@ SpaceScene.inputHandler = {
         ship.changeMode = true
         crosshair.changeMode = true
         ship.mode = "travel"
-        ship.energy = 100
         ship.speed = 0 
         ship:moveTo(shipX, shipY + 20)
     end

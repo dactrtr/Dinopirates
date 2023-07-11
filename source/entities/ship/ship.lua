@@ -95,8 +95,8 @@ function Ship:move(direction)
   end
 end
 
-function Ship:boost()
-  if self.energy > 0 then
+function Ship:boost(mode) -- only boost when is in the defined mode
+  if self.energy > 0 and ship.mode == mode then
     self.speed += 1
     self.energy -= 1 
   end

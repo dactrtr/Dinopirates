@@ -5,7 +5,7 @@ local meter = Graphics.image.new("assets/images/ui/EnergyTank.png")
 
 function EnergyCanister:init(x,y)
 	self:moveTo(x,y)
-	self:setImage(meter)
+	self:setImage(meter, "flipY")
 	self:setZIndex(zMain)
 	self:add()	
 	
