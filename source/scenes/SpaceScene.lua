@@ -288,8 +288,6 @@ SpaceScene.inputHandler = {
         ship.mode = "fighter"
         ship:moveTo(shipX, shipY)
         energyMeter:resetPosition()
-        ship:transformShip()
-        print("docked")
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
