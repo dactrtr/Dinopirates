@@ -5,26 +5,23 @@ SpaceScene.backgroundColor = Graphics.kColorBlack
 
 
 -- TODO:
--- [ ] make vector meteorites (must be like this, check animators
+-- [ ] make vector meteorites (must be like this, check animators)
 -- [ ] think about a cat functionality
 -- [ ] move the shooting logic to the ship (?)
 
  
 -- SCRAPPED:
--- [-] find a way to fix the Z-index order
--- [-] add rockets to the back of the ship
+-- [-] add rockets to the back of the ship for shaking during thrust
 
 -- DONE:
 -- [x] fix laser positions and update for a new FX instead of words, smaller than 16px maybe?
 -- [x] set a limit movement to the crosshair
 -- [x] add a energy system to the engine and lasers
 -- [x] create a graphic ui to show the energy of the ship
-
+-- [x] find a way to fix the Z-index order
 
 
 debug = false
-
-
 
 
 -- import "entities/cockpit"
@@ -291,6 +288,8 @@ SpaceScene.inputHandler = {
         ship.mode = "fighter"
         ship:moveTo(shipX, shipY)
         energyMeter:resetPosition()
+        ship:transformShip()
+        print("docked")
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here

@@ -65,6 +65,8 @@ function Ship:init(startX, startY, hull, speed, zIndex)
   self.shooter03 = { x = self.x - 28 ,y = self.y + 8 }
   self.shooter04 = { x = self.x + 28 ,y = self.y + 8 }
   
+  
+  
   self:add()   
 end 
 
@@ -103,6 +105,7 @@ function Ship:boost(mode) -- only boost when is in the defined mode
 end
 
 function Ship:update()
+  
   -- fuel
   if self.energy <= 0 then
     -- print("no fuel")
