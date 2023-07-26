@@ -8,7 +8,6 @@ import "entities/testEntity"
 function TestScene:init()
 	TestScene.super.init(self)
     
-    test = TestEntity()
 end
 
 
@@ -27,6 +26,7 @@ function TestScene:start()
 	-- menu:activate()
 	-- Noble.Input.setCrankIndicatorStatus(true)
  
+    test = TestEntity(100,100, "hola")
 
 end
 
@@ -38,6 +38,7 @@ end
 
 function TestScene:update()
 	TestScene.super.update(self)
+    
 end
 
 function TestScene:exit()

@@ -20,8 +20,8 @@ class('Ship').extends(Graphics.sprite)
   shipFighterTransition.animation = Graphics.animation.loop.new(300, shipFighterTransition.imagetable, true)
   
   local shipFighterIdle = Graphics.sprite.new()
-  shipFighterIdle.imagetable = Graphics.imagetable.new('assets/images/ship/ship-fighter-idle')
-  shipFighterIdle.animation = Graphics.animation.loop.new(300, shipFighterIdle.imagetable, true)
+  shipFighterIdle.imagetable = Graphics.imagetable.new('assets/images/ship/ship')
+  shipFighterIdle.animation = Graphics.animation.loop.new(100, shipFighterIdle.imagetable, true)
   
   local shipFighterDown = Graphics.sprite.new()
   shipFighterDown.imagetable = Graphics.imagetable.new('assets/images/ship/ship-fighter-down')

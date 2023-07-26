@@ -34,7 +34,7 @@ import "entities/space/meteorite"
 import "entities/space/star"
 import "entities/space/planets"
 
--- import "entities/testEntity"
+import "entities/testEntity"
 
 local playerX = 200
 local playerY = 232
@@ -65,6 +65,22 @@ function SpaceScene:init()
         print("debug mode activated")
      print("THATS A CHEAT CODE") 
     end
+    
+end
+
+
+function SpaceScene:enter()
+    SpaceScene.super.enter(self)
+
+    sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
+    sequence:start()
+
+end
+
+function SpaceScene:start()
+    SpaceScene.super.start(self)
+
+    
     -- Mark: Entities
     
     ship = Ship( shipX, shipY, 4, shipSpeed, zMain)
@@ -83,7 +99,7 @@ function SpaceScene:init()
     p5 = Planet(RandomScreen("x"),RandomScreen("y"), "meteor", 1, ship, 8)
     p6 = Planet(RandomScreen("x"),RandomScreen("y"), "meteor", 1, ship, 12)
     -- Mark: Screen & HUDS
-   
+    
     -- Mark: Non interactive elements
     
     -- MarK: Background/map
@@ -101,24 +117,10 @@ function SpaceScene:init()
     s18 = Star(RandomScreen("x"),RandomScreen("y"))
     s19 = Star(RandomScreen("x"),RandomScreen("y"))
     
-   
+    
     -- Mark: weird functions
     
-    -- test = TestEntity()
-end
-
-
-function SpaceScene:enter()
-    SpaceScene.super.enter(self)
-
-    sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
-    sequence:start()
-
-end
-
-function SpaceScene:start()
-    SpaceScene.super.start(self)
-
+    test = TestEntity()
 end
 
 function SpaceScene:drawBackground()
@@ -131,13 +133,14 @@ function SpaceScene:update()
     debugScreen()
     SpaceScene.super.update(self)
     -- dunno if this is the proper use also should be a custom message, preferably bulbi the cat
-       if ship.energy <= 0 then
-           playdate.ui.crankIndicator:start()
-           playdate.ui.crankIndicator:update()
-       end
-       if ship.mode == "travel" and playdate.getCrankChange() == 0.0 and energyMeter:getRotation() ~= 0 then
-           energyMeter:resetRotations()
-       end
+    -- maybe this should be IN the ship
+       -- if ship.energy <= 0 then
+       --     playdate.ui.crankIndicator:start()
+       --     playdate.ui.crankIndicator:update()
+       -- end
+       -- if ship.mode == "travel" and playdate.getCrankChange() == 0.0 and energyMeter:getRotation() ~= 0 then
+       --     energyMeter:resetRotations()
+       -- end
     
 end
 
