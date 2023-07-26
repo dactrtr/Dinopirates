@@ -1,52 +1,25 @@
-class('Ship').extends(Graphics.sprite)
+Ship = {}
+class('Ship').extends(NobleSprite)
 
 -- Mark: imagetables for movement animation
   
-  -- -- Idle
-  -- local Idle = Graphics.sprite.new()
-  -- Idle.imagetable = Graphics.imagetable.new('assets/images/player/player-idle')
-  -- Idle.animation = Graphics.animation.loop.new(700, Idle.imagetable, true)
-  
-  local shipDefault= Graphics.image.new("assets/images/ship/ship-default.png")
-  local shipDown= Graphics.image.new("assets/images/ship/ship-down.png")
-  local shipUp= Graphics.image.new("assets/images/ship/ship-up.png")
-  
-  local shipTravelTransition = Graphics.sprite.new()
-  shipTravelTransition.imagetable = Graphics.imagetable.new('assets/images/ship/ship-travel')
-  shipTravelTransition.animation = Graphics.animation.loop.new(300, shipTravelTransition.imagetable, true)
-  
-  local shipFighterTransition = Graphics.sprite.new()
-  shipFighterTransition.imagetable = Graphics.imagetable.new('assets/images/ship/ship-fighter')
-  shipFighterTransition.animation = Graphics.animation.loop.new(300, shipFighterTransition.imagetable, true)
-  
-  local shipFighterIdle = Graphics.sprite.new()
-  shipFighterIdle.imagetable = Graphics.imagetable.new('assets/images/ship/ship')
-  shipFighterIdle.animation = Graphics.animation.loop.new(100, shipFighterIdle.imagetable, true)
-  
-  local shipFighterDown = Graphics.sprite.new()
-  shipFighterDown.imagetable = Graphics.imagetable.new('assets/images/ship/ship-fighter-down')
-  shipFighterDown.animation = Graphics.animation.loop.new(300, shipFighterDown.imagetable, true)
-  
-  local shipFighterUp = Graphics.sprite.new()
-  shipFighterUp.imagetable = Graphics.imagetable.new('assets/images/ship/ship-fighter-up')
-  shipFighterUp.animation = Graphics.animation.loop.new(300, shipFighterUp.imagetable, true)
-  
-  local shipTravelIdle = Graphics.sprite.new()
-  shipTravelIdle.imagetable = Graphics.imagetable.new('assets/images/ship/ship-travel-idle')
-  shipTravelIdle.animation = Graphics.animation.loop.new(300, shipTravelIdle.imagetable, true)
-  
-  local shipTravelDown = Graphics.sprite.new()
-  shipTravelDown.imagetable = Graphics.imagetable.new('assets/images/ship/ship-travel-down')
-  shipTravelDown.animation = Graphics.animation.loop.new(300, shipTravelDown.imagetable, true)
-  
-  local shipTravelUp = Graphics.sprite.new()
-  shipTravelUp.imagetable = Graphics.imagetable.new('assets/images/ship/ship-travel-up')
-  shipTravelUp.animation = Graphics.animation.loop.new(300, shipTravelUp.imagetable, true)
-  
 function Ship:init(startX, startY, hull, speed, zIndex)
-  self:setImage(shipDefault)
+  Ship.super.init(self,'assets/images/ship/ship', true)
+
+  -- animation states  
+  self.animation:addState('fighter', 9, 9)
+  self.animation:addState('travel', 5, 5)
+  self.animation:addState('fighterdown', 3, 3)
+  self.animation:addState('fighterup', 4, 4)
+  self.animation:addState('traveldown', 1, 1)
+  self.animation:addState('travelup', 2, 2)
+  self.animation:addState('travelToFighter', 5, 9, 'fighter', 3)
+  self.animation:addState('fighterToTravel', 9, 13, 'travel', 3)
+  -- position and z-index
+  self:setSize( 80, 40)
   self:setZIndex(zIndex)
   self:moveTo(startX,startY)
+  
   -- self:setCollideRect(4,24, 40,24)
   -- self:setCollidesWithGroups(1)
   self:setGroups(2)
@@ -67,7 +40,7 @@ function Ship:init(startX, startY, hull, speed, zIndex)
   
   
   
-  self:add()   
+  self:add(startX,startY)   
 end 
 
 -- function Player:collisionResponse()
@@ -78,21 +51,21 @@ function Ship:move(direction)
   self.direction = direction
   if (direction == "default") then
     if self.mode == "fighter" then
-      self:setImage(shipFighterIdle.animation:image())
+      self.animation:setState('fighter')
     elseif self.mode == "travel" then
-      self:setImage(shipTravelIdle.animation:image())
+      self.animation:setState('travel')
     end
   elseif (direction == "down") then
     if self.mode == "fighter" then
-      self:setImage(shipFighterDown.animation:image())
+     self.animation:setState('fighterdown')
     elseif self.mode == "travel" then
-      self:setImage(shipTravelDown.animation:image())
+      self.animation:setState('traveldown')
     end
   elseif (direction == "up") then
     if self.mode == "fighter" then
-      self:setImage(shipFighterUp.animation:image())
+      self.animation:setState('fighterup')
     elseif self.mode == "travel" then
-      self:setImage(shipTravelUp.animation:image())
+      self.animation:setState('travelup')
     end
   end
 end
@@ -103,9 +76,11 @@ function Ship:boost(mode) -- only boost when is in the defined mode
     self.energy -= 1 
   end
 end
-
+function Ship:transform()
+    print("change")
+end
 function Ship:update()
-  
+  --print(self.y)
   -- fuel
   if self.energy <= 0 then
     -- print("no fuel")
@@ -115,9 +90,12 @@ function Ship:update()
     self.changeMode= false
   else
     if(self.mode == "fighter") and self.direction == "default" then
-      self:setImage(shipFighterIdle.animation:image())
+     -- self:setImage(shipFighterIdle.animation:image())
+     --self.animation:setState('fighter')
+     self.animation:setState('travelToFighter',false, self.animation.fighter)
     elseif (self.mode == "travel")  and self.direction == "default" then
-      self:setImage(shipTravelIdle.animation:image())
+     -- self:setImage(shipTravelIdle.animation:image())
+     self.animation:setState('fighterToTravel',false, self.animation.travel)
     end
   end
  

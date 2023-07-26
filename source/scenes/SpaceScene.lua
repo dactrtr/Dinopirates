@@ -34,7 +34,7 @@ import "entities/space/meteorite"
 import "entities/space/star"
 import "entities/space/planets"
 
-import "entities/testEntity"
+-- import "entities/testEntity"
 
 local playerX = 200
 local playerY = 232
@@ -120,7 +120,7 @@ function SpaceScene:start()
     
     -- Mark: weird functions
     
-    test = TestEntity()
+    -- test = TestEntity()
 end
 
 function SpaceScene:drawBackground()
@@ -132,8 +132,8 @@ function SpaceScene:update()
     cheat:update()
     debugScreen()
     SpaceScene.super.update(self)
+    -- print(ship:getPosition())
     -- dunno if this is the proper use also should be a custom message, preferably bulbi the cat
-    -- maybe this should be IN the ship
        -- if ship.energy <= 0 then
        --     playdate.ui.crankIndicator:start()
        --     playdate.ui.crankIndicator:update()
@@ -286,6 +286,7 @@ SpaceScene.inputHandler = {
     end,
     crankDocked = function()						-- Runs once when when crank is docked.
         -- Your code here
+        -- ship:transform()
         ship.changeMode = true
         crosshair.changeMode = true
         ship.mode = "fighter"
@@ -294,6 +295,7 @@ SpaceScene.inputHandler = {
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
+        -- ship:transform()
         ship.changeMode = true
         crosshair.changeMode = true
         ship.mode = "travel"
