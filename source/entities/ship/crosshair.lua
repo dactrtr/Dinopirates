@@ -32,39 +32,44 @@ function Crosshair:move(direction)
   local bottomY = 8
   local leftX = 8
   local rightX = 392
-  
-  if (direction == "up") then
-    movementX = self.x 
-    movementY = self.y + self.yspeed
+  -- movement
+  if(ship.mode == "fighter") then
+    if (direction == "up") then
+      movementX = self.x 
+      movementY = self.y + self.yspeed
+      
+    elseif (direction == "down") then
+      movementX = self.x 
+      movementY = self.y - self.yspeed
+      
+    elseif (direction == "left") then
+      movementX = self.x - self.xspeed
+      movementY = self.y 
+      
+    elseif (direction == "right") then
+      movementX = self.x + self.xspeed
+      movementY = self.y
+    end
     
-  elseif (direction == "down") then
-    movementX = self.x 
-    movementY = self.y - self.yspeed
+    -- Border block
+    if movementY < bottomY then
+      movementY = bottomY
+    elseif (movementY > topY) then
+      movementY = topY
+    end
     
-  elseif (direction == "left") then
-    movementX = self.x - self.xspeed
-    movementY = self.y 
+    if movementX < leftX then
+      movementX = leftX
+    elseif (movementX > rightX) then
+      movementX = rightX
+    end
     
-  elseif (direction == "right") then
-    movementX = self.x + self.xspeed
-    movementY = self.y
+    self:moveTo(movementX, movementY)
   end
   
-  -- Border block
-  if movementY < bottomY then
-    movementY = bottomY
-  elseif (movementY > topY) then
-    movementY = topY
-  end
-  
-  if movementX < leftX then
-    movementX = leftX
-  elseif (movementX > rightX) then
-    movementX = rightX
-  end
+ 
  
   
-  self:moveTo(movementX, movementY)
   
 end
 
@@ -90,6 +95,9 @@ function Crosshair:update()
     if(ship.mode == "fighter") then
       self:reset()
     elseif (ship.mode == "travel") then
+      
     end
+    
+    
   
 end

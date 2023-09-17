@@ -102,10 +102,23 @@ function RandomScreen(axis)
 		return math.random(20,220)
 	end
 end
+
 function debugScreen()
 	if debug then
 		Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
 		Graphics.drawText("Energy: " .. ship.energy .. "/Speed: " .. ship.speed .. "/Ship pos: " .. ship.width .. " " .. ship.y, 2, 20)
 		Graphics.drawText("crank: " .. playdate.getCrankChange(), 2, 40)
+		if playdate.accelerometerIsRunning() then
+			accelStatus = "true"
+			accelDataX , accelDataY, accelDataZ = playdate.readAccelerometer()
+			
+			Graphics.drawText("Accelerometer: " .. accelStatus, 2, 60)
+			Graphics.drawText("AccelerometerX: " .. accelDataX, 2, 80)
+			Graphics.drawText("AccelerometerY: " .. accelDataX, 2, 100)
+			Graphics.drawText("AccelerometerZ: " .. accelDataX, 2, 120)
+		else
+			Graphics.drawText("Accelerometer: " .. "false", 2, 60)
+		end
+		
 	end
 end

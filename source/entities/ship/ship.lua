@@ -15,8 +15,10 @@ function Ship:init(startX, startY, hull, speed, zIndex)
   self.animation:addState('travelup', 2, 2)
   self.animation:addState('travelToFighter', 5, 9, 'fighter', 3)
   self.animation:addState('fighterToTravel', 9, 13, 'travel', 3)
+  self.animation:addState('fighterleft', 15, 15)
+  self.animation:addState('fighterright', 14, 14)
   -- position and z-index
-  self:setSize( 80, 40)
+  self:setSize( 80, 60)
   self:setZIndex(zIndex)
   self:moveTo(startX,startY)
   
@@ -49,12 +51,14 @@ end
 -- Mark: check this with the new transitions
 function Ship:move(direction)
   self.direction = direction
+  
   if (direction == "default") then
     if self.mode == "fighter" then
       self.animation:setState('fighter')
     elseif self.mode == "travel" then
       self.animation:setState('travel')
     end
+    
   elseif (direction == "down") then
     if self.mode == "fighter" then
      self.animation:setState('fighterdown')
@@ -66,6 +70,18 @@ function Ship:move(direction)
       self.animation:setState('fighterup')
     elseif self.mode == "travel" then
       self.animation:setState('travelup')
+    end
+  elseif(direction == "left") then
+    if self.mode == "fighter" then
+      self.animation:setState('fighterleft')
+    elseif self.mode == 'travel' then
+      
+    end
+    elseif(direction == "right") then
+    if self.mode == "fighter" then
+      self.animation:setState('fighterright')
+    elseif self.mode == 'travel' then
+      
     end
   end
 end

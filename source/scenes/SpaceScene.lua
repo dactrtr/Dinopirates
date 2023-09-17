@@ -45,8 +45,8 @@ local spaceSpeed = shipSpeed/50
 -- local  = 0
 -- local playerTranslation = 4
 
-local cheat = CheatCode("up", "up", "up", "down")
-
+local cheatOn = CheatCode("up", "up", "up", "down")
+local cheatOff = CheatCode("down", "down", "down", "up")
 laserColor =  Graphics.kColorWhite
 
 -- MARK: Zindex
@@ -59,11 +59,15 @@ blinkSpeed = math.random(10,500)
 function SpaceScene:init()
     SpaceScene.super.init(self)
     -- Mark: Utilities
-    cheat.onComplete = function()
-        Noble.showFPS = true
+    cheatOn.onComplete = function()
+        -- Noble.showFPS = true
         debug = true
-        print("debug mode activated")
-     print("THATS A CHEAT CODE") 
+        print("true")
+    end
+    cheatOff.onComplete = function()
+        -- Noble.showFPS = true
+        debug = false
+        print("false")
     end
     
 end
@@ -82,7 +86,6 @@ function SpaceScene:start()
 
     
     -- Mark: Entities
-    
     ship = Ship( shipX, shipY, 4, shipSpeed, zMain)
     crosshair = Crosshair( shipX, shipY - 16, 6, 6)
     energyMeter = EnergyMeter(ship)
@@ -129,9 +132,11 @@ function SpaceScene:drawBackground()
 end
 
 function SpaceScene:update()
-    cheat:update()
+    cheatOn:update()
+    cheatOff:update()
     debugScreen()
     SpaceScene.super.update(self)
+    --get accelerometer for the position
     -- print(ship:getPosition())
     -- dunno if this is the proper use also should be a custom message, preferably bulbi the cat
        -- if ship.energy <= 0 then
@@ -206,7 +211,7 @@ SpaceScene.inputHandler = {
     leftButtonDown = function()
         -- Your code here
         
-        ship:setRotation(-20)
+        ship:move("left")
         if(ship.mode == "fighter")then
             fxlaser:setRotation(-20)
         end
@@ -219,7 +224,7 @@ SpaceScene.inputHandler = {
     leftButtonUp = function()
         -- Your code here
         
-        ship:setRotation(0)
+        ship:move("default")
         if(ship.mode == "fighter")then
             fxlaser:setRotation(0)
         end
@@ -229,7 +234,7 @@ SpaceScene.inputHandler = {
     --
     rightButtonDown = function()
         -- Your code here
-        ship:setRotation(20)
+        ship:move("right")
         if(ship.mode == "fighter")then
             fxlaser:setRotation(20)
         end
@@ -240,7 +245,7 @@ SpaceScene.inputHandler = {
     end,
     rightButtonUp = function()
         -- Your code here
-        ship:setRotation(0)
+        ship:move("default")
         if(ship.mode == "fighter")then
             fxlaser:setRotation(0)
         end
@@ -286,12 +291,12 @@ SpaceScene.inputHandler = {
     end,
     crankDocked = function()						-- Runs once when when crank is docked.
         -- Your code here
-        -- ship:transform()
         ship.changeMode = true
         crosshair.changeMode = true
         ship.mode = "fighter"
         ship:moveTo(shipX, shipY)
         energyMeter:resetPosition()
+        playdate.stopAccelerometer()
     end,
     crankUndocked = function()						-- Runs once when when crank is undocked.
         -- Your code here
@@ -301,6 +306,9 @@ SpaceScene.inputHandler = {
         ship.mode = "travel"
         ship.speed = 0 
         ship:moveTo(shipX, shipY + 20)
+        
+        playdate.startAccelerometer()
+        
     end
     
     
