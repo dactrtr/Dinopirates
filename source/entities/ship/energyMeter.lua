@@ -13,13 +13,15 @@ function EnergyMeter:init(ship)
 	self:setZIndex(zMain)
 	self:updateEnergy(ship.energy)
 	self:add()	
-	
 end
 
 function EnergyMeter:updateEnergy()
 	local maxHeight = 42
 	local width = 8
 	local energybarHeight = (ship.energy / self.energyTotal) * maxHeight
+	
+	
+	
 	local energybarImage = Graphics.image.new(width,maxHeight)
 	Graphics.pushContext(energybarImage)
 		Graphics.setColor(Graphics.kColorWhite)
@@ -27,6 +29,9 @@ function EnergyMeter:updateEnergy()
 	Graphics.popContext()
 	self:setZIndex(11)
 	self:setImage(energybarImage, "flipY")
+	
+
+	
 	if ship.energy >= ship.energyTotal then
 		self:resetRotations()
 	end

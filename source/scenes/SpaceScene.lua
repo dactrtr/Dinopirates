@@ -281,8 +281,8 @@ SpaceScene.inputHandler = {
     cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
         -- Your code here
         
-        if ship.mode == "travel" and ship.energy <= 100 then
-            energyMeter:fill(playdate.getCrankTicks(3))
+        if ship.mode == "travel" and ship.energy <= 100 and playdate.getCrankTicks(3) > 0 then
+            energyMeter:fill(1)
         end
         
     end,
