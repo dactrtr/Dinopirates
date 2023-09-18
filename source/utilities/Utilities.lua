@@ -50,7 +50,7 @@ function CheatCode: init(...)
 	end
 	self._seq= seq
 	self.progress = 1
-	self.run_once = true
+	self.run_once = false
 	self:setTimerDelay(400)
 end
 
@@ -105,20 +105,29 @@ end
 
 function debugScreen()
 	if debug then
+		textOverlay = Graphics.image.new(400,240)
+		Graphics.lockFocus(textOverlay)
 		Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-		Graphics.drawText("Energy: " .. ship.energy .. "/Speed: " .. ship.speed .. "/Ship pos: " .. ship.width .. " " .. ship.y, 2, 20)
+		Graphics.drawText("デバッグモード!!", 2, 0, playdate.graphics.font.kLanguageJapanese)
+		Graphics.drawText("Energy: " .. ship.energy .. " /Speed: " .. ship.speed .. " /Position: " .. ship.width .. " " .. ship.y, 2, 20)
 		Graphics.drawText("crank: " .. playdate.getCrankChange(), 2, 40)
 		if playdate.accelerometerIsRunning() then
 			accelStatus = "true"
 			accelDataX , accelDataY, accelDataZ = playdate.readAccelerometer()
-			
+			accelDataX = round(accelDataX)
+			accelDataY = round(accelDataY)
+			accelDataZ = round(accelDataZ)
 			Graphics.drawText("Accelerometer: " .. accelStatus, 2, 60)
 			Graphics.drawText("AccelerometerX: " .. accelDataX, 2, 80)
-			Graphics.drawText("AccelerometerY: " .. accelDataX, 2, 100)
-			Graphics.drawText("AccelerometerZ: " .. accelDataX, 2, 120)
+			Graphics.drawText("AccelerometerY: " .. accelDataY, 2, 100)
+			Graphics.drawText("AccelerometerZ: " .. accelDataZ, 2, 120)
 		else
 			Graphics.drawText("Accelerometer: " .. "false", 2, 60)
 		end
-		
+		Graphics.unlockFocus()
+		textOverlay:draw(0,0)
 	end
+end
+function round(num)
+	return math.floor(num)
 end

@@ -45,8 +45,8 @@ local spaceSpeed = shipSpeed/50
 -- local  = 0
 -- local playerTranslation = 4
 
-local cheatOn = CheatCode("up", "up", "up", "down")
-local cheatOff = CheatCode("down", "down", "down", "up")
+local cheat = CheatCode("up", "up", "up", "down")
+local cheatOff = CheatCode("up","down","down","down") 
 laserColor =  Graphics.kColorWhite
 
 -- MARK: Zindex
@@ -59,16 +59,13 @@ blinkSpeed = math.random(10,500)
 function SpaceScene:init()
     SpaceScene.super.init(self)
     -- Mark: Utilities
-    cheatOn.onComplete = function()
-        -- Noble.showFPS = true
+    cheat.onComplete = function()
         debug = true
-        print("true")
     end
     cheatOff.onComplete = function()
-        -- Noble.showFPS = true
         debug = false
-        print("false")
     end
+
     
 end
 
@@ -132,7 +129,7 @@ function SpaceScene:drawBackground()
 end
 
 function SpaceScene:update()
-    cheatOn:update()
+    cheat:update()
     cheatOff:update()
     debugScreen()
     SpaceScene.super.update(self)
