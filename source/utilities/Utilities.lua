@@ -114,9 +114,7 @@ function debugScreen()
 		if playdate.accelerometerIsRunning() then
 			accelStatus = "true"
 			accelDataX , accelDataY, accelDataZ = playdate.readAccelerometer()
-			accelDataX = round(accelDataX)
-			accelDataY = round(accelDataY)
-			accelDataZ = round(accelDataZ)
+			
 			Graphics.drawText("Accelerometer: " .. accelStatus, 2, 60)
 			Graphics.drawText("AccelerometerX: " .. accelDataX, 2, 80)
 			Graphics.drawText("AccelerometerY: " .. accelDataY, 2, 100)
@@ -127,7 +125,4 @@ function debugScreen()
 		Graphics.unlockFocus()
 		textOverlay:draw(0,0)
 	end
-end
-function round(num)
-	return math.floor(num)
 end
