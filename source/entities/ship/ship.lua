@@ -1,7 +1,6 @@
 Ship = {}
 class('Ship').extends(NobleSprite)
 
--- Mark: imagetables for movement animation
   
 function Ship:init(startX, startY, hull, speed, zIndex)
   Ship.super.init(self,'assets/images/ship/ship', true)

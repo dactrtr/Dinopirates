@@ -30,6 +30,7 @@ import "entities/ship/crosshair"
 import "entities/ship/laser"
 import "entities/ship/energyMeter"
 import "entities/FX/FXlaser"
+import "entities/FX/FXspeed"
 import "entities/space/meteorite"
 import "entities/space/star"
 import "entities/space/planets"
@@ -89,7 +90,7 @@ function SpaceScene:start()
     -- Mark: Lasers
     laser = Laser(zFX)
     fxlaser = FXlaser(zFX)
-    
+    fxspeed = FXspeed()
     -- Mark: Planets
     p1 = Planet(RandomScreen("x"),RandomScreen("y"), "ring", math.random(1,2), ship, 40)
     p2 = Planet(RandomScreen("x"),RandomScreen("y"), "moon", math.random(1,2), ship, 5)
@@ -143,7 +144,7 @@ function SpaceScene:update()
        -- if ship.mode == "travel" and playdate.getCrankChange() == 0.0 and energyMeter:getRotation() ~= 0 then
        --     energyMeter:resetRotations()
        -- end
-    
+
 end
 
 function SpaceScene:exit()
@@ -188,19 +189,41 @@ SpaceScene.inputHandler = {
     --
     BButtonDown = function()
         -- Your code here
+        if ship.energy > 1 then
+            fxspeed.animation:setState('startSpeed')
+        end
     end,
     BButtonHeld = function()
         -- Your code here
+        if ship.energy > 0 then
+            fxspeed.animation:setState('loopSpeed')
+            print("held")
+        elseif ship.energy == 0 then
+            fxspeed.animation:setState('stopSpeed')
+            print("held 0 aqui esta el problema")
+        end
         
     end,
     BButtonHold = function()
         -- Your code here
-        ship:boost("fighter")
-        energyMeter:drain()
+        if ship.energy > 0 then
+            ship:boost("fighter")
+            energyMeter:drain()
+        end
+        if ship.energy == 0 then
+            fxspeed.animation:setState('stopSpeed')
+            print("hold 0")
+        end
         
     end,
     BButtonUp = function()
-       
+       if (ship.energy > 0) and (ship.speed > 0)then
+           fxspeed.animation:setState('stopSpeed')
+           print("release 0")
+       elseif ship.energy == 0 then
+           print("release 1")
+           fxspeed.animation:setState('initial')
+       end
     end,
 
     -- D-pad left
@@ -303,7 +326,6 @@ SpaceScene.inputHandler = {
         ship.mode = "travel"
         ship.speed = 0 
         ship:moveTo(shipX, shipY + 20)
-        
         playdate.startAccelerometer()
         
     end
