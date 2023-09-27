@@ -14,8 +14,15 @@ TitleScene = {}
 class("TitleScene").extends(NobleScene)
 local scene = TitleScene
 
--- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+import "entities/ship/ship"
+import "entities/ship/crosshair"
+import "entities/ship/laser"
+import "entities/ship/energyMeter"
+import "entities/FX/FXlaser"
+import "entities/FX/FXspeed"
+import "entities/space/meteorite"
+import "entities/space/star"
+import "entities/space/planets"
 
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific varibles and methods here. Use "local" where possible.
@@ -25,19 +32,36 @@ local scene = TitleScene
 --							   When accessed outside this file use `TitleScene.variable2`.
 -- ...
 --
-
+local playerX = nil
+local playerY = nil
+local shipX = nil
+local shipY = nil
+local shipSpeed = nil -- change this value with the crank
+local spaceSpeed = nil
+local cheat = nil
 -- This is the background color of this scene.
-scene.backgroundColor = Graphics.kColorWhite
+scene.backgroundColor = Graphics.kColorBlack
 
 -- This runs when your scene's object is created, which is the
 -- first thing that happens when transitining away from another scene.
 function scene:init()
 	scene.super.init(self)
-
+	debug = false
+	cheat = CheatCode("up", "up", "up", "down")
+	playerX = 200
+	playerY = 232
+	shipX = 200
+	shipY = 150 
+	shipSpeed = 0 
+	spaceSpeed = shipSpeed/50
+	print(debug)
 	-- variable1 = 100
 	-- TitleScene.variable2 = "string"
 	-- ...
-
+	cheat.onComplete = function()
+		debug = true
+		print(debug)
+	end
 	-- Your code here
 end
 
@@ -58,6 +82,8 @@ end
 function scene:update()
 	scene.super.update(self)
 	-- Your code here
+	cheat:update()
+	
 end
 
 -- This runs once per frame, and is meant for drawing code.
