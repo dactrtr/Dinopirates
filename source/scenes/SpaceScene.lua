@@ -152,6 +152,10 @@ function SpaceScene:exit()
     Noble.Input.setCrankIndicatorStatus(false)
     sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
     sequence:start();
+    
+    -- Remove entities
+    ship:remove()
+    p1:remove()
 end
 
 function SpaceScene:finish()

@@ -1,2 +1,2 @@
 loopCount = 0
-frames = 1x5, 2x5, 3x5
+frames = 1x12, 2x12, 3x5, 4x5, 5x12, 6x12, 7x12, 8x12
