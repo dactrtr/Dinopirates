@@ -18,14 +18,13 @@ import "entities/ship/ship"
 import "entities/ship/crosshair"
 import "entities/ship/laser"
 import "entities/ship/energyMeter"
-import "entities/FX/FXlaser"
 import "entities/FX/FXspeed"
 import "entities/space/meteorite"
 import "entities/space/star"
 import "entities/space/planets"
 
 -- It is recommended that you declare, but don't yet define,
--- your scene-specific varibles and methods here. Use "local" where possible.
+-- your scene-specific variables and methods here. Use "local" where possible.
 --
 -- local variable1 = nil	-- local variable
 -- scene.variable2 = nil	-- Scene variable.
@@ -39,6 +38,7 @@ local shipY = nil
 local shipSpeed = nil -- change this value with the crank
 local spaceSpeed = nil
 local cheat = nil
+local laser = nil
 -- This is the background color of this scene.
 StarScene.backgroundColor = Graphics.kColorBlack
 
@@ -54,10 +54,9 @@ function StarScene:init()
 	shipY = 150 
 	shipSpeed = 0 
 	spaceSpeed = shipSpeed/50
+	
 	print(debug)
-	-- variable1 = 100
-	-- StarScene.variable2 = "string"
-	-- ...
+
 	cheat.onComplete = function()
 		debug = true
 		print(debug)
@@ -79,11 +78,16 @@ function StarScene:start()
 	StarScene.super.start(self)
 	-- Your code here
 	ship = Ship( shipX, shipY, 4, shipSpeed, zMain)
+	crosshair = Crosshair( shipX, shipY - 16, 6, 6)
+	energyMeter = EnergyMeter(ship)
+	laser = Laser(10)
+	fxspeed = FXspeed()
 end
 
 -- This runs once per frame.
 function StarScene:update()
 	StarScene.super.update(self)
+	debugScreen()
 	-- Your code here
 	cheat:update()
 	
@@ -98,6 +102,11 @@ end
 -- This runs as as soon as a transition to another scene begins.
 function StarScene:exit()
 	StarScene.super.exit(self)
+	--Removing all entities
+	crosshair:remove()
+	ship:remove()
+	laser:remove()
+	energyMeter:remove()
 	-- Your code here
 end
 
@@ -122,7 +131,10 @@ StarScene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		-- Your code here
+		if(ship.mode == "fighter")then
+			--fxlaser:Single(shipX,shipY)
+			laser:draw(laserColor,ship)
+		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
@@ -137,75 +149,120 @@ StarScene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-		-- Your code here
+		if ship.energy > 1 then
+			fxspeed.animation:setState('startSpeed')
+		end
 	end,
 	BButtonHeld = function()
-		-- Your code here
+		if ship.energy > 0 then
+			fxspeed.animation:setState('loopSpeed')
+			print("held")
+		elseif ship.energy == 0 then
+			fxspeed.animation:setState('stopSpeed')
+			print("held 0 aqui esta el problema")
+		end
 	end,
 	BButtonHold = function()
-		-- Your code here
+		if ship.energy > 0 then
+			ship:boost("fighter")
+			energyMeter:drain()
+		end
+		if ship.energy == 0 then
+			fxspeed.animation:setState('stopSpeed')
+			print("hold 0")
+		end
 	end,
 	BButtonUp = function()
-		-- Your code here
+		if (ship.energy > 0) and (ship.speed > 0)then
+			   fxspeed.animation:setState('stopSpeed')
+			   print("release 0")
+		   elseif ship.energy == 0 then
+			   print("release 1")
+			   fxspeed.animation:setState('initial')
+		   end
 	end,
 
 	-- D-pad left
 	--
 	leftButtonDown = function()
-		-- Your code here
+		ship:move("left")
+		if(ship.mode == "fighter")then
+			--fxlaser:setRotation(-20)
+		end
 	end,
 	leftButtonHold = function()
-		-- Your code here
+		crosshair:move("left")
 	end,
 	leftButtonUp = function()
-		-- Your code here
+		ship:move("default")
+		if(ship.mode == "fighter")then
+			--fxlaser:setRotation(0)
+		end
 	end,
 
 	-- D-pad right
 	--
 	rightButtonDown = function()
-		-- Your code here
+		ship:move("right")
+		if(ship.mode == "fighter")then
+			--fxlaser:setRotation(20)
+		end
 	end,
 	rightButtonHold = function()
-		-- Your code here
+		crosshair:move("right")
 	end,
 	rightButtonUp = function()
-		-- Your code here
+		ship:move("default")
+		if(ship.mode == "fighter")then
+			--fxlaser:setRotation(0)
+		end
 	end,
 
 	-- D-pad up
 	--
 	upButtonDown = function()
-		-- Your code here
+		ship:move("up")
 	end,
 	upButtonHold = function()
-		-- Your code here
+		crosshair:move("up")
 	end,
 	upButtonUp = function()
-		-- Your code here
+		ship:move("default")
 	end,
 
 	-- D-pad down
 	--
 	downButtonDown = function()
-		-- Your code here
+		ship:move("down")
 	end,
 	downButtonHold = function()
-		-- Your code here
+		crosshair:move("down")
 	end,
 	downButtonUp = function()
-		-- Your code here
+		ship:move("default")
 	end,
 
 	-- Crank
 	--
 	cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
-		-- Your code here
+		if ship.mode == "travel" and ship.energy <= 100 and playdate.getCrankTicks(3) > 0 then
+			energyMeter:fill(1)
+		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
-		-- Your code here
+		ship.changeMode = true
+		crosshair.changeMode = true
+		ship.mode = "fighter"
+		ship:moveTo(shipX, shipY)
+		energyMeter:resetPosition()
+		playdate.stopAccelerometer()
 	end,
 	crankUndocked = function()						-- Runs once when when crank is undocked.
-		-- Your code here
+		ship.changeMode = true
+		crosshair.changeMode = true
+		ship.mode = "travel"
+		ship.speed = 0 
+		ship:moveTo(shipX, shipY + 20)
+		playdate.startAccelerometer()
 	end
 }

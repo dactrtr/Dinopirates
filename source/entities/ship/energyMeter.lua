@@ -79,3 +79,6 @@ function EnergyMeter:resetRotations()
 	self:setRotation(0)
 	canister:setRotation(0)
 end
+function EnergyMeter:remove()
+	canister:remove()
+end
