@@ -81,4 +81,5 @@ function EnergyMeter:resetRotations()
 end
 function EnergyMeter:remove()
 	canister:remove()
+	Graphics.clear()
 end

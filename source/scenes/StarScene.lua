@@ -39,6 +39,7 @@ local shipSpeed = nil -- change this value with the crank
 local spaceSpeed = nil
 local cheat = nil
 local laser = nil
+local cheat = nil
 -- This is the background color of this scene.
 StarScene.backgroundColor = Graphics.kColorBlack
 
@@ -58,8 +59,7 @@ function StarScene:init()
 	print(debug)
 
 	cheat.onComplete = function()
-		debug = true
-		print(debug)
+		--print(debug)
 	end
 	-- Your code here
 end
@@ -76,12 +76,20 @@ end
 -- This runs once a transition from another scene is complete.
 function StarScene:start()
 	StarScene.super.start(self)
-	-- Your code here
+	-- Mark: Ship
 	ship = Ship( shipX, shipY, 4, shipSpeed, zMain)
 	crosshair = Crosshair( shipX, shipY - 16, 6, 6)
 	energyMeter = EnergyMeter(ship)
 	laser = Laser(10)
 	fxspeed = FXspeed()
+	-- Mark: Planets
+	p1 = Planet(RandomScreen("x"),RandomScreen("y"), "ring", math.random(1,2), ship, 40)
+	p2 = Planet(RandomScreen("x"),RandomScreen("y"), "moon", math.random(1,2), ship, 5)
+	p3 = Planet(RandomScreen("x"),RandomScreen("y"), "prism", 0.5, ship, 25)
+	
+	p4 = Planet(RandomScreen("x"),RandomScreen("y"), "meteor", 1, ship, 5)
+	p5 = Planet(RandomScreen("x"),RandomScreen("y"), "meteor", 1, ship, 8)
+	p6 = Planet(RandomScreen("x"),RandomScreen("y"), "meteor", 1, ship, 12)
 end
 
 -- This runs once per frame.
@@ -102,11 +110,19 @@ end
 -- This runs as as soon as a transition to another scene begins.
 function StarScene:exit()
 	StarScene.super.exit(self)
+	debug = false
 	--Removing all entities
 	crosshair:remove()
 	ship:remove()
 	laser:remove()
 	energyMeter:remove()
+	--Removing planets
+	p1:remove()
+	p2:remove()
+	p3:remove()
+	p4:remove()
+	p5:remove()
+	p6:remove()
 	-- Your code here
 end
 

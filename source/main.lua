@@ -20,8 +20,12 @@ debug = false
 local menuItem, error = menu:addMenuItem("Title Menu", function()
 	Noble.transition(TitleScene)
 end)
-local menuItem, error = menu:addMenuItem("LLEICOV", function()
-	print("LLEICOV!")
+local menuItem, error = menu:addMenuItem("debug", function()
+	if debug == false then
+		debug = true
+	else 
+		debug = false
+	end
 end)
 local menuItem, error = menu:addMenuItem("Dat menu", function()
 	print("夢に向かって頑張れ！")

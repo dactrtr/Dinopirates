@@ -215,6 +215,7 @@ function Planet:update()
   
   self:moveTo(movementX, movementY)
   end
+  
 end
 
 
