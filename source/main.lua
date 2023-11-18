@@ -17,7 +17,7 @@ Noble.GameData.setup({
 })
 local menu = playdate.getSystemMenu()
 debug = false
-local menuItem, error = menu:addMenuItem("Title Menu", function()
+local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene)
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
@@ -26,9 +26,6 @@ local menuItem, error = menu:addMenuItem("debug", function()
 	else 
 		debug = false
 	end
-end)
-local menuItem, error = menu:addMenuItem("Dat menu", function()
-	print("夢に向かって頑張れ！")
 end)
 -- Noble.showFPS = true
 playdate.display.setRefreshRate(60)

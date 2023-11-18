@@ -60,7 +60,7 @@ function scene:init()
 	-- Your code here
 	menu = Noble.Menu.new(
 		true,
-		Noble.Text.ALIGN_CENTER,
+		Noble.Text.ALIGN_LEFT,
 		false,
 		nil,
 		2,16
@@ -89,7 +89,7 @@ end
 function scene:update()
 	scene.super.update(self)
 	-- Your code here
-	menu:draw(200, 160)
+	menu:draw(8, 160)
 end
 
 -- This runs once per frame, and is meant for drawing code.
