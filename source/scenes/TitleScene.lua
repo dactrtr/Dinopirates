@@ -67,6 +67,7 @@ function scene:init()
 	)
 menu:addItem("New Space", function() Noble.transition(StarScene) end)
 menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
+menu:addItem("New Maze", function() Noble.transition(MazeScene) end)
 menu:addItem("Old Maze", function() Noble.transition(InitialScene) end)
 menu:select("New Space")
 
@@ -89,7 +90,7 @@ end
 function scene:update()
 	scene.super.update(self)
 	-- Your code here
-	menu:draw(8, 160)
+	menu:draw(8, 80)
 end
 
 -- This runs once per frame, and is meant for drawing code.

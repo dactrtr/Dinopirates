@@ -95,15 +95,14 @@ function Ship:transform()
     print("change")
 end
 function Ship:update()
-  --print(self.y)
-  -- fuel
-  if self.energy <= 0 then
-    -- print("no fuel")
+  if self.energy < 0 then
+    self.energy = 0
   end
   
-  if(self.changeMode == true)  then
-    self.changeMode= false
-  else
+  -- if(self.changeMode == true)  then
+  --   self.changeMode= false
+  --   print "mode false"
+  -- else
     if(self.mode == "fighter") and self.direction == "default" then
      -- self:setImage(shipFighterIdle.animation:image())
      --self.animation:setState('fighter')
@@ -112,6 +111,7 @@ function Ship:update()
      -- self:setImage(shipTravelIdle.animation:image())
      self.animation:setState('fighterToTravel',false, self.animation.travel)
     end
-  end
+    -- print "mode true"
+  -- end
  
 end

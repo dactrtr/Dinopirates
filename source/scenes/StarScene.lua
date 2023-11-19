@@ -56,7 +56,6 @@ function StarScene:init()
 	shipSpeed = 0 
 	spaceSpeed = shipSpeed/50
 	
-	print(debug)
 
 	cheat.onComplete = function()
 		--print(debug)
@@ -266,7 +265,7 @@ StarScene.inputHandler = {
 		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
-		ship.changeMode = true
+		--ship.changeMode = true
 		crosshair.changeMode = true
 		ship.mode = "fighter"
 		ship:moveTo(shipX, shipY)
@@ -274,7 +273,7 @@ StarScene.inputHandler = {
 		playdate.stopAccelerometer()
 	end,
 	crankUndocked = function()						-- Runs once when when crank is undocked.
-		ship.changeMode = true
+		--ship.changeMode = true
 		crosshair.changeMode = true
 		ship.mode = "travel"
 		ship.speed = 0 

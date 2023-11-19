@@ -3,6 +3,7 @@ import 'libraries/noble/Noble'
 import 'utilities/Utilities'
 
 import 'scenes/InitialScene'
+import 'scenes/MazeScene'
 import 'scenes/SpaceScene'
 import 'scenes/StarScene'
 import 'scenes/TestScene'
