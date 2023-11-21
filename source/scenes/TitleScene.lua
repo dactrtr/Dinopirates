@@ -66,10 +66,11 @@ function scene:init()
 		2,16
 	)
 menu:addItem("New Space", function() Noble.transition(StarScene) end)
-menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
+--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
 menu:addItem("New Maze", function() Noble.transition(MazeScene) end)
-menu:addItem("Old Maze", function() Noble.transition(InitialScene) end)
-menu:select("New Space")
+--menu:addItem("Old Maze", function() Noble.transition(InitialScene) end)
+menu:addItem("Test", function() Noble.transition(TestScene) end)
+menu:select("New Maze")
 
 end
 

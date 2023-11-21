@@ -15,6 +15,7 @@ class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
 
 import "entities/player/player"
+import "entities/FX/FXshadow"
 
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific variables and methods here. Use "local" where possible.
@@ -25,6 +26,7 @@ import "entities/player/player"
 -- ...
 --
 local player = nil
+local shadow = nil
 local cheat = CheatCode("up", "up", "up", "down")
 -- This is the background color of this scene.
 MazeScene.backgroundColor = Graphics.kColorWhite
@@ -37,8 +39,9 @@ function MazeScene:init()
 	cheat.onComplete = function()
 		print(debug)
 	end
-	-- Mark: Entities
-	player = Player(180, 80, 4, 2)
+	-- Mark: Background
+	
+	
 
 	
 	-- Your code here
@@ -49,8 +52,42 @@ end
 function MazeScene:enter()
 	MazeScene.super.enter(self)
 	-- Your code here
-	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
+	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
+	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
+	map = Graphics.tilemap.new()
+	map:setImageTable(tilesMap)
+	map:setSize(16,9)
+	
+	-- Mark: floor
+	for y = 1,9 do
+		for x = 1,16 do
+			map:setTileAtPosition(x,y,5)
+		end
+	end
+	
+	floor = Graphics.sprite.new()
+	floor:setZIndex(1)
+	floor:setTilemap(map)
+	floor:moveTo(200, 120)
+	floor:add()
+	
+	-- Mark: Walls
+	-- addBlock(0, 0, 400, 20)
+	-- addBlock(0, 228, 400, 12)
+	-- addBlock(0, 12, 12, 216)
+	-- addBlock(388, 12, 12, 216)
+	-- This image need to be changed
+	-- border = NobleSprite("assets/images/border-map.png")
+	-- border:setZIndex(1)
+	-- border:moveTo(255, 120)
+	-- self:addSprite(border)
+	
+	-- Mark: Entities
+	player = Player(200, 120, 4, 1)
+	
+	--Test
+	shadow = FXshadow(player)
 end
 
 -- This runs once a transition from another scene is complete.
@@ -62,10 +99,9 @@ end
 -- This runs once per frame.
 function MazeScene:update()
 	MazeScene.super.update(self)
-	debugScreen()
 	-- Your code here
 	cheat:update()
-	
+	player:idle()
 end
 
 -- This runs once per frame, and is meant for drawing code.
@@ -79,6 +115,10 @@ function MazeScene:exit()
 	MazeScene.super.exit(self)
 	debug = false
 	--Removing all entities
+	player:remove()
+	floor:remove()
+	shadow:remove()
+	
 	
 end
 
@@ -136,7 +176,7 @@ MazeScene.inputHandler = {
 		
 	end,
 	leftButtonHold = function()
-		
+		player:move("left")
 	end,
 	leftButtonUp = function()
 		
@@ -148,7 +188,7 @@ MazeScene.inputHandler = {
 		
 	end,
 	rightButtonHold = function()
-		
+		player:move("right")
 	end,
 	rightButtonUp = function()
 		
@@ -160,7 +200,7 @@ MazeScene.inputHandler = {
 
 	end,
 	upButtonHold = function()
-
+		player:move("up")
 	end,
 	upButtonUp = function()
 
@@ -172,7 +212,7 @@ MazeScene.inputHandler = {
 
 	end,
 	downButtonHold = function()
-
+		player:move("down")
 	end,
 	downButtonUp = function()
 

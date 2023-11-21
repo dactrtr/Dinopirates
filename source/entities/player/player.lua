@@ -46,7 +46,7 @@ end
 
 function Player:collisionResponse()
   -- self:dead()
-   self:setImage(Dead.animation:image())
+   --self:setImage(Dead.animation:image())
 end
 
 function Player:idle()
