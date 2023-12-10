@@ -65,13 +65,13 @@ function scene:init()
 		nil,
 		2,16
 	)
-menu:addItem("New Space", function() Noble.transition(StarScene) end)
---menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-menu:addItem("New Maze", function() Noble.transition(MazeScene) end)
---menu:addItem("Old Maze", function() Noble.transition(InitialScene) end)
-menu:addItem("Test", function() Noble.transition(TestScene) end)
-menu:select("New Maze")
-
+	menu:addItem("New Space", function() Noble.transition(StarScene) end)
+	--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
+	menu:addItem("New Maze", function() Noble.transition(MazeScene) end)
+	--menu:addItem("Old Maze", function() Noble.transition(InitialScene) end)
+	menu:addItem("Test", function() Noble.transition(TestScene) end)
+	menu:select("New Maze")
+	bg = Graphics.image.new('assets/images/screens/title-screen.png')
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -85,13 +85,16 @@ end
 function scene:start()
 	scene.super.start(self)
 	-- Your code here
+	
 end
 
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
 	-- Your code here
-	menu:draw(8, 80)
+	
+	bg:draw(0,0)
+	menu:draw(8, 120)
 end
 
 -- This runs once per frame, and is meant for drawing code.

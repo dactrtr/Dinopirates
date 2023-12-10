@@ -27,7 +27,7 @@ class('Player').extends(Graphics.sprite)
   Dead.animation = Graphics.animation.loop.new(100, Dead.imagetable, true)
 
 
-function Player:init(x, y, toasts, speed)
+function Player:init(x, y, battery, speed)
   
   self:setImage(Idle.animation:image())
   self:setZIndex(3)
@@ -38,7 +38,7 @@ function Player:init(x, y, toasts, speed)
   
   -- Mark: Custom properties
   self.speed = speed
-  self.toasts = toasts
+  self.battery = 100
   
   
   self:add()   
@@ -60,6 +60,8 @@ function Player:move(direction)
   self.direction = direction
   local movementX = 0
   local movementY = 0
+  
+  self.battery -= 1
   
   if (direction == "left") then
     self:setImage(Left.animation:image())
@@ -92,7 +94,7 @@ function Player:move(direction)
 end
 
 function Player:update()
-  -- if self.toasts < 1 then
-  --   self.toasts = 0
-  -- end
+ if self.battery < 0 then
+   self.battery = 0
+ end
 end

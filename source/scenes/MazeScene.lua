@@ -15,6 +15,8 @@ class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
 
 import "entities/player/player"
+import "entities/enemy"
+import 'entities/props/propItem'
 import "entities/FX/FXshadow"
 
 -- It is recommended that you declare, but don't yet define,
@@ -26,7 +28,9 @@ import "entities/FX/FXshadow"
 -- ...
 --
 local player = nil
+local enemy = nil
 local shadow = nil
+local chair = nil
 local cheat = CheatCode("up", "up", "up", "down")
 -- This is the background color of this scene.
 MazeScene.backgroundColor = Graphics.kColorWhite
@@ -72,22 +76,24 @@ function MazeScene:enter()
 	floor:moveTo(200, 120)
 	floor:add()
 	
-	-- Mark: Walls
-	-- addBlock(0, 0, 400, 20)
-	-- addBlock(0, 228, 400, 12)
-	-- addBlock(0, 12, 12, 216)
-	-- addBlock(388, 12, 12, 216)
+	--Mark: Walls
+	addBlock(0, 0, 400, 20)
+	addBlock(0, 228, 400, 12)
+	addBlock(0, 12, 12, 216)
+	addBlock(388, 12, 12, 216)
 	-- This image need to be changed
 	-- border = NobleSprite("assets/images/border-map.png")
 	-- border:setZIndex(1)
 	-- border:moveTo(255, 120)
 	-- self:addSprite(border)
 	
+	-- Mark: Props
+	chair = PropItem(150, 150, 3)
 	-- Mark: Entities
 	player = Player(200, 120, 4, 1)
-	
+	enemy = Enemy(280,60,0)
 	--Test
-	shadow = FXshadow(player)
+	shadow = FXshadow(player.x, player.y, player)
 end
 
 -- This runs once a transition from another scene is complete.
@@ -118,7 +124,7 @@ function MazeScene:exit()
 	player:remove()
 	floor:remove()
 	shadow:remove()
-	
+	enemy:remove()
 	
 end
 
@@ -177,6 +183,7 @@ MazeScene.inputHandler = {
 	end,
 	leftButtonHold = function()
 		player:move("left")
+		shadow:move("left")
 	end,
 	leftButtonUp = function()
 		
@@ -189,6 +196,7 @@ MazeScene.inputHandler = {
 	end,
 	rightButtonHold = function()
 		player:move("right")
+		shadow:move("right")
 	end,
 	rightButtonUp = function()
 		
@@ -201,6 +209,7 @@ MazeScene.inputHandler = {
 	end,
 	upButtonHold = function()
 		player:move("up")
+		shadow:move("up")
 	end,
 	upButtonUp = function()
 
@@ -213,6 +222,7 @@ MazeScene.inputHandler = {
 	end,
 	downButtonHold = function()
 		player:move("down")
+		shadow:move("down")
 	end,
 	downButtonUp = function()
 
