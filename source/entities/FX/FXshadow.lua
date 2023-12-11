@@ -1,26 +1,15 @@
 
 class('FXshadow').extends(Graphics.sprite)
 
-local shadow = Graphics.image.new(800,480)
-Graphics.pushContext(shadow)
-	Graphics.setColor(Graphics.kColorBlack)
-	Graphics.setDitherPattern(0.01, Graphics.image.kDitherTypeBayer8x8)
-	Graphics.fillRect(0, 0, shadow:getSize())
-Graphics.popContext()
--- this could be a function like the tiles
--- local light = Graphics.image.new("assets/images/fx/light100.png")
--- local light100 = Graphics.image.new("assets/images/fx/light100.png")
--- local light80 = Graphics.image.new("assets/images/fx/light80.png")
--- local light60 = Graphics.image.new("assets/images/fx/light60.png")
--- local light40 = Graphics.image.new("assets/images/fx/light40.png")
--- local light20 = Graphics.image.new("assets/images/fx/light20.png")
+local shadow = Graphics.image.new(400,240)
+
 
 function FXshadow:init(x, y, player)
 	
 	self.speed = player.speed
 	self.player = player
 	self:moveTo(x,y)
-	self:setCollideRect(380,240, 40,24)
+	--self:setCollideRect(380,240, 40,24)
 	self:setCollidesWithGroups(1)
 	self:setImage(shadow)
 	self:setZIndex(10)
@@ -46,20 +35,51 @@ function FXshadow:move(direction)
 	movementY = self.y + self.speed
   end
   
-  local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
+  --local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
+  
 end
 
 function FXshadow:update()
-	local battery = self.player.battery
+	local battery = self.player.battery*2
+	
+	print(battery)
 	local shadowMask = shadow:getMaskImage()
+	local maskSize = 50
+	local lightAmount = 0
+	local globalLightAmount = 0.03
+	if battery > 60 and battery <= 120 then
+		maskSize = 45
+		lightAmount = 0.1
+		--globalLightAmount = 0.1
+	elseif battery > 40 and battery <= 60 then
+		maskSize = 40
+		lightAmount = 0.3
+		--globalLightAmount = 0.08
+	elseif battery > 20 and battery <= 40 then
+		maskSize = 35
+		lightAmount = 0.5
+		--globalLightAmount = 0.05
+	elseif battery > 0 and battery <= 20 then
+		maskSize = 30
+		lightAmount = 0.7
+		--globalLightAmount = 0.03
+	elseif battery == 0 then
+		maskSize = 25
+		lightAmount = 0.9
+		--globalLightAmount = 0
+	end
+	Graphics.pushContext(shadow)
+		Graphics.setColor(Graphics.kColorBlack)
+		Graphics.setDitherPattern(globalLightAmount, Graphics.image.kDitherTypeBayer8x8)
+		Graphics.fillRect(0, 0, shadow:getSize())
+	Graphics.popContext()
+	shadow:addMask()
 	Graphics.pushContext( shadowMask )
 	
-	Graphics.setColor(Graphics.kColorBlack)
-	Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeBayer8x8)
-	Graphics.fillCircleAtPoint(400, 240, battery/2)
+		Graphics.setColor(Graphics.kColorBlack)
+		Graphics.setDitherPattern(lightAmount, Graphics.image.kDitherTypeBayer8x8)
+		Graphics.fillCircleAtPoint(self.player.x, self.player.y, maskSize)
+		
 	Graphics.popContext()
-	if battery < 50 then
-		shadow:clearMask()
-	end
-	print(battery)
+	
 end

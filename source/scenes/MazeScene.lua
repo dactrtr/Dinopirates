@@ -232,6 +232,12 @@ MazeScene.inputHandler = {
 	--
 	cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
 		
+		-- TODO: turn this into a function
+		print("Battery player " .. player.battery)
+		if playdate.getCrankTicks(3) > 0 then
+			player.battery +=1
+		
+		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
 		--ship.changeMode = true
