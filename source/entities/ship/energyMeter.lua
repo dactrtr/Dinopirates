@@ -56,6 +56,7 @@ function EnergyMeter:fill(amount)
 end
 function EnergyMeter:update()
 		self:updateEnergy()
+		
 	if  self.x > (xPos + 2) or self.x < (xPos - 2) or self.y < (yPos - 2) or self.y > (yPos + 2) then
 		
 		self:moveTo( xPos ,yPos)
@@ -80,6 +81,7 @@ function EnergyMeter:resetRotations()
 	canister:setRotation(0)
 end
 function EnergyMeter:remove()
+	print("removing")
 	canister:remove()
 	Graphics.clear()
 end

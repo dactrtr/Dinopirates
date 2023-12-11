@@ -40,9 +40,10 @@ function FXshadow:move(direction)
 end
 
 function FXshadow:update()
+	
+	
 	local battery = self.player.battery*2
 	
-	print(battery)
 	local shadowMask = shadow:getMaskImage()
 	local maskSize = 50
 	local lightAmount = 0

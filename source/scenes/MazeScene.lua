@@ -15,6 +15,7 @@ class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
 
 import "entities/player/player"
+import "entities/player/battery"
 import "entities/enemy"
 import 'entities/props/propItem'
 import "entities/FX/FXshadow"
@@ -27,10 +28,17 @@ import "entities/FX/FXshadow"
 --							   When accessed outside this file use `MazeScene.variable2`.
 -- ...
 --
+
+-- Mark: player related
 local player = nil
-local enemy = nil
 local shadow = nil
+local batteryIndicator = nil
+-- Mark: enemies related
+local enemy = nil
+-- Mark: environment related
 local chair = nil
+
+-- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 -- This is the background color of this scene.
 MazeScene.backgroundColor = Graphics.kColorWhite
@@ -41,7 +49,7 @@ function MazeScene:init()
 	MazeScene.super.init(self)
 	debug = false
 	cheat.onComplete = function()
-		print(debug)
+		
 	end
 	-- Mark: Background
 	
@@ -82,18 +90,17 @@ function MazeScene:enter()
 	addBlock(0, 12, 12, 216)
 	addBlock(388, 12, 12, 216)
 	-- This image need to be changed
-	-- border = NobleSprite("assets/images/border-map.png")
-	-- border:setZIndex(1)
-	-- border:moveTo(255, 120)
-	-- self:addSprite(border)
+	
 	
 	-- Mark: Props
 	chair = PropItem(150, 150, 3)
 	-- Mark: Entities
 	player = Player(200, 120, 4, 1)
+	shadow = FXshadow(player.x, player.y, player)
+	batteryIndicator = Battery(20,10, player)
 	enemy = Enemy(280,60,0)
 	--Test
-	shadow = FXshadow(player.x, player.y, player)
+	
 end
 
 -- This runs once a transition from another scene is complete.
@@ -107,7 +114,11 @@ function MazeScene:update()
 	MazeScene.super.update(self)
 	-- Your code here
 	cheat:update()
-	player:idle()
+	
+	if player.battery == 0  and playdate.isCrankDocked() then
+		playdate.ui.crankIndicator:draw(0, 0)
+	end
+	
 end
 
 -- This runs once per frame, and is meant for drawing code.
@@ -186,7 +197,7 @@ MazeScene.inputHandler = {
 		shadow:move("left")
 	end,
 	leftButtonUp = function()
-		
+		player:idle()
 	end,
 
 	-- D-pad right
@@ -199,7 +210,7 @@ MazeScene.inputHandler = {
 		shadow:move("right")
 	end,
 	rightButtonUp = function()
-		
+		player:idle()
 	end,
 
 	-- D-pad up
@@ -212,7 +223,7 @@ MazeScene.inputHandler = {
 		shadow:move("up")
 	end,
 	upButtonUp = function()
-
+		player:idle()
 	end,
 
 	-- D-pad down
@@ -225,7 +236,7 @@ MazeScene.inputHandler = {
 		shadow:move("down")
 	end,
 	downButtonUp = function()
-
+		player:idle()
 	end,
 
 	-- Crank
@@ -233,10 +244,8 @@ MazeScene.inputHandler = {
 	cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
 		
 		-- TODO: turn this into a function
-		print("Battery player " .. player.battery)
 		if playdate.getCrankTicks(3) > 0 then
 			player.battery +=1
-		
 		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.

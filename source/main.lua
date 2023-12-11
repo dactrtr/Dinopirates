@@ -32,4 +32,4 @@ end)
 playdate.display.setRefreshRate(60)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)
+Noble.new(MazeScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)
