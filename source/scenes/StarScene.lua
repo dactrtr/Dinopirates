@@ -114,7 +114,7 @@ function StarScene:exit()
 	crosshair:remove()
 	ship:remove()
 	laser:remove()
-	energyMeter:remove()
+	energyMeter:removeAll()
 	--Removing planets
 	p1:remove()
 	p2:remove()

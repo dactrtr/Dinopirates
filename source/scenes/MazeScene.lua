@@ -175,7 +175,7 @@ MazeScene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-		
+		batteryIndicator:removeAll()
 	end,
 	BButtonHeld = function()
 		

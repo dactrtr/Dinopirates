@@ -9,7 +9,6 @@ function FXshadow:init(x, y, player)
 	self.speed = player.speed
 	self.player = player
 	self:moveTo(x,y)
-	--self:setCollideRect(380,240, 40,24)
 	self:setCollidesWithGroups(1)
 	self:setImage(shadow)
 	self:setZIndex(10)
@@ -35,12 +34,10 @@ function FXshadow:move(direction)
 	movementY = self.y + self.speed
   end
   
-  --local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
   
 end
 
 function FXshadow:update()
-	
 	
 	local battery = self.player.battery*2
 	
@@ -51,28 +48,25 @@ function FXshadow:update()
 	if battery > 60 and battery <= 120 then
 		maskSize = 45
 		lightAmount = 0.1
-		--globalLightAmount = 0.1
 	elseif battery > 40 and battery <= 60 then
 		maskSize = 40
 		lightAmount = 0.3
-		--globalLightAmount = 0.08
 	elseif battery > 20 and battery <= 40 then
 		maskSize = 35
 		lightAmount = 0.5
-		--globalLightAmount = 0.05
 	elseif battery > 0 and battery <= 20 then
 		maskSize = 30
 		lightAmount = 0.7
-		--globalLightAmount = 0.03
 	elseif battery == 0 then
 		maskSize = 25
 		lightAmount = 0.9
-		--globalLightAmount = 0
 	end
 	Graphics.pushContext(shadow)
+	
 		Graphics.setColor(Graphics.kColorBlack)
 		Graphics.setDitherPattern(globalLightAmount, Graphics.image.kDitherTypeBayer8x8)
 		Graphics.fillRect(0, 0, shadow:getSize())
+		
 	Graphics.popContext()
 	shadow:addMask()
 	Graphics.pushContext( shadowMask )

@@ -46,7 +46,7 @@ function Player:init(x, y, battery, speed)
   self.animation.dead.frameDuration = 12
   self.animation:setState('idle')
   
-  self:setSize(48, 48)
+  self:setSize(48, 52)
   self:setZIndex(3)
   self:moveTo(x,y)
   self:setCollideRect(4,24, 40,24)

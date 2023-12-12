@@ -80,8 +80,7 @@ function EnergyMeter:resetRotations()
 	self:setRotation(0)
 	canister:setRotation(0)
 end
-function EnergyMeter:remove()
-	print("removing")
+function EnergyMeter:removeAll()
+	self:remove()
 	canister:remove()
-	Graphics.clear()
 end
