@@ -136,6 +136,7 @@ function MazeScene:exit()
 	floor:remove()
 	shadow:remove()
 	enemy:remove()
+	batteryIndicator:removeAll()
 	
 end
 
@@ -175,7 +176,7 @@ MazeScene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-		batteryIndicator:removeAll()
+		
 	end,
 	BButtonHeld = function()
 		
