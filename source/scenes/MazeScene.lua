@@ -34,7 +34,7 @@ local player = nil
 local shadow = nil
 local batteryIndicator = nil
 -- Mark: enemies related
-local enemy = nil
+local brocorat = nil
 -- Mark: environment related
 local chair = nil
 
@@ -98,7 +98,7 @@ function MazeScene:enter()
 	player = Player(200, 120, 4, 1)
 	shadow = FXshadow(player.x, player.y, player)
 	batteryIndicator = Battery(20,10, player)
-	enemy = Enemy(280,60,0)
+	brocorat = Enemy(280, 60, 0.7)
 	--Test
 	
 end
@@ -114,9 +114,16 @@ function MazeScene:update()
 	MazeScene.super.update(self)
 	-- Your code here
 	cheat:update()
-	
+	-- Mark: Crank notification
 	if player.battery == 0  and playdate.isCrankDocked() then
 		playdate.ui.crankIndicator:draw(0, 0)
+	end
+	
+	-- Mark: Stops enemy from moving in the dark
+	if player.battery == 0 then
+		brocorat.moveSpeed = 0
+	elseif player.battery > 60 then
+		brocorat.moveSpeed = brocorat.initialSpeed
 	end
 	
 end
@@ -135,7 +142,7 @@ function MazeScene:exit()
 	player:remove()
 	floor:remove()
 	shadow:remove()
-	enemy:remove()
+	brocorat:remove()
 	batteryIndicator:removeAll()
 	
 end
@@ -196,6 +203,7 @@ MazeScene.inputHandler = {
 	leftButtonHold = function()
 		player:move("left")
 		shadow:move("left")
+		brocorat:search(player)
 	end,
 	leftButtonUp = function()
 		player:idle()
@@ -209,6 +217,7 @@ MazeScene.inputHandler = {
 	rightButtonHold = function()
 		player:move("right")
 		shadow:move("right")
+		brocorat:search(player)
 	end,
 	rightButtonUp = function()
 		player:idle()
@@ -222,6 +231,7 @@ MazeScene.inputHandler = {
 	upButtonHold = function()
 		player:move("up")
 		shadow:move("up")
+		brocorat:search(player)
 	end,
 	upButtonUp = function()
 		player:idle()
@@ -235,6 +245,7 @@ MazeScene.inputHandler = {
 	downButtonHold = function()
 		player:move("down")
 		shadow:move("down")
+		brocorat:search(player)
 	end,
 	downButtonUp = function()
 		player:idle()
@@ -247,6 +258,7 @@ MazeScene.inputHandler = {
 		-- TODO: turn this into a function
 		if playdate.getCrankTicks(3) > 0 then
 			player.battery +=1
+			brocorat:search(player)
 		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.

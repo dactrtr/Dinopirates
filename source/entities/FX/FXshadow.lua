@@ -49,6 +49,7 @@ function FXshadow:update()
 	local lightAmount = 0.1
 	local globalLightAmount = 0.03
 	
+	
 	if battery > 120 and battery <= 160 then
 		maskSize = 45
 		lightAmount = 0.2
@@ -75,6 +76,7 @@ function FXshadow:update()
 		lightSourceSize = 15
 		lightSourceAmount = 0.9
 	end
+	-- Mark: fills the screen with a dither pattern
 	Graphics.pushContext(shadow)
 	
 		Graphics.setColor(Graphics.kColorBlack)
@@ -82,6 +84,8 @@ function FXshadow:update()
 		Graphics.fillRect(0, 0, shadow:getSize())
 		
 	Graphics.popContext()
+	
+	-- Mark: add a mask with a less dither pattern
 	shadow:addMask()
 	Graphics.pushContext( shadowMask )
 	
@@ -90,6 +94,8 @@ function FXshadow:update()
 		Graphics.fillCircleAtPoint(self.player.x, self.player.y, maskSize)
 		
 	Graphics.popContext()
+	
+	-- Mark: add a mask with a even less dither pattern
 	shadow:addMask()
 	Graphics.pushContext( lightSource )
 	
@@ -98,5 +104,9 @@ function FXshadow:update()
 		Graphics.fillCircleAtPoint(self.player.x, self.player.y, lightSourceSize)
 		
 	Graphics.popContext()
+	
+	if debug then
+		shadow:clear(Graphics.kColorClear)
+	end
 	
 end
