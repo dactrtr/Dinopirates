@@ -3,6 +3,7 @@ import 'libraries/noble/Noble'
 import 'utilities/Utilities'
 
 import 'scenes/InitialScene'
+import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/SpaceScene'
 import 'scenes/StarScene'
@@ -29,7 +30,7 @@ local menuItem, error = menu:addMenuItem("debug", function()
 	end
 end)
 -- Noble.showFPS = true
-playdate.display.setRefreshRate(60)
+playdate.display.setRefreshRate(40)
 timers = playdate.timer
 
 Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)

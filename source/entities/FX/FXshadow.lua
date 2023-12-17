@@ -4,14 +4,14 @@ class('FXshadow').extends(Graphics.sprite)
 local shadow = Graphics.image.new(400,240)
 
 
-function FXshadow:init(x, y, player)
+function FXshadow:init(x, y, player, Zindex)
 	
 	self.speed = player.speed
 	self.player = player
 	self:moveTo(x,y)
 	self:setCollidesWithGroups(1)
 	self:setImage(shadow)
-	self:setZIndex(10)
+	self:setZIndex(Zindex)
 	self:add()	
 end
 

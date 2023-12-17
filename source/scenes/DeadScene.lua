@@ -1,5 +1,5 @@
 --
--- TitleScene.lua
+-- DeadScene.lua
 --
 -- Use this as a starting point for your game's scenes.
 -- Copy this file to your root "scenes" directory,
@@ -7,12 +7,12 @@
 --
 
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--- !!! Rename "TitleScene" to your scene's name in these first three lines. !!!
+-- !!! Rename "DeadScene" to your scene's name in these first three lines. !!!
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-TitleScene = {}
-class("TitleScene").extends(NobleScene)
-local scene = TitleScene
+DeadScene = {}
+class("DeadScene").extends(NobleScene)
+local scene = DeadScene
 
 local menu
 local crankTick = 0
@@ -24,14 +24,14 @@ local crankTick = 0
 --
 -- local variable1 = nil	-- local variable
 -- scene.variable2 = nil	-- Scene variable.
---							   When accessed outside this file use `TitleScene.variable2`.
+--							   When accessed outside this file use `DeadScene.variable2`.
 -- ...
 --
 
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
 
-TitleScene.inputHandler = {
+DeadScene.inputHandler = {
 	upButtonDown = function()
 		menu:selectPrevious()
 	end,
@@ -60,17 +60,18 @@ function scene:init()
 	-- Your code here
 	menu = Noble.Menu.new(
 		true,
-		Noble.Text.ALIGN_LEFT,
+		Noble.Text.ALIGN_CENTER,
 		false,
 		nil,
 		2,16
 	)
-	menu:addItem("New Space", function() Noble.transition(StarScene) end)
-	--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
+	menu:addItem("Title", function() Noble.transition(TitleScene) end)
+	
 	menu:addItem("New Run", function() Noble.transition(MazeScene) end)
-	menu:addItem("Dead", function() Noble.transition(DeadScene) end)
-	menu:addItem("Test", function() Noble.transition(TestScene) end)
-	menu:select("New Run")
+
+	
+	menu:select("Title")
+	
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -78,8 +79,7 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
-	
-	bg = Graphics.image.new('assets/images/screens/title-screen.png')
+	bg = Graphics.image.new('assets/images/screens/dead-screen.png')
 end
 
 -- This runs once a transition from another scene is complete.
@@ -93,9 +93,14 @@ end
 function scene:update()
 	scene.super.update(self)
 	-- Your code here
-	
+	Graphics.lockFocus(bg)
+		-- Graphics.setColor(Graphics.kColorBlack)
+		-- Graphics.fillRect(0, 0, 120,20)
+		Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+		Graphics.drawText("デバッグモード!!", 2, 1, Graphics.font.kLanguageJapanese)
+	Graphics.unlockFocus()
 	bg:draw(0,0)
-	menu:draw(8, 120)
+	menu:draw(200, 120)
 end
 
 -- This runs once per frame, and is meant for drawing code.
@@ -124,6 +129,3 @@ function scene:resume()
 	scene.super.resume(self)
 	-- Your code here
 end
-
--- Define the inputHander for this scene here, or use a previously defined inputHandler.
-

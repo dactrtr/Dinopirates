@@ -126,3 +126,25 @@ function debugScreen()
 		textOverlay:draw(0,0)
 	end
 end
+
+function debugScreenMaze(player)
+	local Xpos = 40
+	local Ypos = 4
+	if debug then
+		if player.isAlive then
+			status = "Alive"
+		else
+			status = "Dead"
+		end
+		textOverlay = Graphics.image.new(400,240)
+		Graphics.lockFocus(textOverlay)
+			Graphics.setColor(Graphics.kColorBlack)
+			Graphics.fillRect(0, 0, 280,40)
+		Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+		Graphics.drawText("デバッグモード!!", 2, 1, playdate.graphics.font.kLanguageJapanese)
+		Graphics.drawText("Battery level: " .. player.battery .. " / Status: " .. status , 2, (Ypos+16))
+		
+		Graphics.unlockFocus()
+		textOverlay:draw(Xpos,Ypos)
+	end
+end

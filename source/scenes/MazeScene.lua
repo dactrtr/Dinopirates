@@ -28,7 +28,13 @@ import "entities/FX/FXshadow"
 --							   When accessed outside this file use `MazeScene.variable2`.
 -- ...
 --
-
+-- Mark: Zindexes (this should be global)
+local ZindexPlayer = 4
+local ZindexEnemy = 3
+local ZindexProps = 3
+local ZindexFX = 6
+local ZindexUI = 10
+local ZindexPop = 12
 -- Mark: player related
 local player = nil
 local shadow = nil
@@ -93,12 +99,12 @@ function MazeScene:enter()
 	
 	
 	-- Mark: Props
-	chair = PropItem(150, 150, 3)
+	chair = PropItem(150, 150, ZindexProps)
 	-- Mark: Entities
-	player = Player(200, 120, 4, 1)
-	shadow = FXshadow(player.x, player.y, player)
-	batteryIndicator = Battery(20,10, player)
-	brocorat = Enemy(280, 60, 0.7)
+	player = Player(200, 120, 4, 1, ZindexPlayer)
+	shadow = FXshadow(player.x, player.y, player, ZindexFX)
+	batteryIndicator = Battery(20,10, player, ZindexUI)
+	brocorat = Enemy(280, 60, 0.7, ZindexEnemy)
 	--Test
 	
 end
@@ -112,8 +118,12 @@ end
 -- This runs once per frame.
 function MazeScene:update()
 	MazeScene.super.update(self)
-	-- Your code here
+	-- Mark: DEBUG
+	debugScreenMaze(player)
+	
+	-- Mark: cheat code
 	cheat:update()
+	
 	-- Mark: Crank notification
 	if player.battery == 0  and playdate.isCrankDocked() then
 		playdate.ui.crankIndicator:draw(0, 0)
@@ -126,6 +136,7 @@ function MazeScene:update()
 		brocorat.moveSpeed = brocorat.initialSpeed
 	end
 	
+	-- Mark: GAME OVER
 end
 
 -- This runs once per frame, and is meant for drawing code.
@@ -140,6 +151,7 @@ function MazeScene:exit()
 	debug = false
 	--Removing all entities
 	player:remove()
+	chair:remove()
 	floor:remove()
 	shadow:remove()
 	brocorat:remove()
@@ -201,9 +213,11 @@ MazeScene.inputHandler = {
 		
 	end,
 	leftButtonHold = function()
-		player:move("left")
-		shadow:move("left")
-		brocorat:search(player)
+		if player.isAlive then
+			player:move("left")
+			shadow:move("left")
+			brocorat:search(player)
+		end
 	end,
 	leftButtonUp = function()
 		player:idle()
@@ -215,9 +229,11 @@ MazeScene.inputHandler = {
 		
 	end,
 	rightButtonHold = function()
-		player:move("right")
-		shadow:move("right")
-		brocorat:search(player)
+		if player.isAlive then
+			player:move("right")
+			shadow:move("right")
+			brocorat:search(player)
+		end
 	end,
 	rightButtonUp = function()
 		player:idle()
@@ -229,9 +245,11 @@ MazeScene.inputHandler = {
 
 	end,
 	upButtonHold = function()
-		player:move("up")
-		shadow:move("up")
-		brocorat:search(player)
+		if player.isAlive then
+			player:move("up")
+			shadow:move("up")
+			brocorat:search(player)
+		end
 	end,
 	upButtonUp = function()
 		player:idle()
@@ -243,9 +261,11 @@ MazeScene.inputHandler = {
 
 	end,
 	downButtonHold = function()
-		player:move("down")
-		shadow:move("down")
-		brocorat:search(player)
+		if player.isAlive then
+			player:move("down")
+			shadow:move("down")
+			brocorat:search(player)
+		end
 	end,
 	downButtonUp = function()
 		player:idle()
@@ -254,11 +274,12 @@ MazeScene.inputHandler = {
 	-- Crank
 	--
 	cranked = function(change, acceleratedChange)	-- Runs when the crank is rotated. See Playdate SDK documentation for details.
-		
-		-- TODO: turn this into a function
-		if playdate.getCrankTicks(3) > 0 then
-			player.battery +=1
-			brocorat:search(player)
+		if player.isAlive then
+			-- TODO: turn this into a function
+			if playdate.getCrankTicks(3) > 0 then
+				player.battery +=1
+				brocorat:search(player)
+			end
 		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.

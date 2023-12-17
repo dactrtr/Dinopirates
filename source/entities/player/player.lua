@@ -1,37 +1,11 @@
 Player = {}
 class('Player').extends(NobleSprite)
 
--- Mark: imagetables for movement animation
-  -- Right
-  -- local Right = Graphics.sprite.new()
-  -- Right.imagetable = Graphics.imagetable.new('assets/images/player/player-right')
-  -- Right.animation = Graphics.animation.loop.new(100, Right.imagetable, true)
-  -- -- Left
-  -- local Left = Graphics.sprite.new()
-  -- Left.imagetable = Graphics.imagetable.new('assets/images/player/player-left')
-  -- Left.animation = Graphics.animation.loop.new(100, Left.imagetable, true)
-  -- -- Up
-  -- local Up = Graphics.sprite.new()
-  -- Up.imagetable = Graphics.imagetable.new('assets/images/player/player-up')
-  -- Up.animation = Graphics.animation.loop.new(100, Up.imagetable, true)
-  -- -- Down
-  -- local Down = Graphics.sprite.new()
-  -- Down.imagetable = Graphics.imagetable.new('assets/images/player/player-down')
-  -- Down.animation = Graphics.animation.loop.new(100, Down.imagetable, true)
-  -- -- Idle
-  -- local Idle = Graphics.sprite.new()
-  -- Idle.imagetable = Graphics.imagetable.new('assets/images/player/player-idle')
-  -- Idle.animation = Graphics.animation.loop.new(700, Idle.imagetable, true)
-  -- -- Dead
-  -- local Dead = Graphics.sprite.new()
-  -- Dead.imagetable = Graphics.imagetable.new('assets/images/player/player-dead')
-  -- Dead.animation = Graphics.animation.loop.new(100, Dead.imagetable, true)
 
-
-function Player:init(x, y, battery, speed)
+function Player:init(x, y, battery, speed, Zindex)
   Player.super.init(self,'assets/images/player/player', true)
   
-  -- animation states
+  -- Mark: animation states
   self.animation:addState('idle', 1, 4)
   self.animation:addState('right', 5, 7)
   self.animation:addState('left', 8, 10)
@@ -46,8 +20,9 @@ function Player:init(x, y, battery, speed)
   self.animation.dead.frameDuration = 12
   self.animation:setState('idle')
   
+  -- Mark: basic properties
   self:setSize(48, 52)
-  self:setZIndex(3)
+  self:setZIndex(Zindex)
   self:moveTo(x,y)
   self:setCollideRect(4,24, 40,24)
   self:setCollidesWithGroups(1)
@@ -62,7 +37,7 @@ function Player:init(x, y, battery, speed)
 end 
 
 function Player:collisionResponse()
-  self:dead()
+  -- self:dead()
 end
 
 function Player:idle()
@@ -106,7 +81,8 @@ function Player:move(direction)
        for index, collision in pairs(collisions) do
          local collideObject = collision['other']
          if collideObject:isa(Enemy) then
-           collideObject:remove() -- same method for the enemies
+           --collideObject:remove()
+           self.isAlive = false  -- same method for the enemies
          end
       end
     end
@@ -116,7 +92,7 @@ end
 
 function Player:update()
   
-  -- cap battery total
+  -- Mark: battery bounds
  if self.battery < 0 then
    self.battery = 0
  elseif self.battery >= 100 then

@@ -52,10 +52,10 @@ laserColor =  Graphics.kColorWhite
 
 -- MARK: Zindex
 local zBG = 1
-zPlanets = 2
+local zPlanets = 2
 local zFX = 10
-zMain = 12
-blinkSpeed = math.random(10,500)
+local zMain = 12
+local blinkSpeed = math.random(10,500)
 
 function SpaceScene:init()
     SpaceScene.super.init(self)

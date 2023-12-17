@@ -3,10 +3,10 @@ class('Battery').extends(Graphics.sprite)
 
 import 'entities/player/batteryCanister'
 
-function Battery:init(x,y,player)
+function Battery:init(x, y, player, Zindex)
     self.player = player
-    batteryCanister = BatteryCanister(x,y)
-    self:setZIndex(11)
+    batteryCanister = BatteryCanister(x,y,Zindex)
+    self:setZIndex(Zindex-1)
     self:moveTo(x-1,y)
     self:add()
 end

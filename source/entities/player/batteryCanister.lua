@@ -3,10 +3,10 @@ class('BatteryCanister').extends(Graphics.sprite)
 
 local canister = Graphics.image.new("assets/images/ui/BatteryTank.png")
 
-function BatteryCanister:init(x,y)
+function BatteryCanister:init(x,y,Zindex)
 	self:moveTo(x,y)
 	self:setImage(canister)
-	self:setZIndex(zMain)
+	self:setZIndex(Zindex)
 	self:add()	
 	
 end
