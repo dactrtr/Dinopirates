@@ -10,6 +10,9 @@
 -- !!! Rename "DeadScene" to your scene's name in these first three lines. !!!
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+
+
+
 DeadScene = {}
 class("DeadScene").extends(NobleScene)
 local scene = DeadScene

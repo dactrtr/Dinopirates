@@ -148,3 +148,4 @@ function debugScreenMaze(player)
 		textOverlay:draw(Xpos,Ypos)
 	end
 end
+

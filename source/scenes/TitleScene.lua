@@ -79,7 +79,7 @@ function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
 	
-	bg = Graphics.image.new('assets/images/screens/title-screen.png')
+	
 end
 
 -- This runs once a transition from another scene is complete.
@@ -93,7 +93,7 @@ end
 function scene:update()
 	scene.super.update(self)
 	-- Your code here
-	
+	local bg = Graphics.image.new('assets/images/screens/title-screen.png')
 	bg:draw(0,0)
 	menu:draw(8, 120)
 end

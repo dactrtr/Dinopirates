@@ -137,8 +137,14 @@ function MazeScene:update()
 	end
 	
 	-- Mark: GAME OVER
+	GameOver(player) -- works but BONK!
 end
 
+function GameOver(player)
+	if player.isAlive == false then
+		Noble.transition(DeadScene)
+	end
+end
 -- This runs once per frame, and is meant for drawing code.
 function MazeScene:drawBackground()
 	MazeScene.super.drawBackground(self)
@@ -283,11 +289,9 @@ MazeScene.inputHandler = {
 		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
-		--ship.changeMode = true
-		
+		print("hello")
 	end,
 	crankUndocked = function()						-- Runs once when when crank is undocked.
-		--ship.changeMode = true
 		
 	end
 }
