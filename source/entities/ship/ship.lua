@@ -2,7 +2,7 @@ Ship = {}
 class('Ship').extends(NobleSprite)
 
   
-function Ship:init(startX, startY, hull, speed, zIndex)
+function Ship:init(startX, startY, hull, speed, index)
   Ship.super.init(self,'assets/images/ship/ship', true)
 
   -- animation states  
@@ -18,7 +18,7 @@ function Ship:init(startX, startY, hull, speed, zIndex)
   self.animation:addState('fighterright', 14, 14)
   -- position and z-index
   self:setSize( 80, 60)
-  self:setZIndex(zIndex)
+  self:setZIndex(index)
   self:moveTo(startX,startY)
   
   -- self:setCollideRect(4,24, 40,24)

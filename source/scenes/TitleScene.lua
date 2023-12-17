@@ -18,7 +18,6 @@ local menu
 local crankTick = 0
 
 
-
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific varibles and methods here. Use "local" where possible.
 --
@@ -58,19 +57,7 @@ TitleScene.inputHandler = {
 function scene:init()
 	scene.super.init(self)
 	-- Your code here
-	menu = Noble.Menu.new(
-		true,
-		Noble.Text.ALIGN_LEFT,
-		false,
-		nil,
-		2,16
-	)
-	menu:addItem("New Space", function() Noble.transition(StarScene) end)
-	--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-	menu:addItem("New Run", function() Noble.transition(MazeScene) end)
-	menu:addItem("Dead", function() Noble.transition(DeadScene) end)
-	menu:addItem("Test", function() Noble.transition(TestScene) end)
-	menu:select("New Run")
+	
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -93,6 +80,19 @@ end
 function scene:update()
 	scene.super.update(self)
 	-- Your code here
+	menu = Noble.Menu.new(
+			true,
+			Noble.Text.ALIGN_LEFT,
+			false,
+			nil,
+			2,16
+		)
+	if debug then menu:addItem("New Space", function() Noble.transition(StarScene) end) end
+		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
+		menu:addItem("New Run", function() Noble.transition(MazeScene) end)
+		menu:addItem("Dead", function() Noble.transition(DeadScene) end)
+		menu:addItem("Test", function() Noble.transition(TestScene) end)
+		menu:select("New Run")
 	local bg = Graphics.image.new('assets/images/screens/title-screen.png')
 	bg:draw(0,0)
 	menu:draw(8, 120)

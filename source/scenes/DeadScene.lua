@@ -82,7 +82,6 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
-	bg = Graphics.image.new('assets/images/screens/dead-screen.png')
 end
 
 -- This runs once a transition from another scene is complete.
@@ -95,7 +94,8 @@ end
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
-	-- Your code here
+	-- Your code heree
+	local bg = Graphics.image.new('assets/images/screens/dead-screen.png')
 	Graphics.lockFocus(bg)
 		-- Graphics.setColor(Graphics.kColorBlack)
 		-- Graphics.fillRect(0, 0, 120,20)

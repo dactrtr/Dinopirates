@@ -3,14 +3,14 @@ class('EnergyMeter').extends(Graphics.sprite)
 
 import "entities/ship/energyCanister"
 
-function EnergyMeter:init(ship)
+function EnergyMeter:init(ship, Zindex)
 	distanceFromShip = 48
 	self.energyTotal = ship.energyTotal
 	xPos = ship.x - distanceFromShip
 	yPos = ship.y - 12
 	self:moveTo( xPos,ship.y)
-	canister = EnergyCanister(xPos ,yPos)
-	self:setZIndex(zMain)
+	canister = EnergyCanister(xPos ,yPos, Zindex)
+	self:setZIndex(12)
 	self:updateEnergy(ship.energy)
 	self:add()	
 end

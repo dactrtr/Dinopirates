@@ -40,6 +40,14 @@ local spaceSpeed = nil
 local cheat = nil
 local laser = nil
 local cheat = nil
+
+-- Mark: Zindex
+local zBG = 1
+local zPlanets = 2
+local zFX = 10
+local zMain = 12
+
+local blinkSpeed = math.random(10,500)
 -- This is the background color of this scene.
 StarScene.backgroundColor = Graphics.kColorBlack
 

@@ -37,7 +37,7 @@ function Player:init(x, y, battery, speed, Zindex)
 end 
 
 function Player:collisionResponse()
-  -- self:dead()
+  self:dead()
 end
 
 function Player:idle()
@@ -46,8 +46,8 @@ function Player:idle()
   end
 end
 function Player:dead()
-  -- self.isAlive = false
-  -- self.animation:setState('dead')
+  self.isAlive = false
+  Noble.transition(DeadScene)
 end
 
 function Player:move(direction)
@@ -82,7 +82,7 @@ function Player:move(direction)
          local collideObject = collision['other']
          if collideObject:isa(Enemy) then
            --collideObject:remove()
-           self.isAlive = false  -- same method for the enemies
+           --self:dead()  -- same method for the enemies
          end
       end
     end

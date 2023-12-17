@@ -28,7 +28,7 @@ import "entities/FX/FXshadow"
 --							   When accessed outside this file use `MazeScene.variable2`.
 -- ...
 --
--- Mark: Zindexes (this should be global)
+-- Mark: Zindexes (this should be global??)
 local ZindexPlayer = 4
 local ZindexEnemy = 3
 local ZindexProps = 3
@@ -57,11 +57,6 @@ function MazeScene:init()
 	cheat.onComplete = function()
 		
 	end
-	-- Mark: Background
-	
-	
-
-	
 	-- Your code here
 end
 
@@ -137,12 +132,12 @@ function MazeScene:update()
 	end
 	
 	-- Mark: GAME OVER
-	GameOver(player) -- works but BONK!
+	--GameOver(player) -- works but BONK!
 end
 
 function GameOver(player)
 	if player.isAlive == false then
-		Noble.transition(DeadScene)
+		return Noble.transition(DeadScene)
 	end
 end
 -- This runs once per frame, and is meant for drawing code.

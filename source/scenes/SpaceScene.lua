@@ -2,8 +2,9 @@ SpaceScene = {}
 class("SpaceScene").extends(NobleScene)
 
 SpaceScene.backgroundColor = Graphics.kColorBlack
-
-
+-- #########
+-- DEPRECATED
+-- #########
 -- TODO:
 -- [ ] make vector meteorites (must be like this, check animators)
 -- [ ] think about a cat functionality
