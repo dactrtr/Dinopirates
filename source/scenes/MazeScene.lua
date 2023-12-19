@@ -28,13 +28,7 @@ import "entities/FX/FXshadow"
 --							   When accessed outside this file use `MazeScene.variable2`.
 -- ...
 --
--- Mark: Zindexes (this should be global??)
--- local ZindexPlayer = 4
--- local ZindexEnemy = 3
--- local ZindexProps = 3
--- local ZindexFX = 6
--- local ZindexUI = 10
--- local ZindexPop = 12
+
 -- Mark: player related
 local player = nil
 local shadow = nil
@@ -54,7 +48,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = true
+	debug = false
 	cheat.onComplete = function()
 		
 	end
