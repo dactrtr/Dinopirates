@@ -25,8 +25,14 @@ function Player:init(x, y, battery, speed, Zindex)
   self:setZIndex(Zindex)
   self:moveTo(x,y)
   self:setCollideRect(4,24, 40,24)
-  self:setCollidesWithGroups(1)
-  self:setGroups(2)
+  self:setCollidesWithGroups(
+    {
+      CollideGroups.enemy,
+      CollideGroups.props,
+      CollideGroups.items,
+      CollideGroups.wall
+    })
+  self:setGroups(CollideGroups.player)
   
   -- Mark: Custom properties
   self.speed = speed
@@ -37,7 +43,7 @@ function Player:init(x, y, battery, speed, Zindex)
 end 
 
 function Player:collisionResponse()
-  self:dead()
+  --self:dead()
 end
 
 function Player:idle()
@@ -81,11 +87,14 @@ function Player:move(direction)
        for index, collision in pairs(collisions) do
          local collideObject = collision['other']
          if collideObject:isa(Enemy) then
-           --collideObject:remove()
-           --self:dead()  -- same method for the enemies
+            self:dead()  -- same method for the enemies
          end
+         if collideObject:isa(Box) then
+            self:collisionResponse('freeze')  
+          end
       end
     end
+    
   end
   
 end

@@ -25,7 +25,7 @@ function addBlock(x,y,w,h)
 	block:setCenter(0,0)
 	block:addSprite()
 	block:setCollideRect(0,0,w,h)
-	block:setGroups(1)
+	block:setGroups(CollideGroups.wall)
 end
 
 -- MARK: Cheat codes

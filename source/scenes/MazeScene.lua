@@ -29,12 +29,12 @@ import "entities/FX/FXshadow"
 -- ...
 --
 -- Mark: Zindexes (this should be global??)
-local ZindexPlayer = 4
-local ZindexEnemy = 3
-local ZindexProps = 3
-local ZindexFX = 6
-local ZindexUI = 10
-local ZindexPop = 12
+-- local ZindexPlayer = 4
+-- local ZindexEnemy = 3
+-- local ZindexProps = 3
+-- local ZindexFX = 6
+-- local ZindexUI = 10
+-- local ZindexPop = 12
 -- Mark: player related
 local player = nil
 local shadow = nil
@@ -43,6 +43,7 @@ local batteryIndicator = nil
 local brocorat = nil
 -- Mark: environment related
 local chair = nil
+local chair1 = nil
 
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
@@ -53,7 +54,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = false
+	debug = true
 	cheat.onComplete = function()
 		
 	end
@@ -94,12 +95,15 @@ function MazeScene:enter()
 	
 	
 	-- Mark: Props
-	chair = PropItem(150, 150, ZindexProps)
+	chair = PropItem(150, 150, ZIndex.props)
+	chair1 = PropItem(250, 100, ZIndex.props)
 	-- Mark: Entities
-	player = Player(200, 120, 4, 1, ZindexPlayer)
-	shadow = FXshadow(player.x, player.y, player, ZindexFX)
-	batteryIndicator = Battery(20,10, player, ZindexUI)
-	brocorat = Enemy(280, 60, 0.7, ZindexEnemy)
+	player = Player(200, 120, 4, 1, ZIndex.player)
+	shadow = FXshadow(player.x, player.y, player, ZIndex.fx)
+	batteryIndicator = Battery(20,10, player, ZIndex.ui)
+	
+	brocorat = Enemy(280, 60, 0.7, ZIndex.enemy)
+	brocorat2 = Enemy(80, 160, 0.7, ZIndex.enemy)
 	--Test
 	
 end
@@ -127,19 +131,17 @@ function MazeScene:update()
 	-- Mark: Stops enemy from moving in the dark
 	if player.battery == 0 then
 		brocorat.moveSpeed = 0
+		brocorat2.moveSpeed = 0
 	elseif player.battery > 60 then
 		brocorat.moveSpeed = brocorat.initialSpeed
+		brocorat2.moveSpeed = brocorat2.initialSpeed
 	end
 	
 	-- Mark: GAME OVER
 	--GameOver(player) -- works but BONK!
 end
 
-function GameOver(player)
-	if player.isAlive == false then
-		return Noble.transition(DeadScene)
-	end
-end
+
 -- This runs once per frame, and is meant for drawing code.
 function MazeScene:drawBackground()
 	MazeScene.super.drawBackground(self)
@@ -153,9 +155,11 @@ function MazeScene:exit()
 	--Removing all entities
 	player:remove()
 	chair:remove()
+	chair1:remove()
 	floor:remove()
 	shadow:remove()
 	brocorat:remove()
+	brocorat2:remove()
 	batteryIndicator:removeAll()
 	
 end
@@ -218,6 +222,7 @@ MazeScene.inputHandler = {
 			player:move("left")
 			shadow:move("left")
 			brocorat:search(player)
+			brocorat2:search(player)
 		end
 	end,
 	leftButtonUp = function()
@@ -234,6 +239,7 @@ MazeScene.inputHandler = {
 			player:move("right")
 			shadow:move("right")
 			brocorat:search(player)
+			brocorat2:search(player)
 		end
 	end,
 	rightButtonUp = function()
@@ -250,6 +256,7 @@ MazeScene.inputHandler = {
 			player:move("up")
 			shadow:move("up")
 			brocorat:search(player)
+			brocorat2:search(player)
 		end
 	end,
 	upButtonUp = function()
@@ -266,6 +273,7 @@ MazeScene.inputHandler = {
 			player:move("down")
 			shadow:move("down")
 			brocorat:search(player)
+			brocorat2:search(player)
 		end
 	end,
 	downButtonUp = function()
@@ -280,6 +288,7 @@ MazeScene.inputHandler = {
 			if playdate.getCrankTicks(3) > 0 then
 				player.battery +=1
 				brocorat:search(player)
+				brocorat2:search(player)
 			end
 		end
 	end,

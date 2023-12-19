@@ -13,7 +13,7 @@ end
 
 function Battery:update()
     self.battery = self.player.battery
-    batteryPercent = (self.battery * 24) / 100
+    local batteryPercent = (self.battery * 24) / 100
     
     local batteryFill = Graphics.image.new(24,6)
     Graphics.pushContext(batteryFill)

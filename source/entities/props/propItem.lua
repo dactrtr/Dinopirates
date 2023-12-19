@@ -12,7 +12,7 @@ function PropItem:init(x, y, zIndex)
   self:setCollideRect(0,0, 32,32)
   self:setZIndex(zIndex)
   
-  self:setGroups(1)
+  self:setGroups(3)
   
   self:add(x,y)
 end

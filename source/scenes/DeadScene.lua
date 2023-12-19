@@ -63,16 +63,13 @@ function scene:init()
 	-- Your code here
 	menu = Noble.Menu.new(
 		true,
-		Noble.Text.ALIGN_CENTER,
+		Noble.Text.ALIGN_RIGHT,
 		false,
 		nil,
 		2,16
 	)
 	menu:addItem("Title", function() Noble.transition(TitleScene) end)
-	
 	menu:addItem("New Run", function() Noble.transition(MazeScene) end)
-
-	
 	menu:select("Title")
 	
 end
@@ -99,11 +96,11 @@ function scene:update()
 	Graphics.lockFocus(bg)
 		-- Graphics.setColor(Graphics.kColorBlack)
 		-- Graphics.fillRect(0, 0, 120,20)
-		Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-		Graphics.drawText("デバッグモード!!", 2, 1, Graphics.font.kLanguageJapanese)
+		Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
+		Graphics.drawText("てき に さわらせないで", 2, 220, Graphics.font.kLanguageJapanese)
 	Graphics.unlockFocus()
 	bg:draw(0,0)
-	menu:draw(200, 120)
+	menu:draw(400, 60)
 end
 
 -- This runs once per frame, and is meant for drawing code.

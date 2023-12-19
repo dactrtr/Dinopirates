@@ -14,7 +14,13 @@ function Enemy:init(x, y, moveSpeed, Zindex)
   
   self.moveSpeed = moveSpeed
   self.initialSpeed = moveSpeed
-  self:setGroups(1)
+  self:setGroups(CollideGroups.enemy)
+  self:setCollidesWithGroups(
+  {
+    CollideGroups.player,
+    CollideGroups.props,
+    CollideGroups.wall
+  })
   self:setZIndex(Zindex)
   self:add()
 end
@@ -23,33 +29,39 @@ function Enemy:search(player)
   
   self.player = player
   
-  if self.player.x < self.x then
-    self:moveBy(-self.moveSpeed,0)
-  elseif self.player.x > self.x then
-    self:moveBy(self.moveSpeed,0)
-  elseif self.player.x == self.x then
-    -- maybe animation?
+  local movementX = 0
+  local movementY = 0
+  
+
+  if self.player.x <= self.x then
+    movementX = self.x - self.moveSpeed
+  elseif self.player.x > self.x  then
+      movementX = self.x + self.moveSpeed
+  end
+  if self.player.y <= self.y then
+    movementY = self.y - self.moveSpeed
+  elseif self.player.y > self.y then
+    movementY = self.y + self.moveSpeed
+  end
+
+  
+  local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
+  if lenght > 0 then
+    for index, collision in pairs(collisions) do
+      local collideObject = collision['other']
+      if collideObject:isa(Player) then
+        self.player:dead()
+      end
+      if collideObject:isa(PropItem) then
+        self:collisionResponse('slide')
+      end
+    end
   end
   
-  if self.player.y > self.y then
-    self:moveBy(0,self.moveSpeed)
-  elseif self.player.y < self.y then
-    self:moveBy(0,-self.moveSpeed)
-  elseif self.player.y == self.y then
-  -- maybe animation?
-  
-  end
 end
 
 function Enemy:update()
-  self:setImage(Enemy.animation:image())
-  
-  -- local actualX, actualY, collisions, lenght = self:moveWithCollisions(self.x - self.moveSpeed, self.y)
-  
-  -- if collisions['other'] then
-  --   print(self.x, collisions.type)
-  -- end
-  
+  self:setImage(Enemy.animation:image()) 
 end
 
 function Enemy:collisionResponse()
