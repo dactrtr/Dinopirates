@@ -90,7 +90,7 @@ function MazeScene:enter()
 	
 	-- Mark: Props
 	chair = PropItem(150, 150, ZIndex.props)
-	chair1 = PropItem(250, 100, ZIndex.props)
+	--chair1 = PropItem(250, 100, ZIndex.props)
 	-- Mark: Entities
 	player = Player(200, 120, 4, 1, ZIndex.player)
 	shadow = FXshadow(player.x, player.y, player, ZIndex.fx)
@@ -149,7 +149,7 @@ function MazeScene:exit()
 	--Removing all entities
 	player:remove()
 	chair:remove()
-	chair1:remove()
+	--chair1:remove()
 	floor:remove()
 	shadow:remove()
 	brocorat:remove()
@@ -169,7 +169,6 @@ function MazeScene:pause()
 	-- Your code here
 end
 
-
 -- Define the inputHander for this scene here, or use a previously defined inputHandler.
 
 -- scene.inputHandler = someOtherInputHandler
@@ -179,7 +178,7 @@ MazeScene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		
+		brocorat:sonar()
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here

@@ -1,7 +1,8 @@
 
 Enemy = {}
-
 class('Enemy').extends(Graphics.sprite)
+
+import 'entities/FX/FXsonar'
 
 local enemy = Graphics.sprite.new()
 Enemy.imagetable = Graphics.imagetable.new('assets/images/enemies/brocorat')
@@ -66,4 +67,11 @@ end
 
 function Enemy:collisionResponse()
   --return "freeze"
+end
+
+local screenImage = Graphics.image.new(80,80)
+
+function Enemy:sonar(x,y)
+  local sonar = FXsonar(self.x,self.y)
+  sonar:activate(self.x,self.y)
 end
