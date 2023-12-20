@@ -62,7 +62,7 @@ function Player:move(direction)
     local movementX = 0
     local movementY = 0
     
-    self.battery -= 1
+    self:drainBattery(1)
     
     if (direction == "left") then
       self.animation:setState('left')
@@ -98,7 +98,9 @@ function Player:move(direction)
   end
   
 end
-
+function Player:drainBattery(amount)
+  self.battery -= amount
+end
 function Player:update()
   
   -- Mark: battery bounds

@@ -12,7 +12,6 @@ function FXsonar:init(x, y)
 end
 
 function FXsonar:activate(x,y)
-	print(x .. "," .. y)
 	local function pulse()
 		Graphics.pushContext(sonar)
 			Graphics.setColor(Graphics.kColorWhite)
