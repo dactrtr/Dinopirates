@@ -69,6 +69,7 @@ function FXshadow:update()
 		maskSize = 30
 		lightAmount = 0.9
 		lightSourceSize = 20
+		lightSourceAmount = 0.7
 	elseif battery == 0 then
 		maskSize = 25
 		lightAmount = 1

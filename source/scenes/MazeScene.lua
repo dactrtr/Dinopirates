@@ -178,9 +178,11 @@ MazeScene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		brocorat:sonar()
-		brocorat2:sonar()
-		player:drainBattery(10)
+		if player.battery > 0 then
+			brocorat:sonar()
+			brocorat2:sonar()
+			player:drainBattery(10)
+		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
