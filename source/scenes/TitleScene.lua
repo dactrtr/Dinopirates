@@ -64,13 +64,11 @@ function scene:init()
 			nil,
 			2,16
 		)
-	if debug then
-		 menu:addItem("New Space", function() Noble.transition(StarScene) end) 
-	end
+	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
 		menu:addItem("New Run", function() Noble.transition(MazeScene) end)
-		menu:addItem("Dead", function() Noble.transition(DeadScene) end)
-		menu:addItem("Test", function() Noble.transition(TestScene) end)
+		menu:addItem("Comic", function() Noble.transition(DeadScene) end)
+		--menu:addItem("Test", function() Noble.transition(TestScene) end)
 		menu:select("New Run")
 end
 
