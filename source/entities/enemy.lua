@@ -1,17 +1,23 @@
 
 Enemy = {}
-class('Enemy').extends(Graphics.sprite)
+class('Enemy').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'
 
-local enemy = Graphics.sprite.new()
-Enemy.imagetable = Graphics.imagetable.new('assets/images/enemies/brocorat')
-Enemy.animation = Graphics.animation.loop.new(100, Enemy.imagetable, true)
-
 function Enemy:init(x, y, moveSpeed, Zindex)
-  self:setImage(Enemy.animation:image())
+  Enemy.super.init(self,'assets/images/enemies/brocorat', true)
+  
+  -- Mark: animation states
+  self.animation:addState('idle', 4, 4)
+  self.animation.idle.frameDuration = 6
+  self.animation:addState('walk', 1, 8, 'idle')
+  self.animation.idle.frameDuration = 6
+  self.animation:addState('empty', 9, 9)
+  self.animation.idle.frameDuration = 6
+  
+  self:setSize(32,32)
   self:moveTo(x,y)
-  self:setCollideRect(0,0, 32,32)
+  self:setCollideRect(4,8, 24,24)
   
   self.moveSpeed = moveSpeed
   self.initialSpeed = moveSpeed
@@ -23,7 +29,7 @@ function Enemy:init(x, y, moveSpeed, Zindex)
     CollideGroups.wall
   })
   self:setZIndex(Zindex)
-  self:add()
+  self:add(x,y)
 end
 
 function Enemy:search(player)
@@ -45,6 +51,7 @@ function Enemy:search(player)
     movementY = self.y + self.moveSpeed
   end
 
+  self.animation:setState('walk')
   
   local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
   if lenght > 0 then
@@ -52,6 +59,7 @@ function Enemy:search(player)
       local collideObject = collision['other']
       if collideObject:isa(Player) then
         self.player:dead()
+        self.animation:setState('empty')
       end
       if collideObject:isa(PropItem) then
         self:collisionResponse('slide')
@@ -62,7 +70,6 @@ function Enemy:search(player)
 end
 
 function Enemy:update()
-  self:setImage(Enemy.animation:image()) 
 end
 
 function Enemy:collisionResponse()
