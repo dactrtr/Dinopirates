@@ -16,6 +16,7 @@ function Battery:update()
     local batteryPercent = (self.battery * 24) / 100
     
     local batteryFill = Graphics.image.new(24,6)
+    
     Graphics.pushContext(batteryFill)
         Graphics.setColor(Graphics.kColorWhite)
         Graphics.fillRect(0, 0, batteryPercent,6)
