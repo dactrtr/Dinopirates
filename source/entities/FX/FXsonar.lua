@@ -11,49 +11,30 @@ function FXsonar:init(x, y)
 	self:add()	
 end
 
-function FXsonar:activate(x,y)
-	local function pulse()
+function FXsonar:activate(x, y, type)
+	local function pulse(radius)
 		Graphics.pushContext(sonar)
-			Graphics.setColor(Graphics.kColorWhite)
-			circle = Graphics.drawCircleAtPoint( x, y, 10 )
+		Graphics.setColor(Graphics.kColorWhite)
+		circle = Graphics.drawCircleAtPoint(x, y, radius)
 		Graphics.popContext()
 	end
-	local function removePulse()
+
+	local function removePulse(radius)
 		Graphics.pushContext(sonar)
-			Graphics.setColor(Graphics.kColorClear)
-			circle = Graphics.drawCircleAtPoint( x, y, 10 )
+		Graphics.setColor(Graphics.kColorClear)
+		circle = Graphics.drawCircleAtPoint(x, y, radius)
 		Graphics.popContext()
 	end
-	local function pulse1()
-		Graphics.pushContext(sonar)
-			Graphics.setColor(Graphics.kColorWhite)
-			circle = Graphics.drawCircleAtPoint( x, y, 25 )
-		Graphics.popContext()
+
+	local delays = {200, 250, 300, 350, 400, 450}
+	local radii = {10, 25, 35}
+
+	for i = 1, #delays do
+		local radiusIndex = math.ceil(i / 2)
+		local pulseFunction = i % 2 == 1 and pulse or removePulse
+		playdate.timer.performAfterDelay(delays[i], function()
+			pulseFunction(radii[radiusIndex])
+		end)
 	end
-	local function removePulse1()
-		Graphics.pushContext(sonar)
-			Graphics.setColor(Graphics.kColorClear)
-			circle = Graphics.drawCircleAtPoint( x, y, 25 )
-		Graphics.popContext()
-	end
-	local function pulse2()
-		Graphics.pushContext(sonar)
-			Graphics.setColor(Graphics.kColorWhite)
-			circle = Graphics.drawCircleAtPoint( x, y, 35 )
-		Graphics.popContext()
-	end
-	local function removePulse2()
-		Graphics.pushContext(sonar)
-			Graphics.setColor(Graphics.kColorClear)
-			circle = Graphics.drawCircleAtPoint( x, y, 35 )
-		Graphics.popContext()
-	end
-	playdate.timer.performAfterDelay(200, pulse)
-	playdate.timer.performAfterDelay(250, removePulse)
-	playdate.timer.performAfterDelay(300, pulse1)
-	playdate.timer.performAfterDelay(350, removePulse1)
-	playdate.timer.performAfterDelay(400, pulse2)
-	playdate.timer.performAfterDelay(450, removePulse2)
-	--- Mark: TODO this could be optmized to just a few functions xD
 end
 
