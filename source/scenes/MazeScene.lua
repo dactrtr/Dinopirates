@@ -10,7 +10,9 @@
 -- !!! Rename "MazeScene" to your scene's name in these first three lines. !!!
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-MazeScene = {}
+MazeScene = {
+	debug = false
+}
 class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
 
@@ -18,6 +20,7 @@ import "entities/player/player"
 import "entities/player/battery"
 import "entities/enemy"
 import 'entities/props/propItem'
+import 'entities/items/Items'
 import "entities/FX/FXshadow"
 
 -- It is recommended that you declare, but don't yet define,
@@ -38,7 +41,8 @@ local brocorat = nil
 -- Mark: environment related
 local chair = nil
 local chair1 = nil
-
+-- Mark: Key items
+local lvlKey = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 -- This is the background color of this scene.
@@ -48,7 +52,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = false
+	
 	cheat.onComplete = function()
 		
 	end
@@ -67,7 +71,7 @@ function MazeScene:enter()
 	map:setImageTable(tilesMap)
 	map:setSize(16,9)
 	
-	-- Mark: floor
+	-- Mark: floor 
 	for y = 1,9 do
 		for x = 1,16 do
 			map:setTileAtPosition(x,y,5)
@@ -91,11 +95,17 @@ function MazeScene:enter()
 	-- Mark: Props
 	chair = PropItem(150, 150, ZIndex.props)
 	--chair1 = PropItem(250, 100, ZIndex.props)
-	-- Mark: Entities
+	lvlKey = Items(50, 50, ZIndex.props)
+	-- Mark: Player
 	player = Player(200, 120, 4, 1, ZIndex.player)
+	
+	-- Mark: FX
 	shadow = FXshadow(player.x, player.y, player, ZIndex.fx)
+	
+	-- Mark: UI
 	batteryIndicator = Battery(20,10, player, ZIndex.ui)
 	
+	-- Mark: Enemies
 	brocorat = Enemy(280, 60, 0.7, ZIndex.enemy)
 	brocorat2 = Enemy(80, 160, 0.7, ZIndex.enemy)
 	--Test
@@ -178,10 +188,11 @@ MazeScene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		if player.battery > 0 then
+		if player.battery > 20 then
 			brocorat:sonar()
 			brocorat2:sonar()
-			player:drainBattery(10)
+			lvlKey:sonar()
+			player:drainBattery(20)
 		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
