@@ -50,8 +50,8 @@ function Player:collisionResponse(other)
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Items) then
-    --self:collisionResponse('overlap') 
-    return print('you got a card')
+    print('you got a card')
+    return 'overlap'
   end
 end
 
