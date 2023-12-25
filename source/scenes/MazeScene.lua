@@ -11,7 +11,7 @@
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 MazeScene = {
-	debug = false
+	
 }
 class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
@@ -52,7 +52,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	
+	debug = true
 	cheat.onComplete = function()
 		
 	end
@@ -95,7 +95,7 @@ function MazeScene:enter()
 	-- Mark: Props
 	chair = PropItem(150, 150, ZIndex.props)
 	--chair1 = PropItem(250, 100, ZIndex.props)
-	lvlKey = Items(50, 50, ZIndex.props)
+	lvlKey = Items(250, 120)
 	-- Mark: Player
 	player = Player(200, 120, 4, 1, ZIndex.player)
 	
@@ -106,7 +106,7 @@ function MazeScene:enter()
 	batteryIndicator = Battery(20,10, player, ZIndex.ui)
 	
 	-- Mark: Enemies
-	brocorat = Enemy(280, 60, 0.7, ZIndex.enemy)
+	brocorat = Enemy(80, 60, 0.7, ZIndex.enemy)
 	brocorat2 = Enemy(80, 160, 0.7, ZIndex.enemy)
 	--Test
 	
@@ -189,9 +189,9 @@ MazeScene.inputHandler = {
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
 		if player.battery > 20 then
-			brocorat:sonar()
-			brocorat2:sonar()
-			lvlKey:sonar()
+			brocorat:sonar('enemy')
+			brocorat2:sonar('enemy')
+			lvlKey:sonar('key')
 			player:drainBattery(20)
 		end
 	end,

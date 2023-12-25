@@ -11,18 +11,28 @@ function FXsonar:init(x, y)
 	self:add()	
 end
 
-function FXsonar:activate(x, y, type)
-	local function pulse(radius)
+function FXsonar:activate(x, y, shape)
+	shape = shape or 'enemy'
+
+	local function drawShape(radius)
 		Graphics.pushContext(sonar)
 		Graphics.setColor(Graphics.kColorWhite)
-		circle = Graphics.drawCircleAtPoint(x, y, radius)
+		if shape == "enemy" then
+			circle = Graphics.drawCircleAtPoint(x, y, radius)
+		elseif shape == "key" then
+			square = Graphics.drawRect(x - radius/2, y - radius/2, radius, radius)
+		end
 		Graphics.popContext()
 	end
 
-	local function removePulse(radius)
+	local function clearShape(radius)
 		Graphics.pushContext(sonar)
 		Graphics.setColor(Graphics.kColorClear)
-		circle = Graphics.drawCircleAtPoint(x, y, radius)
+		if shape == "enemy" then
+			circle = Graphics.drawCircleAtPoint(x, y, radius)
+		elseif shape == "key" then
+			square = Graphics.drawRect(x - radius/2, y - radius/2, radius, radius)
+		end
 		Graphics.popContext()
 	end
 
@@ -31,10 +41,9 @@ function FXsonar:activate(x, y, type)
 
 	for i = 1, #delays do
 		local radiusIndex = math.ceil(i / 2)
-		local pulseFunction = i % 2 == 1 and pulse or removePulse
+		local drawFunction = i % 2 == 1 and drawShape or clearShape
 		playdate.timer.performAfterDelay(delays[i], function()
-			pulseFunction(radii[radiusIndex])
+			drawFunction(radii[radiusIndex])
 		end)
 	end
 end
-

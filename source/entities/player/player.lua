@@ -38,12 +38,21 @@ function Player:init(x, y, battery, speed, Zindex)
   self.speed = speed
   self.battery = 100
   self.isAlive = true
-  
+  self.hasKey = false
   self:add(x, y)   
 end 
 
-function Player:collisionResponse()
-  --self:dead()
+function Player:collisionResponse(other)
+  --print('hit')
+  
+  if other:isa(Enemy) then
+    return self:dead()
+  elseif other:isa(Box) then
+    return 'freeze' 
+  elseif other:isa(Items) then
+    --self:collisionResponse('overlap') 
+    return print('you got a card')
+  end
 end
 
 function Player:idle()
@@ -53,7 +62,13 @@ function Player:idle()
 end
 function Player:dead()
   self.isAlive = false
-  Noble.transition(DeadScene)
+  self.animation:setState('dead')
+  local function deathScreen()
+  
+    Noble.transition(DeadScene)
+  
+  end
+  playdate.timer.performAfterDelay(800, deathScreen)
 end
 
 function Player:move(direction)
@@ -81,23 +96,11 @@ function Player:move(direction)
       movementX = self.x 
       movementY = self.y + self.speed
     end
-    
     local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
-    if lenght > 0 then
-       for index, collision in pairs(collisions) do
-         local collideObject = collision['other']
-         if collideObject:isa(Enemy) then
-            self:dead()  -- same method for the enemies
-         end
-         if collideObject:isa(Box) then
-            self:collisionResponse('freeze')  
-          end
-      end
-    end
-    
   end
   
 end
+
 function Player:drainBattery(amount)
   self.battery -= amount
 end

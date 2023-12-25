@@ -78,7 +78,7 @@ end
 
 local screenImage = Graphics.image.new(80,80)
 
-function Enemy:sonar(x,y)
+function Enemy:sonar(type)
   local sonar = FXsonar(self.x,self.y)
-  sonar:activate(self.x,self.y)
+  sonar:activate(self.x, self.y, type)
 end

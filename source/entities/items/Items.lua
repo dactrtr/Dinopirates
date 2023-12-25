@@ -5,7 +5,7 @@ class('Items').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'
 
-function Items:init(x, y, zIndex)
+function Items:init(x, y)
   Items.super.init(self,'assets/images/items/item-key', true)
   --- animation states
   self.animation:addState('idle', 1, 20)
@@ -13,7 +13,7 @@ function Items:init(x, y, zIndex)
   self.animation.idle.frameDuration = 8  -- position and z-index
   self:setSize(48, 48)
   self:setCollideRect(8,8, 32,24)
-  self:setZIndex(zIndex)
+  self:setZIndex(ZIndex.props)
   
   self:setGroups(3)
   
