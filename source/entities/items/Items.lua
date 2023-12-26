@@ -1,6 +1,5 @@
 
-Items
- = {}
+Items = {}
 class('Items').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'

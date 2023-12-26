@@ -43,14 +43,14 @@ function Player:init(x, y, battery, speed, Zindex)
 end 
 
 function Player:collisionResponse(other)
-  --print('hit')
   
   if other:isa(Enemy) then
     return self:dead()
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Items) then
-    print('you got a card')
+    other:remove()
+    self:grabKey()
     return 'overlap'
   end
 end
@@ -68,7 +68,7 @@ function Player:dead()
     Noble.transition(DeadScene)
   
   end
-  playdate.timer.performAfterDelay(800, deathScreen)
+  playdate.timer.performAfterDelay(1000, deathScreen)
 end
 
 function Player:move(direction)
@@ -112,4 +112,8 @@ function Player:update()
  elseif self.battery >= 100 then
    self.battery = 100
  end
+end
+function Player:grabKey()
+  print('my key')
+  self.hasKey = true
 end
