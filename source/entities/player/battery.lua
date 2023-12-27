@@ -8,7 +8,7 @@ function Battery:init(x, y, player, Zindex)
     batteryCanister = BatteryCanister(x,y,Zindex)
     self:setZIndex(Zindex-1)
     self:moveTo(x-1,y)
-    self:add()
+    self:add(0,0)
 end
 
 function Battery:update()
@@ -25,6 +25,7 @@ function Battery:update()
     self:setImage(batteryFill)
 end
 function Battery:removeAll()
+    print('remove battery')
     batteryCanister:remove()
     self:remove()
 end

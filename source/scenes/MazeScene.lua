@@ -22,6 +22,7 @@ import "entities/enemy"
 import 'entities/props/propItem'
 import 'entities/items/Items'
 import "entities/FX/FXshadow"
+import "entities/UI/playerHud"
 
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific variables and methods here. Use "local" where possible.
@@ -35,7 +36,6 @@ import "entities/FX/FXshadow"
 -- Mark: player related
 local player = nil
 local shadow = nil
-local batteryIndicator = nil
 -- Mark: enemies related
 local brocorat = nil
 -- Mark: environment related
@@ -43,6 +43,8 @@ local chair = nil
 local chair1 = nil
 -- Mark: Key items
 local lvlKey = nil
+-- Mark: UI
+local uiScreen = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 -- This is the background color of this scene.
@@ -95,16 +97,15 @@ function MazeScene:enter()
 	-- Mark: Props
 	chair = PropItem(150, 150, ZIndex.props)
 	--chair1 = PropItem(250, 100, ZIndex.props)
-	lvlKey = Items(250, 120)
+	lvlKey = Items(50, 120)
 	-- Mark: Player
-	player = Player(200, 120, 4, 1, ZIndex.player)
+	player = Player(200, 120, 1, ZIndex.player)
 	
 	-- Mark: FX
 	shadow = FXshadow(player.x, player.y, player, ZIndex.fx)
 	
 	-- Mark: UI
-	batteryIndicator = Battery(20,10, player, ZIndex.ui)
-	
+	uiScreen = playerHud(player)
 	-- Mark: Enemies
 	brocorat = Enemy(80, 60, 0.7, ZIndex.enemy)
 	brocorat2 = Enemy(80, 160, 0.7, ZIndex.enemy)
@@ -164,8 +165,8 @@ function MazeScene:exit()
 	shadow:remove()
 	brocorat:remove()
 	brocorat2:remove()
-	batteryIndicator:removeAll()
-	
+	uiScreen:removeAll()
+	lvlKey:remove()
 end
 
 -- This runs once a transition to another scene completes.
@@ -301,7 +302,6 @@ MazeScene.inputHandler = {
 		end
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
-		print("hello")
 	end,
 	crankUndocked = function()						-- Runs once when when crank is undocked.
 		

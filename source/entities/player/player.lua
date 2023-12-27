@@ -2,7 +2,7 @@ Player = {}
 class('Player').extends(NobleSprite)
 
 
-function Player:init(x, y, battery, speed, Zindex)
+function Player:init(x, y, speed, Zindex)
   Player.super.init(self,'assets/images/player/player', true)
   
   -- Mark: animation states
