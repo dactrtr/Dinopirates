@@ -52,9 +52,9 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = true
+	debug = false
 	cheat.onComplete = function()
-		
+		player.battery = 100
 	end
 	-- Your code here
 end

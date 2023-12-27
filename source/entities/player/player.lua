@@ -49,7 +49,7 @@ function Player:collisionResponse(other)
   elseif other:isa(Box) then
     return 'freeze' 
   elseif other:isa(Items) then
-    other:remove()
+    other:removeAll()
     self:grabKey()
     return 'overlap'
   end

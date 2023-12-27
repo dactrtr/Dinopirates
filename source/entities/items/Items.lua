@@ -14,14 +14,18 @@ function Items:init(x, y)
   self:setCollideRect(8,8, 32,24)
   self:setZIndex(ZIndex.props)
   
+  
+  sonar = FXsonar(self.x,self.y)
   self:setGroups(3)
   
   self:add(x,y)
 end
 function Items:sonar(x,y)
-  local sonar = FXsonar(self.x,self.y)
   sonar:activate(self.x,self.y,'key')
 end
-function Items:update()
+function Items:removeAll()
+  sonar:disableFX()
+  self:remove()
 end
+
 
