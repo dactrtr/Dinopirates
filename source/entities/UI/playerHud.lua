@@ -2,17 +2,23 @@ playerHud = {}
 class("playerHud").extends(Graphics.sprite)
 
 import "entities/player/battery"
-local batteryIndicator = nil
+import "entities/UI/keyHud"
+import "entities/UI/sonarHud"
 
-function playerHud:init(player)
-	self:moveTo(0,0)
-	
+local batteryIndicator = nil
+local keyIndicator = nil
+local sonarIndicator = nil
+
+function playerHud:init(player)	
 	batteryIndicator = Battery(20,10, player, ZIndex.ui)
-	--self:add()
+	keyIndicator = keyHud(11,24,ZIndex.ui, player)
+	sonarIndicator = sonarHud(51,10,ZIndex.ui, player)
 end
 
 function playerHud:removeAll()
-	print('remove ui')
 	self:remove()
 	batteryIndicator:removeAll()
 end
+function playerHud:update()
+end
+

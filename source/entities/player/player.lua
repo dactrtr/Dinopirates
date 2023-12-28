@@ -114,6 +114,5 @@ function Player:update()
  end
 end
 function Player:grabKey()
-  print('my key')
   self.hasKey = true
 end
