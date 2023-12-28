@@ -25,7 +25,6 @@ function Battery:update()
     self:setImage(batteryFill)
 end
 function Battery:removeAll()
-    print('remove battery')
     batteryCanister:remove()
     self:remove()
 end
