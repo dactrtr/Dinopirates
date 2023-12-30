@@ -1,7 +1,7 @@
 playerHud = {}
 class("playerHud").extends(Graphics.sprite)
 
-import "entities/player/battery"
+import "entities/UI/battery"
 import "entities/UI/keyHud"
 import "entities/UI/sonarHud"
 

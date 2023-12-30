@@ -46,32 +46,33 @@ function FXshadow:update()
 	local lightSourceAmount = 0
 	local lightSourceSize = 45
 	local maskSize = 50
+	local decreaseSize = maskSize/10
 	local lightAmount = 0.1
 	local globalLightAmount = 0.01
 	
 	
 	if battery > 120 and battery <= 160 then
-		maskSize = 45
+		maskSize -= decreaseSize*1
 		lightAmount = 0.2
 		lightSourceSize = 35
 		lightSourceAmount = 0.1
 	elseif battery > 80 and battery <= 120 then
-		maskSize = 40
+		maskSize -= decreaseSize*2
 		lightAmount = 0.5
 		lightSourceSize = 30
 		lightSourceAmount = 0.3
 	elseif battery > 40 and battery <= 80 then
-		maskSize = 35
+		maskSize -= decreaseSize*3
 		lightAmount = 0.7
 		lightSourceSize = 25
 		lightSourceAmount = 0.5
 	elseif battery > 0 and battery <= 40 then
-		maskSize = 30
+		maskSize -= decreaseSize*4
 		lightAmount = 0.9
 		lightSourceSize = 20
 		lightSourceAmount = 0.7
 	elseif battery == 0 then
-		maskSize = 25
+		maskSize -= decreaseSize*5
 		lightAmount = 1
 		lightSourceSize = 15
 		lightSourceAmount = 0.9

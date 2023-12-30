@@ -17,7 +17,6 @@ class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
 
 import "entities/player/player"
-import "entities/player/battery"
 import "entities/enemy"
 import 'entities/props/propItem'
 import 'entities/items/Items'
