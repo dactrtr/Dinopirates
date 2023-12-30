@@ -86,12 +86,12 @@ function MazeScene:enter()
 	floor:moveTo(200, 120)
 	floor:add()
 	
-	--Mark: Walls
-	addBlock(0, 0, 400, 20)
-	addBlock(0, 228, 400, 12)
-	addBlock(0, 12, 12, 216)
-	addBlock(388, 12, 12, 216)
-	-- This image need to be changed
+	--Mark: Walls (this can be optimized)
+	wallTop = Box(0, 0, 400, 20)
+	wallDown = Box(0, 228, 400, 12)
+	wallLeft = Box(0, 12, 12, 216)
+	wallRight = Box(388, 12, 12, 216)
+
 	
 	
 	-- Mark: Props
@@ -157,9 +157,15 @@ end
 function MazeScene:exit()
 	MazeScene.super.exit(self)
 	debug = false
+	player.hasKey = false
+	wallDown:remove()
+	wallTop:remove()
+	wallLeft:remove()
+	wallRight:remove()
 	--Removing all entities
 	player:remove()
 	chair:remove()
+	
 	--chair1:remove()
 	floor:remove()
 	shadow:remove()

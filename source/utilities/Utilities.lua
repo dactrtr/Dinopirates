@@ -10,22 +10,18 @@ end
 
 -- mark: Draw collider boxes (walls)
 
-function Box:draw(x, y, width, height) 
-	cx, cy, width, height = self:getCollideBounds()
+function Box:init(x, y, width, height) 
 	Graphics.setColor(playdate.graphics.kColorWhite)
-	Graphics.fillRect(cx, cy, width, height)
-	Graphics.drawRect(cx, cy, width, height)
+	Graphics.fillRect(x, y, width, height)
+	Graphics.drawRect(x, y, width, height)
+	self:setSize(width, height)
+	self:moveTo(x, y)
+	self:setCenter(0,0)
+	self:addSprite()
+	self:setCollideRect(0,0,width,height)
+	self:setGroups(CollideGroups.wall)
 end
 
-function addBlock(x,y,w,h)
-	block = Box()
-	block:setSize(w, h)
-	block:moveTo(x, y)
-	block:setCenter(0,0)
-	block:addSprite()
-	block:setCollideRect(0,0,w,h)
-	block:setGroups(CollideGroups.wall)
-end
 
 -- MARK: Cheat codes
 
