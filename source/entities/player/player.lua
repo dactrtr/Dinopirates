@@ -35,6 +35,7 @@ function Player:init(x, y, speed, Zindex)
   self:setGroups(CollideGroups.player)
   
   -- Mark: Custom properties
+  self.initialSpeed = speed
   self.speed = speed
   self.battery = 100
   self.isAlive = true
@@ -105,12 +106,16 @@ function Player:drainBattery(amount)
   self.battery -= amount
 end
 function Player:update()
-  
   -- Mark: battery bounds
  if self.battery < 0 then
    self.battery = 0
  elseif self.battery >= 100 then
    self.battery = 100
+ end
+ if self.battery < 20 then 
+   self.speed = 0.5 * self.initialSpeed
+ elseif self.battery > 20 then
+   self.speed = self.initialSpeed
  end
 end
 function Player:grabKey()
