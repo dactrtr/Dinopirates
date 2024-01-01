@@ -7,18 +7,38 @@ function Player:init(x, y, speed, Zindex)
   
   -- Mark: animation states
   self.animation:addState('idle', 1, 4)
-  self.animation:addState('right', 5, 7)
-  self.animation:addState('left', 8, 10)
-  self.animation:addState('down', 11, 13)
-  self.animation:addState('up', 14, 16)
-  self.animation:addState('dead', 17, 18)
   self.animation.idle.frameDuration = 12
+  
+  self.animation:addState('right', 5, 7)
   self.animation.right.frameDuration = 12
+  
+  self.animation:addState('left', 8, 10)
   self.animation.left.frameDuration = 12
-  self.animation.up.frameDuration = 12
+  
+  self.animation:addState('down', 11, 13)
   self.animation.down.frameDuration = 12
+  
+  self.animation:addState('up', 14, 16)
+  self.animation.up.frameDuration = 12
+  
+  self.animation:addState('dead', 17, 18)
   self.animation.dead.frameDuration = 12
-  self.animation:setState('idle')
+  
+  self.animation:addState('lampIdle', 19, 22)
+  self.animation.lampIdle.frameDuration = 12
+  
+  self.animation:addState('lampRight', 23, 25)
+  self.animation.lampRight.frameDuration = 12
+  
+  self.animation:addState('lampLeft', 26, 28)
+  self.animation.lampLeft.frameDuration = 12
+  
+  self.animation:addState('lampDown', 29, 31)
+  self.animation.lampDown.frameDuration = 12
+  
+  self.animation:addState('charge', 32, 35)
+  self.animation.charge.frameDuration = 12
+  self.animation:setState('lampIdle')
   
   -- Mark: basic properties
   self:setSize(48, 52)
@@ -40,6 +60,7 @@ function Player:init(x, y, speed, Zindex)
   self.battery = 100
   self.isAlive = true
   self.hasKey = false
+  self.hasLamp = true
   self:add(x, y)   
 end 
 
@@ -58,7 +79,11 @@ end
 
 function Player:idle()
   if self.isAlive then
-    self.animation:setState('idle')
+    if self.hasLamp then
+      self.animation:setState('lampIdle')
+    else
+      self.animation:setState('idle')
+    end
   end
 end
 function Player:dead()
@@ -81,19 +106,35 @@ function Player:move(direction)
     self:drainBattery(1)
     
     if (direction == "left") then
-      self.animation:setState('left')
+      if self.hasLamp then
+        self.animation:setState('lampLeft')
+      else
+        self.animation:setState('left')
+      end
       movementX = self.x - self.speed
       movementY = self.y
     elseif (direction == "right") then
-      self.animation:setState('right')
+      if self.hasLamp then
+        self.animation:setState('lampRight')
+      else
+        self.animation:setState('right')
+      end
       movementX = self.x + self.speed
       movementY = self.y
     elseif (direction == "up") then
-      self.animation:setState('up')
+      if self.hasLamp then
+        self.animation:setState('up')
+      else
+        self.animation:setState('up')
+      end
       movementX = self.x 
       movementY = self.y - self.speed
     elseif (direction == "down") then
-      self.animation:setState('down')
+      if self.hasLamp then
+        self.animation:setState('lampDown')
+      else
+        self.animation:setState('down')
+      end
       movementX = self.x 
       movementY = self.y + self.speed
     end
