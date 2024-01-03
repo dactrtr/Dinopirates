@@ -38,6 +38,7 @@ function Player:init(x, y, speed, Zindex)
   
   self.animation:addState('charge', 32, 35)
   self.animation.charge.frameDuration = 12
+  
   self.animation:setState('lampIdle')
   
   -- Mark: basic properties
@@ -57,11 +58,20 @@ function Player:init(x, y, speed, Zindex)
   -- Mark: Custom properties
   self.initialSpeed = speed
   self.speed = speed
+  self.initialSanity = 100
+  self.sanity = 100
+  
+  -- Mark: Custom items properties
   self.battery = 100
   self.isAlive = true
   self.hasKey = false
   self.hasLamp = true
+  
+  -- Mark: add to scene
+  
+  self:sanityCheck()
   self:add(x, y)   
+  
 end 
 
 function Player:collisionResponse(other)
@@ -85,6 +95,23 @@ function Player:idle()
       self.animation:setState('idle')
     end
   end
+end
+
+function Player:sanityCheck()
+  
+  local function checkSanity()
+    
+    print('checking sanity ...')
+      if self.sanity <= 0 then
+        self.sanity = 0
+      end
+      if self.battery < 20 then
+        self.sanity -= 1
+      end
+    print(self.sanity)
+  end
+  playdate.timer.keyRepeatTimerWithDelay(3000, 3000,checkSanity)
+    
 end
 function Player:dead()
   self.isAlive = false
@@ -146,19 +173,28 @@ end
 function Player:drainBattery(amount)
   self.battery -= amount
 end
+function Player:chargeBattery(amount)
+  if self.battery < 100 then
+    self.animation:setState('charge')
+  else
+    self.animation:setState('lampIdle')
+  end
+  self.battery += amount
+end
 function Player:update()
   -- Mark: battery bounds
- if self.battery < 0 then
-   self.battery = 0
- elseif self.battery >= 100 then
-   self.battery = 100
- end
- if self.battery < 20 then 
-   self.speed = 0.5 * self.initialSpeed
- elseif self.battery > 20 then
-   self.speed = self.initialSpeed
- end
+  if self.battery < 0 then
+    self.battery = 0
+  elseif self.battery >= 100 then
+    self.battery = 100
+  end
+  if self.battery < 20 then 
+    self.speed = 0.5 * self.initialSpeed
+  elseif self.battery > 20 then
+    self.speed = self.initialSpeed
+  end
 end
+
 function Player:grabKey()
   self.hasKey = true
 end

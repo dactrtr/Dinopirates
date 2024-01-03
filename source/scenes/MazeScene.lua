@@ -99,6 +99,7 @@ function MazeScene:enter()
 	lvlKey = Items(50, 120)
 	-- Mark: Player
 	player = Player(200, 120, 1, ZIndex.player)
+	--player:sanityCheck()
 	
 	-- Mark: FX
 	shadow = FXshadow(player.x, player.y, player, ZIndex.fx)
@@ -300,7 +301,7 @@ MazeScene.inputHandler = {
 		if player.isAlive then
 			-- TODO: turn this into a function
 			if playdate.getCrankTicks(3) > 0 then
-				player.battery +=1
+				player:chargeBattery(1)
 				brocorat:search(player)
 				brocorat2:search(player)
 			end
