@@ -20,7 +20,7 @@ function sanityHud:init(x, y, zIndex, player, indicator)
 	self:setSize(17,12)
 	self:setZIndex(zIndex)
 	self.player = player
-	self.indicatorPosition = true
+	self.indicatorPosition = indicator
 	self:add(x,y)
 end
 function sanityHud:update()
@@ -35,7 +35,7 @@ function sanityHud:update()
 	elseif sanity < 80 then
 		self.animation:setState('normal')
 	elseif sanity < 100 then
-		self.animation:setState('normal')
+		self.animation:setState('good')
 	end
 end
 

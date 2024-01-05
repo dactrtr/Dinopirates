@@ -10,7 +10,7 @@ function sonarHud:init(x, y, zIndex, player, indicator)
 	self:setSize(20,12)
 	self:setZIndex(zIndex)
 	self.player = player
-	self.indicatorPosition = true
+	self.indicatorPosition = indicator
 	self:add(x,y)
 end
 function sonarHud:update()

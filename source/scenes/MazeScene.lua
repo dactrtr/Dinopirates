@@ -105,7 +105,7 @@ function MazeScene:enter()
 	shadow = FXshadow(player.x, player.y, player, 70, ZIndex.fx)
 	
 	-- Mark: UI
-	uiScreen = playerHud(player)
+	uiScreen = playerHud(player, false)
 	-- Mark: Enemies
 	brocorat = Enemy(80, 60, 0.7, ZIndex.enemy)
 	brocorat2 = Enemy(80, 160, 0.7, ZIndex.enemy)
