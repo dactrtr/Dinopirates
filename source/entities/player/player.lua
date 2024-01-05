@@ -25,7 +25,7 @@ function Player:init(x, y, speed, Zindex)
   self.animation.dead.frameDuration = 12
   
   self.animation:addState('lampIdle', 19, 22)
-  self.animation.lampIdle.frameDuration = 12
+  self.animation.lampIdle.frameDuration = 24
   
   self.animation:addState('lampRight', 23, 25)
   self.animation.lampRight.frameDuration = 12
@@ -59,6 +59,7 @@ function Player:init(x, y, speed, Zindex)
   self.initialSpeed = speed
   self.speed = speed
   self.initialSanity = 100
+  self.sanityLoss = 10
   self.sanity = 100
   
   -- Mark: Custom items properties
@@ -102,13 +103,24 @@ function Player:sanityCheck()
   local function checkSanity()
     
     print('checking sanity ...')
-      if self.sanity <= 0 then
-        self.sanity = 0
-      end
-      if self.battery < 20 then
-        self.sanity -= 1
-      end
+     
+    if self.battery < 20 then
+      self.sanity -= 2 * self.sanityLoss
+    elseif self.battery < 40 then
+      self.sanity -= self.sanityLoss
+    end
+    
+    if self.sanity <= 0 then
+      self.sanity = 0
+    end
+    if self.battery > 50 then
+      self.sanity += 2 * self.sanityLoss
+    end
+    if self.sanity >= 100 then
+      self.sanity = 100
+    end
     print(self.sanity)
+    
   end
   playdate.timer.keyRepeatTimerWithDelay(3000, 3000,checkSanity)
     

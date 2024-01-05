@@ -45,7 +45,7 @@ function FXshadow:update()
 	local lightSource = shadow:getMaskImage()
 	local lightSourceAmount = 0
 	local lightSourceSize = 45
-	local maskSize = 50
+	local maskSize = 70
 	local decreaseSize = maskSize/10
 	local lightAmount = 0.1
 	local globalLightAmount = 0.01

@@ -1,7 +1,7 @@
 
 class('BatteryCanister').extends(Graphics.sprite)
 
-local canister <const> = Graphics.image.new("assets/images/ui/BatteryTank.png")
+local canister <const> = Graphics.image.new("assets/images/ui/BatterySmall.png")
 
 function BatteryCanister:init(x,y,Zindex)
 	self:moveTo(x,y)

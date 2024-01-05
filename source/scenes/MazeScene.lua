@@ -127,7 +127,6 @@ function MazeScene:update()
 	
 	-- Mark: cheat code
 	cheat:update()
-	
 	-- Mark: Crank notification
 	if player.battery == 0  and playdate.isCrankDocked() then
 		playdate.ui.crankIndicator:draw(0, 0)
@@ -216,9 +215,9 @@ MazeScene.inputHandler = {
 	--
 	BButtonDown = function()
 		
+		battery:test()
 	end,
 	BButtonHeld = function()
-		
 	end,
 	BButtonHold = function()
 		

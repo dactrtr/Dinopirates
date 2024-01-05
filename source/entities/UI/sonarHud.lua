@@ -1,7 +1,7 @@
 class("sonarHud").extends(NobleSprite)
 
 
-function sonarHud:init(x, y, zIndex, player)
+function sonarHud:init(x, y, zIndex, player, indicator)
 	sonarHud.super.init(self,'assets/images/ui/sonar.png', true)
 	self.animation:addState('idle', 2, 5)
 	self.animation.idle.frameDuration = 12
@@ -10,9 +10,13 @@ function sonarHud:init(x, y, zIndex, player)
 	self:setSize(20,12)
 	self:setZIndex(zIndex)
 	self.player = player
+	self.indicatorPosition = true
 	self:add(x,y)
 end
 function sonarHud:update()
+	if self.indicatorPosition then
+		self:moveTo(self.player.x + 2 , self.player.y - 36)
+	end
 	if self.player.battery < 20 then
 		self.animation:setState('empty')
 	else
