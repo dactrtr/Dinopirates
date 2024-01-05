@@ -102,7 +102,7 @@ function MazeScene:enter()
 	--player:sanityCheck()
 	
 	-- Mark: FX
-	shadow = FXshadow(player.x, player.y, player, ZIndex.fx)
+	shadow = FXshadow(player.x, player.y, player, 70, ZIndex.fx)
 	
 	-- Mark: UI
 	uiScreen = playerHud(player)
@@ -303,6 +303,8 @@ MazeScene.inputHandler = {
 				player:chargeBattery(1)
 				brocorat:search(player)
 				brocorat2:search(player)
+			elseif player.battery == 100 then
+				player:idle()
 			end
 		end
 	end,

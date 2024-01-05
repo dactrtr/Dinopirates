@@ -4,10 +4,11 @@ class('FXshadow').extends(Graphics.sprite)
 local shadow = Graphics.image.new(400,240)
 
 
-function FXshadow:init(x, y, player, Zindex)
+function FXshadow:init(x, y, player, lightSize, Zindex)
 	
 	self.speed = player.speed
 	self.player = player
+	self.lightSize = lightSize
 	self:moveTo(x,y)
 	self:setCollidesWithGroups(1)
 	self:setImage(shadow)
@@ -44,8 +45,8 @@ function FXshadow:update()
 	local shadowMask = shadow:getMaskImage()
 	local lightSource = shadow:getMaskImage()
 	local lightSourceAmount = 0
-	local lightSourceSize = 45
-	local maskSize = 70
+	local lightSourceSize = 35
+	local maskSize = self.lightSize
 	local decreaseSize = maskSize/10
 	local lightAmount = 0.1
 	local globalLightAmount = 0.01

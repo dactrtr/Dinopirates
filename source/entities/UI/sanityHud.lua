@@ -28,11 +28,11 @@ function sanityHud:update()
 	if self.indicatorPosition then
 		self:moveTo(self.player.x + 22 , self.player.y - 36)
 	end
-	if sanity < 10 then
+	if sanity < 30 then
 		self.animation:setState('insane')
-	elseif sanity < 30 then
-		self.animation:setState('mediocre')
 	elseif sanity < 50 then
+		self.animation:setState('mediocre')
+	elseif sanity < 80 then
 		self.animation:setState('normal')
 	elseif sanity < 100 then
 		self.animation:setState('normal')

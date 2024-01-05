@@ -122,7 +122,7 @@ function Player:sanityCheck()
     print(self.sanity)
     
   end
-  playdate.timer.keyRepeatTimerWithDelay(3000, 3000,checkSanity)
+  playdate.timer.keyRepeatTimerWithDelay(1000, 1000, checkSanity)
     
 end
 function Player:dead()
