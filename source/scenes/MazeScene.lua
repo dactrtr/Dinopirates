@@ -53,7 +53,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = false
+	debug = true
 	cheat.onComplete = function()
 		player.battery = 100
 	end
@@ -94,21 +94,21 @@ function MazeScene:enter()
 	
 	
 	-- Mark: Props
-	chair = PropItem(150, 150, ZIndex.props)
+	chair = PropItem(250, 150, ZIndex.props)
 	--chair1 = PropItem(250, 100, ZIndex.props)
-	lvlKey = Items(50, 120)
+	lvlKey = Items(150, 120)
 	-- Mark: Player
-	player = Player(200, 120, 1, ZIndex.player)
+	player = Player(280, 120, 1, ZIndex.player)
 	--player:sanityCheck()
 	
 	-- Mark: FX
-	shadow = FXshadow(player.x, player.y, player, 70, ZIndex.fx)
+	shadow = FXshadow(200, 120, player, 70, ZIndex.fx)
 	
 	-- Mark: UI
-	uiScreen = playerHud(player, false)
+	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
-	brocorat = Enemy(80, 60, 0.7, ZIndex.enemy)
-	brocorat2 = Enemy(80, 160, 0.7, ZIndex.enemy)
+	brocorat = Brocorat(80, 60, 0.7, ZIndex.enemy)
+	-- brocorat2 = Enemy(80, 160, 0.7, ZIndex.enemy)
 	--Test
 	
 end
@@ -135,10 +135,10 @@ function MazeScene:update()
 	-- Mark: Stops enemy from moving in the dark
 	if player.battery == 0 then
 		brocorat.moveSpeed = 0
-		brocorat2.moveSpeed = 0
+		--brocorat2.moveSpeed = 0
 	elseif player.battery > 60 then
 		brocorat.moveSpeed = brocorat.initialSpeed
-		brocorat2.moveSpeed = brocorat2.initialSpeed
+		--brocorat2.moveSpeed = brocorat2.initialSpeed
 	end
 	
 	-- Mark: GAME OVER
@@ -169,7 +169,7 @@ function MazeScene:exit()
 	floor:remove()
 	shadow:remove()
 	brocorat:remove()
-	brocorat2:remove()
+	--brocorat2:remove()
 	uiScreen:removeAll()
 	lvlKey:remove()
 end
@@ -196,7 +196,7 @@ MazeScene.inputHandler = {
 	AButtonDown = function()			-- Runs once when button is pressed.
 		if player.battery > 20 then
 			brocorat:sonar('enemy')
-			brocorat2:sonar('enemy')
+			--brocorat2:sonar('enemy')
 			lvlKey:sonar('key')
 			player:drainBattery(20)
 		end
@@ -236,7 +236,7 @@ MazeScene.inputHandler = {
 			player:move("left")
 			shadow:move("left")
 			brocorat:search(player)
-			brocorat2:search(player)
+			--brocorat2:search(player)
 		end
 	end,
 	leftButtonUp = function()
@@ -253,7 +253,7 @@ MazeScene.inputHandler = {
 			player:move("right")
 			shadow:move("right")
 			brocorat:search(player)
-			brocorat2:search(player)
+			--brocorat2:search(player)
 		end
 	end,
 	rightButtonUp = function()
@@ -270,7 +270,7 @@ MazeScene.inputHandler = {
 			player:move("up")
 			shadow:move("up")
 			brocorat:search(player)
-			brocorat2:search(player)
+			--brocorat2:search(player)
 		end
 	end,
 	upButtonUp = function()
@@ -287,7 +287,7 @@ MazeScene.inputHandler = {
 			player:move("down")
 			shadow:move("down")
 			brocorat:search(player)
-			brocorat2:search(player)
+			--brocorat2:search(player)
 		end
 	end,
 	downButtonUp = function()
@@ -302,7 +302,7 @@ MazeScene.inputHandler = {
 			if playdate.getCrankTicks(3) > 0 then
 				player:chargeBattery(1)
 				brocorat:search(player)
-				brocorat2:search(player)
+				--brocorat2:search(player)
 			elseif player.battery == 100 then
 				player:idle()
 			end

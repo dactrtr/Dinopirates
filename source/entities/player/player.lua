@@ -102,8 +102,6 @@ function Player:sanityCheck()
   
   local function checkSanity()
     
-    print('checking sanity ...')
-     
     if self.battery < 20 then
       self.sanity -= 2 * self.sanityLoss
     elseif self.battery < 40 then
@@ -119,12 +117,12 @@ function Player:sanityCheck()
     if self.sanity >= 100 then
       self.sanity = 100
     end
-    print(self.sanity)
     
   end
   playdate.timer.keyRepeatTimerWithDelay(1000, 1000, checkSanity)
     
 end
+
 function Player:dead()
   self.isAlive = false
   self.animation:setState('dead')
@@ -185,6 +183,7 @@ end
 function Player:drainBattery(amount)
   self.battery -= amount
 end
+
 function Player:chargeBattery(amount)
   if self.battery < 100 then
     self.animation:setState('charge')
@@ -193,6 +192,7 @@ function Player:chargeBattery(amount)
   end
   self.battery += amount
 end
+
 function Player:update()
   -- Mark: battery bounds
   if self.battery < 0 then

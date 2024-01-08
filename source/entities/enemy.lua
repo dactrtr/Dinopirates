@@ -26,7 +26,8 @@ function Enemy:init(x, y, moveSpeed, Zindex)
   {
     CollideGroups.player,
     CollideGroups.props,
-    CollideGroups.wall
+    CollideGroups.wall,
+    CollideGroups.enemy
   })
   self:setZIndex(Zindex)
   self:add(x,y)
@@ -58,11 +59,9 @@ function Enemy:search(player)
     for index, collision in pairs(collisions) do
       local collideObject = collision['other']
       if collideObject:isa(Player) then
-        self.player:dead()
-        self.animation:setState('empty')
-      end
-      if collideObject:isa(PropItem) then
-        self:collisionResponse('slide')
+        if self.player.isAlive then
+          self.player:dead()
+        end
       end
     end
   end
@@ -72,8 +71,16 @@ end
 function Enemy:update()
 end
 
-function Enemy:collisionResponse()
-  --return "freeze"
+function Enemy:collisionResponse(other)
+ if other:isa(Items) then
+   return 'overlap'
+ elseif other:isa(Box) or other:isa(PropItem) then
+   return 'freeze' 
+ elseif other:isa(Enemy) then
+   
+ else
+   return 'freeze'
+ end
 end
 
 local screenImage = Graphics.image.new(80,80)
