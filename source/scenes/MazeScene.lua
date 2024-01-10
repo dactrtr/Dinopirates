@@ -17,7 +17,7 @@ class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
 
 import "entities/player/player"
-import "entities/enemy"
+import "entities/enemies/enemy"
 import 'entities/props/propItem'
 import 'entities/items/Items'
 import "entities/FX/FXshadow"
@@ -215,7 +215,6 @@ MazeScene.inputHandler = {
 	--
 	BButtonDown = function()
 		
-		battery:test()
 	end,
 	BButtonHeld = function()
 	end,
