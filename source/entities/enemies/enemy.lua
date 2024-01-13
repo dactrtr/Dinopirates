@@ -4,7 +4,7 @@ class('Enemy').extends(NobleSprite)
 
 import 'entities/FX/FXsonar'
 
-function Enemy:search(player)
+function Enemy:blindSearch(player)
   
   self.player = player
   
@@ -27,7 +27,9 @@ function Enemy:search(player)
   self:moveCollision(movementX, movementY, self.player)
   
 end
-
+function Enemy:linealSearch(player)
+    print('lineal')
+end
 function Enemy:moveCollision(movementX,movementY, player)
   local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
   if lenght > 0 then
@@ -75,9 +77,9 @@ function Brocorat:init(x, y, moveSpeed, Zindex)
   self.animation:addState('idle', 4, 4)
   self.animation.idle.frameDuration = 6
   self.animation:addState('walk', 1, 8, 'idle')
-  self.animation.idle.frameDuration = 6
+  self.animation.walk.frameDuration = 6
   self.animation:addState('empty', 9, 9)
-  self.animation.idle.frameDuration = 6
+  self.animation.empty.frameDuration = 6
   
   self:setSize(32,32)
   self:moveTo(x,y)
@@ -95,4 +97,45 @@ function Brocorat:init(x, y, moveSpeed, Zindex)
   })
   self:setZIndex(Zindex)
   self:add(x,y)
+end
+
+function Brocorat:search(player)
+  self:blindSearch(player)
+end
+  
+
+Frogcolli = {}
+class('Frogcolli').extends('Enemy')
+
+function Frogcolli:init(x, y, moveSpeed, Zindex)
+  Brocorat.super.init(self,'assets/images/enemies/frogcolli', true)
+  
+  -- Mark: animation states
+  self.animation:addState('idle', 5, 6)
+  self.animation.idle.frameDuration = 48
+  self.animation:addState('walk', 1, 10, 'idle')
+  self.animation.walk.frameDuration = 6
+  self.animation:addState('empty', 11, 11)
+  self.animation.empty.frameDuration = 6
+  
+  self:setSize(40, 40)
+  self:moveTo(x,y)
+  self:setCollideRect(4,8, 32, 32)
+  
+  self.moveSpeed = moveSpeed
+  self.initialSpeed = moveSpeed
+  self:setGroups(CollideGroups.enemy)
+  self:setCollidesWithGroups(
+  {
+    CollideGroups.player,
+    CollideGroups.props,
+    CollideGroups.wall,
+    CollideGroups.enemy
+  })
+  self:setZIndex(Zindex)
+  self:add(x,y)
+end
+
+function Frogcolli:search(player)
+  self:linealSearch(player)
 end

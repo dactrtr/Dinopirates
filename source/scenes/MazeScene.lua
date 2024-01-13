@@ -108,7 +108,7 @@ function MazeScene:enter()
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
 	brocorat = Brocorat(80, 60, 0.7, ZIndex.enemy)
-	brocorat2 = Brocorat(80, 160, 0.7, ZIndex.enemy)
+	brocorat2 = Frogcolli(80, 160, 0.7, ZIndex.enemy)
 	--Test
 	
 end
