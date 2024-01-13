@@ -24,18 +24,23 @@ function Enemy:search(player)
 
   self.animation:setState('walk')
   
+  self:moveCollision(movementX, movementY, self.player)
+  
+end
+
+function Enemy:moveCollision(movementX,movementY, player)
   local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
   if lenght > 0 then
     for index, collision in pairs(collisions) do
       local collideObject = collision['other']
       if collideObject:isa(Player) then
         if self.player.isAlive then
+          self.animation:setState('empty')
           self.player:dead()
         end
       end
     end
   end
-  
 end
 
 function Enemy:update()
