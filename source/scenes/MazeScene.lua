@@ -108,7 +108,7 @@ function MazeScene:enter()
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
 	brocorat = Brocorat(80, 60, 0.7, ZIndex.enemy)
-	-- brocorat2 = Enemy(80, 160, 0.7, ZIndex.enemy)
+	brocorat2 = Brocorat(80, 160, 0.7, ZIndex.enemy)
 	--Test
 	
 end
@@ -135,14 +135,12 @@ function MazeScene:update()
 	-- Mark: Stops enemy from moving in the dark
 	if player.battery == 0 then
 		brocorat.moveSpeed = 0
-		--brocorat2.moveSpeed = 0
+		brocorat2.moveSpeed = 0
 	elseif player.battery > 60 then
 		brocorat.moveSpeed = brocorat.initialSpeed
-		--brocorat2.moveSpeed = brocorat2.initialSpeed
+		brocorat2.moveSpeed = brocorat2.initialSpeed
 	end
 	
-	-- Mark: GAME OVER
-	--GameOver(player) -- works but BONK!
 end
 
 
@@ -169,7 +167,7 @@ function MazeScene:exit()
 	floor:remove()
 	shadow:remove()
 	brocorat:remove()
-	--brocorat2:remove()
+	brocorat2:remove()
 	uiScreen:removeAll()
 	lvlKey:remove()
 end
@@ -196,7 +194,7 @@ MazeScene.inputHandler = {
 	AButtonDown = function()			-- Runs once when button is pressed.
 		if player.battery > 20 then
 			brocorat:sonar('enemy')
-			--brocorat2:sonar('enemy')
+			brocorat2:sonar('enemy')
 			lvlKey:sonar('key')
 			player:drainBattery(20)
 		end
@@ -235,7 +233,7 @@ MazeScene.inputHandler = {
 			player:move("left")
 			shadow:move("left")
 			brocorat:search(player)
-			--brocorat2:search(player)
+			brocorat2:search(player)
 		end
 	end,
 	leftButtonUp = function()
@@ -252,7 +250,7 @@ MazeScene.inputHandler = {
 			player:move("right")
 			shadow:move("right")
 			brocorat:search(player)
-			--brocorat2:search(player)
+			brocorat2:search(player)
 		end
 	end,
 	rightButtonUp = function()
@@ -269,7 +267,7 @@ MazeScene.inputHandler = {
 			player:move("up")
 			shadow:move("up")
 			brocorat:search(player)
-			--brocorat2:search(player)
+			brocorat2:search(player)
 		end
 	end,
 	upButtonUp = function()
@@ -286,7 +284,7 @@ MazeScene.inputHandler = {
 			player:move("down")
 			shadow:move("down")
 			brocorat:search(player)
-			--brocorat2:search(player)
+			brocorat2:search(player)
 		end
 	end,
 	downButtonUp = function()
@@ -301,7 +299,7 @@ MazeScene.inputHandler = {
 			if playdate.getCrankTicks(3) > 0 then
 				player:chargeBattery(1)
 				brocorat:search(player)
-				--brocorat2:search(player)
+				brocorat2:search(player)
 			elseif player.battery == 100 then
 				player:idle()
 			end
