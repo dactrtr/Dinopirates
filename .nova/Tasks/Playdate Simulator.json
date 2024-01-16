@@ -3,8 +3,5 @@
     "identifier" : "com.panic.Playdate",
     "name" : "Playdate"
   },
-  "extensionTemplate" : "simulator",
-  "extensionValues" : {
-    "playdate.debugRequest" : "attach"
-  }
+  "extensionTemplate" : "simulator"
 }

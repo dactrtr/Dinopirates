@@ -1,51 +1,52 @@
--- import "CoreLibs/graphics"
-import "CoreLibs/object"
-import "CoreLibs/sprites"
-import "CoreLibs/animation"
+import 'libraries/noble/Noble'
 
+import 'utilities/Utilities'
 
-import "entities/player"
-import "entities/player-hud"
-import "entities/enemy"
-import "entities/toast-bar"
+import 'scenes/DeadScene'
+import 'scenes/MazeScene'
+--import 'scenes/SpaceScene'
+import 'scenes/StarScene'
+import 'scenes/TestScene'
+import 'scenes/TitleScene'
 
-local pd <const> = playdate
-local gfx <const> = pd.graphics
+Noble.Settings.setup({
+	Difficulty = "Medium"
+})
 
-player = Player(180,80,4,4)
-toastbar = ToastBar(player.toasts)
-player_hud = PlayerHud("normal")
+Noble.GameData.setup({
+	Score = 0
+})
 
-enemy_1 = Enemy(150, 80, 1)
-enemy_2 = Enemy(430,60, 3)
-enemy_3 = Enemy(410,80, 2)
+ZIndex = {
+	player = 4,
+	enemy = 3,
+	props = 3,
+	fx = 6,
+	ui = 10,
+	alert = 12
+}
+CollideGroups = {
+	player = 1,
+	enemy = 2,
+	props = 3,
+	items = 4,
+	wall = 5
+}
 
--- Mark: assets
-border = gfx.image.new("assets/border.png")
+local menu = playdate.getSystemMenu()
+debug = false
+local menuItem, error = menu:addMenuItem("Title", function()
+	Noble.transition(TitleScene)
+end)
+local menuItem, error = menu:addMenuItem("debug", function()
+	if debug == false then
+		debug = true
+	else 
+		debug = false
+	end
+end)
+-- Noble.showFPS = true
+playdate.display.setRefreshRate(50)
+timers = playdate.timer
 
-function pd.update() 
-  
-  gfx.clear()
-  gfx.sprite.update()
-  border:draw(112,0)
-  local collisions = gfx.sprite.allOverlappingSprites()
-  if collisions[1] then
-    player_hud.status = "dead"
-    toastbar.toasts -= 1
-    
-  elseif collisions[1] == nil then
-    player_hud.status = "normal"
-  end
-  -- print(collisions[1])
- 
-
-  -- for i=1,6 do
-  --   card_Holder:draw(0,100+20*i)
-  -- end
-
-  gfx.drawText("TEST", 20, 104) -- make text smaller
-  pd.drawFPS(380, 10)
-		
-end
-
-
+Noble.new(MazeScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)
