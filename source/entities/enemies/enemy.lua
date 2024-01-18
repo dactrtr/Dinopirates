@@ -148,3 +148,8 @@ end
 function Frogcolli:search(player)
   self:linealSearch(player)
 end
+function Frogcolli:update()
+  if self.player.isActive == true then
+    self:search(self.player)
+  end
+end
