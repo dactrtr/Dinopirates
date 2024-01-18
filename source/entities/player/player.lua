@@ -61,10 +61,12 @@ function Player:init(x, y, speed, Zindex)
   self.initialSanity = 100
   self.sanityLoss = 10
   self.sanity = 100
+  self.isActive = false
+  self.loadingPower = false
+  self.isAlive = true
   
   -- Mark: Custom items properties
   self.battery = 100
-  self.isAlive = true
   self.hasKey = false
   self.hasLamp = true
   
@@ -136,6 +138,7 @@ end
 
 function Player:move(direction)
   if self.isAlive == true then
+    self.isActive = true
     self.direction = direction
     local movementX = 0
     local movementY = 0
@@ -176,8 +179,8 @@ function Player:move(direction)
       movementY = self.y + self.speed
     end
     local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
+    
   end
-  
 end
 
 function Player:drainBattery(amount)
@@ -191,6 +194,7 @@ function Player:chargeBattery(amount)
     self.animation:setState('lampIdle')
   end
   self.battery += amount
+  self.isActive = true
 end
 
 function Player:update()
@@ -205,6 +209,7 @@ function Player:update()
   elseif self.battery > 20 then
     self.speed = self.initialSpeed
   end
+  self.isActive = false
 end
 
 function Player:grabKey()

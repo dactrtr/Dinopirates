@@ -46,6 +46,7 @@ local lvlKey = nil
 local uiScreen = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
+
 -- This is the background color of this scene.
 MazeScene.backgroundColor = Graphics.kColorWhite
 
@@ -53,7 +54,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = true
+	debug = false
 	cheat.onComplete = function()
 		player.battery = 100
 	end
@@ -107,7 +108,7 @@ function MazeScene:enter()
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
-	brocorat = Brocorat(80, 60, 0.7, ZIndex.enemy)
+	brocorat = Brocorat(80, 60, 0.7, ZIndex.enemy, player)
 	brocorat2 = Frogcolli(80, 160, 0.7, ZIndex.enemy)
 	--Test
 	
@@ -127,11 +128,11 @@ function MazeScene:update()
 	
 	-- Mark: cheat code
 	cheat:update()
+	
 	-- Mark: Crank notification
 	if player.battery == 0  and playdate.isCrankDocked() then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
-	
 	-- Mark: Stops enemy from moving in the dark
 	if player.battery == 0 then
 		brocorat.moveSpeed = 0
@@ -193,7 +194,7 @@ MazeScene.inputHandler = {
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
 		if player.battery > 20 then
-			brocorat:sonar('enemy')
+			brocorat:sonar('enemy')	-- Make it a update method
 			brocorat2:sonar('enemy')
 			lvlKey:sonar('key')
 			player:drainBattery(20)
@@ -215,12 +216,13 @@ MazeScene.inputHandler = {
 		
 	end,
 	BButtonHeld = function()
+		
+		player.loadingPower = true
 	end,
 	BButtonHold = function()
-		
 	end,
 	BButtonUp = function()
-		
+		player.loadingPower = false
 	end,
 
 	-- D-pad left
@@ -232,8 +234,6 @@ MazeScene.inputHandler = {
 		if player.isAlive then
 			player:move("left")
 			shadow:move("left")
-			brocorat:search(player)
-			brocorat2:search(player)
 		end
 	end,
 	leftButtonUp = function()
@@ -249,8 +249,6 @@ MazeScene.inputHandler = {
 		if player.isAlive then
 			player:move("right")
 			shadow:move("right")
-			brocorat:search(player)
-			brocorat2:search(player)
 		end
 	end,
 	rightButtonUp = function()
@@ -266,8 +264,6 @@ MazeScene.inputHandler = {
 		if player.isAlive then
 			player:move("up")
 			shadow:move("up")
-			brocorat:search(player)
-			brocorat2:search(player)
 		end
 	end,
 	upButtonUp = function()
@@ -283,8 +279,6 @@ MazeScene.inputHandler = {
 		if player.isAlive then
 			player:move("down")
 			shadow:move("down")
-			brocorat:search(player)
-			brocorat2:search(player)
 		end
 	end,
 	downButtonUp = function()
@@ -297,13 +291,18 @@ MazeScene.inputHandler = {
 		if player.isAlive then
 			-- TODO: turn this into a function
 			if playdate.getCrankTicks(3) > 0 then
-				player:chargeBattery(1)
-				brocorat:search(player)
-				brocorat2:search(player)
-			elseif player.battery == 100 then
+				if player.loadingPower == true then
+						--print('powa') 
+				else
+					player:chargeBattery(1)
+				end
+			end
+			if player.battery == 100 then
 				player:idle()
 			end
+			
 		end
+		
 	end,
 	crankDocked = function()						-- Runs once when when crank is docked.
 	end,

@@ -22,6 +22,8 @@ end
 function playerHud:removeAll()
 	self:remove()
 	batteryIndicator:removeAll()
+	sonarIndicator:remove()
+	sanityIndicator:remove()
 end
 function playerHud:update()
 end

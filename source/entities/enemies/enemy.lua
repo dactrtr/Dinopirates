@@ -28,8 +28,9 @@ function Enemy:blindSearch(player)
   
 end
 function Enemy:linealSearch(player)
-    print('lineal')
+    -- print('lineal')
 end
+
 function Enemy:moveCollision(movementX,movementY, player)
   local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
   if lenght > 0 then
@@ -45,7 +46,8 @@ function Enemy:moveCollision(movementX,movementY, player)
   end
 end
 
-function Enemy:update()
+function Enemy:updateSound(player)
+  --print(player.x)
 end
 
 function Enemy:collisionResponse(other)
@@ -70,7 +72,7 @@ end
 Brocorat = {}
 class('Brocorat').extends('Enemy')
 
-function Brocorat:init(x, y, moveSpeed, Zindex)
+function Brocorat:init(x, y, moveSpeed, Zindex, player)
   Brocorat.super.init(self,'assets/images/enemies/brocorat', true)
   
   -- Mark: animation states
@@ -87,6 +89,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex)
   
   self.moveSpeed = moveSpeed
   self.initialSpeed = moveSpeed
+  self.player = player
   self:setGroups(CollideGroups.enemy)
   self:setCollidesWithGroups(
   {
@@ -103,11 +106,16 @@ function Brocorat:search(player)
   self:blindSearch(player)
 end
   
+function Brocorat:update()
+  if self.player.isActive == true then
+    self:search(self.player)
+  end
+end
 
 Frogcolli = {}
 class('Frogcolli').extends('Enemy')
 
-function Frogcolli:init(x, y, moveSpeed, Zindex)
+function Frogcolli:init(x, y, moveSpeed, Zindex, player)
   Brocorat.super.init(self,'assets/images/enemies/frogcolli', true)
   
   -- Mark: animation states
@@ -124,6 +132,7 @@ function Frogcolli:init(x, y, moveSpeed, Zindex)
   
   self.moveSpeed = moveSpeed
   self.initialSpeed = moveSpeed
+  self.player = player
   self:setGroups(CollideGroups.enemy)
   self:setCollidesWithGroups(
   {

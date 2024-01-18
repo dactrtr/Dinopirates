@@ -49,7 +49,7 @@ function FXshadow:update()
 	local maskSize = self.lightSize
 	local decreaseSize = maskSize/10
 	local lightAmount = 0.1
-	local globalLightAmount = 0.01
+	local globalLightAmount = 0.03
 	
 	
 	if battery > 120 and battery <= 160 then
