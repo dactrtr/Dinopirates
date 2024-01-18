@@ -96,11 +96,9 @@ function MazeScene:enter()
 	
 	-- Mark: Props
 	chair = PropItem(250, 150, ZIndex.props)
-	--chair1 = PropItem(250, 100, ZIndex.props)
 	lvlKey = Items(150, 120)
 	-- Mark: Player
 	player = Player(280, 120, 1, ZIndex.player)
-	--player:sanityCheck()
 	
 	-- Mark: FX
 	shadow = FXshadow(200, 120, player, 70, ZIndex.fx)
@@ -109,7 +107,7 @@ function MazeScene:enter()
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
 	brocorat = Brocorat(80, 60, 0.7, ZIndex.enemy, player)
-	brocorat2 = Frogcolli(80, 160, 0.7, ZIndex.enemy)
+	brocorat2 = Frogcolli(80, 160, 0.7, ZIndex.enemy, player)
 	--Test
 	
 end
