@@ -54,7 +54,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = false
+	debug = true
 	cheat.onComplete = function()
 		player.battery = 100
 	end
@@ -106,8 +106,8 @@ function MazeScene:enter()
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
-	brocorat = Brocorat(80, 60, 0.7, ZIndex.enemy, player)
-	brocorat2 = Frogcolli(80, 160, 0.7, ZIndex.enemy, player)
+	brocorat = Brocorat(380, 60, 0.7, ZIndex.enemy, player)
+	brocorat2 = Frogcolli(200, 120, 6, ZIndex.enemy, player)
 	--Test
 	
 end

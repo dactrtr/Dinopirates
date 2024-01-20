@@ -28,7 +28,30 @@ function Enemy:blindSearch(player)
   
 end
 function Enemy:linealSearch(player)
-    -- print('lineal')
+    
+    self.player = player
+    local movementX = 0
+    local movementY = 0
+    
+    
+    if (self.y - self.viewRange) < self.player.y and self.player.y < (self.y + self.viewRange)  then
+      if self.player.x <= self.x then
+        movementX = self.x - self.moveSpeed
+      elseif self.player.x > self.x  then
+        movementX = self.x + self.moveSpeed
+      end
+      self:moveCollision(movementX, self.y, self.player)
+    end
+    
+    if (self.x - self.viewRange) < self.player.x and self.player.x < (self.x + self.viewRange)  then
+      if self.player.y <= self.y then
+        movementY = self.y - self.moveSpeed
+      elseif self.player.y > self.y  then
+        movementY = self.y + self.moveSpeed
+      end
+      self:moveCollision(self.x, movementY, self.player)
+    end
+    
 end
 
 function Enemy:moveCollision(movementX,movementY, player)
@@ -108,7 +131,7 @@ end
   
 function Brocorat:update()
   if self.player.isActive == true then
-    self:search(self.player)
+    --self:search(self.player)
   end
 end
 
@@ -132,6 +155,7 @@ function Frogcolli:init(x, y, moveSpeed, Zindex, player)
   
   self.moveSpeed = moveSpeed
   self.initialSpeed = moveSpeed
+  self.viewRange = 3
   self.player = player
   self:setGroups(CollideGroups.enemy)
   self:setCollidesWithGroups(
