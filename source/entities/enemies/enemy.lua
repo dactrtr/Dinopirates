@@ -28,30 +28,19 @@ function Enemy:blindSearch(player)
   
 end
 function Enemy:linealSearch(player)
-    
     self.player = player
-    local movementX = 0
-    local movementY = 0
+    local movementX = self.x
+    local movementY = self.y
     
-    
-    if (self.y - self.viewRange) < self.player.y and self.player.y < (self.y + self.viewRange)  then
-      if self.player.x <= self.x then
-        movementX = self.x - self.moveSpeed
-      elseif self.player.x > self.x  then
-        movementX = self.x + self.moveSpeed
-      end
-      self:moveCollision(movementX, self.y, self.player)
+    if math.abs(self.y - self.player.y) < self.viewRange then
+        movementX = self.player.x <= self.x and self.x - self.moveSpeed or self.x + self.moveSpeed
+        self:moveCollision(movementX, self.y, self.player)
     end
     
-    if (self.x - self.viewRange) < self.player.x and self.player.x < (self.x + self.viewRange)  then
-      if self.player.y <= self.y then
-        movementY = self.y - self.moveSpeed
-      elseif self.player.y > self.y  then
-        movementY = self.y + self.moveSpeed
-      end
-      self:moveCollision(self.x, movementY, self.player)
+    if math.abs(self.x - self.player.x) < self.viewRange then
+        movementY = self.player.y <= self.y and self.y - self.moveSpeed or self.y + self.moveSpeed
+        self:moveCollision(self.x, movementY, self.player)
     end
-    
 end
 
 function Enemy:moveCollision(movementX,movementY, player)
