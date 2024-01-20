@@ -4,7 +4,7 @@ class('FXshadow').extends(Graphics.sprite)
 local shadow = Graphics.image.new(400,240)
 
 
-function FXshadow:init(x, y, player, lightSize, Zindex)
+function FXshadow:init(x, y, player, lightSize, globalLightAmount, Zindex)
 	
 	self.speed = player.speed
 	self.player = player
@@ -13,6 +13,7 @@ function FXshadow:init(x, y, player, lightSize, Zindex)
 	self:setCollidesWithGroups(1)
 	self:setImage(shadow)
 	self:setZIndex(Zindex)
+	self.globalLightAmount = globalLightAmount
 	self:add()	
 end
 
@@ -49,7 +50,8 @@ function FXshadow:update()
 	local maskSize = self.lightSize
 	local decreaseSize = maskSize/10
 	local lightAmount = 0.1
-	local globalLightAmount = 0.03
+	shadow:clear(Graphics.kColorClear)
+	-- local self.globalLightAmount = 0.03
 	
 	
 	if battery > 120 and battery <= 160 then
@@ -57,32 +59,37 @@ function FXshadow:update()
 		lightAmount = 0.2
 		lightSourceSize = 35
 		lightSourceAmount = 0.1
+		self.globalLightAmount = 0.08
 	elseif battery > 80 and battery <= 120 then
 		maskSize -= decreaseSize*2
 		lightAmount = 0.5
 		lightSourceSize = 30
 		lightSourceAmount = 0.3
+		self.globalLightAmount = 0.06
 	elseif battery > 40 and battery <= 80 then
 		maskSize -= decreaseSize*3
 		lightAmount = 0.7
 		lightSourceSize = 25
-		lightSourceAmount = 0.5
+		lightSourceAmount = 0.0
+		self.globalLightAmount = 0.04
 	elseif battery > 0 and battery <= 40 then
 		maskSize -= decreaseSize*4
 		lightAmount = 0.9
 		lightSourceSize = 20
 		lightSourceAmount = 0.7
+		self.globalLightAmount = 0.02
 	elseif battery == 0 then
 		maskSize -= decreaseSize*5
 		lightAmount = 1
 		lightSourceSize = 15
 		lightSourceAmount = 0.9
+		self.globalLightAmount = 0.01
 	end
 	-- Mark: fills the screen with a dither pattern
 	Graphics.pushContext(shadow)
 	
 		Graphics.setColor(Graphics.kColorBlack)
-		Graphics.setDitherPattern(globalLightAmount, Graphics.image.kDitherTypeBayer8x8)
+		Graphics.setDitherPattern(self.globalLightAmount, Graphics.image.kDitherTypeBayer8x8)
 		Graphics.fillRect(0, 0, shadow:getSize())
 		
 	Graphics.popContext()

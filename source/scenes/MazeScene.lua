@@ -54,7 +54,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = true
+	debug = false
 	cheat.onComplete = function()
 		player.battery = 100
 	end
@@ -98,16 +98,16 @@ function MazeScene:enter()
 	chair = PropItem(250, 150, ZIndex.props)
 	lvlKey = Items(150, 120)
 	-- Mark: Player
-	player = Player(280, 120, 1, ZIndex.player)
+	player = Player(80, 80, 1, ZIndex.player)
 	
 	-- Mark: FX
-	shadow = FXshadow(200, 120, player, 70, ZIndex.fx)
+	shadow = FXshadow(200, 120, player, 70, 0.1, ZIndex.fx)
 	
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
 	brocorat = Brocorat(380, 60, 0.7, ZIndex.enemy, player)
-	brocorat2 = Frogcolli(200, 120, 6, ZIndex.enemy, player)
+	frogcolli = Frogcolli(200, 120, 6, ZIndex.enemy, player)
 	--Test
 	
 end
@@ -134,10 +134,10 @@ function MazeScene:update()
 	-- Mark: Stops enemy from moving in the dark
 	if player.battery == 0 then
 		brocorat.moveSpeed = 0
-		brocorat2.moveSpeed = 0
+		frogcolli.moveSpeed = 0
 	elseif player.battery > 60 then
 		brocorat.moveSpeed = brocorat.initialSpeed
-		brocorat2.moveSpeed = brocorat2.initialSpeed
+		frogcolli.moveSpeed = frogcolli.initialSpeed
 	end
 	
 end
@@ -166,7 +166,7 @@ function MazeScene:exit()
 	floor:remove()
 	shadow:remove()
 	brocorat:remove()
-	brocorat2:remove()
+	frogcolli:remove()
 	uiScreen:removeAll()
 	lvlKey:remove()
 end
@@ -193,7 +193,7 @@ MazeScene.inputHandler = {
 	AButtonDown = function()			-- Runs once when button is pressed.
 		if player.battery > 20 then
 			brocorat:sonar('enemy')	-- Make it a update method
-			brocorat2:sonar('enemy')
+			frogcolli:sonar('enemy')
 			lvlKey:sonar('key')
 			player:drainBattery(20)
 		end

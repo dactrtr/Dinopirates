@@ -120,7 +120,7 @@ end
   
 function Brocorat:update()
   if self.player.isActive == true then
-    --self:search(self.player)
+    self:search(self.player)
   end
 end
 

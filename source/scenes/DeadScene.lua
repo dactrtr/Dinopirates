@@ -70,7 +70,7 @@ function scene:init()
 	)
 	menu:addItem("Exit", function() Noble.transition(TitleScene) end)
 	menu:addItem("Retry", function() Noble.transition(MazeScene) end)
-	menu:select("Exit")
+	menu:select("Retry")
 	
 end
 
