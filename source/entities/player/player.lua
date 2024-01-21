@@ -87,6 +87,13 @@ function Player:collisionResponse(other)
     other:removeAll()
     self:grabKey()
     return 'overlap'
+    elseif other:isa(Door) then
+      if self.hasKey then
+        print('be my guest')
+      else
+        print('no key no door')
+      end
+    return 'overlap'
   end
 end
 

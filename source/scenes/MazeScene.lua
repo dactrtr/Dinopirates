@@ -19,6 +19,7 @@ class("MazeScene").extends(NobleScene)
 import "entities/player/player"
 import "entities/enemies/enemy"
 import 'entities/props/propItem'
+import 'entities/props/door'
 import 'entities/items/Items'
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
@@ -40,6 +41,7 @@ local brocorat = nil
 -- Mark: environment related
 local chair = nil
 local chair1 = nil
+local door = nil
 -- Mark: Key items
 local lvlKey = nil
 -- Mark: UI
@@ -91,7 +93,7 @@ function MazeScene:enter()
 	wallDown = Box(0, 228, 400, 12)
 	wallLeft = Box(0, 12, 12, 216)
 	wallRight = Box(388, 12, 12, 216)
-
+	exitDoor = Door(200, 9, ZIndex.props)
 	
 	
 	-- Mark: Props
@@ -106,7 +108,7 @@ function MazeScene:enter()
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
-	brocorat = Brocorat(380, 60, 0.7, ZIndex.enemy, player)
+	brocorat = Brocorat(180, 60, 0.7, ZIndex.enemy, player)
 	frogcolli = Frogcolli(200, 120, 6, ZIndex.enemy, player)
 	--Test
 	

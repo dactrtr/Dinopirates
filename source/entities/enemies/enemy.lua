@@ -59,7 +59,6 @@ function Enemy:moveCollision(movementX,movementY, player)
 end
 
 function Enemy:updateSound(player)
-  --print(player.x)
 end
 
 function Enemy:collisionResponse(other)

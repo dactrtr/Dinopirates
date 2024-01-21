@@ -1,5 +1,5 @@
 
-Prop = {}
+PropItem = {}
 class('PropItem').extends(NobleSprite)
 
 function PropItem:init(x, y, zIndex)
