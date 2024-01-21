@@ -67,7 +67,7 @@ function Player:init(x, y, speed, Zindex)
   
   -- Mark: Custom items properties
   self.battery = 100
-  self.hasKey = true
+  self.hasKey = false
   self.hasLamp = true
   
   -- Mark: add to scene
