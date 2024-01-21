@@ -5,28 +5,14 @@ class('Enemy').extends(NobleSprite)
 import 'entities/FX/FXsonar'
 
 function Enemy:blindSearch(player)
-  
-  self.player = player
-  
-  local movementX = 0
-  local movementY = 0
-  
-  if self.player.x <= self.x then
-    movementX = self.x - self.moveSpeed
-  elseif self.player.x > self.x  then
-      movementX = self.x + self.moveSpeed
-  end
-  if self.player.y <= self.y then
-    movementY = self.y - self.moveSpeed
-  elseif self.player.y > self.y then
-    movementY = self.y + self.moveSpeed
-  end
+    self.player = player
+    local movementX = self.player.x <= self.x and self.x - self.moveSpeed or self.x + self.moveSpeed
+    local movementY = self.player.y <= self.y and self.y - self.moveSpeed or self.y + self.moveSpeed
 
-  self.animation:setState('walk')
-  
-  self:moveCollision(movementX, movementY, self.player)
-  
+    self.animation:setState('walk')
+    self:moveCollision(movementX, movementY, self.player)
 end
+
 function Enemy:linealSearch(player)
     self.player = player
     local movementX = self.x
