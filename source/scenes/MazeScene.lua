@@ -160,11 +160,11 @@ function MazeScene:exit()
 	wallTop:remove()
 	wallLeft:remove()
 	wallRight:remove()
-	--Removing all entities
+	-- Removing all entities
 	player:remove()
 	chair:remove()
 	
-	--chair1:remove()
+	-- Removing map/background 
 	floor:remove()
 	shadow:remove()
 	brocorat:remove()

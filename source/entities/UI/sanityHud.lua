@@ -25,8 +25,8 @@ function sanityHud:init(x, y, zIndex, player, indicator)
 end
 function sanityHud:update()
 	local sanity = self.player.sanity
-	if self.indicatorPosition then
-		self:moveTo(self.player.x + 22 , self.player.y - 36)
+	if not self.indicatorPosition then
+		self:moveTo(self.player.x + 10 , self.player.y - 36)
 	end
 	if sanity < 30 then
 		self.animation:setState('insane')

@@ -13,9 +13,9 @@ function Battery:init(x, y, player, Zindex, indicator)
 end
 
 function Battery:update()
-    if self.indicatorPosition then
-        self:moveTo(self.player.x - 16, self.player.y-36)
-        batteryCanister:moveTo(self.player.x - 16, self.player.y-36)
+    if not self.indicatorPosition then
+        self:moveTo(self.player.x - 22, self.player.y-36)
+        batteryCanister:moveTo(self.player.x - 22, self.player.y-36)
     end
     self.battery = self.player.battery
     local batteryPercent = (self.battery * batteryCanister.width - 4) / 100

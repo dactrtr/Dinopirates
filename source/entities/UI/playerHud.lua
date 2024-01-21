@@ -11,13 +11,21 @@ local keyIndicator = nil
 local sonarIndicator = nil
 local sanityIndicator = nil
 
+local background <const> = Graphics.image.new('assets/images/ui/statusbar.png')
+
 function playerHud:init(player, userUI)	
 	-- userUI sets the UI to be in the corner of the screen or over the character
-	batteryIndicator = Battery(12, 10, player, ZIndex.ui, userUI)
-	keyIndicator = keyHud(11, 24, ZIndex.ui, player)
-	sonarIndicator = sonarHud(32, 10, ZIndex.ui, player, userUI)
-	sanityIndicator = sanityHud(56, 10, ZIndex.ui, player, userUI)
-
+	if userUI then
+	self:setImage(background)
+	self:setCenter(0,0)
+	self:moveTo(0, 0)
+	self:setZIndex(6)
+	end
+	batteryIndicator = Battery(16, 11, player, ZIndex.ui, userUI)
+	sonarIndicator = sonarHud(32, 11, ZIndex.ui, player, userUI)
+	sanityIndicator = sanityHud(50, 11, ZIndex.ui, player, userUI)
+	keyIndicator = keyHud(66, 11, ZIndex.ui, player, userUI)
+	self:add()
 end
 
 function playerHud:removeAll()

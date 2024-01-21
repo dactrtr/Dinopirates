@@ -14,8 +14,8 @@ function sonarHud:init(x, y, zIndex, player, indicator)
 	self:add(x,y)
 end
 function sonarHud:update()
-	if self.indicatorPosition then
-		self:moveTo(self.player.x + 2 , self.player.y - 36)
+	if not self.indicatorPosition then
+		self:moveTo(self.player.x - 6 , self.player.y - 36)
 	end
 	if self.player.battery < 20 then
 		self.animation:setState('empty')
