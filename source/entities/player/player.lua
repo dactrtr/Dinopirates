@@ -113,19 +113,19 @@ function Player:sanityCheck()
   local function checkSanity()
     
     if PlayerData.battery < 20 then
-      self.sanity -= 2 * self.sanityLoss
+      PlayerData.sanity -= 2 * self.sanityLoss
     elseif PlayerData.battery < 40 then
-      self.sanity -= self.sanityLoss
+      PlayerData.sanity -= self.sanityLoss
     end
     
-    if self.sanity <= 0 then
-      self.sanity = 0
+    if PlayerData.sanity <= 0 then
+      PlayerData.sanity = 0
     end
     if PlayerData.battery > 50 then
-      self.sanity += 2 * self.sanityLoss
+      PlayerData.sanity += 2 * self.sanityLoss
     end
     if self.sanity >= 100 then
-      self.sanity = 100
+      PlayerData.sanity = 100
     end
     
   end
@@ -221,5 +221,5 @@ function Player:update()
 end
 
 function Player:grabKey()
-  self.hasKey = true
+  PlayerData.hasKey = true
 end
