@@ -17,7 +17,7 @@ function keyHud:update()
 	if not self.indicatorPosition then
 		self:moveTo(self.player.x + 26, self.player.y - 36)
 	end
-	if self.player.hasKey == false then
+	if PlayerData.hasKey == false then
 		self:setImage(nil)
 	else
 		self:setImage(keyIndicator)

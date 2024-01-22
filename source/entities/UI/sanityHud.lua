@@ -24,7 +24,7 @@ function sanityHud:init(x, y, zIndex, player, indicator)
 	self:add(x,y)
 end
 function sanityHud:update()
-	local sanity = self.player.sanity
+	local sanity = PlayerData.sanity
 	if not self.indicatorPosition then
 		self:moveTo(self.player.x + 10 , self.player.y - 36)
 	end

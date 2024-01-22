@@ -13,14 +13,15 @@ function Battery:init(x, y, player, Zindex, indicator)
 end
 
 function Battery:update()
+    print(PlayerData.battery)
     if not self.indicatorPosition then
         self:moveTo(self.player.x - 22, self.player.y-36)
         batteryCanister:moveTo(self.player.x - 22, self.player.y-36)
     end
     self.battery = PlayerData.battery
-    local batteryPercent = (self.battery * batteryCanister.width - 4) / 100
+    local batteryPercent = (self.battery * (batteryCanister.width - 8)) / 100
     
-    local batteryFill = Graphics.image.new(batteryCanister.width - 4, 6)
+    local batteryFill = Graphics.image.new(batteryCanister.width - 8, 6)
     
     Graphics.pushContext(batteryFill)
         Graphics.setColor(Graphics.kColorBlack)
