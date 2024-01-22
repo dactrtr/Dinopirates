@@ -41,7 +41,10 @@ local brocorat = nil
 -- Mark: environment related
 local chair = nil
 local chair1 = nil
-local door = nil
+local exitTopDoor = nil
+local exitDownDoor = nil
+local exitLeftDoor = nil
+local exitRightDoor = nil
 -- Mark: Key items
 local lvlKey = nil
 -- Mark: UI
@@ -56,7 +59,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitining away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = false
+	debug = true
 	cheat.onComplete = function()
 		player.battery = 100
 	end
@@ -93,7 +96,9 @@ function MazeScene:enter()
 	wallDown = Box(0, 228, 400, 12)
 	wallLeft = Box(0, 12, 12, 216)
 	wallRight = Box(388, 12, 12, 216)
-	exitDoor = Door(200, 9, ZIndex.props)
+	-- Mark: doors
+	exitTopDoor = Door(205, 10, 'top','closed', ZIndex.props)
+	exitLeftDoor = Door(4, 59, 'left', 'closed', ZIndex.props)
 	
 	
 	-- Mark: Props
@@ -156,21 +161,21 @@ function MazeScene:exit()
 	MazeScene.super.exit(self)
 	debug = false
 	player.hasKey = false
-	wallDown:remove()
-	wallTop:remove()
-	wallLeft:remove()
-	wallRight:remove()
-	-- Removing all entities
-	player:remove()
-	chair:remove()
-	
-	-- Removing map/background 
-	floor:remove()
-	shadow:remove()
-	brocorat:remove()
-	frogcolli:remove()
-	uiScreen:removeAll()
-	lvlKey:remove()
+	-- wallDown:remove()
+	-- wallTop:remove()
+	-- wallLeft:remove()
+	-- wallRight:remove()
+	-- -- Removing all entities
+	-- player:remove()
+	-- chair:remove()
+	-- 
+	-- -- Removing map/background 
+	-- floor:remove()
+	-- shadow:remove()
+	-- brocorat:remove()
+	-- frogcolli:remove()
+	-- uiScreen:removeAll()
+	-- lvlKey:remove()
 end
 
 -- This runs once a transition to another scene completes.
