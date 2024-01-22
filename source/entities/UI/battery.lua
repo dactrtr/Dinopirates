@@ -13,7 +13,6 @@ function Battery:init(x, y, player, Zindex, indicator)
 end
 
 function Battery:update()
-    print(PlayerData.battery)
     if not self.indicatorPosition then
         self:moveTo(self.player.x - 22, self.player.y-36)
         batteryCanister:moveTo(self.player.x - 22, self.player.y-36)
