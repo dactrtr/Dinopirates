@@ -2,50 +2,32 @@ Door = {}
 class('Door').extends(NobleSprite)
 
 function Door:init(x, y, direction, status, zIndex)
-  if direction == 'top' or direction == 'down' then
-    Door.super.init(self,'assets/images/props/door-horizontal', true)
-    self:setSize( 56, 10)
-    self:setCollideRect(12, 4, 24, 18)
-  elseif direction == 'left' or 'right' then
-    Door.super.init(self,'assets/images/props/door-vertical', true)
-    self:setSize( 10, 56)
-    self:setCollideRect(4, 12, 18, 24)
-  end
-  --- animation states
-  self.animation:addState('normalClosed', 18, 18)
-  self.animation.normalClosed.frameDuration = 12
-  self.animation:addState('reverseClosed', 9, 9)
-  self.animation.reverseClosed.frameDuration = 12
-  self.animation:addState('normalOpen', 10, 10)
-  self.animation.normalOpen.frameDuration = 12
-  self.animation:addState('reverseOpen', 1, 1)
-  self.animation.reverseOpen.frameDuration = 12
-  self.animation:addState('normalOpening', 18, 10)
-  self.animation.normalOpening.frameDuration = 12
-  self.animation:addState('reverseOpening', 9, 1)
-  self.animation.reverseOpening.frameDuration = 12
-  self.animation:addState('normalClosing', 10, 18)
-  self.animation.normalClosing.frameDuration = 12
-  self.animation:addState('reverseClosing', 1, 9)
-  self.animation.reverseClosing.frameDuration = 12
+  local isHorizontal = direction == 'top' or direction == 'down'
+  local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
+  local sizeX, sizeY = isHorizontal and 56 or 10, isHorizontal and 10 or 56
+  local rectX, rectY, rectW, rectH = isHorizontal and 12 or 4, isHorizontal and 4 or 12, 24, 18
   
-  if direction == 'top' or direction == 'right' then
-    if status == 'closed' then
-      self.animation:setState('normalClosed')
-    elseif status == 'open'  then
-      self.animation:setState('normalOpen')
-    end
-    --self.animation:setState('normal')
-  elseif direction == 'left' or direction == 'down' then
-    if status == 'closed' then
-      self.animation:setState('reverseClosed')
-    elseif status == 'open'  then
-      self.animation:setState('reverseOpen')
-    end
+  Door.super.init(self, asset, true)
+  self:setSize(sizeX, sizeY)
+  self:setCollideRect(rectX, rectY, rectW, rectH)
+  
+  local animationStates = {
+    {name = 'normalClosed', startFrame = 18, endFrame = 18},
+    {name = 'reverseClosed', startFrame = 9, endFrame = 9},
+    {name = 'normalOpen', startFrame = 10, endFrame = 10},
+    {name = 'reverseOpen', startFrame = 1, endFrame = 1}
+  }
+  
+  for _, state in ipairs(animationStates) do
+    self.animation:addState(state.name, state.startFrame, state.endFrame)
+    self.animation[state.name].frameDuration = 12
   end
   
-  -- position and z-index
+  local isNormal = direction == 'top' or direction == 'right'
+  local statePrefix = isNormal and 'normal' or 'reverse'
+  self.animation:setState(statePrefix .. (status == 'closed' and 'Closed' or 'Open'))
+  
   self:setZIndex(zIndex)
   self:setGroups(3)
-  self:add(x,y)
+  self:add(x, y)
 end
