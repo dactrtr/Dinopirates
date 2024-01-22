@@ -14,9 +14,14 @@ Noble.Settings.setup({
 })
 
 Noble.GameData.setup({
-	Score = 0
+	Score = 0,
 })
-
+PlayerData = {
+	battery = 100, 
+	hasKey = false,
+	hasLamp = true,
+	sanity = 100
+}
 ZIndex = {
 	player = 4,
 	enemy = 3,

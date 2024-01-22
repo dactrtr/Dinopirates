@@ -98,7 +98,7 @@ function MazeScene:enter()
 	wallRight = Box(388, 12, 12, 216)
 	-- Mark: doors
 	exitTopDoor = Door(205, 10, 'top', 'open', ZIndex.props)
-	exitLeftDoor = Door(4, 59, 'left', 'closed', ZIndex.props)
+	exitLeftDoor = Door(4, 59, 'left', 'open', ZIndex.props)
 	
 	
 	-- Mark: Props
@@ -135,14 +135,14 @@ function MazeScene:update()
 	cheat:update()
 	
 	-- Mark: Crank notification
-	if player.battery == 0  and playdate.isCrankDocked() then
+	if PlayerData.battery == 0  and playdate.isCrankDocked() then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 	-- Mark: Stops enemy from moving in the dark
-	if player.battery == 0 then
+	if PlayerData.battery == 0 then
 		brocorat.moveSpeed = 0
 		frogcolli.moveSpeed = 0
-	elseif player.battery > 60 then
+	elseif PlayerData.battery > 60 then
 		brocorat.moveSpeed = brocorat.initialSpeed
 		frogcolli.moveSpeed = frogcolli.initialSpeed
 	end
@@ -198,7 +198,7 @@ MazeScene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		if player.battery > 20 then
+		if PlayerData.battery > 20 then
 			brocorat:sonar('enemy')	-- Make it a update method
 			frogcolli:sonar('enemy')
 			lvlKey:sonar('key')
@@ -297,7 +297,7 @@ MazeScene.inputHandler = {
 			-- TODO: turn this into a function
 			if playdate.getCrankTicks(3) > 0 then
 				if player.loadingPower == true then
-						--print('powa') 
+					print('powa') 
 				else
 					player:chargeBattery(1)
 				end

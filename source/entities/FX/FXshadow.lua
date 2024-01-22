@@ -41,7 +41,7 @@ end
 
 function FXshadow:update()
 	
-	local battery = self.player.battery*2
+	local battery = PlayerData.battery*2
 	
 	local shadowMask = shadow:getMaskImage()
 	local lightSource = shadow:getMaskImage()

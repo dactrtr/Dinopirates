@@ -17,13 +17,13 @@ function Battery:update()
         self:moveTo(self.player.x - 22, self.player.y-36)
         batteryCanister:moveTo(self.player.x - 22, self.player.y-36)
     end
-    self.battery = self.player.battery
+    self.battery = PlayerData.battery
     local batteryPercent = (self.battery * batteryCanister.width - 4) / 100
     
     local batteryFill = Graphics.image.new(batteryCanister.width - 4, 6)
     
     Graphics.pushContext(batteryFill)
-        Graphics.setColor(Graphics.kColorWhite)
+        Graphics.setColor(Graphics.kColorBlack)
         Graphics.fillRect(0, 0, batteryPercent,6)
     Graphics.popContext()
     self:setImage(batteryFill)

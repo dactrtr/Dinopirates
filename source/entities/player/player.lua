@@ -58,15 +58,16 @@ function Player:init(x, y, speed, Zindex)
   -- Mark: Custom properties
   self.initialSpeed = speed
   self.speed = speed
-  self.initialSanity = 100
+  self.initialSanity = PlayerData.sanity
+  self.initialBattery = PlayerData.battery
   self.sanityLoss = 10
-  self.sanity = 100
+  self.sanity = PlayerData.sanity
   self.isActive = false
   self.loadingPower = false
   self.isAlive = true
   
   -- Mark: Custom items properties
-  self.battery = 100
+  PlayerData.battery = PlayerData.battery
   self.hasKey = false
   self.hasLamp = true
   
@@ -111,16 +112,16 @@ function Player:sanityCheck()
   
   local function checkSanity()
     
-    if self.battery < 20 then
+    if PlayerData.battery < 20 then
       self.sanity -= 2 * self.sanityLoss
-    elseif self.battery < 40 then
+    elseif PlayerData.battery < 40 then
       self.sanity -= self.sanityLoss
     end
     
     if self.sanity <= 0 then
       self.sanity = 0
     end
-    if self.battery > 50 then
+    if PlayerData.battery > 50 then
       self.sanity += 2 * self.sanityLoss
     end
     if self.sanity >= 100 then
@@ -191,29 +192,29 @@ function Player:move(direction)
 end
 
 function Player:drainBattery(amount)
-  self.battery -= amount
+  PlayerData.battery -= amount
 end
 
 function Player:chargeBattery(amount)
-  if self.battery < 100 then
+  if PlayerData.battery < 100 then
     self.animation:setState('charge')
   else
     self.animation:setState('lampIdle')
   end
-  self.battery += amount
+  PlayerData.battery += amount
   self.isActive = true
 end
 
 function Player:update()
   -- Mark: battery bounds
-  if self.battery < 0 then
-    self.battery = 0
-  elseif self.battery >= 100 then
-    self.battery = 100
+  if PlayerData.battery < 0 then
+    PlayerData.battery = 0
+  elseif PlayerData.battery >= 100 then
+    PlayerData.battery = 100
   end
-  if self.battery < 20 then 
+  if PlayerData.battery < 20 then 
     self.speed = 0.5 * self.initialSpeed
-  elseif self.battery > 20 then
+  elseif PlayerData.battery > 20 then
     self.speed = self.initialSpeed
   end
   self.isActive = false
