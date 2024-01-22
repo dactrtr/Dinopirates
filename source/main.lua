@@ -18,9 +18,10 @@ Noble.GameData.setup({
 })
 PlayerData = {
 	battery = 100, 
+	sanity = 100,
 	hasKey = false,
 	hasLamp = true,
-	sanity = 100
+	
 }
 ZIndex = {
 	player = 4,
@@ -37,6 +38,12 @@ CollideGroups = {
 	items = 4,
 	wall = 5
 }
+
+function resetData()
+	PlayerData.battery = 100
+	PlayerData.sanity = 100
+	PlayerData.hasKey = false
+end
 
 local menu = playdate.getSystemMenu()
 debug = false
