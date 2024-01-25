@@ -89,10 +89,9 @@ function Player:collisionResponse(other)
     self:grabKey()
     return 'overlap'
     elseif other:isa(Door) then
-      if self.hasKey then
+      if PlayerData.hasKey then
         print('be my guest')
-      else
-        print('no key no door')
+        Noble.transition(MazeScene01)
       end
     return 'overlap'
   end
@@ -124,7 +123,7 @@ function Player:sanityCheck()
     if PlayerData.battery > 50 then
       PlayerData.sanity += 2 * self.sanityLoss
     end
-    if self.sanity >= 100 then
+    if PlayerData.sanity >= 100 then
       PlayerData.sanity = 100
     end
     

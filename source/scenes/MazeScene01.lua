@@ -1,5 +1,5 @@
 --
--- MazeScene.lua
+-- MazeScene01.lua
 --
 -- Use this as a starting point for your game's scenes.
 -- Copy this file to your root "scenes" directory,
@@ -7,14 +7,14 @@
 --
 
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--- !!! Rename "MazeScene" to your scene's name in these first three lines. !!!
+-- !!! Rename "MazeScene01" to your scene's name in these first three lines. !!!
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-MazeScene = {
+MazeScene01 = {
 	
 }
-class("MazeScene").extends(NobleScene)
---local scene = MazeScene
+class("MazeScene01").extends(NobleScene)
+--local scene = MazeScene01
 
 import "entities/player/player"
 import "entities/enemies/enemy"
@@ -29,7 +29,7 @@ import "entities/UI/playerHud"
 --
 -- local variable1 = nil	-- local variable
 -- scene.variable2 = nil	-- Scene variable.
---							   When accessed outside this file use `MazeScene.variable2`.
+--							   When accessed outside this file use `MazeScene01.variable2`.
 -- ...
 --
 
@@ -53,13 +53,13 @@ local uiScreen = nil
 local cheat = CheatCode("up", "up", "up", "down")
 
 -- This is the background color of this scene.
-MazeScene.backgroundColor = Graphics.kColorWhite
+MazeScene01.backgroundColor = Graphics.kColorWhite
 
 -- This runs when your scene's object is created, which is the
 -- first thing that happens when transitining away from another scene.
-function MazeScene:init()
-	MazeScene.super.init(self)
-	debug = false
+function MazeScene01:init()
+	MazeScene01.super.init(self)
+	debug = true
 	cheat.onComplete = function()
 		PlayerData.battery = 100
 	end
@@ -68,8 +68,8 @@ end
 
 -- When transitioning from another scene, this runs as soon as this
 -- scene needs to be visible (this moment depends on which transition type is used).
-function MazeScene:enter()
-	MazeScene.super.enter(self)
+function MazeScene01:enter()
+	MazeScene01.super.enter(self)
 	-- Your code here
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
@@ -113,21 +113,21 @@ function MazeScene:enter()
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
-	brocorat = Brocorat(180, 60, 0.7, ZIndex.enemy, player)
-	frogcolli = Frogcolli(200, 120, 6, ZIndex.enemy, player)
+	-- brocorat = Brocorat(180, 60, 0.7, ZIndex.enemy, player)
+	-- frogcolli = Frogcolli(200, 120, 6, ZIndex.enemy, player)
 	--Test
 	
 end
 
 -- This runs once a transition from another scene is complete.
-function MazeScene:start()
-	MazeScene.super.start(self)
+function MazeScene01:start()
+	MazeScene01.super.start(self)
 	
 end
 
 -- This runs once per frame.
-function MazeScene:update()
-	MazeScene.super.update(self)
+function MazeScene01:update()
+	MazeScene01.super.update(self)
 	-- Mark: DEBUG
 	debugScreenMaze(player)
 	
@@ -138,20 +138,21 @@ function MazeScene:update()
 	if PlayerData.battery == 0  and playdate.isCrankDocked() then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
+	-- Mark: Stops enemy from moving in the dark
 	
 	
 end
 
 
 -- This runs once per frame, and is meant for drawing code.
-function MazeScene:drawBackground()
-	MazeScene.super.drawBackground(self)
+function MazeScene01:drawBackground()
+	MazeScene01.super.drawBackground(self)
 	-- Your code here
 end
 
 -- This runs as as soon as a transition to another scene begins.
-function MazeScene:exit()
-	MazeScene.super.exit(self)
+function MazeScene01:exit()
+	MazeScene01.super.exit(self)
 	debug = false
 	-- wallDown:remove()
 	-- wallTop:remove()
@@ -171,13 +172,13 @@ function MazeScene:exit()
 end
 
 -- This runs once a transition to another scene completes.
-function MazeScene:finish()
-	MazeScene.super.finish(self)
+function MazeScene01:finish()
+	MazeScene01.super.finish(self)
 	-- Your code here
 end
 
-function MazeScene:pause()
-	MazeScene.super.pause(self)
+function MazeScene01:pause()
+	MazeScene01.super.pause(self)
 	-- Your code here
 end
 
@@ -185,7 +186,7 @@ end
 
 -- scene.inputHandler = someOtherInputHandler
 -- OR
-MazeScene.inputHandler = {
+MazeScene01.inputHandler = {
 
 	-- A button
 	--

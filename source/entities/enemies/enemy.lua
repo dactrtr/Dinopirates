@@ -107,6 +107,11 @@ function Brocorat:update()
   if self.player.isActive == true then
     self:search(self.player)
   end
+  if PlayerData.battery == 0 then
+    self.moveSpeed = 0
+  elseif PlayerData.battery > 60 then
+    self.moveSpeed = self.initialSpeed
+  end
 end
 
 Frogcolli = {}
@@ -149,5 +154,10 @@ end
 function Frogcolli:update()
   if self.player.isActive == true then
     self:search(self.player)
+  end
+  if PlayerData.battery == 0 then
+    self.moveSpeed = 0
+  elseif PlayerData.battery > 60 then
+    self.moveSpeed = self.initialSpeed
   end
 end

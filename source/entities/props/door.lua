@@ -31,3 +31,6 @@ function Door:init(x, y, direction, status, zIndex)
   self:setGroups(3)
   self:add(x, y)
 end
+
+function Door:goTo()
+end

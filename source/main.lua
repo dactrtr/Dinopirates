@@ -4,6 +4,7 @@ import 'utilities/Utilities'
 
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
+import 'scenes/MazeScene01'
 --import 'scenes/SpaceScene'
 import 'scenes/StarScene'
 import 'scenes/TestScene'
@@ -48,6 +49,7 @@ end
 local menu = playdate.getSystemMenu()
 debug = false
 local menuItem, error = menu:addMenuItem("Title", function()
+	resetData()
 	Noble.transition(TitleScene)
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
@@ -61,4 +63,4 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
-Noble.new(MazeScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)
+Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)
