@@ -15,7 +15,8 @@ local positions = {
   top = {x = 205, y = 10}
 }
 
-function Door:init(direction, status, zIndex)
+function Door:init(direction, status, nextRoom ,zIndex)
+  self.nextRoom = nextRoom
   local isHorizontal = direction == 'top' or direction == 'down'
   local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
   local sizeX, sizeY = isHorizontal and 56 or 10, isHorizontal and 10 or 56
@@ -42,5 +43,5 @@ end
 
 function Door:goTo()
   print('be my guest')
-  Noble.transition(MazeScene01)
+  Noble.transition(self.nextRoom)
 end

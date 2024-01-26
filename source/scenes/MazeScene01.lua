@@ -97,8 +97,8 @@ function MazeScene01:enter()
 	wallLeft = Box(0, 12, 12, 216)
 	wallRight = Box(388, 12, 12, 216)
 	-- Mark: doors
-	exitTopDoor = Door('down', 'open', ZIndex.props)
-	exitRightDoor = Door('left', 'closed', ZIndex.props)
+	exitTopDoor = Door('down', 'open', MazeScene, ZIndex.props)
+	exitRightDoor = Door('left', 'closed',MazeScene, ZIndex.props)
 	
 	
 	-- Mark: Props
