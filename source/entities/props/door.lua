@@ -41,4 +41,6 @@ function Door:init(direction, status, zIndex)
 end
 
 function Door:goTo()
+  print('be my guest')
+  Noble.transition(MazeScene01)
 end

@@ -90,8 +90,7 @@ function Player:collisionResponse(other)
     return 'overlap'
     elseif other:isa(Door) then
       if PlayerData.hasKey then
-        print('be my guest')
-        Noble.transition(MazeScene01)
+        other:goTo()
       end
     return 'overlap'
   end
