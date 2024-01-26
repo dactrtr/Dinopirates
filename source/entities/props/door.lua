@@ -1,7 +1,21 @@
 Door = {}
 class('Door').extends(NobleSprite)
 
-function Door:init(x, y, direction, status, zIndex)
+local animationStates = {
+  normalClosed = 18,
+  reverseClosed = 9,
+  normalOpen = 10,
+  reverseOpen = 1
+}
+
+local positions = {
+  right = {x = 397, y = 130},
+  left = {x = 3, y = 130},
+  down = {x = 205, y = 232},
+  top = {x = 205, y = 10}
+}
+
+function Door:init(direction, status, zIndex)
   local isHorizontal = direction == 'top' or direction == 'down'
   local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
   local sizeX, sizeY = isHorizontal and 56 or 10, isHorizontal and 10 or 56
@@ -11,25 +25,19 @@ function Door:init(x, y, direction, status, zIndex)
   self:setSize(sizeX, sizeY)
   self:setCollideRect(rectX, rectY, rectW, rectH)
   
-  local animationStates = {
-    {name = 'normalClosed', startFrame = 18, endFrame = 18},
-    {name = 'reverseClosed', startFrame = 9, endFrame = 9},
-    {name = 'normalOpen', startFrame = 10, endFrame = 10},
-    {name = 'reverseOpen', startFrame = 1, endFrame = 1}
-  }
-  
-  for _, state in ipairs(animationStates) do
-    self.animation:addState(state.name, state.startFrame, state.endFrame)
-    self.animation[state.name].frameDuration = 12
+  for state, frame in pairs(animationStates) do
+    self.animation:addState(state, frame, frame)
+    self.animation[state].frameDuration = 12
   end
   
   local isNormal = direction == 'top' or direction == 'right'
   local statePrefix = isNormal and 'normal' or 'reverse'
   self.animation:setState(statePrefix .. (status == 'closed' and 'Closed' or 'Open'))
   
+  local position = positions[direction]
   self:setZIndex(zIndex)
   self:setGroups(3)
-  self:add(x, y)
+  self:add(position.x, position.y)
 end
 
 function Door:goTo()

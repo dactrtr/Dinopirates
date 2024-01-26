@@ -113,7 +113,7 @@ function MazeScene:enter()
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
 	-- Mark: Enemies
-	brocorat = Brocorat(180, 60, 0.7, ZIndex.enemy, player)
+	brocorat = Brocorat(280, 160, 0.7, ZIndex.enemy, player)
 	frogcolli = Frogcolli(200, 120, 6, ZIndex.enemy, player)
 	--Test
 	
@@ -153,21 +153,6 @@ end
 function MazeScene:exit()
 	MazeScene.super.exit(self)
 	debug = false
-	-- wallDown:remove()
-	-- wallTop:remove()
-	-- wallLeft:remove()
-	-- wallRight:remove()
-	-- -- Removing all entities
-	-- player:remove()
-	-- chair:remove()
-	-- 
-	-- -- Removing map/background 
-	-- floor:remove()
-	-- shadow:remove()
-	-- brocorat:remove()
-	-- frogcolli:remove()
-	-- uiScreen:removeAll()
-	-- lvlKey:remove()
 end
 
 -- This runs once a transition to another scene completes.

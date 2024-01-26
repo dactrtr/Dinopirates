@@ -97,8 +97,8 @@ function MazeScene01:enter()
 	wallLeft = Box(0, 12, 12, 216)
 	wallRight = Box(388, 12, 12, 216)
 	-- Mark: doors
-	exitTopDoor = Door(205, 10, 'top', 'open', ZIndex.props)
-	exitLeftDoor = Door(4, 59, 'left', 'open', ZIndex.props)
+	exitTopDoor = Door('down', 'open', ZIndex.props)
+	exitRightDoor = Door('left', 'closed', ZIndex.props)
 	
 	
 	-- Mark: Props
@@ -112,9 +112,7 @@ function MazeScene01:enter()
 	
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
-	-- Mark: Enemies
-	-- brocorat = Brocorat(180, 60, 0.7, ZIndex.enemy, player)
-	-- frogcolli = Frogcolli(200, 120, 6, ZIndex.enemy, player)
+	
 	--Test
 	
 end
@@ -154,21 +152,7 @@ end
 function MazeScene01:exit()
 	MazeScene01.super.exit(self)
 	debug = false
-	-- wallDown:remove()
-	-- wallTop:remove()
-	-- wallLeft:remove()
-	-- wallRight:remove()
-	-- -- Removing all entities
-	-- player:remove()
-	-- chair:remove()
-	-- 
-	-- -- Removing map/background 
-	-- floor:remove()
-	-- shadow:remove()
-	-- brocorat:remove()
-	-- frogcolli:remove()
-	-- uiScreen:removeAll()
-	-- lvlKey:remove()
+
 end
 
 -- This runs once a transition to another scene completes.
