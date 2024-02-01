@@ -23,6 +23,7 @@ import 'entities/props/door'
 import 'entities/items/Items'
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
+import "entities/UI/map"
 
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific variables and methods here. Use "local" where possible.
@@ -49,6 +50,7 @@ local exitRightDoor = nil
 local lvlKey = nil
 -- Mark: UI
 local uiScreen = nil
+local map = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 
@@ -79,8 +81,8 @@ function MazeScene:enter()
 	map:setSize(16,9)
 	
 	-- Mark: floor 
-	for y = 1,9 do
-		for x = 1,16 do
+	for y = 1, 9 do
+		for x = 1, 16 do
 			map:setTileAtPosition(x,y,5)
 		end
 	end
@@ -112,6 +114,7 @@ function MazeScene:enter()
 	
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
+	map = Map()
 	-- Mark: Enemies
 	brocorat = Brocorat(280, 160, 0.7, ZIndex.enemy, player)
 	frogcolli = Frogcolli(200, 120, 6, ZIndex.enemy, player)
