@@ -11,7 +11,6 @@
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 MazeScene = {
-	
 }
 class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
@@ -58,10 +57,10 @@ local cheat = CheatCode("up", "up", "up", "down")
 MazeScene.backgroundColor = Graphics.kColorWhite
 
 -- This runs when your scene's object is created, which is the
--- first thing that happens when transitining away from another scene.
+-- first thing that happens when transitioning away from another scene.
 function MazeScene:init()
 	MazeScene.super.init(self)
-	debug = false
+	debug = true
 	cheat.onComplete = function()
 		PlayerData.battery = 100
 	end
@@ -75,6 +74,11 @@ function MazeScene:enter()
 	-- Your code here
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
+	
+	PlayerData.room = 8
+	rooms[PlayerData.room].visited = true
+	
+	-- Mark: floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
 	map:setImageTable(tilesMap)
@@ -100,8 +104,9 @@ function MazeScene:enter()
 	wallRight = Box(388, 12, 12, 216)
 	-- Mark: doors
 	exitTopDoor = Door('top', 'open', TitleScene, ZIndex.props)
-	exitLeftDoor = Door('left', 'open',TitleScene ,ZIndex.props)
-	
+	exitLeftDoor = Door('left', 'open',MazeScene01 ,ZIndex.props)
+	exitRightDoor = Door('right', 'open',MazeScene01 ,ZIndex.props)
+	exitDownDoor = Door('down', 'open',MazeScene01 ,ZIndex.props)
 	
 	-- Mark: Props
 	chair = PropItem(250, 150, ZIndex.props)
@@ -156,6 +161,7 @@ end
 function MazeScene:exit()
 	MazeScene.super.exit(self)
 	debug = false
+	rooms[PlayerData.room].visited = false
 end
 
 -- This runs once a transition to another scene completes.

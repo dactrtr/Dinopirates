@@ -22,7 +22,19 @@ PlayerData = {
 	sanity = 100,
 	hasKey = false,
 	hasLamp = true,
-	
+	floor = 1,
+	room = 1
+}
+rooms = {
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false }
 }
 ZIndex = {
 	player = 4,
@@ -63,4 +75,4 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)
+Noble.new(MazeScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)

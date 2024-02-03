@@ -24,6 +24,8 @@ import 'entities/items/Items'
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
 
+import "entities/UI/map"
+
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific variables and methods here. Use "local" where possible.
 --
@@ -49,6 +51,7 @@ local exitRightDoor = nil
 local lvlKey = nil
 -- Mark: UI
 local uiScreen = nil
+local map = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 
@@ -73,11 +76,13 @@ function MazeScene01:enter()
 	-- Your code here
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
+	
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
 	map:setImageTable(tilesMap)
 	map:setSize(16,9)
-	
+	PlayerData.room = 7
+	rooms[PlayerData.room].visited = true
 	-- Mark: floor 
 	for y = 1,9 do
 		for x = 1,16 do
@@ -112,7 +117,7 @@ function MazeScene01:enter()
 	
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
-	
+	map = Map()
 	--Test
 	
 end
@@ -120,7 +125,8 @@ end
 -- This runs once a transition from another scene is complete.
 function MazeScene01:start()
 	MazeScene01.super.start(self)
-	
+	PlayerData.room = 7
+	rooms[PlayerData.room].visited = true
 end
 
 -- This runs once per frame.
@@ -152,7 +158,7 @@ end
 function MazeScene01:exit()
 	MazeScene01.super.exit(self)
 	debug = false
-
+	rooms[PlayerData.room].visited = false
 end
 
 -- This runs once a transition to another scene completes.
@@ -176,8 +182,6 @@ MazeScene01.inputHandler = {
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
 		if PlayerData.battery > 20 then
-			brocorat:sonar('enemy')	-- Make it a update method
-			frogcolli:sonar('enemy')
 			lvlKey:sonar('key')
 			player:drainBattery(20)
 		end
