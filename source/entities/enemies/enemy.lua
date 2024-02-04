@@ -14,6 +14,11 @@ function Enemy:blindSearch(player)
 end
 
 function Enemy:linealSearch(player)
+    if PlayerData.battery == 0 then
+      self.moveSpeed = 0
+    elseif PlayerData.battery > 60 then
+      self.moveSpeed = self.initialSpeed
+    end
     self.player = player
     local movementX = self.x
     local movementY = self.y
