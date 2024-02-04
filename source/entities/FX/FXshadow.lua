@@ -40,7 +40,7 @@ function FXshadow:move(direction)
 end
 
 function FXshadow:update()
-	
+	if debug == false then
 	local battery = PlayerData.battery*2
 	
 	local shadowMask = shadow:getMaskImage()
@@ -114,8 +114,8 @@ function FXshadow:update()
 		
 	Graphics.popContext()
 	
+	end
 	if debug then
 		shadow:clear(Graphics.kColorClear)
 	end
-	
 end

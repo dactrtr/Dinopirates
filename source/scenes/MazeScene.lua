@@ -59,14 +59,13 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 
 -- This runs when your scene's object is created, which is the
 -- first thing that happens when transitioning away from another scene.
-function MazeScene:init(floor)
+function MazeScene:init()
 	MazeScene.super.init(self)
 	debug = levels[room].floor.debug
 	cheat.onComplete = function()
 		PlayerData.battery = 100
 	end
 	-- Your code here
-	self.floor = floor
 end
 
 -- When transitioning from another scene, this runs as soon as this
