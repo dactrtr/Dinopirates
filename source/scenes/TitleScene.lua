@@ -1,14 +1,4 @@
---
--- TitleScene.lua
---
--- Use this as a starting point for your game's scenes.
--- Copy this file to your root "scenes" directory,
--- and rename it.
---
 
--- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--- !!! Rename "TitleScene" to your scene's name in these first three lines. !!!
--- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 TitleScene = {}
 class("TitleScene").extends(NobleScene)
@@ -16,18 +6,11 @@ local scene = TitleScene
 
 local menu
 local crankTick = 0
+local bg <const> = Graphics.image.new('assets/images/screens/title-screen.png')
+local background <const> = Graphics.sprite.new(bg)
+background:moveTo(200,120)
 
 
--- It is recommended that you declare, but don't yet define,
--- your scene-specific varibles and methods here. Use "local" where possible.
---
--- local variable1 = nil	-- local variable
--- scene.variable2 = nil	-- Scene variable.
---							   When accessed outside this file use `TitleScene.variable2`.
--- ...
---
-
--- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
 
 TitleScene.inputHandler = {
@@ -77,8 +60,7 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
-	
-	
+	self:addSprite(background)
 end
 
 -- This runs once a transition from another scene is complete.
@@ -89,20 +71,19 @@ function scene:start()
 end
 
 -- This runs once per frame.
+
+
 function scene:update()
 	scene.super.update(self)
 	-- Your code here
-	
-	local bg = Graphics.image.new('assets/images/screens/title-screen.png')
-	bg:draw(0,0)
 	menu:draw(8, 120)
 end
 
 -- This runs once per frame, and is meant for drawing code.
-function scene:drawBackground()
-	scene.super.drawBackground(self)
-	-- Your code here
-end
+-- function scene:drawBackground()
+-- 	scene.super.drawBackground(self)
+-- 	-- Your code here
+-- end
 
 -- This runs as as soon as a transition to another scene begins.
 function scene:exit()
@@ -125,5 +106,4 @@ function scene:resume()
 	-- Your code here
 end
 
--- Define the inputHander for this scene here, or use a previously defined inputHandler.
 

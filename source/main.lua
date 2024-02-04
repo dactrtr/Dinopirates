@@ -1,7 +1,6 @@
 import 'libraries/noble/Noble'
 
 import 'utilities/Utilities'
-
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/MazeScene01'
@@ -22,7 +21,7 @@ Noble.GameData.setup({
 PlayerData = {
 	battery = 100, 
 	sanity = 100,
-	hasKey = false,
+	hasKey = true,
 	hasLamp = true,
 	sonarActive = false,
 	floor = 1,
@@ -60,6 +59,7 @@ levels = {
 		floor = {
 			tile = 2,
 			floorNumber = 2,
+			light =0.1,
 			debug = false,
 			enemies = {
 				{
@@ -113,4 +113,4 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)
+Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK,{alwaysRedraw=false})
