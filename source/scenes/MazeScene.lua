@@ -116,7 +116,7 @@ function MazeScene:enter()
 	player = Player(80, 80, 1, ZIndex.player)
 	
 	-- Mark: FX
-	shadow = FXshadow(200, 120, player, 70, 0.1, ZIndex.fx)
+	shadow = FXshadow(200, 120, player, 70,levels[room].floor.light, ZIndex.fx)
 	
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
@@ -195,7 +195,6 @@ MazeScene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		player:sonar()
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
