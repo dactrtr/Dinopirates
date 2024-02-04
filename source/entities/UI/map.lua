@@ -35,11 +35,6 @@ function Map:init()
           -- 
           -- Graphics.popContext()
       
-    
-    self:add()
-end
-
-function Map:update()
     local alpha = 0.5
     local roomSize = 7
     local row = 0
@@ -61,6 +56,11 @@ function Map:update()
              Graphics.popContext() 
          end
      end
+    self:add()
+end
+
+function Map:update()
+    
 end
 
 
