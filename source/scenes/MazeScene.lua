@@ -119,7 +119,7 @@ function MazeScene:enter()
 	shadow = FXshadow(200, 120, player, 70,levels[room].floor.light, ZIndex.fx)
 	
 	-- Mark: UI
-	uiScreen = playerHud(player, true)
+	uiScreen = playerHud()
 	map = Map()
 	-- Mark: Enemies from table
 	local enemies = levels[room].floor.enemies
