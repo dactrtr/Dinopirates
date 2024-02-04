@@ -190,17 +190,17 @@ function Player:move(direction)
 end
 
 function Player:sonar()
-  if PlayerData.battery > 20 then
-    local function toggleSonar()
-      PlayerData.sonarActive = false
-    end
-    if PlayerData.sonarActive == false then
-      self:drainBattery(20)
-      PlayerData.sonarActive = true
-      
-    end
-    playdate.timer.performAfterDelay(100, toggleSonar)
-  end
+  -- if PlayerData.battery > 20 then
+  --   local function toggleSonar()
+  --     PlayerData.sonarActive = false
+  --   end
+  --   if PlayerData.sonarActive == false then
+  --     self:drainBattery(20)
+  --     PlayerData.sonarActive = true
+  --     
+  --   end
+  --   playdate.timer.performAfterDelay(100, toggleSonar)
+  -- end
 end
 
 function Player:drainBattery(amount)
