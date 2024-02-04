@@ -14,6 +14,7 @@ MazeScene = {
 }
 class("MazeScene").extends(NobleScene)
 --local scene = MazeScene
+local room = 1 -- Level in table position
 
 import "entities/player/player"
 import "entities/enemies/enemy"
@@ -60,7 +61,7 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- first thing that happens when transitioning away from another scene.
 function MazeScene:init(floor)
 	MazeScene.super.init(self)
-	debug = levels[1].floor.debug
+	debug = levels[room].floor.debug
 	cheat.onComplete = function()
 		PlayerData.battery = 100
 	end
@@ -76,7 +77,7 @@ function MazeScene:enter()
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
-	PlayerData.room = levels[1].floor.floorNumber
+	PlayerData.room = levels[room].floor.floorNumber
 	rooms[PlayerData.room].visited = true
 	
 	-- Mark: floor
@@ -88,7 +89,7 @@ function MazeScene:enter()
 	-- Mark: floor 
 	for y = 1, 9 do
 		for x = 1, 16 do
-			map:setTileAtPosition(x, y, levels[1].floor.tile)
+			map:setTileAtPosition(x, y, levels[room].floor.tile)
 		end
 	end
 	
@@ -122,7 +123,7 @@ function MazeScene:enter()
 	uiScreen = playerHud(player, true)
 	map = Map()
 	-- Mark: Enemies from table
-	local enemies = levels[1].floor.enemies
+	local enemies = levels[room].floor.enemies
 	
 	for _, enemyData in ipairs(enemies) do
 		local name = enemyData.name

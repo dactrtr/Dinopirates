@@ -56,9 +56,9 @@ CollideGroups = {
 levels = {
 	{
 		floor = {
-			debug = false,
-			floorNumber = 8,
 			tile = 5,
+			floorNumber = 1,
+			debug = false,
 			enemies = {
 				{
 					name = "brocorat",
@@ -74,14 +74,18 @@ levels = {
 				},
 				{
 					name = "frogcolli",
-					x = 300,
-					y = 50,
+					x = 200,
+					y = 40,
 					speed = 6
 				}
-			}
+			},
+			items = {},
+			props = {}
 		}
 	}
+	-- repeat
 }
+
 
 function resetData()
 	PlayerData.battery = 100
