@@ -6,13 +6,15 @@ import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/MazeScene01'
 --import 'scenes/SpaceScene'
-import 'scenes/StarScene'
-import 'scenes/TestScene'
+--import 'scenes/StarScene'
+--import 'scenes/TestScene'
 import 'scenes/TitleScene'
 
 Noble.Settings.setup({
 	Difficulty = "Medium"
 })
+
+Noble.showFPS = true
 
 Noble.GameData.setup({
 	Score = 0,
@@ -56,8 +58,8 @@ CollideGroups = {
 levels = {
 	{
 		floor = {
-			tile = 5,
-			floorNumber = 1,
+			tile = 2,
+			floorNumber = 2,
 			debug = false,
 			enemies = {
 				{
@@ -78,6 +80,7 @@ levels = {
 					y = 40,
 					speed = 6
 				}
+			
 			},
 			items = {},
 			props = {}
