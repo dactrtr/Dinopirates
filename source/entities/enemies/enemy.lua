@@ -61,10 +61,11 @@ end
 
 local screenImage = Graphics.image.new(80,80)
 
-function Enemy:sonar(type)
+function Enemy:sonar()
   local sonar = FXsonar(self.x,self.y)
-  sonar:activate(self.x, self.y, type)
+  sonar:activate(self.x, self.y, 'enemy')
 end
+
 
 Brocorat = {}
 class('Brocorat').extends('Enemy')
@@ -112,6 +113,9 @@ function Brocorat:update()
   elseif PlayerData.battery > 60 then
     self.moveSpeed = self.initialSpeed
   end
+ if PlayerData.sonarActive == true  then
+   self:sonar()
+ end
 end
 
 Frogcolli = {}
@@ -160,4 +164,8 @@ function Frogcolli:update()
   elseif PlayerData.battery > 60 then
     self.moveSpeed = self.initialSpeed
   end
+  if PlayerData.sonarActive == true  then
+     self:sonar()
+   end
 end
+

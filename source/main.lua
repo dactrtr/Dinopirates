@@ -22,6 +22,7 @@ PlayerData = {
 	sanity = 100,
 	hasKey = false,
 	hasLamp = true,
+	sonarActive = false,
 	floor = 1,
 	room = 1
 }
@@ -51,6 +52,36 @@ CollideGroups = {
 	items = 4,
 	wall = 5
 }
+-- Mark: This should be a separate file
+levels = {
+	{
+		floor = {
+			debug = false,
+			floorNumber = 8,
+			tile = 5,
+			enemies = {
+				{
+					name = "brocorat",
+					x = 280,
+					y = 160,
+					speed = 0.7
+				},
+				{
+					name = "frogcolli",
+					x = 200,
+					y = 120,
+					speed = 6
+				},
+				{
+					name = "frogcolli",
+					x = 300,
+					y = 50,
+					speed = 6
+				}
+			}
+		}
+	}
+}
 
 function resetData()
 	PlayerData.battery = 100
@@ -75,4 +106,4 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
-Noble.new(MazeScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)
+Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK)

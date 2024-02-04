@@ -58,13 +58,14 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 
 -- This runs when your scene's object is created, which is the
 -- first thing that happens when transitioning away from another scene.
-function MazeScene:init()
+function MazeScene:init(floor)
 	MazeScene.super.init(self)
-	debug = true
+	debug = levels[1].floor.debug
 	cheat.onComplete = function()
 		PlayerData.battery = 100
 	end
 	-- Your code here
+	self.floor = floor
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -75,7 +76,7 @@ function MazeScene:enter()
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
-	PlayerData.room = 8
+	PlayerData.room = levels[1].floor.floorNumber
 	rooms[PlayerData.room].visited = true
 	
 	-- Mark: floor
@@ -87,7 +88,7 @@ function MazeScene:enter()
 	-- Mark: floor 
 	for y = 1, 9 do
 		for x = 1, 16 do
-			map:setTileAtPosition(x,y,5)
+			map:setTileAtPosition(x, y, levels[1].floor.tile)
 		end
 	end
 	
@@ -104,7 +105,7 @@ function MazeScene:enter()
 	wallRight = Box(388, 12, 12, 216)
 	-- Mark: doors
 	exitTopDoor = Door('top', 'open', TitleScene, ZIndex.props)
-	exitLeftDoor = Door('left', 'open',MazeScene01 ,ZIndex.props)
+	exitLeftDoor = Door('left', 'open',MazeScene ,ZIndex.props)
 	exitRightDoor = Door('right', 'open',MazeScene01 ,ZIndex.props)
 	exitDownDoor = Door('down', 'open',MazeScene01 ,ZIndex.props)
 	
@@ -120,9 +121,21 @@ function MazeScene:enter()
 	-- Mark: UI
 	uiScreen = playerHud(player, true)
 	map = Map()
-	-- Mark: Enemies
-	brocorat = Brocorat(280, 160, 0.7, ZIndex.enemy, player)
-	frogcolli = Frogcolli(200, 120, 6, ZIndex.enemy, player)
+	-- Mark: Enemies from table
+	local enemies = levels[1].floor.enemies
+	
+	for _, enemyData in ipairs(enemies) do
+		local name = enemyData.name
+		local x = enemyData.x
+		local y = enemyData.y
+		local speed = enemyData.speed
+	
+		if name == "brocorat" then
+			Brocorat(x, y, speed, ZIndex.enemy, player)
+		elseif name == "frogcolli" then
+			Frogcolli(x, y, speed, ZIndex.enemy, player)
+		end
+	end
 	--Test
 	
 end
@@ -137,8 +150,6 @@ end
 function MazeScene:update()
 	MazeScene.super.update(self)
 	-- Mark: DEBUG
-	debugScreenMaze(player)
-	
 	-- Mark: cheat code
 	cheat:update()
 	
@@ -184,12 +195,7 @@ MazeScene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
-		if PlayerData.battery > 20 then
-			brocorat:sonar('enemy')	-- Make it a update method
-			frogcolli:sonar('enemy')
-			lvlKey:sonar('key')
-			player:drainBattery(20)
-		end
+		player:sonar()
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
