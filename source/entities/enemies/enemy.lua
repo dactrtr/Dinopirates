@@ -30,6 +30,11 @@ function Enemy:linealSearch(player)
 end
 
 function Enemy:moveCollision(movementX,movementY, player)
+  if PlayerData.battery == 0 then
+    self.moveSpeed = 0
+  elseif PlayerData.battery > 60 then
+    self.moveSpeed = self.initialSpeed
+  end
   local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
   if lenght > 0 then
     for index, collision in pairs(collisions) do
@@ -61,10 +66,10 @@ end
 
 local screenImage = Graphics.image.new(80,80)
 
-function Enemy:sonar()
-  local sonar = FXsonar(self.x,self.y)
-  sonar:activate(self.x, self.y, 'enemy')
-end
+-- function Enemy:sonar()
+--   local sonar = FXsonar(self.x,self.y)
+--   sonar:activate(self.x, self.y, 'enemy')
+-- end
 
 
 Brocorat = {}
@@ -108,11 +113,7 @@ function Brocorat:update()
   if self.player.isActive == true then
     self:search(self.player)
   end
-  if PlayerData.battery == 0 then
-    self.moveSpeed = 0
-  elseif PlayerData.battery > 60 then
-    self.moveSpeed = self.initialSpeed
-  end
+  
  if PlayerData.sonarActive == true  then
    self:sonar()
  end
@@ -158,11 +159,6 @@ end
 function Frogcolli:update()
   if self.player.isActive == true then
     self:search(self.player)
-  end
-  if PlayerData.battery == 0 then
-    self.moveSpeed = 0
-  elseif PlayerData.battery > 60 then
-    self.moveSpeed = self.initialSpeed
   end
   if PlayerData.sonarActive == true  then
      self:sonar()
