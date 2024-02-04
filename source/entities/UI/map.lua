@@ -2,7 +2,7 @@ MapBG = {}
 class('MapBG').extends(Graphics.sprite)
 
 local maze <const> = Graphics.image.new("assets/images/ui/map.png")
-local fog <const> = Graphics.image.new(maze:getSize())
+local fog <const> = Graphics.image.new(27, 27)
 
 function MapBG:init()
     self:setImage(maze)
@@ -16,6 +16,7 @@ Map = {}
 class('Map').extends(Graphics.sprite)
 
 function Map:init()
+    
     self:setImage(fog)
     self:setZIndex(ZIndex.ui+1)
     self:moveTo(16,34)
@@ -59,8 +60,9 @@ function Map:init()
     self:add()
 end
 
-function Map:update()
-    
+function Map:removeAll()
+    mapbg:remove()
+    self:remove()
 end
 
 

@@ -1,7 +1,7 @@
 class("sanityHud").extends(NobleSprite)
 
 
-function sanityHud:init(x, y, zIndex, player, indicator)
+function sanityHud:init(x, y, zIndex, player)
 	sonarHud.super.init(self,'assets/images/ui/sanity.png', true)
 	-- Mark: animation states
 	self.animation:addState('good', 1, 2)
@@ -20,14 +20,11 @@ function sanityHud:init(x, y, zIndex, player, indicator)
 	self:setSize(17,12)
 	self:setZIndex(zIndex)
 	self.player = player
-	self.indicatorPosition = indicator
 	self:add(x,y)
 end
 function sanityHud:update()
 	local sanity = PlayerData.sanity
-	if not self.indicatorPosition then
-		self:moveTo(self.player.x + 10 , self.player.y - 36)
-	end
+	
 	if sanity < 30 then
 		self.animation:setState('insane')
 	elseif sanity < 50 then

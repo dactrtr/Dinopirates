@@ -11,6 +11,4 @@ function BatteryCanister:init(x,y,Zindex)
 	
 end
 
-function BatteryCanister:update()
-end
 
