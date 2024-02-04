@@ -173,6 +173,10 @@ function MazeScene:exit()
 	MazeScene.super.exit(self)
 	debug = false
 	rooms[PlayerData.room].visited = false
+	uiScreen:removeAll()
+	floor:remove()
+	shadow:remove()
+	map:removeAll()
 end
 
 -- This runs once a transition to another scene completes.
