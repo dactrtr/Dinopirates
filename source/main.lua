@@ -59,7 +59,7 @@ levels = {
 		floor = {
 			tile = 2,
 			floorNumber = 2,
-			light =0.1,
+			light = 0.1,
 			debug = false,
 			enemies = {
 				{
@@ -72,13 +72,13 @@ levels = {
 					name = "frogcolli",
 					x = 200,
 					y = 120,
-					speed = 6
+					speed = 3
 				},
 				{
 					name = "frogcolli",
 					x = 200,
 					y = 40,
-					speed = 6
+					speed = 3
 				}
 			
 			},
@@ -113,4 +113,4 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
-Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK,{alwaysRedraw=false})
+Noble.new(TitleScene, 0.5, Noble.TransitionType.DIP_TO_BLACK,{alwaysRedraw=true})
