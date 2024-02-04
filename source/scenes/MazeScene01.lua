@@ -133,7 +133,6 @@ end
 function MazeScene01:update()
 	MazeScene01.super.update(self)
 	-- Mark: DEBUG
-	debugScreenMaze(player)
 	
 	-- Mark: cheat code
 	cheat:update()
