@@ -58,9 +58,10 @@ levels = {
 	{
 		floor = {
 			tile = 2,
-			floorNumber = 2,
+			floorNumber = 7,
 			light = 0.1,
 			debug = false,
+			shadow = true,
 			enemies = {
 				{
 					name = "brocorat",
@@ -82,8 +83,32 @@ levels = {
 				}
 			
 			},
-			items = {},
-			props = {}
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = TitleScene,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = TitleScene,
+				},
+			},
+			items = {
+				{
+					type = 'key',
+					x = 50,
+					y = 100
+				}
+			},
+			props = {
+				{
+					type = 'chair',
+					x = 250,
+					y = 150
+				}
+			}
 		}
 	}
 	-- repeat

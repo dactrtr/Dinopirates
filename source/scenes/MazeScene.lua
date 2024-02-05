@@ -103,24 +103,49 @@ function MazeScene:enter()
 	wallDown = Box(0, 228, 400, 12)
 	wallLeft = Box(0, 12, 12, 216)
 	wallRight = Box(388, 12, 12, 216)
-	-- Mark: doors
-	exitTopDoor = Door('top', 'open', TitleScene, ZIndex.props)
-	exitLeftDoor = Door('left', 'open',MazeScene ,ZIndex.props)
-	exitRightDoor = Door('right', 'open',MazeScene01 ,ZIndex.props)
-	exitDownDoor = Door('down', 'open',MazeScene01 ,ZIndex.props)
 	
-	-- Mark: Props
-	chair = PropItem(250, 150, ZIndex.props)
-	lvlKey = Items(150, 120)
+	-- Mark: doors
+	local doors = levels[room].floor.doors
+	
+	for _, doorData in ipairs(doors) do
+		local direction = doorData.direction
+		local open = doorData.open
+		local leads = doorData.leadsTo
+	
+		Door(direction, open, leads, ZIndex.props)
+	end
+	
+	
+	-- Mark: Props & items
+	local props = levels[room].floor.props
+	for _, propData in ipairs(props) do
+		local type = propData.type
+		local x = propData.x
+		local y = propData.y
+		
+		PropItem(x, y, ZIndex.props)
+	end
+	local items = levels[room].floor.items
+	for _, itemData in ipairs(items) do
+		local type = itemData.type
+		local x = itemData.x
+		local y = itemData.y
+		
+		Items(x, y, ZIndex.props)
+	end
+	
 	-- Mark: Player
 	player = Player(80, 80, 1, ZIndex.player)
 	
 	-- Mark: FX
-	shadow = FXshadow(200, 120, player, 70,levels[room].floor.light, ZIndex.fx)
+	if levels[room].floor.shadow then
+		shadow = FXshadow(player, 70,levels[room].floor.light, ZIndex.fx)
+	end
 	
 	-- Mark: UI
 	uiScreen = playerHud()
 	map = Map()
+	
 	-- Mark: Enemies from table
 	local enemies = levels[room].floor.enemies
 	
@@ -136,7 +161,6 @@ function MazeScene:enter()
 			Frogcolli(x, y, speed, ZIndex.enemy, player)
 		end
 	end
-	--Test
 	
 end
 
@@ -233,7 +257,9 @@ MazeScene.inputHandler = {
 	leftButtonHold = function()
 		if player.isAlive then
 			player:move("left")
-			shadow:move("left")
+			if shadow then
+				shadow:move("left")
+			end
 		end
 	end,
 	leftButtonUp = function()
@@ -248,7 +274,9 @@ MazeScene.inputHandler = {
 	rightButtonHold = function()
 		if player.isAlive then
 			player:move("right")
-			shadow:move("right")
+			if shadow then
+				shadow:move("right")
+			end
 		end
 	end,
 	rightButtonUp = function()
@@ -263,7 +291,9 @@ MazeScene.inputHandler = {
 	upButtonHold = function()
 		if player.isAlive then
 			player:move("up")
-			shadow:move("up")
+			if shadow then
+				shadow:move("up")
+			end
 		end
 	end,
 	upButtonUp = function()
@@ -278,7 +308,9 @@ MazeScene.inputHandler = {
 	downButtonHold = function()
 		if player.isAlive then
 			player:move("down")
-			shadow:move("down")
+			if shadow then
+				shadow:move("down")
+			end
 		end
 	end,
 	downButtonUp = function()

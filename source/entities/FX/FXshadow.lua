@@ -4,12 +4,12 @@ class('FXshadow').extends(Graphics.sprite)
 local shadow = Graphics.image.new(400,240)
 
 
-function FXshadow:init(x, y, player, lightSize, globalLightAmount, Zindex)
+function FXshadow:init(player, lightSize, globalLightAmount, Zindex)
 	
 	self.speed = player.speed
 	self.player = player
 	self.lightSize = lightSize
-	self:moveTo(x,y)
+	self:moveTo(200,120)
 	self:setCollidesWithGroups(1)
 	self:setImage(shadow)
 	self:setZIndex(Zindex)
@@ -51,7 +51,6 @@ function FXshadow:update()
 	local decreaseSize = maskSize/10
 	local lightAmount = 0.1
 	shadow:clear(Graphics.kColorClear)
-	-- local self.globalLightAmount = 0.03
 	
 	
 	if battery > 120 and battery <= 160 then
