@@ -11,17 +11,28 @@ local keyIndicator = nil
 local sonarIndicator = nil
 local sanityIndicator = nil
 
-function playerHud:init(player)	
-	batteryIndicator = Battery(12, 10, player, ZIndex.ui, true)
-	keyIndicator = keyHud(11, 24, ZIndex.ui, player)
-	sonarIndicator = sonarHud(32, 10, ZIndex.ui, player, true)
-	sanityIndicator = sanityHud(32, 10, ZIndex.ui, player, true)
+local background <const> = Graphics.image.new('assets/images/ui/statusbar.png')
 
+function playerHud:init()	
+	local x = 320
+	local y = 0
+	self:setImage(background)
+	self:setCenter(0,0)
+	self:moveTo(x, y)
+	self:setZIndex(6)
+	batteryIndicator = Battery(x+16, 11, player, ZIndex.ui, userUI)
+	sonarIndicator = sonarHud(x+32, 11, ZIndex.ui, player, userUI)
+	sanityIndicator = sanityHud(x+50, 11, ZIndex.ui, player, userUI)
+	keyIndicator = keyHud(x+66, 11, ZIndex.ui, player, userUI)
+	self:add()
 end
 
 function playerHud:removeAll()
 	self:remove()
 	batteryIndicator:removeAll()
+	sonarIndicator:remove()
+	sanityIndicator:remove()
+	keyIndicator:remove()
 end
 function playerHud:update()
 end

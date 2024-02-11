@@ -45,7 +45,7 @@ function Player:init(x, y, speed, Zindex)
   self:setSize(48, 52)
   self:setZIndex(Zindex)
   self:moveTo(x,y)
-  self:setCollideRect(4,24, 40,24)
+  self:setCollideRect(10, 24, 30, 24)
   self:setCollidesWithGroups(
     {
       CollideGroups.enemy,
@@ -58,13 +58,16 @@ function Player:init(x, y, speed, Zindex)
   -- Mark: Custom properties
   self.initialSpeed = speed
   self.speed = speed
-  self.initialSanity = 100
+  self.initialSanity = PlayerData.sanity
+  self.initialBattery = PlayerData.battery
   self.sanityLoss = 10
-  self.sanity = 100
+  self.sanity = PlayerData.sanity
+  self.isActive = false
+  self.loadingPower = false
+  self.isAlive = true
   
   -- Mark: Custom items properties
-  self.battery = 100
-  self.isAlive = true
+  PlayerData.battery = PlayerData.battery
   self.hasKey = false
   self.hasLamp = true
   
@@ -85,6 +88,11 @@ function Player:collisionResponse(other)
     other:removeAll()
     self:grabKey()
     return 'overlap'
+    elseif other:isa(Door) then
+      if PlayerData.hasKey then
+        other:goTo()
+      end
+    return 'overlap'
   end
 end
 
@@ -102,29 +110,27 @@ function Player:sanityCheck()
   
   local function checkSanity()
     
-    print('checking sanity ...')
-     
-    if self.battery < 20 then
-      self.sanity -= 2 * self.sanityLoss
-    elseif self.battery < 40 then
-      self.sanity -= self.sanityLoss
+    if PlayerData.battery < 20 then
+      PlayerData.sanity -= 2 * self.sanityLoss
+    elseif PlayerData.battery < 40 then
+      PlayerData.sanity -= self.sanityLoss
     end
     
-    if self.sanity <= 0 then
-      self.sanity = 0
+    if PlayerData.sanity <= 0 then
+      PlayerData.sanity = 0
     end
-    if self.battery > 50 then
-      self.sanity += 2 * self.sanityLoss
+    if PlayerData.battery > 50 then
+      PlayerData.sanity += 2 * self.sanityLoss
     end
-    if self.sanity >= 100 then
-      self.sanity = 100
+    if PlayerData.sanity >= 100 then
+      PlayerData.sanity = 100
     end
-    print(self.sanity)
     
   end
   playdate.timer.keyRepeatTimerWithDelay(1000, 1000, checkSanity)
     
 end
+
 function Player:dead()
   self.isAlive = false
   self.animation:setState('dead')
@@ -138,6 +144,7 @@ end
 
 function Player:move(direction)
   if self.isAlive == true then
+    self.isActive = true
     self.direction = direction
     local movementX = 0
     local movementY = 0
@@ -178,35 +185,53 @@ function Player:move(direction)
       movementY = self.y + self.speed
     end
     local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
+    
   end
-  
+end
+
+function Player:sonar()
+  -- if PlayerData.battery > 20 then
+  --   local function toggleSonar()
+  --     PlayerData.sonarActive = false
+  --   end
+  --   if PlayerData.sonarActive == false then
+  --     self:drainBattery(20)
+  --     PlayerData.sonarActive = true
+  --     
+  --   end
+  --   playdate.timer.performAfterDelay(100, toggleSonar)
+  -- end
 end
 
 function Player:drainBattery(amount)
-  self.battery -= amount
+  PlayerData.battery -= amount
 end
+
 function Player:chargeBattery(amount)
-  if self.battery < 100 then
+  if PlayerData.battery < 100 then
     self.animation:setState('charge')
   else
     self.animation:setState('lampIdle')
   end
-  self.battery += amount
+  PlayerData.battery += amount
+  self.isActive = true
 end
+
 function Player:update()
   -- Mark: battery bounds
-  if self.battery < 0 then
-    self.battery = 0
-  elseif self.battery >= 100 then
-    self.battery = 100
+  if PlayerData.battery < 0 then
+    PlayerData.battery = 0
+  elseif PlayerData.battery >= 100 then
+    PlayerData.battery = 100
   end
-  if self.battery < 20 then 
+  if PlayerData.battery < 20 then 
     self.speed = 0.5 * self.initialSpeed
-  elseif self.battery > 20 then
+  elseif PlayerData.battery > 20 then
     self.speed = self.initialSpeed
   end
+  self.isActive = false
 end
 
 function Player:grabKey()
-  self.hasKey = true
+  PlayerData.hasKey = true
 end

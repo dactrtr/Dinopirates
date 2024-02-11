@@ -68,9 +68,14 @@ function scene:init()
 		nil,
 		2,16
 	)
-	menu:addItem("Exit", function() Noble.transition(TitleScene) end)
-	menu:addItem("Retry", function() Noble.transition(MazeScene) end)
-	menu:select("Exit")
+	menu:addItem("Exit", function() 
+		Noble.transition(TitleScene) 
+	end)
+	menu:addItem("Retry", function()
+		Noble.transition(MazeScene)
+		resetData()
+	 end)
+	menu:select("Retry")
 	
 end
 

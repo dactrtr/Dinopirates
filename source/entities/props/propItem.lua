@@ -1,5 +1,5 @@
 
-Prop = {}
+PropItem = {}
 class('PropItem').extends(NobleSprite)
 
 function PropItem:init(x, y, zIndex)
@@ -8,8 +8,8 @@ function PropItem:init(x, y, zIndex)
   self.animation:addState('chair', 1, 1)
   self.animation:setState('chair')
   -- position and z-index
-  self:setSize(64, 64)
-  self:setCollideRect(0,0, 32,32)
+  self:setSize(32, 32)
+  self:setCollideRect(0,8, 32,24)
   self:setZIndex(zIndex)
   
   self:setGroups(3)

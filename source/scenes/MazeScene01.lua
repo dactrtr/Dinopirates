@@ -1,5 +1,5 @@
 --
--- MazeScene.lua
+-- MazeScene01.lua
 --
 -- Use this as a starting point for your game's scenes.
 -- Copy this file to your root "scenes" directory,
@@ -7,14 +7,14 @@
 --
 
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--- !!! Rename "MazeScene" to your scene's name in these first three lines. !!!
+-- !!! Rename "MazeScene01" to your scene's name in these first three lines. !!!
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-MazeScene = {
+MazeScene01 = {
+	
 }
-class("MazeScene").extends(NobleScene)
---local scene = MazeScene
-local room = 1 -- Level in table position
+class("MazeScene01").extends(NobleScene)
+--local scene = MazeScene01
 
 import "entities/player/player"
 import "entities/enemies/enemy"
@@ -23,6 +23,7 @@ import 'entities/props/door'
 import 'entities/items/Items'
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
+
 import "entities/UI/map"
 
 -- It is recommended that you declare, but don't yet define,
@@ -30,7 +31,7 @@ import "entities/UI/map"
 --
 -- local variable1 = nil	-- local variable
 -- scene.variable2 = nil	-- Scene variable.
---							   When accessed outside this file use `MazeScene.variable2`.
+--							   When accessed outside this file use `MazeScene01.variable2`.
 -- ...
 --
 
@@ -55,13 +56,13 @@ local map = nil
 local cheat = CheatCode("up", "up", "up", "down")
 
 -- This is the background color of this scene.
-MazeScene.backgroundColor = Graphics.kColorWhite
+MazeScene01.backgroundColor = Graphics.kColorWhite
 
 -- This runs when your scene's object is created, which is the
--- first thing that happens when transitioning away from another scene.
-function MazeScene:init()
-	MazeScene.super.init(self)
-	debug = levels[room].floor.debug
+-- first thing that happens when transitining away from another scene.
+function MazeScene01:init()
+	MazeScene01.super.init(self)
+	debug = true
 	cheat.onComplete = function()
 		PlayerData.battery = 100
 	end
@@ -70,25 +71,22 @@ end
 
 -- When transitioning from another scene, this runs as soon as this
 -- scene needs to be visible (this moment depends on which transition type is used).
-function MazeScene:enter()
-	MazeScene.super.enter(self)
+function MazeScene01:enter()
+	MazeScene01.super.enter(self)
 	-- Your code here
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
-	PlayerData.room = levels[room].floor.floorNumber
-	rooms[PlayerData.room].visited = true
-	
-	-- Mark: floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
 	map = Graphics.tilemap.new()
 	map:setImageTable(tilesMap)
 	map:setSize(16,9)
-	
+	PlayerData.room = 7
+	rooms[PlayerData.room].visited = true
 	-- Mark: floor 
-	for y = 1, 9 do
-		for x = 1, 16 do
-			map:setTileAtPosition(x, y, levels[room].floor.tile)
+	for y = 1,9 do
+		for x = 1,16 do
+			map:setTileAtPosition(x,y,5)
 		end
 	end
 	
@@ -103,77 +101,39 @@ function MazeScene:enter()
 	wallDown = Box(0, 228, 400, 12)
 	wallLeft = Box(0, 12, 12, 216)
 	wallRight = Box(388, 12, 12, 216)
-	
 	-- Mark: doors
-	local doors = levels[room].floor.doors
-	
-	for _, doorData in ipairs(doors) do
-		local direction = doorData.direction
-		local open = doorData.open
-		local leads = doorData.leadsTo
-	
-		Door(direction, open, leads, ZIndex.props)
-	end
+	exitTopDoor = Door('down', 'open', MazeScene, ZIndex.props)
+	exitRightDoor = Door('left', 'closed',MazeScene, ZIndex.props)
 	
 	
-	-- Mark: Props & items
-	local props = levels[room].floor.props
-	for _, propData in ipairs(props) do
-		local type = propData.type
-		local x = propData.x
-		local y = propData.y
-		
-		PropItem(x, y, ZIndex.props)
-	end
-	local items = levels[room].floor.items
-	for _, itemData in ipairs(items) do
-		local type = itemData.type
-		local x = itemData.x
-		local y = itemData.y
-		
-		Items(x, y, ZIndex.props)
-	end
-	
+	-- Mark: Props
+	chair = PropItem(250, 150, ZIndex.props)
+	lvlKey = Items(150, 120)
 	-- Mark: Player
 	player = Player(80, 80, 1, ZIndex.player)
 	
 	-- Mark: FX
-	if levels[room].floor.shadow then
-		shadow = FXshadow(player, 70,levels[room].floor.light, ZIndex.fx)
-	end
+	shadow = FXshadow(200, 120, player, 70, 0.1, ZIndex.fx)
 	
 	-- Mark: UI
-	uiScreen = playerHud()
+	uiScreen = playerHud(player, true)
 	map = Map()
-	
-	-- Mark: Enemies from table
-	local enemies = levels[room].floor.enemies
-	
-	for _, enemyData in ipairs(enemies) do
-		local name = enemyData.name
-		local x = enemyData.x
-		local y = enemyData.y
-		local speed = enemyData.speed
-	
-		if name == "brocorat" then
-			Brocorat(x, y, speed, ZIndex.enemy, player)
-		elseif name == "frogcolli" then
-			Frogcolli(x, y, speed, ZIndex.enemy, player)
-		end
-	end
+	--Test
 	
 end
 
 -- This runs once a transition from another scene is complete.
-function MazeScene:start()
-	MazeScene.super.start(self)
-	
+function MazeScene01:start()
+	MazeScene01.super.start(self)
+	PlayerData.room = 7
+	rooms[PlayerData.room].visited = true
 end
 
 -- This runs once per frame.
-function MazeScene:update()
-	MazeScene.super.update(self)
+function MazeScene01:update()
+	MazeScene01.super.update(self)
 	-- Mark: DEBUG
+	
 	-- Mark: cheat code
 	cheat:update()
 	
@@ -181,36 +141,33 @@ function MazeScene:update()
 	if PlayerData.battery == 0  and playdate.isCrankDocked() then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
+	-- Mark: Stops enemy from moving in the dark
 	
 	
 end
 
 
 -- This runs once per frame, and is meant for drawing code.
-function MazeScene:drawBackground()
-	MazeScene.super.drawBackground(self)
+function MazeScene01:drawBackground()
+	MazeScene01.super.drawBackground(self)
 	-- Your code here
 end
 
 -- This runs as as soon as a transition to another scene begins.
-function MazeScene:exit()
-	MazeScene.super.exit(self)
+function MazeScene01:exit()
+	MazeScene01.super.exit(self)
 	debug = false
 	rooms[PlayerData.room].visited = false
-	uiScreen:removeAll()
-	floor:remove()
-	shadow:remove()
-	map:removeAll()
 end
 
 -- This runs once a transition to another scene completes.
-function MazeScene:finish()
-	MazeScene.super.finish(self)
+function MazeScene01:finish()
+	MazeScene01.super.finish(self)
 	-- Your code here
 end
 
-function MazeScene:pause()
-	MazeScene.super.pause(self)
+function MazeScene01:pause()
+	MazeScene01.super.pause(self)
 	-- Your code here
 end
 
@@ -218,11 +175,15 @@ end
 
 -- scene.inputHandler = someOtherInputHandler
 -- OR
-MazeScene.inputHandler = {
+MazeScene01.inputHandler = {
 
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
+		if PlayerData.battery > 20 then
+			lvlKey:sonar('key')
+			player:drainBattery(20)
+		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
@@ -257,9 +218,7 @@ MazeScene.inputHandler = {
 	leftButtonHold = function()
 		if player.isAlive then
 			player:move("left")
-			if shadow then
-				shadow:move("left")
-			end
+			shadow:move("left")
 		end
 	end,
 	leftButtonUp = function()
@@ -274,9 +233,7 @@ MazeScene.inputHandler = {
 	rightButtonHold = function()
 		if player.isAlive then
 			player:move("right")
-			if shadow then
-				shadow:move("right")
-			end
+			shadow:move("right")
 		end
 	end,
 	rightButtonUp = function()
@@ -291,9 +248,7 @@ MazeScene.inputHandler = {
 	upButtonHold = function()
 		if player.isAlive then
 			player:move("up")
-			if shadow then
-				shadow:move("up")
-			end
+			shadow:move("up")
 		end
 	end,
 	upButtonUp = function()
@@ -308,9 +263,7 @@ MazeScene.inputHandler = {
 	downButtonHold = function()
 		if player.isAlive then
 			player:move("down")
-			if shadow then
-				shadow:move("down")
-			end
+			shadow:move("down")
 		end
 	end,
 	downButtonUp = function()

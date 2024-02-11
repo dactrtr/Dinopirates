@@ -3,9 +3,8 @@ class('Battery').extends(Graphics.sprite)
 
 import 'entities/UI/batteryCanister'
 
-function Battery:init(x, y, player, Zindex, indicator)
+function Battery:init(x, y, player, Zindex)
     self.player = player
-    self.indicatorPosition = indicator
     batteryCanister = BatteryCanister(x,y,Zindex)
     self:setZIndex(Zindex-1)
     self:moveTo(x,y)
@@ -13,17 +12,13 @@ function Battery:init(x, y, player, Zindex, indicator)
 end
 
 function Battery:update()
-    if self.indicatorPosition then
-        self:moveTo(self.player.x - 16, self.player.y-36)
-        batteryCanister:moveTo(self.player.x - 16, self.player.y-36)
-    end
-    self.battery = self.player.battery
-    local batteryPercent = (self.battery * batteryCanister.width - 4) / 100
+    self.battery = PlayerData.battery
+    local batteryPercent = (self.battery * (batteryCanister.width - 8)) / 100
     
-    local batteryFill = Graphics.image.new(batteryCanister.width - 4, 6)
+    local batteryFill = Graphics.image.new(batteryCanister.width - 8, 6)
     
     Graphics.pushContext(batteryFill)
-        Graphics.setColor(Graphics.kColorWhite)
+        Graphics.setColor(Graphics.kColorBlack)
         Graphics.fillRect(0, 0, batteryPercent,6)
     Graphics.popContext()
     self:setImage(batteryFill)
