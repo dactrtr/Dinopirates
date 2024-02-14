@@ -40,6 +40,7 @@ function FXshadow:move(direction)
 end
 
 function FXshadow:update()
+	-- Mark this should run only on player movement
 	if debug == false then
 	local battery = PlayerData.battery*2
 	
