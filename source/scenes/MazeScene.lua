@@ -327,6 +327,7 @@ MazeScene.inputHandler = {
 					print('powa') 
 				else
 					player:chargeBattery(1)
+					shadow:refresh()
 				end
 			end
 			if player.battery == 100 then

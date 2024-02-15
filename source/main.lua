@@ -24,6 +24,7 @@ PlayerData = {
 	hasKey = true,
 	hasLamp = true,
 	sonarActive = false,
+	isActive = false,
 	floor = 1,
 	room = 1
 }
@@ -94,6 +95,11 @@ levels = {
 					open = 'open',
 					leadsTo = TitleScene,
 				},
+				{
+					direction = 'left',
+					open = 'open',
+					leadsTo = MazeScene,
+				},
 			},
 			items = {
 				{
@@ -105,7 +111,7 @@ levels = {
 			props = {
 				{
 					type = 'chair',
-					x = 250,
+					x = 80,
 					y = 150
 				}
 			}
