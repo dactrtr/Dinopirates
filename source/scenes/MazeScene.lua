@@ -1,5 +1,5 @@
 --
--- MazeScene.lua
+-- Mazescene.lua
 --
 -- Use this as a starting point for your game's scenes.
 -- Copy this file to your root "scenes" directory,
@@ -7,14 +7,14 @@
 --
 
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--- !!! Rename "MazeScene" to your scene's name in these first three lines. !!!
+-- !!! Rename "scene" to your scene's name in these first three lines. !!!
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 MazeScene = {
 }
 class("MazeScene").extends(NobleScene)
---local scene = MazeScene
-local room = 1 -- Level in table position
+local scene = MazeScene
+local room = nil -- Level in table position
 
 import "entities/player/player"
 import "entities/enemies/enemy"
@@ -30,24 +30,14 @@ import "entities/UI/map"
 --
 -- local variable1 = nil	-- local variable
 -- scene.variable2 = nil	-- Scene variable.
---							   When accessed outside this file use `MazeScene.variable2`.
+--							   When accessed outside this file use `scene.variable2`.
 -- ...
 --
 
 -- Mark: player related
 local player = nil
 local shadow = nil
--- Mark: enemies related
-local brocorat = nil
--- Mark: environment related
-local chair = nil
-local chair1 = nil
-local exitTopDoor = nil
-local exitDownDoor = nil
-local exitLeftDoor = nil
-local exitRightDoor = nil
--- Mark: Key items
-local lvlKey = nil
+
 -- Mark: UI
 local uiScreen = nil
 local map = nil
@@ -55,27 +45,30 @@ local map = nil
 local cheat = CheatCode("up", "up", "up", "down")
 
 -- This is the background color of this scene.
-MazeScene.backgroundColor = Graphics.kColorWhite
+scene.backgroundColor = Graphics.kColorWhite
 
 -- This runs when your scene's object is created, which is the
 -- first thing that happens when transitioning away from another scene.
-function MazeScene:init()
-	MazeScene.super.init(self)
-	debug = levels[room].floor.debug
+function scene:init()
+	scene.super.init(self)
+	
 	cheat.onComplete = function()
 		PlayerData.battery = 100
 	end
 	-- Your code here
 end
+function scene:setFloor(floor)
+	room = floor
+end
 
 -- When transitioning from another scene, this runs as soon as this
 -- scene needs to be visible (this moment depends on which transition type is used).
-function MazeScene:enter()
-	MazeScene.super.enter(self)
+function scene:enter()
+	scene.super.enter(self)
 	-- Your code here
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
-	
+	debug = levels[room].floor.debug
 	PlayerData.room = levels[room].floor.floorNumber
 	rooms[PlayerData.room].visited = true
 	
@@ -165,14 +158,14 @@ function MazeScene:enter()
 end
 
 -- This runs once a transition from another scene is complete.
-function MazeScene:start()
-	MazeScene.super.start(self)
+function scene:start()
+	scene.super.start(self)
 	
 end
 
 -- This runs once per frame.
-function MazeScene:update()
-	MazeScene.super.update(self)
+function scene:update()
+	scene.super.update(self)
 	-- Mark: DEBUG
 	-- Mark: cheat code
 	cheat:update()
@@ -187,30 +180,32 @@ end
 
 
 -- This runs once per frame, and is meant for drawing code.
-function MazeScene:drawBackground()
-	MazeScene.super.drawBackground(self)
+function scene:drawBackground()
+	scene.super.drawBackground(self)
 	-- Your code here
 end
 
 -- This runs as as soon as a transition to another scene begins.
-function MazeScene:exit()
-	MazeScene.super.exit(self)
+function scene:exit()
+	scene.super.exit(self)
 	debug = false
 	rooms[PlayerData.room].visited = false
 	uiScreen:removeAll()
 	floor:remove()
-	shadow:remove()
+	if shadow then
+		shadow:remove()
+	end
 	map:removeAll()
 end
 
 -- This runs once a transition to another scene completes.
-function MazeScene:finish()
-	MazeScene.super.finish(self)
+function scene:finish()
+	scene.super.finish(self)
 	-- Your code here
 end
 
-function MazeScene:pause()
-	MazeScene.super.pause(self)
+function scene:pause()
+	scene.super.pause(self)
 	-- Your code here
 end
 
@@ -218,7 +213,7 @@ end
 
 -- scene.inputHandler = someOtherInputHandler
 -- OR
-MazeScene.inputHandler = {
+scene.inputHandler = {
 
 	-- A button
 	--
@@ -327,6 +322,9 @@ MazeScene.inputHandler = {
 					print('powa') 
 				else
 					player:chargeBattery(1)
+					if shadow then
+						shadow:refresh()
+					end
 				end
 			end
 			if player.battery == 100 then

@@ -9,12 +9,14 @@ function FXshadow:init(player, lightSize, globalLightAmount, Zindex)
 	self.speed = player.speed
 	self.player = player
 	self.lightSize = lightSize
+	self.shouldRefresh = true
 	self:moveTo(200,120)
 	self:setCollidesWithGroups(1)
 	self:setImage(shadow)
 	self:setZIndex(Zindex)
 	self.globalLightAmount = globalLightAmount
 	self:add()	
+	self:refresh()
 end
 
 function FXshadow:move(direction)
@@ -35,11 +37,10 @@ function FXshadow:move(direction)
 	movementX = self.x 
 	movementY = self.y + self.speed
   end
-  
-  
+  self:refresh()
 end
 
-function FXshadow:update()
+function FXshadow:refresh()
 	if debug == false then
 	local battery = PlayerData.battery*2
 	
@@ -77,7 +78,7 @@ function FXshadow:update()
 		lightSourceSize = 20
 		lightSourceAmount = 0.7
 		self.globalLightAmount = 0.02
-	elseif battery == 0 then
+	elseif battery <= 0 then
 		maskSize -= decreaseSize*5
 		lightAmount = 1
 		lightSourceSize = 15
