@@ -37,7 +37,7 @@ function FXshadow:move(direction)
 	movementX = self.x 
 	movementY = self.y + self.speed
   end
-  
+  self:refresh()
 end
 
 function FXshadow:refresh()
