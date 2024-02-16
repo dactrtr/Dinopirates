@@ -3,7 +3,7 @@ import 'libraries/noble/Noble'
 import 'utilities/Utilities'
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
---import 'scenes/SpaceScene'
+import 'scenes/Floors'
 --import 'scenes/StarScene'
 --import 'scenes/TestScene'
 import 'scenes/TitleScene'
@@ -97,7 +97,7 @@ levels = {
 				{
 					direction = 'left',
 					open = 'open',
-					leadsTo = TitleScene,
+					leadsTo = Floor02,
 				},
 			},
 			items = {
@@ -118,11 +118,11 @@ levels = {
 	},
 	{
 		floor = {
-			tile = 1,
+			tile = 4,
 			floorNumber = 7,
 			light = 0.7,
 			debug = false,
-			shadow = true,
+			shadow = false,
 			enemies = {
 				{
 					name = "brocorat",
@@ -134,12 +134,6 @@ levels = {
 					name = "frogcolli",
 					x = 200,
 					y = 120,
-					speed = 3
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 40,
 					speed = 3
 				}
 			
@@ -158,7 +152,7 @@ levels = {
 				{
 					direction = 'left',
 					open = 'open',
-					leadsTo = MazeScene,
+					leadsTo = Floor01,
 				},
 			},
 			items = {
