@@ -37,17 +37,7 @@ import "entities/UI/map"
 -- Mark: player related
 local player = nil
 local shadow = nil
--- Mark: enemies related
-local brocorat = nil
--- Mark: environment related
-local chair = nil
-local chair1 = nil
-local exitTopDoor = nil
-local exitDownDoor = nil
-local exitLeftDoor = nil
-local exitRightDoor = nil
--- Mark: Key items
-local lvlKey = nil
+
 -- Mark: UI
 local uiScreen = nil
 local map = nil
@@ -60,7 +50,9 @@ MazeScene.backgroundColor = Graphics.kColorWhite
 -- This runs when your scene's object is created, which is the
 -- first thing that happens when transitioning away from another scene.
 function MazeScene:init()
+	--self.room = room
 	MazeScene.super.init(self)
+	print('entering' ..' '..room)
 	debug = levels[room].floor.debug
 	cheat.onComplete = function()
 		PlayerData.battery = 100

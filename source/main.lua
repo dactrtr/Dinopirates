@@ -3,7 +3,6 @@ import 'libraries/noble/Noble'
 import 'utilities/Utilities'
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
-import 'scenes/MazeScene01'
 --import 'scenes/SpaceScene'
 --import 'scenes/StarScene'
 --import 'scenes/TestScene'
@@ -59,8 +58,69 @@ levels = {
 	{
 		floor = {
 			tile = 2,
-			floorNumber = 7,
+			floorNumber = 8,
 			light = 0.1,
+			debug = false,
+			shadow = true,
+			enemies = {
+				{
+					name = "brocorat",
+					x = 280,
+					y = 160,
+					speed = 0.7
+				},
+				{
+					name = "frogcolli",
+					x = 200,
+					y = 120,
+					speed = 3
+				},
+				{
+					name = "frogcolli",
+					x = 200,
+					y = 40,
+					speed = 3
+				}
+			
+			},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = TitleScene,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = TitleScene,
+				},
+				{
+					direction = 'left',
+					open = 'open',
+					leadsTo = TitleScene,
+				},
+			},
+			items = {
+				{
+					type = 'key',
+					x = 50,
+					y = 100
+				}
+			},
+			props = {
+				{
+					type = 'chair',
+					x = 80,
+					y = 150
+				}
+			}
+		}
+	},
+	{
+		floor = {
+			tile = 1,
+			floorNumber = 7,
+			light = 0.7,
 			debug = false,
 			shadow = true,
 			enemies = {
