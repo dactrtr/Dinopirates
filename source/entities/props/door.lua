@@ -57,17 +57,12 @@ function Door:goTo()
 end
 function Door:prevRoom(direction)
     PlayerData.lastRoom = direction
-    if direction == 'top' then
-      PlayerData.playerSpawn.x = 200
-      PlayerData.playerSpawn.y = 180
-    elseif direction == 'down' then
-      PlayerData.playerSpawn.x = 200
-      PlayerData.playerSpawn.y = 32
-    elseif direction == 'right' then
-      PlayerData.playerSpawn.x = 40
-      PlayerData.playerSpawn.y = 116
-    elseif direction == 'left' then
-      PlayerData.playerSpawn.x = 350
-      PlayerData.playerSpawn.y = 120
-    end
+    local spawnCoordinates = {
+        top = {x = 200, y = 180},
+        down = {x = 200, y = 32},
+        right = {x = 40, y = 116},
+        left = {x = 350, y = 120}
+    }
+    PlayerData.playerSpawn.x = spawnCoordinates[direction].x
+    PlayerData.playerSpawn.y = spawnCoordinates[direction].y
 end

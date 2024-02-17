@@ -25,3 +25,12 @@ function Floor03:init()
 	self:setFloor(3)
 	Floor03.super.init(self)
 end
+
+Floor04= {
+}
+class("Floor04").extends(MazeScene)
+
+function Floor04:init()
+	self:setFloor(4)
+	Floor04.super.init(self)
+end

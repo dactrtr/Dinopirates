@@ -222,7 +222,6 @@ function Player:chargeBattery(amount)
 end
 
 function Player:update()
-  print(self.x .. " " .. self.y)
   -- Mark: battery bounds
   if PlayerData.battery < 0 then
     PlayerData.battery = 0

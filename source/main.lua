@@ -157,11 +157,11 @@ levels = {
 				}
 			},
 			items = {
-				{
-					type = 'key',
-					x = 50,
-					y = 100
-				}
+				-- {
+				-- 	type = 'key',
+				-- 	x = 50,
+				-- 	y = 100
+				-- }
 			},
 			props = {
 				{
@@ -207,22 +207,22 @@ levels = {
 			},
 			doors = {
 				{
-					direction = 'down',
+					direction = 'left',
 					open = 'open',
-					leadsTo = Floor01,
+					leadsTo = Floor02,
 				},
 				{
-					direction = 'top',
+					direction = 'down',
 					open = 'open',
-					leadsTo = TitleScene,
+					leadsTo = Floor04,
 				}
 			},
 			items = {
-				{
-					type = 'key',
-					x = 50,
-					y = 100
-				}
+				-- {
+				-- 	type = 'key',
+				-- 	x = 50,
+				-- 	y = 100
+				-- }
 			},
 			props = {
 				{
@@ -233,6 +233,67 @@ levels = {
 				{
 					type = 'chair',
 					x = 180,
+					y = 50
+				}
+			}
+		}
+	},
+	{
+		floor = {
+			tile = 2,
+			floorNumber = 8,
+			light = 0.1,
+			debug = false,
+			shadow = false,
+			enemies = {
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 280,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 120,
+				-- 	speed = 3
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 40,
+				-- 	speed = 3
+				-- }
+			
+			},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor03,
+				},
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = TitleScene,
+				}
+			},
+			items = {
+				-- {
+				-- 	type = 'key',
+				-- 	x = 50,
+				-- 	y = 100
+				-- }
+			},
+			props = {
+				{
+					type = 'chair',
+					x = 80,
+					y = 150
+				},
+				{
+					type = 'chair',
+					x = 280,
 					y = 50
 				}
 			}

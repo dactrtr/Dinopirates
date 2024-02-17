@@ -68,7 +68,6 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
-	print("entering room "..room)
 	
 	
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
