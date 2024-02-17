@@ -20,12 +20,17 @@ Noble.GameData.setup({
 PlayerData = {
 	battery = 100, 
 	sanity = 100,
-	hasKey = true,
+	hasKey = false,
 	hasLamp = true,
 	sonarActive = false,
 	isActive = false,
 	floor = 1,
-	room = 1
+	room = 1,
+	lastRoom = nil,
+	playerSpawn ={
+		x = 200,
+		y = 100,
+	}
 }
 rooms = {
 	{ visited = false },
@@ -58,47 +63,37 @@ levels = {
 	{
 		floor = {
 			tile = 2,
-			floorNumber = 8,
+			floorNumber = 7,
 			light = 0.1,
 			debug = false,
-			shadow = true,
+			shadow = false,
 			enemies = {
-				{
-					name = "brocorat",
-					x = 280,
-					y = 160,
-					speed = 0.7
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 120,
-					speed = 3
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 40,
-					speed = 3
-				}
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 280,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 120,
+				-- 	speed = 3
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 40,
+				-- 	speed = 3
+				-- }
 			
 			},
 			doors = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = TitleScene,
-				},
-				{
-					direction = 'down',
-					open = 'open',
-					leadsTo = TitleScene,
-				},
-				{
-					direction = 'left',
-					open = 'open',
 					leadsTo = Floor02,
-				},
+				}
 			},
 			items = {
 				{
@@ -112,48 +107,54 @@ levels = {
 					type = 'chair',
 					x = 80,
 					y = 150
+				},
+				{
+					type = 'chair',
+					x = 160,
+					y = 50
 				}
 			}
 		}
 	},
 	{
 		floor = {
-			tile = 4,
-			floorNumber = 7,
-			light = 0.7,
+			tile = 2,
+			floorNumber = 4,
+			light = 0.1,
 			debug = false,
 			shadow = false,
 			enemies = {
-				{
-					name = "brocorat",
-					x = 280,
-					y = 160,
-					speed = 0.7
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 120,
-					speed = 3
-				}
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 280,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 120,
+				-- 	speed = 3
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 40,
+				-- 	speed = 3
+				-- }
 			
 			},
 			doors = {
 				{
-					direction = 'top',
-					open = 'open',
-					leadsTo = TitleScene,
-				},
-				{
 					direction = 'down',
-					open = 'open',
-					leadsTo = TitleScene,
-				},
-				{
-					direction = 'left',
 					open = 'open',
 					leadsTo = Floor01,
 				},
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = Floor03,
+				}
 			},
 			items = {
 				{
@@ -167,10 +168,76 @@ levels = {
 					type = 'chair',
 					x = 80,
 					y = 150
+				},
+				{
+					type = 'chair',
+					x = 180,
+					y = 50
 				}
 			}
 		}
-	}
+	},
+	{
+		floor = {
+			tile = 2,
+			floorNumber = 5,
+			light = 0.1,
+			debug = false,
+			shadow = false,
+			enemies = {
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 280,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 120,
+				-- 	speed = 3
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 40,
+				-- 	speed = 3
+				-- }
+			
+			},
+			doors = {
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = Floor01,
+				},
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = TitleScene,
+				}
+			},
+			items = {
+				{
+					type = 'key',
+					x = 50,
+					y = 100
+				}
+			},
+			props = {
+				{
+					type = 'chair',
+					x = 80,
+					y = 150
+				},
+				{
+					type = 'chair',
+					x = 180,
+					y = 50
+				}
+			}
+		}
+	},
 	-- repeat
 }
 

@@ -56,9 +56,11 @@ function scene:init()
 		PlayerData.battery = 100
 	end
 	-- Your code here
+	
 end
 function scene:setFloor(floor)
 	room = floor
+	--entrance = nil
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -66,10 +68,14 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
+	print("entering room "..room)
+	
+	
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	debug = levels[room].floor.debug
 	PlayerData.room = levels[room].floor.floorNumber
+	PlayerData.floor = room
 	rooms[PlayerData.room].visited = true
 	
 	-- Mark: floor
@@ -128,7 +134,8 @@ function scene:enter()
 	end
 	
 	-- Mark: Player
-	player = Player(80, 80, 1, ZIndex.player)
+	local spawnPoint = PlayerData.playerSpawn
+	player = Player(spawnPoint.x, spawnPoint.y, 1, ZIndex.player)
 	
 	-- Mark: FX
 	if levels[room].floor.shadow then

@@ -90,6 +90,7 @@ function Player:collisionResponse(other)
     return 'overlap'
     elseif other:isa(Door) then
       if PlayerData.hasKey then
+        other:prevRoom(other.direction)
         other:goTo()
       end
     return 'overlap'
@@ -204,7 +205,10 @@ function Player:sonar()
 end
 
 function Player:drainBattery(amount)
-  PlayerData.battery -= amount
+  if levels[PlayerData.floor].floor.shadow then
+    print(PlayerData.floor)
+    PlayerData.battery -= amount
+  end
 end
 
 function Player:chargeBattery(amount)
@@ -218,6 +222,7 @@ function Player:chargeBattery(amount)
 end
 
 function Player:update()
+  print(self.x .. " " .. self.y)
   -- Mark: battery bounds
   if PlayerData.battery < 0 then
     PlayerData.battery = 0
