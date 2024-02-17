@@ -66,7 +66,7 @@ levels = {
 			floorNumber = 7,
 			light = 0.1,
 			debug = false,
-			shadow = false,
+			shadow = true,
 			enemies = {
 				-- {
 				-- 	name = "brocorat",
@@ -109,7 +109,7 @@ levels = {
 					y = 150
 				},
 				{
-					type = 'chair',
+					type = 'toxic',
 					x = 160,
 					y = 50
 				}
@@ -124,25 +124,6 @@ levels = {
 			debug = false,
 			shadow = false,
 			enemies = {
-				-- {
-				-- 	name = "brocorat",
-				-- 	x = 280,
-				-- 	y = 160,
-				-- 	speed = 0.7
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 120,
-				-- 	speed = 3
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 40,
-				-- 	speed = 3
-				-- }
-			
 			},
 			doors = {
 				{
@@ -157,11 +138,6 @@ levels = {
 				}
 			},
 			items = {
-				-- {
-				-- 	type = 'key',
-				-- 	x = 50,
-				-- 	y = 100
-				-- }
 			},
 			props = {
 				{
@@ -185,25 +161,6 @@ levels = {
 			debug = false,
 			shadow = false,
 			enemies = {
-				-- {
-				-- 	name = "brocorat",
-				-- 	x = 280,
-				-- 	y = 160,
-				-- 	speed = 0.7
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 120,
-				-- 	speed = 3
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 40,
-				-- 	speed = 3
-				-- }
-			
 			},
 			doors = {
 				{
@@ -218,11 +175,6 @@ levels = {
 				}
 			},
 			items = {
-				-- {
-				-- 	type = 'key',
-				-- 	x = 50,
-				-- 	y = 100
-				-- }
 			},
 			props = {
 				{
@@ -246,25 +198,6 @@ levels = {
 			debug = false,
 			shadow = false,
 			enemies = {
-				-- {
-				-- 	name = "brocorat",
-				-- 	x = 280,
-				-- 	y = 160,
-				-- 	speed = 0.7
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 120,
-				-- 	speed = 3
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 40,
-				-- 	speed = 3
-				-- }
-			
 			},
 			doors = {
 				{
@@ -279,11 +212,6 @@ levels = {
 				}
 			},
 			items = {
-				-- {
-				-- 	type = 'key',
-				-- 	x = 50,
-				-- 	y = 100
-				-- }
 			},
 			props = {
 				{

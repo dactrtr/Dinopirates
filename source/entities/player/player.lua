@@ -206,7 +206,6 @@ end
 
 function Player:drainBattery(amount)
   if levels[PlayerData.floor].floor.shadow then
-    print(PlayerData.floor)
     PlayerData.battery -= amount
   end
 end
@@ -221,6 +220,9 @@ function Player:chargeBattery(amount)
   self.isActive = true
 end
 
+function Player:fillbattery()
+    playerData.battery = 100
+end
 function Player:update()
   -- Mark: battery bounds
   if PlayerData.battery < 0 then
