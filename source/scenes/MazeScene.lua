@@ -121,7 +121,7 @@ function scene:enter()
 		local x = propData.x
 		local y = propData.y
 		
-		PropItem(x, y, ZIndex.props)
+		PropItem(x, y, type, ZIndex.props)
 	end
 	local items = levels[room].floor.items
 	for _, itemData in ipairs(items) do
@@ -139,6 +139,8 @@ function scene:enter()
 	-- Mark: FX
 	if levels[room].floor.shadow then
 		shadow = FXshadow(player, 70,levels[room].floor.light, ZIndex.fx)
+	else
+		player:fillBattery()
 	end
 	
 	-- Mark: UI
