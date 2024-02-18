@@ -5,7 +5,7 @@ import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/Floors'
 --import 'scenes/StarScene'
---import 'scenes/TestScene'
+import 'scenes/TestScene'
 import 'scenes/TitleScene'
 
 Noble.Settings.setup({
