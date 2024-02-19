@@ -201,7 +201,7 @@ function scene:exit()
 	uiScreen:removeAll()
 	floor:remove()
 	if shadow then
-		shadow:remove()
+		shadow:removeAll()
 	end
 	map:removeAll()
 end

@@ -220,8 +220,8 @@ function Player:chargeBattery(amount)
   self.isActive = true
 end
 
-function Player:fillbattery()
-    playerData.battery = 100
+function Player:fillBattery()
+    PlayerData.battery = 100
 end
 function Player:update()
   -- Mark: battery bounds
