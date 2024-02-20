@@ -233,6 +233,7 @@ levels = {
 }
 script = {
 	{
+		-- no door key
 		dialog = {
 			{
 				video = 'player',

@@ -101,6 +101,8 @@ function Player:collisionResponse(other)
       end
     return 'overlap'
   end
+  
+  
 end
 
 function Player:displayDialog(script)
