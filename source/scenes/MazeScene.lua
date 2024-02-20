@@ -205,7 +205,7 @@ function scene:exit()
 	rooms[PlayerData.room].visited = false
 	uiScreen:removeAll()
 	floor:remove()
-	if shadow == true then
+	if shadow then
 		shadow:removeAll()
 	end
 	map:removeAll()
@@ -225,7 +225,7 @@ function scene:movePlayer(direction)
 	if PlayerData.isTalking == false then
 		if player.isAlive == true then
 			player:move(direction)
-			if shadow == true then
+			if shadow  then
 				shadow:move(direction)
 			end
 		end

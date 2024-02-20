@@ -124,7 +124,7 @@ levels = {
 			floorNumber = 4,
 			light = 0.1,
 			debug = false,
-			shadow = false,
+			shadow = true,
 			enemies = {
 			},
 			doors = {
