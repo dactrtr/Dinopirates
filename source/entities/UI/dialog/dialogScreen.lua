@@ -53,8 +53,8 @@ function dialogScreen:nextDialog()
 		self:add()
 		dialogcounter += 1
 	else
-		self:removeAll()
 		dialogcounter = 1
+		self:removeAll()
 	end
 end
 function dialogScreen:removeAll()

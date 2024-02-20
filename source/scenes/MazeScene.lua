@@ -21,6 +21,7 @@ import "entities/enemies/enemy"
 import 'entities/props/propItem'
 import 'entities/props/door'
 import 'entities/items/Items'
+import 'entities/props/trigger'
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
 import "entities/UI/map"
@@ -140,7 +141,7 @@ function scene:enter()
 	player = Player(spawnPoint.x, spawnPoint.y, 1, ZIndex.player)
 	
 	-- Mark: FX
-	if levels[room].floor.shadow == true then
+	if levels[room].floor.shadow then
 		shadow = FXshadow(player, 70,levels[room].floor.light, ZIndex.fx)
 	else
 		player:fillBattery()
@@ -168,6 +169,21 @@ function scene:enter()
 		end
 	end
 	
+	-- Mark: dialog triggers
+	
+	arrayData = levels[room].floor.triggers
+	
+	for _, triggerData in ipairs(arrayData) do
+		if triggerData.usedTrigger == false then
+			local x = triggerData.x
+			local y = triggerData.y
+			local width = triggerData.width
+			local height = triggerData.height
+			local script = triggerData.script
+			arrayData.usedTrigger = true	
+			Trigger(x,y,width,height,script)
+		end
+	end
 end
 
 -- This runs once a transition from another scene is complete.

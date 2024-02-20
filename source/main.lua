@@ -69,6 +69,24 @@ levels = {
 			light = 0.1,
 			debug = false,
 			shadow = false,
+			triggers = {
+				{
+					usedTrigger = false,
+					x = 20,
+					y = 20,
+					width = 30,
+					height = 30,
+					script = 2
+				},
+				{
+					usedTrigger = false,
+					x = 120,
+					y = 120,
+					width = 30,
+					height = 30,
+					script = 2
+				},
+			},
 			enemies = {
 				-- {
 				-- 	name = "brocorat",
@@ -125,21 +143,58 @@ levels = {
 			light = 0.1,
 			debug = false,
 			shadow = true,
+			triggers = {
+				{
+					usedTrigger = false,
+					x = 20,
+					y = 20,
+					width = 30,
+					height = 30,
+					script = 2
+				},
+				{
+					usedTrigger = false,
+					x = 120,
+					y = 120,
+					width = 30,
+					height = 30,
+					script = 3
+				},
+			},
 			enemies = {
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 280,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 120,
+				-- 	speed = 3
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 40,
+				-- 	speed = 3
+				-- }
+			
 			},
 			doors = {
 				{
 					direction = 'down',
 					open = 'open',
 					leadsTo = Floor01,
-				},
-				{
-					direction = 'right',
-					open = 'open',
-					leadsTo = Floor03,
 				}
 			},
 			items = {
+				{
+					type = 'key',
+					x = 50,
+					y = 100
+				}
 			},
 			props = {
 				{
@@ -148,82 +203,8 @@ levels = {
 					y = 150
 				},
 				{
-					type = 'chair',
-					x = 180,
-					y = 50
-				}
-			}
-		}
-	},
-	{
-		floor = {
-			tile = 2,
-			floorNumber = 5,
-			light = 0.1,
-			debug = false,
-			shadow = false,
-			enemies = {
-			},
-			doors = {
-				{
-					direction = 'left',
-					open = 'open',
-					leadsTo = Floor02,
-				},
-				{
-					direction = 'down',
-					open = 'open',
-					leadsTo = Floor04,
-				}
-			},
-			items = {
-			},
-			props = {
-				{
-					type = 'chair',
-					x = 80,
-					y = 150
-				},
-				{
-					type = 'chair',
-					x = 180,
-					y = 50
-				}
-			}
-		}
-	},
-	{
-		floor = {
-			tile = 2,
-			floorNumber = 8,
-			light = 0.1,
-			debug = false,
-			shadow = false,
-			enemies = {
-			},
-			doors = {
-				{
-					direction = 'top',
-					open = 'open',
-					leadsTo = Floor03,
-				},
-				{
-					direction = 'right',
-					open = 'open',
-					leadsTo = TitleScene,
-				}
-			},
-			items = {
-			},
-			props = {
-				{
-					type = 'chair',
-					x = 80,
-					y = 150
-				},
-				{
-					type = 'chair',
-					x = 280,
+					type = 'toxic',
+					x = 160,
 					y = 50
 				}
 			}
@@ -244,7 +225,25 @@ script = {
 				text = 'de seguro la dejaron tirada en alguna parte en el piso'
 			},
 		}
-	}
+	},
+	{
+		-- no door key
+		dialog = {
+			{
+				video = 'player',
+				text = 'WAT'
+			},
+		}
+	},
+	{
+		-- no door key
+		dialog = {
+			{
+				video = 'player',
+				text = 'slippery floor?'
+			},
+		}
+	},
 }
 
 function resetData()
