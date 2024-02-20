@@ -180,7 +180,7 @@ function scene:enter()
 			local width = triggerData.width
 			local height = triggerData.height
 			local script = triggerData.script
-			arrayData.usedTrigger = true	
+			triggerData.usedTrigger = true	
 			Trigger(x,y,width,height,script)
 		end
 	end
