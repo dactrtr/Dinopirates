@@ -5,7 +5,7 @@ import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/Floors'
 --import 'scenes/StarScene'
---import 'scenes/TestScene'
+import 'scenes/TestScene'
 import 'scenes/TitleScene'
 
 Noble.Settings.setup({
@@ -17,15 +17,23 @@ Noble.showFPS = true
 Noble.GameData.setup({
 	Score = 0,
 })
+-- Mark: This should be a separate file(JSON)
+
 PlayerData = {
 	battery = 100, 
 	sanity = 100,
-	hasKey = true,
+	hasKey = false,
 	hasLamp = true,
 	sonarActive = false,
 	isActive = false,
+	isTalking = false,
 	floor = 1,
-	room = 1
+	room = 1,
+	lastRoom = nil,
+	playerSpawn ={
+		x = 200,
+		y = 100,
+	}
 }
 rooms = {
 	{ visited = false },
@@ -53,52 +61,41 @@ CollideGroups = {
 	items = 4,
 	wall = 5
 }
--- Mark: This should be a separate file
 levels = {
 	{
 		floor = {
 			tile = 2,
-			floorNumber = 8,
+			floorNumber = 7,
 			light = 0.1,
 			debug = false,
-			shadow = true,
+			shadow = false,
 			enemies = {
-				{
-					name = "brocorat",
-					x = 280,
-					y = 160,
-					speed = 0.7
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 120,
-					speed = 3
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 40,
-					speed = 3
-				}
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 280,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 120,
+				-- 	speed = 3
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 40,
+				-- 	speed = 3
+				-- }
 			
 			},
 			doors = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = TitleScene,
-				},
-				{
-					direction = 'down',
-					open = 'open',
-					leadsTo = TitleScene,
-				},
-				{
-					direction = 'left',
-					open = 'open',
 					leadsTo = Floor02,
-				},
+				}
 			},
 			items = {
 				{
@@ -112,68 +109,143 @@ levels = {
 					type = 'chair',
 					x = 80,
 					y = 150
+				},
+				{
+					type = 'toxic',
+					x = 160,
+					y = 50
 				}
 			}
 		}
 	},
 	{
 		floor = {
-			tile = 4,
-			floorNumber = 7,
-			light = 0.7,
+			tile = 2,
+			floorNumber = 4,
+			light = 0.1,
 			debug = false,
 			shadow = false,
 			enemies = {
-				{
-					name = "brocorat",
-					x = 280,
-					y = 160,
-					speed = 0.7
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 120,
-					speed = 3
-				}
-			
 			},
 			doors = {
 				{
-					direction = 'top',
-					open = 'open',
-					leadsTo = TitleScene,
-				},
-				{
 					direction = 'down',
-					open = 'open',
-					leadsTo = TitleScene,
-				},
-				{
-					direction = 'left',
 					open = 'open',
 					leadsTo = Floor01,
 				},
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = Floor03,
+				}
 			},
 			items = {
-				{
-					type = 'key',
-					x = 50,
-					y = 100
-				}
 			},
 			props = {
 				{
 					type = 'chair',
 					x = 80,
 					y = 150
+				},
+				{
+					type = 'chair',
+					x = 180,
+					y = 50
 				}
 			}
 		}
-	}
+	},
+	{
+		floor = {
+			tile = 2,
+			floorNumber = 5,
+			light = 0.1,
+			debug = false,
+			shadow = false,
+			enemies = {
+			},
+			doors = {
+				{
+					direction = 'left',
+					open = 'open',
+					leadsTo = Floor02,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = Floor04,
+				}
+			},
+			items = {
+			},
+			props = {
+				{
+					type = 'chair',
+					x = 80,
+					y = 150
+				},
+				{
+					type = 'chair',
+					x = 180,
+					y = 50
+				}
+			}
+		}
+	},
+	{
+		floor = {
+			tile = 2,
+			floorNumber = 8,
+			light = 0.1,
+			debug = false,
+			shadow = false,
+			enemies = {
+			},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor03,
+				},
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = TitleScene,
+				}
+			},
+			items = {
+			},
+			props = {
+				{
+					type = 'chair',
+					x = 80,
+					y = 150
+				},
+				{
+					type = 'chair',
+					x = 280,
+					y = 50
+				}
+			}
+		}
+	},
 	-- repeat
 }
-
+script = {
+	{
+		-- no door key
+		dialog = {
+			{
+				video = 'player',
+				text = 'Quien cerro la puerta?, ahhh donde esta la llave'
+			},
+			{
+				video = 'player',
+				text = 'de seguro la dejaron tirada en alguna parte en el piso'
+			},
+		}
+	}
+}
 
 function resetData()
 	PlayerData.battery = 100

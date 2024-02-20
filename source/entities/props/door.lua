@@ -27,6 +27,7 @@ end
 
 function Door:init(direction, status, nextRoom, zIndex)
   self.nextRoom = nextRoom
+  self.direction = direction
   local isHorizontal = direction == 'top' or direction == 'down'
   local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
   local sizeX, sizeY = isHorizontal and 56 or 10, isHorizontal and 10 or 56
@@ -53,4 +54,15 @@ end
 
 function Door:goTo()
   Noble.transition(self.nextRoom)
+end
+function Door:prevRoom(direction)
+    PlayerData.lastRoom = direction
+    local spawnCoordinates = {
+        top = {x = 200, y = 180},
+        down = {x = 200, y = 32},
+        right = {x = 40, y = 116},
+        left = {x = 350, y = 120}
+    }
+    PlayerData.playerSpawn.x = spawnCoordinates[direction].x
+    PlayerData.playerSpawn.y = spawnCoordinates[direction].y
 end

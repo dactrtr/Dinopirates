@@ -5,7 +5,6 @@ local shadow = Graphics.image.new(400,240)
 
 
 function FXshadow:init(player, lightSize, globalLightAmount, Zindex)
-	
 	self.speed = player.speed
 	self.player = player
 	self.lightSize = lightSize
@@ -118,4 +117,8 @@ function FXshadow:refresh()
 	if debug then
 		shadow:clear(Graphics.kColorClear)
 	end
+end
+function FXshadow:removeAll()
+	shadow:clear(Graphics.kColorClear)
+	self:remove()
 end

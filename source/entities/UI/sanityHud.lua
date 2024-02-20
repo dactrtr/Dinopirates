@@ -2,7 +2,7 @@ class("sanityHud").extends(NobleSprite)
 
 
 function sanityHud:init(x, y, zIndex, player)
-	sonarHud.super.init(self,'assets/images/ui/sanity.png', true)
+	sanityHud.super.init(self,'assets/images/ui/sanity.png', true)
 	-- Mark: animation states
 	self.animation:addState('good', 1, 2)
 	self.animation.good.frameDuration = 12
