@@ -60,7 +60,6 @@ function scene:init()
 end
 function scene:setFloor(floor)
 	room = floor
-	--entrance = nil
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -103,9 +102,9 @@ function scene:enter()
 	wallRight = Box(388, 12, 12, 216)
 	
 	-- Mark: doors
-	local doors = levels[room].floor.doors
+	local arrayData = levels[room].floor.doors -- Used several times to save variables
 	
-	for _, doorData in ipairs(doors) do
+	for _, doorData in ipairs(arrayData) do
 		local direction = doorData.direction
 		local open = doorData.open
 		local leads = doorData.leadsTo
@@ -115,21 +114,25 @@ function scene:enter()
 	
 	
 	-- Mark: Props & items
-	local props = levels[room].floor.props
-	for _, propData in ipairs(props) do
+	arrayData = levels[room].floor.props
+	
+	for _, propData in ipairs(arrayData) do
 		local type = propData.type
 		local x = propData.x
 		local y = propData.y
 		
 		PropItem(x, y, type, ZIndex.props)
 	end
-	local items = levels[room].floor.items
-	for _, itemData in ipairs(items) do
-		local type = itemData.type
-		local x = itemData.x
-		local y = itemData.y
-		
-		Items(x, y, ZIndex.props)
+	
+	if PlayerData.hasKey == false then
+		arrayData = levels[room].floor.items
+		for _, itemData in ipairs(arrayData) do
+			local type = itemData.type
+			local x = itemData.x
+			local y = itemData.y
+			
+			Items(x, y, ZIndex.props)
+		end
 	end
 	
 	-- Mark: Player
@@ -137,7 +140,7 @@ function scene:enter()
 	player = Player(spawnPoint.x, spawnPoint.y, 1, ZIndex.player)
 	
 	-- Mark: FX
-	if levels[room].floor.shadow then
+	if levels[room].floor.shadow == true then
 		shadow = FXshadow(player, 70,levels[room].floor.light, ZIndex.fx)
 	else
 		player:fillBattery()
@@ -147,10 +150,12 @@ function scene:enter()
 	uiScreen = playerHud()
 	map = Map()
 	
-	-- Mark: Enemies from table
-	local enemies = levels[room].floor.enemies
+	-- dialogUI = dialogScreen()
 	
-	for _, enemyData in ipairs(enemies) do
+	-- Mark: Enemies from table
+	arrayData = levels[room].floor.enemies
+	
+	for _, enemyData in ipairs(arrayData) do
 		local name = enemyData.name
 		local x = enemyData.x
 		local y = enemyData.y
@@ -200,7 +205,7 @@ function scene:exit()
 	rooms[PlayerData.room].visited = false
 	uiScreen:removeAll()
 	floor:remove()
-	if shadow then
+	if shadow == true then
 		shadow:removeAll()
 	end
 	map:removeAll()
@@ -216,7 +221,16 @@ function scene:pause()
 	scene.super.pause(self)
 	-- Your code here
 end
-
+function scene:movePlayer(direction)
+	if PlayerData.isTalking == false then
+		if player.isAlive == true then
+			player:move(direction)
+			if shadow == true then
+				shadow:move(direction)
+			end
+		end
+	end
+end
 -- Define the inputHander for this scene here, or use a previously defined inputHandler.
 
 -- scene.inputHandler = someOtherInputHandler
@@ -226,6 +240,10 @@ scene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
+		--print((script[1].dialog[1].text))
+		if PlayerData.isTalking == true then
+			player:displayDialog()
+		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
@@ -240,7 +258,6 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-		
 	end,
 	BButtonHeld = function()
 		
@@ -258,12 +275,7 @@ scene.inputHandler = {
 		
 	end,
 	leftButtonHold = function()
-		if player.isAlive then
-			player:move("left")
-			if shadow then
-				shadow:move("left")
-			end
-		end
+		scene:movePlayer('left')
 	end,
 	leftButtonUp = function()
 		player:idle()
@@ -275,12 +287,7 @@ scene.inputHandler = {
 		
 	end,
 	rightButtonHold = function()
-		if player.isAlive then
-			player:move("right")
-			if shadow then
-				shadow:move("right")
-			end
-		end
+		scene:movePlayer('right')
 	end,
 	rightButtonUp = function()
 		player:idle()
@@ -292,12 +299,7 @@ scene.inputHandler = {
 
 	end,
 	upButtonHold = function()
-		if player.isAlive then
-			player:move("up")
-			if shadow then
-				shadow:move("up")
-			end
-		end
+		scene:movePlayer('up')
 	end,
 	upButtonUp = function()
 		player:idle()
@@ -309,12 +311,7 @@ scene.inputHandler = {
 
 	end,
 	downButtonHold = function()
-		if player.isAlive then
-			player:move("down")
-			if shadow then
-				shadow:move("down")
-			end
-		end
+		scene:movePlayer('down')
 	end,
 	downButtonUp = function()
 		player:idle()

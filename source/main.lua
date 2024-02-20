@@ -17,6 +17,8 @@ Noble.showFPS = true
 Noble.GameData.setup({
 	Score = 0,
 })
+-- Mark: This should be a separate file(JSON)
+
 PlayerData = {
 	battery = 100, 
 	sanity = 100,
@@ -24,6 +26,7 @@ PlayerData = {
 	hasLamp = true,
 	sonarActive = false,
 	isActive = false,
+	isTalking = false,
 	floor = 1,
 	room = 1,
 	lastRoom = nil,
@@ -58,7 +61,6 @@ CollideGroups = {
 	items = 4,
 	wall = 5
 }
--- Mark: This should be a separate file
 levels = {
 	{
 		floor = {
@@ -66,7 +68,7 @@ levels = {
 			floorNumber = 7,
 			light = 0.1,
 			debug = false,
-			shadow = true,
+			shadow = false,
 			enemies = {
 				-- {
 				-- 	name = "brocorat",
@@ -229,7 +231,20 @@ levels = {
 	},
 	-- repeat
 }
-
+script = {
+	{
+		dialog = {
+			{
+				video = 'player',
+				text = 'Quien cerro la puerta?, ahhh donde esta la llave'
+			},
+			{
+				video = 'player',
+				text = 'de seguro la dejaron tirada en alguna parte en el piso'
+			},
+		}
+	}
+}
 
 function resetData()
 	PlayerData.battery = 100

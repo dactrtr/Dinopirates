@@ -1,6 +1,8 @@
 Player = {}
 class('Player').extends(NobleSprite)
+import "entities/UI/dialog/dialogScreen"
 
+local dialogUI = nil
 
 function Player:init(x, y, speed, Zindex)
   Player.super.init(self,'assets/images/player/player', true)
@@ -72,7 +74,7 @@ function Player:init(x, y, speed, Zindex)
   self.hasLamp = true
   
   -- Mark: add to scene
-  
+  dialogUI = dialogScreen()
   self:sanityCheck()
   self:add(x, y)   
   
@@ -89,12 +91,20 @@ function Player:collisionResponse(other)
     self:grabKey()
     return 'overlap'
     elseif other:isa(Door) then
-      if PlayerData.hasKey then
+      if PlayerData.hasKey == true then
         other:prevRoom(other.direction)
         other:goTo()
+      else
+        PlayerData.isTalking = true
+        dialogUI:addScreen(1)
+        return 'freeze'
       end
     return 'overlap'
   end
+end
+
+function Player:displayDialog(script)
+  dialogUI:nextDialog()
 end
 
 function Player:idle()
