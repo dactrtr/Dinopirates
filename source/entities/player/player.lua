@@ -88,7 +88,7 @@ function Player:collisionResponse(other)
     return 'freeze' 
   elseif other:isa(Trigger) then
       PlayerData.isTalking = true
-      dialogUI:addScreen(other:returnScript())
+      dialogUI:addScreen(other:returnScript(),other.sourceFeed)
     return 'freeze'
   elseif other:isa(Items) then
     other:removeAll()

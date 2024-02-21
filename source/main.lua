@@ -32,7 +32,7 @@ PlayerData = {
 	lastRoom = nil,
 	playerSpawn ={
 		x = 200,
-		y = 100,
+		y = 200,
 	}
 }
 rooms = {
@@ -72,20 +72,13 @@ levels = {
 			triggers = {
 				{
 					usedTrigger = false,
-					x = 20,
-					y = 20,
-					width = 30,
+					x = 170,
+					y = 150,
+					width = 60,
 					height = 30,
 					script = 2
 				},
-				{
-					usedTrigger = false,
-					x = 120,
-					y = 120,
-					width = 30,
-					height = 30,
-					script = 2
-				},
+				
 			},
 			enemies = {
 				-- {
@@ -129,10 +122,25 @@ levels = {
 					y = 150
 				},
 				{
-					type = 'toxic',
+					type = 'chair',
 					x = 160,
+					y = 150
+				},
+				{
+					type = 'chair',
+					x = 60,
+					y = 200
+				},
+				{
+					type = 'chair',
+					x = 260,
 					y = 50
-				}
+				},
+				{
+					type = 'chair',
+					x = 60,
+					y = 50
+				},
 			}
 		}
 	},
@@ -214,15 +222,36 @@ levels = {
 }
 script = {
 	{
-		-- no door key
+		-- no door key 1
 		dialog = {
 			{
 				video = 'player',
-				text = 'Quien cerro la puerta?, ahhh donde esta la llave'
+				text = Graphics.getLocalizedText("door", "en")
+			},
+			{
+				video = 'radio',
+				text = Graphics.getLocalizedText("door2", "en")
+			},
+			{
+				video = 'radio',
+				text = Graphics.getLocalizedText("door3", "en")
 			},
 			{
 				video = 'player',
-				text = 'de seguro la dejaron tirada en alguna parte en el piso'
+				text = Graphics.getLocalizedText("door4", "en")
+			},
+		}
+	},
+	{
+		-- triger mess
+		dialog = {
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("mess", "en")
+			},
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("mess2", "en")
 			},
 		}
 	},
@@ -230,16 +259,7 @@ script = {
 		-- no door key
 		dialog = {
 			{
-				video = 'player',
-				text = 'WAT'
-			},
-		}
-	},
-	{
-		-- no door key
-		dialog = {
-			{
-				video = 'player',
+				video = 'radio',
 				text = 'slippery floor?'
 			},
 		}

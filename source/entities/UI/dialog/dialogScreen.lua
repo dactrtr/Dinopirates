@@ -39,10 +39,13 @@ function dialogScreen:addScreen(scriptPosition)
 end
 function dialogScreen:nextDialog()
 	dialogbg:add()
+	if video ~= nil then
+		video:remove()
+	end
 	self:setImage(dialogtext)
 	if dialogcounter <= table.getSize(script[dialogPosition].dialog)then
 		if videoActive == false then
-			video = videoFeed(400,240,ZIndex.alert)
+			video = videoFeed(400,240,script[dialogPosition].dialog[dialogcounter].video, ZIndex.alert)
 			videoActive = true
 		end
 		dialogtext:clear(Graphics.kColorClear)
@@ -52,6 +55,7 @@ function dialogScreen:nextDialog()
 		
 		self:add()
 		dialogcounter += 1
+		videoActive = false
 	else
 		dialogcounter = 1
 		self:removeAll()

@@ -1,0 +1,8 @@
+-- These are example strings.
+"menuResumeGame" = "再開する"
+"menuNewGame" = "新しいゲーム"
+"menuOptions" = "オプション"
+"menuCredits" = "クレジット"
+--
+"door" = "ふん！もちろん、カードキーが必要です。おそらくどこかに置き忘れたのでしょう..."
+"door2" = "... 床の上に落ちているはず、回転しているのは、拾えるものはすべて回転しているからです。"
