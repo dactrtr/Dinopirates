@@ -132,7 +132,7 @@ function scene:enter()
 			local x = itemData.x
 			local y = itemData.y
 			
-			Items(x, y, ZIndex.props)
+			Items(x, y, type)
 		end
 	end
 	

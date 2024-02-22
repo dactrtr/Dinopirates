@@ -78,6 +78,14 @@ levels = {
 					height = 30,
 					script = 2
 				},
+				{
+					usedTrigger = false,
+					x = 220,
+					y = 100,
+					width = 60,
+					height = 30,
+					script = 3
+				},
 				
 			},
 			enemies = {
@@ -110,7 +118,7 @@ levels = {
 			},
 			items = {
 				{
-					type = 'key',
+					type = 'keycard',
 					x = 50,
 					y = 100
 				}
@@ -118,28 +126,38 @@ levels = {
 			props = {
 				{
 					type = 'chair',
-					x = 80,
-					y = 150
-				},
-				{
-					type = 'chair',
-					x = 160,
-					y = 150
-				},
-				{
-					type = 'chair',
-					x = 60,
+					x = 140,
 					y = 200
 				},
 				{
 					type = 'chair',
-					x = 260,
-					y = 50
+					x = 160,
+					y = 160
+				},
+				{
+					type = 'fellchair',
+					x = 232,
+					y = 192
 				},
 				{
 					type = 'chair',
-					x = 60,
-					y = 50
+					x = 176,
+					y = 120
+				},
+				{
+					type = 'chair',
+					x = 210,
+					y = 124
+				},
+				{
+					type = 'chair',
+					x = 275,
+					y = 170
+				},
+				{
+					type = 'chair',
+					x = 280,
+					y = 124
 				},
 			}
 		}
@@ -240,6 +258,14 @@ script = {
 				video = 'player',
 				text = Graphics.getLocalizedText("door4", "en")
 			},
+			{
+				video = 'radiopocket',
+				text = Graphics.getLocalizedText("door5", "en")
+			},
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("door6", "en")
+			},
 		}
 	},
 	{
@@ -250,20 +276,57 @@ script = {
 				text = Graphics.getLocalizedText("mess", "en")
 			},
 			{
-				video = 'player',
+				video = 'radioring',
 				text = Graphics.getLocalizedText("mess2", "en")
+			},
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("mess3", "en")
+			},
+			{
+				video = 'radio',
+				text = Graphics.getLocalizedText("mess4", "en")
+			},
+			{
+				video = 'radio',
+				text = Graphics.getLocalizedText("mess5", "en")
+			},
+			{
+				video = 'radio',
+				text = Graphics.getLocalizedText("mess6", "en")
+			},
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("mess7", "en")
 			},
 		}
 	},
 	{
-		-- no door key
+		-- triger mess
 		dialog = {
 			{
+				video = 'radioring',
+				text = Graphics.getLocalizedText("chairs", "en")
+			},
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("chairs1", "en")
+			},
+			{
 				video = 'radio',
-				text = 'slippery floor?'
+				text = Graphics.getLocalizedText("chairs2", "en")
+			},
+			{
+				video = 'radio',
+				text = Graphics.getLocalizedText("chairs3", "en")
+			},
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("chairs4", "en")
 			},
 		}
 	},
+	
 }
 
 function resetData()

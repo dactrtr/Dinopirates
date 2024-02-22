@@ -3,10 +3,48 @@
 "menuNewGame" =			"New Game"
 "menuOptions" =			"Options"
 "menuCredits" =			"Credits"
---
+
+-- floor 1 door closed
+
 "door" = "duh! of course I need a *key card*, that probably *left somewhere*..."
+
 "door2" = "... MR Jani...tor ...*key card*... safe on... ground... leave... *tidy and clean*..."
+
 "door3" = "... *thank you*... keep your hard work"
-"door4" = "... *safe* ... *ground*, this *dinosaurs* are so unreliable"
-"mess"="what is this mess, I told everyone to *NOT NAIL THE CHAIRS TO THE FLOOR*..."
-"mess2"="... now its harder to move around, feels like a maze, a chair maze"
+
+"door4" = "... *safe* ... *ground*, this *DR* are so unreliable"
+
+"door5" = "that will be *deducted from your next pay roll*"
+
+"door6" = "wait, they even pay me?"
+
+-- floor 1 mess
+"mess"="Ok, no more Trex-tilas, that welcome party was wild, and barely remember..."
+
+"mess2"="*rick roll sounds has a ring tone*"
+
+"mess3"="what is this? mm moshi moshi? who's there?"
+
+"mess4"="hello there *DR* here, *Dino Resources*, welcome to the crew of the..."
+
+"mess5"="... *S.S.S WaterQueen Super Space Ship Type 2*"
+
+"mess6"="were glad to *join us* in this endless journey, of... good... we are... pirates..."
+
+"mess7"="seems there's no good signal here, why the *chairs are stuck to the floor?*"
+
+-- floor 1 chair
+
+"chairs"="*rick roll sounds has a ring tone*"
+
+"chairs1"="moshi moshi?"
+
+"chairs2"="so about the chairs, is *safety reasons* we cant allow drunk ppl to fall again..."
+
+"chairs3"="...*last night* one dinosaur fell..."
+
+"chairs4"="got got it, I understand a lot now..."
+
+-- floor 1 tasks
+
+

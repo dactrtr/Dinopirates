@@ -68,6 +68,7 @@ function Player:init(x, y, speed, Zindex)
   self.initialBattery = PlayerData.battery
   self.sanityLoss = 10
   self.sanity = PlayerData.sanity
+  
   self.isActive = false
   self.loadingPower = false
   self.isAlive = true
@@ -94,7 +95,7 @@ function Player:collisionResponse(other)
       PlayerData.isTalking = true
       dialogUI:addScreen(other:returnScript(),other.sourceFeed)
     return 'freeze'
-  elseif other:isa(Items) then
+  elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()
     self:grabKey()
     return 'overlap'
