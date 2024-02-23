@@ -26,9 +26,11 @@ local function setRectValues(direction)
 end
 
 function Door:init(direction, status, nextRoom, zIndex)
+  
   self.nextRoom = nextRoom
   self.direction = direction
   self.status = status
+  
   local isHorizontal = direction == 'top' or direction == 'down'
   local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
   local sizeX, sizeY = isHorizontal and 56 or 10, isHorizontal and 10 or 56
@@ -46,6 +48,7 @@ function Door:init(direction, status, nextRoom, zIndex)
   local isNormal = direction == 'top' or direction == 'right'
   local statePrefix = isNormal and 'normal' or 'reverse'
   self.animation:setState(statePrefix .. (status == 'closed' and 'Closed' or 'Open'))
+  
 
   local position = positions[direction]
   self:setZIndex(zIndex)
