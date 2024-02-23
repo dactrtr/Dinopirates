@@ -112,7 +112,7 @@ levels = {
 			doors = {
 				{
 					direction = 'top',
-					open = 'open',
+					open = 'closed',
 					leadsTo = Floor02,
 				}
 			},

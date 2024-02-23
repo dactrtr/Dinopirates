@@ -28,6 +28,7 @@ end
 function Door:init(direction, status, nextRoom, zIndex)
   self.nextRoom = nextRoom
   self.direction = direction
+  self.status = status
   local isHorizontal = direction == 'top' or direction == 'down'
   local asset = isHorizontal and 'assets/images/props/door-horizontal' or 'assets/images/props/door-vertical'
   local sizeX, sizeY = isHorizontal and 56 or 10, isHorizontal and 10 or 56
