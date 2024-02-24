@@ -217,7 +217,7 @@ levels = {
 			},
 			items = {
 				{
-					type = 'key',
+					type = 'keycard',
 					x = 50,
 					y = 100
 				}

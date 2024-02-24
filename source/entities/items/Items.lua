@@ -8,7 +8,7 @@ function Items:init(x, y, type)
   Items.super.init(self,'assets/images/items/item-key', true)
   --- animation states
   self.animation:addState('keycard', 1, 20)
-  self.animation.keycard.frameDuration = 8  -- position and z-index
+  self.animation.keycard.frameDuration = 8 
   self:setSize(48, 48)
   self:setCollideRect(8,8, 32,24)
   self:setZIndex(ZIndex.props)
@@ -30,9 +30,9 @@ function Items:removeAll()
 end
 
 function Items:update()
-  if PlayerData.sonarActive == true  then
-     self:sonar('key')
-   end
+  -- if PlayerData.sonarActive == true  then
+  --    self:sonar('key')
+  --  end
 end
 
 
