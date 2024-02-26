@@ -26,11 +26,6 @@ function Items:sonar(x,y)
  -- sonar:activate(self.x,self.y,'key')
 end
 
--- function Items:removeAll()
---   sonar:disableFX()
---   self:remove()
--- end
-
 function Items:update()
   -- if PlayerData.sonarActive == true  then
   --    self:sonar('key')
