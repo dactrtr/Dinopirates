@@ -125,13 +125,12 @@ function scene:enter()
 		PropItem(x, y, type, ZIndex.props)
 	end
 	
-	if PlayerData.hasKey == false then
-		arrayData = levels[room].floor.items
-		for _, itemData in ipairs(arrayData) do
-			local type = itemData.type
-			local x = itemData.x
-			local y = itemData.y
-			
+	arrayData = levels[room].floor.items
+	for _, itemData in ipairs(arrayData) do
+		local type = itemData.type
+		local x = itemData.x
+		local y = itemData.y
+		if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) then
 			Items(x, y, type)
 		end
 	end

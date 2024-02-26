@@ -9,6 +9,8 @@ function Items:init(x, y, type)
   --- animation states
   self.animation:addState('keycard', 1, 20)
   self.animation.keycard.frameDuration = 8 
+  self.animation:addState('lamp', 21, 25)
+  self.animation.lamp.frameDuration = 8 
   self:setSize(48, 48)
   self:setCollideRect(8,8, 32,24)
   self:setZIndex(ZIndex.props)
@@ -21,7 +23,7 @@ function Items:init(x, y, type)
 end
 
 function Items:sonar(x,y)
-  sonar:activate(self.x,self.y,'key')
+ -- sonar:activate(self.x,self.y,'key')
 end
 
 function Items:removeAll()
