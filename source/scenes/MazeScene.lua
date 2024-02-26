@@ -218,12 +218,7 @@ function scene:exit()
 	scene.super.exit(self)
 	debug = false
 	rooms[PlayerData.room].visited = false
-	uiScreen:removeAll()
-	floor:remove()
-	if shadow then
-		shadow:removeAll()
-	end
-	map:removeAll()
+	Graphics.sprite.removeAll()
 end
 
 -- This runs once a transition to another scene completes.

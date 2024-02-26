@@ -27,13 +27,6 @@ function playerHud:init()
 	self:add()
 end
 
-function playerHud:removeAll()
-	self:remove()
-	batteryIndicator:removeAll()
-	sonarIndicator:remove()
-	sanityIndicator:remove()
-	keyIndicator:remove()
-end
 function playerHud:update()
 end
 

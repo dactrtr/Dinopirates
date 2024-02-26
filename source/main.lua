@@ -70,22 +70,22 @@ levels = {
 			debug = false,
 			shadow = false,
 			triggers = {
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 170,
-				-- 	y = 150,
-				-- 	width = 60,
-				-- 	height = 30,
-				-- 	script = 2
-				-- },
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 220,
-				-- 	y = 100,
-				-- 	width = 60,
-				-- 	height = 30,
-				-- 	script = 3
-				-- },
+				{
+					usedTrigger = false,
+					x = 170,
+					y = 150,
+					width = 60,
+					height = 30,
+					script = 2
+				},
+				{
+					usedTrigger = false,
+					x = 220,
+					y = 100,
+					width = 60,
+					height = 30,
+					script = 3
+				},
 				
 			},
 			enemies = {

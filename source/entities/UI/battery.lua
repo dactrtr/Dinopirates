@@ -23,9 +23,9 @@ function Battery:update()
     Graphics.popContext()
     self:setImage(batteryFill)
 end
-function Battery:removeAll()
-    batteryCanister:remove()
-    self:remove()
-end
+-- function Battery:removeAll()
+--     batteryCanister:remove()
+--     self:remove()
+-- end
 
 

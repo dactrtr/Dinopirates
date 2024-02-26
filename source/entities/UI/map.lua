@@ -71,9 +71,4 @@ function Map:init()
     self:add()
 end
 
-function Map:removeAll()
-    mapbg:remove()
-    self:remove()
-end
-
 

@@ -126,7 +126,3 @@ function FXshadow:refresh()
 		shadow:clear(Graphics.kColorClear)
 	end
 end
-function FXshadow:removeAll()
-	shadow:clear(Graphics.kColorClear)
-	self:remove()
-end
