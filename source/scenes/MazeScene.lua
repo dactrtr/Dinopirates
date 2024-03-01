@@ -130,7 +130,7 @@ function scene:enter()
 		local type = itemData.type
 		local x = itemData.x
 		local y = itemData.y
-		if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) then
+		if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) then
 			Items(x, y, type)
 		end
 	end
@@ -199,7 +199,7 @@ function scene:update()
 	cheat:update()
 	
 	-- Mark: Crank notification
-	if PlayerData.battery == 0  and playdate.isCrankDocked() then
+	if PlayerData.battery == 0  and playdate.isCrankDocked() and PlayerData.hasLamp == true then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 	
@@ -218,6 +218,12 @@ function scene:exit()
 	scene.super.exit(self)
 	debug = false
 	rooms[PlayerData.room].visited = false
+	uiScreen:removeAll()
+	floor:remove()
+	if shadow then
+		shadow:removeAll()
+	end
+	map:removeAll()
 	Graphics.sprite.removeAll()
 end
 

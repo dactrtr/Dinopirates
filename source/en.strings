@@ -19,32 +19,22 @@
 "door6" = "wait, they even pay me?"
 
 -- floor 1 mess
-"mess"="Ok, no more Trex-tilas, that welcome party was wild, and barely remember..."
+"mess"="Ok, no more *Trex-tilas*, that welcome party was wild, and barely remember..."
 
-"mess2"="*rick roll sounds has a ring tone*"
+"mess2"="where is everyone? why its such a big mess?"
 
-"mess3"="what is this? mm moshi moshi? who's there?"
-
-"mess4"="hello there *DR* here, *Dino Resources*, welcome to the crew of the..."
-
-"mess5"="... *S.S.S WaterQueen Super Space Ship Type 2*"
-
-"mess6"="were glad to *join us* in this endless journey, of... good... we are... pirates..."
-
-"mess7"="seems there's no good signal here, why the *chairs are stuck to the floor?*"
 
 -- floor 1 chair
 
-"chairs"="*rick roll sounds has a ring tone*"
+"chairs"="wait the chairs are *glued to the floor*?"
 
-"chairs1"="moshi moshi?"
+"chairs1"="what's that thing on the ground, it's like some kind of device"
 
-"chairs2"="so about the chairs, is *safety reasons* we cant allow drunk ppl to fall again..."
+-- floor 1 welcome
 
-"chairs3"="...*last night* one dinosaur fell..."
-
-"chairs4"="got got it, I understand a lot now..."
-
--- floor 1 tasks
+"welcome"="*cof cof cof cof*"
+"welcome1"="Welcome to the *SS Waterqueen Super Ship type 2*... This is ... ..., from *Dinosaur Resources*...."
+"welcome2"="signal... watch for the...liens... rescue... es... shi...ife "
+"welcome3"="hello? how does this thing work.. *hellooooo* seems there's no signal, call me... maybe?"
 
 

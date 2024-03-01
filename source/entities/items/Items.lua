@@ -11,6 +11,8 @@ function Items:init(x, y, type)
   self.animation.keycard.frameDuration = 8 
   self.animation:addState('lamp', 21, 25)
   self.animation.lamp.frameDuration = 8 
+  self.animation:addState('radio', 26, 29)
+  self.animation.radio.frameDuration = 8 
   self:setSize(48, 48)
   self:setCollideRect(8,8, 32,24)
   self:setZIndex(ZIndex.props)
@@ -24,6 +26,11 @@ end
 
 function Items:sonar(x,y)
  -- sonar:activate(self.x,self.y,'key')
+end
+
+function Items:removeAll()
+  sonar:disableFX()
+  self:remove()
 end
 
 function Items:update()

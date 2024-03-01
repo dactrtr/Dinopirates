@@ -103,6 +103,10 @@ function Player:collisionResponse(other)
     other:removeAll()
     self:grabLamp()
     return 'overlap'
+  elseif other:isa(Items) and other.type == 'radio' then
+    other:removeAll()
+    self:grabRadio()
+    return 'overlap'
   elseif other:isa(Door) then
     
     other:prevRoom(other.direction)
@@ -274,4 +278,8 @@ end
 
 function Player:grabLamp()
   PlayerData.hasLamp = true
+end
+
+function Player:grabRadio()
+  PlayerData.hasRadio = true
 end

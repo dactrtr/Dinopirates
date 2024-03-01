@@ -24,6 +24,7 @@ PlayerData = {
 	sanity = 100,
 	hasKey = false,
 	hasLamp = false,
+	hasRadio = false,
 	sonarActive = false,
 	isActive = false,
 	isTalking = false,
@@ -86,7 +87,14 @@ levels = {
 					height = 30,
 					script = 3
 				},
-				
+				{
+					usedTrigger = false,
+					x = 200,
+					y = 55,
+					width = 60,
+					height = 30,
+					script = 4
+				},
 			},
 			enemies = {
 				-- {
@@ -118,9 +126,9 @@ levels = {
 			},
 			items = {
 				{
-					type = 'lamp',
-					x = 50,
-					y = 100
+					type = 'radio',
+					x = 230,
+					y = 80
 				}
 			},
 			props = {
@@ -141,7 +149,7 @@ levels = {
 				},
 				{
 					type = 'chair',
-					x = 176,
+					x = 170,
 					y = 120
 				},
 				{
@@ -155,9 +163,29 @@ levels = {
 					y = 170
 				},
 				{
-					type = 'chair',
+					type = 'fellchair',
 					x = 280,
 					y = 124
+				},
+				{
+					type = 'chair',
+					x = 300,
+					y = 20
+				},
+				{
+					type = 'fellchair',
+					x = 60,
+					y = 35
+				},
+				{
+					type = 'chair',
+					x = 60,
+					y = 135
+				},
+				{
+					type = 'chair',
+					x = 90,
+					y = 210
 				},
 			}
 		}
@@ -170,22 +198,22 @@ levels = {
 			debug = false,
 			shadow = true,
 			triggers = {
-				{
-					usedTrigger = false,
-					x = 20,
-					y = 20,
-					width = 30,
-					height = 30,
-					script = 2
-				},
-				{
-					usedTrigger = false,
-					x = 120,
-					y = 120,
-					width = 30,
-					height = 30,
-					script = 3
-				},
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 20,
+				-- 	y = 20,
+				-- 	width = 30,
+				-- 	height = 30,
+				-- 	script = 2
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 120,
+				-- 	y = 120,
+				-- 	width = 30,
+				-- 	height = 30,
+				-- 	script = 3
+				-- },
 			},
 			enemies = {
 				-- {
@@ -269,60 +297,51 @@ script = {
 		}
 	},
 	{
-		-- triger mess
+		-- trigger mess
 		dialog = {
 			{
 				video = 'player',
 				text = Graphics.getLocalizedText("mess", "en")
 			},
 			{
-				video = 'radioring',
+				video = 'player',
 				text = Graphics.getLocalizedText("mess2", "en")
 			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("mess3", "en")
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("mess4", "en")
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("mess5", "en")
-			},
-			{
-				video = 'radio',
-				text = Graphics.getLocalizedText("mess6", "en")
-			},
-			{
-				video = 'player',
-				text = Graphics.getLocalizedText("mess7", "en")
-			},
+			
 		}
 	},
 	{
-		-- triger mess
+		-- trigger mess
 		dialog = {
 			{
-				video = 'radioring',
+				video = 'player',
 				text = Graphics.getLocalizedText("chairs", "en")
 			},
 			{
 				video = 'player',
 				text = Graphics.getLocalizedText("chairs1", "en")
 			},
+			
+		}
+	},
+	{
+		-- trigger mess
+		dialog = {
 			{
 				video = 'radio',
-				text = Graphics.getLocalizedText("chairs2", "en")
+				text = Graphics.getLocalizedText("welcome", "en")
 			},
 			{
 				video = 'radio',
-				text = Graphics.getLocalizedText("chairs3", "en")
+				text = Graphics.getLocalizedText("welcome1", "en")
+			},
+			{
+				video = 'radio',
+				text = Graphics.getLocalizedText("welcome2", "en")
 			},
 			{
 				video = 'player',
-				text = Graphics.getLocalizedText("chairs4", "en")
+				text = Graphics.getLocalizedText("welcome3", "en")
 			},
 		}
 	},
@@ -342,10 +361,10 @@ local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene)
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
-	if debug == false then
-		debug = true
+	if Noble.showFPS == false then
+		Noble.showFPS = true
 	else 
-		debug = false
+		Noble.showFPS = false
 	end
 end)
 -- Noble.showFPS = true
