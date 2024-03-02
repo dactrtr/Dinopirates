@@ -57,7 +57,7 @@ script = {
 		}
 	},
 	{
-		-- trigger mess
+		-- trigger pickup radio
 		dialog = {
 			{
 				video = 'radio',
@@ -75,6 +75,20 @@ script = {
 				video = 'player',
 				text = Graphics.getLocalizedText("welcome3", "en")
 			},
+			{
+				video = 'radio',
+				text = Graphics.getLocalizedText("welcome4", "en")
+			},
+		}
+	},
+	{
+		-- Kitchen
+		dialog = {
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("kitchen", "en")
+			},
+			
 		}
 	},
 	

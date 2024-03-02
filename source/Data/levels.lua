@@ -1,7 +1,7 @@
 levels = {
 	{
 		floor = {
-			tile = 2,
+			tile = 1,
 			floorNumber = 7,
 			light = 0.1,
 			shadow = false,
@@ -124,7 +124,7 @@ levels = {
 				},
 				{
 					type = 'table',
-					x = 290,
+					x = 360,
 					y = 210
 				},
 				{
@@ -142,27 +142,20 @@ levels = {
 	},
 	{
 		floor = {
-			tile = 1,
+			tile = 2,
 			floorNumber = 4,
-			light = 0.1,
-			shadow = false,
+			light = 0.4,
+			shadow = true,
 			triggers = {
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 20,
-				-- 	y = 20,
-				-- 	width = 30,
-				-- 	height = 30,
-				-- 	script = 2
-				-- },
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 120,
-				-- 	y = 120,
-				-- 	width = 30,
-				-- 	height = 30,
-				-- 	script = 3
-				-- },
+				{
+					usedTrigger = false,
+					x = 180,
+					y = 170,
+					width = 40,
+					height = 10,
+					script = 5
+				},
+				
 			},
 			enemies = {
 				-- {
@@ -210,6 +203,18 @@ levels = {
 					type = 'blood2',
 					x = 160,
 					y = 50,
+					nocollide = true
+				},
+				{
+					type = 'blood2',
+					x = 90,
+					y = 140,
+					nocollide = true
+				},
+				{
+					type = 'blood',
+					x = 140,
+					y = 40,
 					nocollide = true
 				}
 			}

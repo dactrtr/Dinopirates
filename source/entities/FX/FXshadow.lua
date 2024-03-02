@@ -49,7 +49,7 @@ function FXshadow:refresh()
 	local lightSourceSize = 35
 	local maskSize = self.lightSize
 	local decreaseSize = maskSize/10
-	local lightAmount = 0.1
+	local lightAmount = self.globalLightAmount
 	shadow:clear(Graphics.kColorClear)
 	
 	if PlayerData.hasLamp == true then
@@ -89,7 +89,6 @@ function FXshadow:refresh()
 		lightAmount = 1
 		lightSourceSize = 15
 		lightSourceAmount = 0.9
-		self.globalLightAmount = 0.01
 	end
 	-- Mark: fills the screen with a dither pattern
 	Graphics.pushContext(shadow)
