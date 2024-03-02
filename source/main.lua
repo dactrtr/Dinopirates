@@ -9,14 +9,15 @@ import 'scenes/TestScene'
 import 'scenes/TitleScene'
 
 Noble.Settings.setup({
-	Difficulty = "Medium"
+	Difficulty = "Medium",
+	debug = false
 })
-
-Noble.showFPS = true
+Noble.showFPS = false
 
 Noble.GameData.setup({
 	Score = 0,
 })
+
 -- Mark: This should be a separate file(JSON)
 
 PlayerData = {
@@ -68,7 +69,6 @@ levels = {
 			tile = 2,
 			floorNumber = 7,
 			light = 0.1,
-			debug = false,
 			shadow = false,
 			triggers = {
 				{
@@ -135,7 +135,7 @@ levels = {
 				{
 					type = 'chair',
 					x = 140,
-					y = 200
+					y = 200,
 				},
 				{
 					type = 'chair',
@@ -187,6 +187,21 @@ levels = {
 					x = 90,
 					y = 210
 				},
+				{
+					type = 'table',
+					x = 290,
+					y = 210
+				},
+				{
+					type = 'table',
+					x = 95,
+					y = 30
+				},
+				{
+					type = 'table',
+					x = 145,
+					y = 60
+				},
 			}
 		}
 	},
@@ -195,7 +210,6 @@ levels = {
 			tile = 2,
 			floorNumber = 4,
 			light = 0.1,
-			debug = false,
 			shadow = true,
 			triggers = {
 				-- {
@@ -355,7 +369,6 @@ function resetData()
 end
 
 local menu = playdate.getSystemMenu()
-debug = false
 local menuItem, error = menu:addMenuItem("Title", function()
 	resetData()
 	Noble.transition(TitleScene)

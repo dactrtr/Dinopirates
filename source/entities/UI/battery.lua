@@ -12,16 +12,20 @@ function Battery:init(x, y, player, Zindex)
 end
 
 function Battery:update()
-    self.battery = PlayerData.battery
-    local batteryPercent = (self.battery * (batteryCanister.width - 8)) / 100
-    
-    local batteryFill = Graphics.image.new(batteryCanister.width - 8, 6)
-    
-    Graphics.pushContext(batteryFill)
-        Graphics.setColor(Graphics.kColorBlack)
-        Graphics.fillRect(0, 0, batteryPercent,6)
-    Graphics.popContext()
-    self:setImage(batteryFill)
+    if PlayerData.hasLamp == true then
+        self.battery = PlayerData.battery
+        local batteryPercent = (self.battery * (batteryCanister.width - 8)) / 100
+        
+        local batteryFill = Graphics.image.new(batteryCanister.width - 8, 6)
+        
+        Graphics.pushContext(batteryFill)
+            Graphics.setColor(Graphics.kColorBlack)
+            Graphics.fillRect(0, 0, batteryPercent,6)
+        Graphics.popContext()
+        self:setImage(batteryFill)
+    else
+        batteryCanister:remove()
+    end
 end
 
 

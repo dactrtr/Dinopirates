@@ -120,9 +120,4 @@ function FXshadow:refresh()
 		
 	Graphics.popContext()
 	
-	
-	
-	if debug then
-		shadow:clear(Graphics.kColorClear)
-	end
 end

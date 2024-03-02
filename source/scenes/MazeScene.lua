@@ -72,7 +72,6 @@ function scene:enter()
 	
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
-	debug = levels[room].floor.debug
 	PlayerData.room = levels[room].floor.floorNumber
 	PlayerData.floor = room
 	rooms[PlayerData.room].visited = true
@@ -121,8 +120,8 @@ function scene:enter()
 		local type = propData.type
 		local x = propData.x
 		local y = propData.y
-		
-		PropItem(x, y, type, ZIndex.props)
+		local collide = propData.nocollide
+		PropItem(x, y, type, ZIndex.props, collide)
 	end
 	
 	arrayData = levels[room].floor.items
@@ -194,7 +193,6 @@ end
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
-	-- Mark: DEBUG
 	-- Mark: cheat code
 	cheat:update()
 	
@@ -216,7 +214,6 @@ end
 -- This runs as as soon as a transition to another scene begins.
 function scene:exit()
 	scene.super.exit(self)
-	debug = false
 	rooms[PlayerData.room].visited = false
 	uiScreen:removeAll()
 	floor:remove()
