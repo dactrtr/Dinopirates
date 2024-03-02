@@ -7,9 +7,9 @@ import 'scenes/Floors'
 --import 'scenes/StarScene'
 import 'scenes/TestScene'
 import 'scenes/TitleScene'
-import 'Data/PlayerData'
-import 'Data/levels'
-import 'Data/script'
+import 'data/PlayerData'
+import 'data/levels'
+import 'data/script'
 
 Noble.Settings.setup({
 	Difficulty = "Medium",

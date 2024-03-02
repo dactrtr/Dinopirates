@@ -3,5 +3,9 @@
     "identifier" : "com.panic.Playdate",
     "name" : "Playdate"
   },
-  "extensionTemplate" : "simulator"
+  "extensionTemplate" : "simulator",
+  "extensionValues" : {
+    "playdate.base-path" : ".",
+    "playdate.main-path" : "source"
+  }
 }
