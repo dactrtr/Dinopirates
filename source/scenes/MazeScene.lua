@@ -271,6 +271,8 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
+		
+	printTable(levels[1].floor.triggers)
 	end,
 	BButtonHeld = function()
 		
