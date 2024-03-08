@@ -113,7 +113,7 @@ function scene:enter()
 	end
 	
 	
-	-- Mark: Props & items
+	-- Mark: Props 
 	arrayData = levels[room].floor.props
 	
 	for _, propData in ipairs(arrayData) do
@@ -124,6 +124,7 @@ function scene:enter()
 		PropItem(x, y, type, ZIndex.props, collide)
 	end
 	
+	-- Mark: Items
 	arrayData = levels[room].floor.items
 	for _, itemData in ipairs(arrayData) do
 		local type = itemData.type
@@ -149,9 +150,7 @@ function scene:enter()
 	uiScreen = playerHud()
 	map = Map()
 	
-	-- dialogUI = dialogScreen()
-	
-	-- Mark: Enemies from table
+	-- Mark: Enemies 
 	arrayData = levels[room].floor.enemies
 	
 	for _, enemyData in ipairs(arrayData) do
@@ -170,16 +169,14 @@ function scene:enter()
 	-- Mark: dialog triggers
 	
 	arrayData = levels[room].floor.triggers
-	
-	for _, triggerData in ipairs(arrayData) do
+	for i, triggerData in ipairs(arrayData) do
 		if triggerData.usedTrigger == false then
 			local x = triggerData.x
 			local y = triggerData.y
 			local width = triggerData.width
 			local height = triggerData.height
 			local script = triggerData.script
-			triggerData.usedTrigger = true	
-			Trigger(x,y,width,height,script)
+			Trigger(x,y,width,height,script, i, room)
 		end
 	end
 end

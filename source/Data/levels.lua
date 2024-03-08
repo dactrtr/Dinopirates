@@ -150,7 +150,7 @@ levels = {
 				{
 					usedTrigger = false,
 					x = 180,
-					y = 170,
+					y = 165,
 					width = 40,
 					height = 10,
 					script = 5
