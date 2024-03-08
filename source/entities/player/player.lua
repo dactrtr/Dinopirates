@@ -239,7 +239,7 @@ function Player:sonar()
 end
 
 function Player:drainBattery(amount)
-  if levels[PlayerData.floor].floor.shadow then
+  if levels[PlayerData.floor].floor.shadow == true then
     PlayerData.battery -= amount
   end
 end
@@ -264,10 +264,15 @@ function Player:update()
   elseif PlayerData.battery >= 100 then
     PlayerData.battery = 100
   end
-  if PlayerData.battery < 20 then 
+  if PlayerData.hasLamp == true then
+    if PlayerData.battery < 20 then 
+      self.speed = 0.5 * self.initialSpeed
+    elseif PlayerData.battery > 20 then
+      self.speed = self.initialSpeed
+    end
+  end
+  if levels[PlayerData.floor].floor.shadow == true and PlayerData.hasLamp == false then
     self.speed = 0.5 * self.initialSpeed
-  elseif PlayerData.battery > 20 then
-    self.speed = self.initialSpeed
   end
   self.isActive = false
 end
