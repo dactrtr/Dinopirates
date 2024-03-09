@@ -6,8 +6,9 @@ import "entities/UI/dialog/videoFeed"
 local dialogbox <const> = Graphics.image.new('assets/images/ui/dialog/dialogbox.png')
 
 local dialogtext <const> = Graphics.image.new(260,80)
-
+local screen <const> = Graphics.image.new(277,146)
 local video = nil
+local screenImg = nil
 local videoActive = false
 local dialogcounter = 1
 local dialogPosition = nil
@@ -20,7 +21,19 @@ function dialogBG:init()
 	self:setZIndex(ZIndex.alert)
 	self:setCenter(0,0)
 	self:moveTo(0,138)
-	
+end
+
+imageScreen = {}
+class("imageScreen").extends(Graphics.sprite)
+
+function imageScreen:init()
+	self:setZIndex(ZIndex.alert+1)
+	self:moveTo( 50, 4)
+	self:setCenter(0,0)
+end
+function imageScreen:addScreenfeed(screen)
+	self:setImage(screen)
+	self:add()
 end
 
 dialogScreen = {}
@@ -31,7 +44,10 @@ function dialogScreen:init(position)
 	self:moveTo( 20, 170)
 	self:setCenter(0,0)
 	dialogbg = dialogBG()
+	screenimg = imageScreen()
 end
+
+
 
 function dialogScreen:addScreen(scriptPosition)
 	dialogPosition = scriptPosition
@@ -39,15 +55,23 @@ function dialogScreen:addScreen(scriptPosition)
 end
 function dialogScreen:nextDialog()
 	dialogbg:add()
+	local dialogArray = script[dialogPosition].dialog
 	if video ~= nil then
 		video:remove()
 	end
 	self:setImage(dialogtext)
-	if dialogcounter <= table.getSize(script[dialogPosition].dialog)then
+	if dialogcounter <= table.getSize(dialogArray)then
 		if videoActive == false then
-			video = videoFeed(400,240,script[dialogPosition].dialog[dialogcounter].video, ZIndex.alert)
+			video = videoFeed(400,240,dialogArray[dialogcounter].video, ZIndex.alert)
 			videoActive = true
 		end
+		
+		if dialogArray[dialogcounter].screen  then
+			screenimg:addScreenfeed(dialogArray[dialogcounter].screen)
+		else
+			screenimg:remove()
+		end
+		
 		dialogtext:clear(Graphics.kColorClear)
 		Graphics.pushContext(dialogtext)
 			Graphics.drawTextInRect(script[dialogPosition].dialog[dialogcounter].text, 0, 0, 255, 78)
@@ -61,10 +85,12 @@ function dialogScreen:nextDialog()
 		self:removeAll()
 	end
 end
+
 function dialogScreen:removeAll()
 	PlayerData.isTalking = false
 	videoActive = false
 	dialogbg:remove()
 	video:remove()
+	screenimg:remove()
 	self:remove()
 end

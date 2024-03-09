@@ -33,11 +33,11 @@ script = {
 		dialog = {
 			{
 				video = 'player',
-				text = Graphics.getLocalizedText("mess", "en")
+				text = Graphics.getLocalizedText("mess", "en"),
 			},
 			{
 				video = 'player',
-				text = Graphics.getLocalizedText("mess2", "en")
+				text = Graphics.getLocalizedText("mess2", "en"),
 			},
 			
 		}
@@ -65,11 +65,13 @@ script = {
 			},
 			{
 				video = 'radio',
-				text = Graphics.getLocalizedText("welcome1", "en")
+				text = Graphics.getLocalizedText("welcome1", "en"),
+				screen = Graphics.image.new('assets/images/ui/dialog/img/spaceship.png'),
 			},
 			{
 				video = 'radio',
-				text = Graphics.getLocalizedText("welcome2", "en")
+				text = Graphics.getLocalizedText("welcome2", "en"),
+				screen = Graphics.image.new('assets/images/ui/dialog/img/spaceship.png'),
 			},
 			{
 				video = 'player',
