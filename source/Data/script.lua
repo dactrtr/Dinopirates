@@ -90,6 +90,16 @@ script = {
 				video = 'player',
 				text = Graphics.getLocalizedText("kitchen", "en")
 			},
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("kitchen2", "en"),
+				screen = Graphics.image.new('assets/images/ui/dialog/img/cristal.png'),
+			},
+			{
+				video = 'player',
+				text = Graphics.getLocalizedText("kitchen3", "en"),
+				screen = Graphics.image.new('assets/images/ui/dialog/img/cristal.png'),
+			},
 			
 		}
 	},
