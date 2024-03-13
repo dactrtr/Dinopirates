@@ -1,15 +1,16 @@
 import 'libraries/noble/Noble'
 
 import 'utilities/Utilities'
+import 'utilities/PauseMenu'
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/Floors'
 --import 'scenes/StarScene'
 import 'scenes/TestScene'
 import 'scenes/TitleScene'
-import 'data/PlayerData'
-import 'data/levels'
-import 'data/script'
+import 'assets/data/PlayerData'
+import 'assets/data/levels'
+import 'assets/data/script'
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
@@ -30,8 +31,15 @@ rooms = {
 	{ visited = false },
 	{ visited = false },
 	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
+	{ visited = false },
 	{ visited = false }
 }
+
 ZIndex = {
 	player = 4,
 	enemy = 3,

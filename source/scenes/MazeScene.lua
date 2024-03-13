@@ -24,7 +24,6 @@ import 'entities/items/Items'
 import 'entities/props/trigger'
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
-import "entities/UI/map"
 
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific variables and methods here. Use "local" where possible.
@@ -35,13 +34,14 @@ import "entities/UI/map"
 -- ...
 --
 
+
+
 -- Mark: player related
 local player = nil
 local shadow = nil
 
 -- Mark: UI
 local uiScreen = nil
-local map = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 
@@ -54,8 +54,9 @@ function scene:init()
 	scene.super.init(self)
 	
 	cheat.onComplete = function()
-		PlayerData.battery = 100
+		--PlayerData.battery = 100
 	end
+	PlayerData.isGaming = true
 	-- Your code here
 	
 end
@@ -74,7 +75,7 @@ function scene:enter()
 	sequence:start()
 	PlayerData.room = levels[room].floor.floorNumber
 	PlayerData.floor = room
-	rooms[PlayerData.room].visited = true
+	levels[room].floor.visited = true
 	
 	-- Mark: floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
@@ -148,7 +149,6 @@ function scene:enter()
 	
 	-- Mark: UI
 	uiScreen = playerHud()
-	map = Map()
 	
 	-- Mark: Enemies 
 	arrayData = levels[room].floor.enemies
@@ -217,7 +217,6 @@ function scene:exit()
 	if shadow then
 		shadow:removeAll()
 	end
-	map:removeAll()
 	Graphics.sprite.removeAll()
 end
 
