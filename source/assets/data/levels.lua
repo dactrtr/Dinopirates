@@ -3,7 +3,7 @@ levels = {
 		floor = {
 			level = 1,
 			visited = false,
-			floorNumber = 7,
+			floorNumber = 1,
 			tile = 1,
 			light = 0.1,
 			shadow = false,
@@ -56,9 +56,9 @@ levels = {
 			},
 			doors = {
 				{
-					direction = 'top',
+					direction = 'down',
 					open = 'open',
-					leadsTo = Floor02,
+					leadsTo = Floor06,
 				}
 			},
 			items = {
@@ -186,7 +186,7 @@ levels = {
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor01,
+					leadsTo = Floor07,
 				},
 				{
 					direction = 'right',
@@ -247,9 +247,9 @@ levels = {
 					leadsTo = Floor02,
 				},
 				{
-					direction = 'right',
+					direction = 'down',
 					open = 'open',
-					leadsTo = Floor04,
+					leadsTo = Floor08,
 				},
 			},
 			items = {},
@@ -266,7 +266,18 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = Floor05,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = Floor09,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -281,7 +292,16 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {{
+					direction = 'left',
+					open = 'open',
+					leadsTo = Floor04,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = Floor10,
+				},},
 			items = {},
 			props = {}
 		}
@@ -289,14 +309,25 @@ levels = {
 	{
 		floor = {
 			level = 1,
-			visited = true,
+			visited = false,
 			tile = 2,
 			floorNumber = 6,
 			light = 0.4,
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor01,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = Floor11,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -311,7 +342,13 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor02,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -326,7 +363,18 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor03,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = Floor13,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -341,7 +389,18 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor04,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = Floor14,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -356,7 +415,18 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor05,
+				},
+				{
+					direction = 'down',
+					open = 'open',
+					leadsTo = Floor15,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -371,7 +441,18 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = Floor12,
+				},
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor06,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -379,14 +460,25 @@ levels = {
 	{
 		floor = {
 			level = 1,
-			visited = true,
+			visited = false,
 			tile = 2,
 			floorNumber = 12,
 			light = 0.4,
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'left',
+					open = 'open',
+					leadsTo = Floor11,
+				},
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = Floor13,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -401,7 +493,23 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor08,
+				},
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = Floor14,
+				},
+				{
+					direction = 'left',
+					open = 'open',
+					leadsTo = Floor12,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -409,14 +517,25 @@ levels = {
 	{
 		floor = {
 			level = 1,
-			visited = true,
+			visited = false,
 			tile = 2,
 			floorNumber = 14,
 			light = 0.4,
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'left',
+					open = 'open',
+					leadsTo = Floor13,
+				},
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor09,
+				},
+			},
 			items = {},
 			props = {}
 		}
@@ -431,7 +550,13 @@ levels = {
 			shadow = false,
 			enemies = {},
 			triggers = {},
-			doors = {},
+			doors = {
+				{
+					direction = 'top',
+					open = 'open',
+					leadsTo = Floor10,
+				},
+			},
 			items = {},
 			props = {}
 		}
