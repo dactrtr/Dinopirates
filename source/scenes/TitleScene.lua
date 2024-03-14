@@ -49,7 +49,7 @@ function scene:init()
 		)
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-		menu:addItem("New Run", function() Noble.transition(Floor01) end)
+		menu:addItem("New Run", function() Noble.transition(Floor07) end)
 		menu:addItem("Comic", function() Noble.transition(DeadScene) end)
 		menu:addItem("Test", function() Noble.transition(TestScene) end)
 		menu:select("New Run")

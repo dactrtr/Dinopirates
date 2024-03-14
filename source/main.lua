@@ -22,23 +22,7 @@ Noble.GameData.setup({
 	Score = 0,
 })
 
-rooms = {
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false }
-}
+
 
 ZIndex = {
 	player = 4,

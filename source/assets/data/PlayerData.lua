@@ -11,6 +11,7 @@ PlayerData = {
 	room = 1,
 	isGaming = false,
 	lastRoom = nil,
+	actualLevel = nil,
 	actualRoom = nil,
 	playerSpawn ={
 		x = 200,

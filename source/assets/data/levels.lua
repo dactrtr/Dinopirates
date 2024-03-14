@@ -3,35 +3,35 @@ levels = {
 		floor = {
 			level = 1,
 			visited = false,
-			floorNumber = 1,
+			floorNumber = 7,
 			tile = 1,
 			light = 0.1,
 			shadow = false,
 			triggers = {
-				{
-					usedTrigger = false,
-					x = 170,
-					y = 150,
-					width = 60,
-					height = 30,
-					script = 2
-				},
-				{
-					usedTrigger = false,
-					x = 220,
-					y = 100,
-					width = 60,
-					height = 30,
-					script = 3
-				},
-				{
-					usedTrigger = false,
-					x = 200,
-					y = 55,
-					width = 60,
-					height = 30,
-					script = 4
-				},
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 170,
+				-- 	y = 150,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 2
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 220,
+				-- 	y = 100,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 3
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 200,
+				-- 	y = 55,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 4
+				-- },
 			},
 			enemies = {
 				-- {
@@ -147,9 +147,9 @@ levels = {
 			level = 1,
 			visited = false,
 			tile = 2,
-			floorNumber = 4,
+			floorNumber = 2,
 			light = 0.4,
-			shadow = true,
+			shadow = false,
 			triggers = {
 				{
 					usedTrigger = false,
@@ -187,7 +187,12 @@ levels = {
 					direction = 'down',
 					open = 'open',
 					leadsTo = Floor01,
-				}
+				},
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = Floor03,
+				},
 			},
 			items = {
 				-- {
@@ -225,4 +230,210 @@ levels = {
 		}
 	},
 	-- repeat
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 3,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {
+				{
+					direction = 'left',
+					open = 'open',
+					leadsTo = Floor02,
+				},
+				{
+					direction = 'right',
+					open = 'open',
+					leadsTo = Floor04,
+				},
+			},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 4,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 5,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = true,
+			tile = 2,
+			floorNumber = 6,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 7,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 8,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 9,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 10,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 11,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = true,
+			tile = 2,
+			floorNumber = 12,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 13,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = true,
+			tile = 2,
+			floorNumber = 14,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
+	{
+		floor = {
+			level = 1,
+			visited = false,
+			tile = 2,
+			floorNumber = 15,
+			light = 0.4,
+			shadow = false,
+			enemies = {},
+			triggers = {},
+			doors = {},
+			items = {},
+			props = {}
+		}
+	},
 }

@@ -73,8 +73,12 @@ function scene:enter()
 	
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
+	
 	PlayerData.room = levels[room].floor.floorNumber
 	PlayerData.floor = room
+	
+	PlayerData.actualLevel = levels[room].floor.level
+	PlayerData.actualRoom = levels[room].floor.floorNumber
 	levels[room].floor.visited = true
 	
 	-- Mark: floor
@@ -211,7 +215,7 @@ end
 -- This runs as as soon as a transition to another scene begins.
 function scene:exit()
 	scene.super.exit(self)
-	rooms[PlayerData.room].visited = false
+	--rooms[PlayerData.room].visited = false
 	uiScreen:removeAll()
 	floor:remove()
 	if shadow then
