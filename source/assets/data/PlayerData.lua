@@ -1,6 +1,8 @@
 PlayerData = {
+	speed = 1.5,
 	battery = 100, 
 	sanity = 100,
+	sanityCounter = 0,
 	hasKey = false,
 	hasLamp = false,
 	hasRadio = false,

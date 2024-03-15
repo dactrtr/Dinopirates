@@ -4,7 +4,7 @@ levels = {
 			level = 1,
 			visited = false,
 			floorNumber = 1,
-			tile = 1,
+			tile = 2,
 			light = 0.1,
 			shadow = false,
 			triggers = {
@@ -34,24 +34,24 @@ levels = {
 				-- },
 			},
 			enemies = {
-				-- {
-				-- 	name = "brocorat",
-				-- 	x = 280,
-				-- 	y = 160,
-				-- 	speed = 0.7
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 120,
-				-- 	speed = 3
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 40,
-				-- 	speed = 3
-				-- }
+				{
+					name = "brocorat",
+					x = 280,
+					y = 160,
+					speed = 0.7
+				},
+				{
+					name = "frogcolli",
+					x = 200,
+					y = 120,
+					speed = 3
+				},
+				{
+					name = "frogcolli",
+					x = 200,
+					y = 40,
+					speed = 3
+				}
 			
 			},
 			doors = {

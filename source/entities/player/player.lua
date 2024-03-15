@@ -9,7 +9,7 @@ function Player:init(x, y, speed, Zindex)
   
   -- Mark: animation states
   self.animation:addState('idle', 1, 4)
-  self.animation.idle.frameDuration = 12
+  self.animation.idle.frameDuration = 24
   
   self.animation:addState('right', 5, 7)
   self.animation.right.frameDuration = 12

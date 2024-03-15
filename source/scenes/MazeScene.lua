@@ -142,7 +142,7 @@ function scene:enter()
 	
 	-- Mark: Player
 	local spawnPoint = PlayerData.playerSpawn
-	player = Player(spawnPoint.x, spawnPoint.y, 1, ZIndex.player)
+	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
 	
 	-- Mark: FX
 	if levels[room].floor.shadow then
