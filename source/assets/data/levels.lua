@@ -8,30 +8,30 @@ levels = {
 			light = 0.1,
 			shadow = false,
 			triggers = {
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 170,
-				-- 	y = 150,
-				-- 	width = 60,
-				-- 	height = 30,
-				-- 	script = 2
-				-- },
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 220,
-				-- 	y = 100,
-				-- 	width = 60,
-				-- 	height = 30,
-				-- 	script = 3
-				-- },
-				-- {
-				-- 	usedTrigger = false,
-				-- 	x = 200,
-				-- 	y = 55,
-				-- 	width = 60,
-				-- 	height = 30,
-				-- 	script = 4
-				-- },
+				{
+					usedTrigger = false,
+					x = 170,
+					y = 150,
+					width = 60,
+					height = 30,
+					script = 2
+				},
+				{
+					usedTrigger = false,
+					x = 220,
+					y = 100,
+					width = 60,
+					height = 30,
+					script = 3
+				},
+				{
+					usedTrigger = false,
+					x = 200,
+					y = 55,
+					width = 60,
+					height = 30,
+					script = 4
+				},
 			},
 			enemies = {
 				{
@@ -58,7 +58,7 @@ levels = {
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor06,
+					leadsTo = Floor106,
 				}
 			},
 			items = {
@@ -186,12 +186,12 @@ levels = {
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor07,
+					leadsTo = Floor107,
 				},
 				{
 					direction = 'right',
 					open = 'open',
-					leadsTo = Floor03,
+					leadsTo = Floor103,
 				},
 			},
 			items = {
@@ -244,12 +244,12 @@ levels = {
 				{
 					direction = 'left',
 					open = 'open',
-					leadsTo = Floor02,
+					leadsTo = Floor102,
 				},
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor08,
+					leadsTo = Floor108,
 				},
 			},
 			items = {},
@@ -270,12 +270,12 @@ levels = {
 				{
 					direction = 'right',
 					open = 'open',
-					leadsTo = Floor05,
+					leadsTo = Floor105,
 				},
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor09,
+					leadsTo = Floor109,
 				},
 			},
 			items = {},
@@ -295,12 +295,12 @@ levels = {
 			doors = {{
 					direction = 'left',
 					open = 'open',
-					leadsTo = Floor04,
+					leadsTo = Floor104,
 				},
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor10,
+					leadsTo = Floor110,
 				},},
 			items = {},
 			props = {}
@@ -320,12 +320,12 @@ levels = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor01,
+					leadsTo = Floor101,
 				},
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor11,
+					leadsTo = Floor111,
 				},
 			},
 			items = {},
@@ -346,7 +346,7 @@ levels = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor02,
+					leadsTo = Floor102,
 				},
 			},
 			items = {},
@@ -367,12 +367,12 @@ levels = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor03,
+					leadsTo = Floor103,
 				},
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor13,
+					leadsTo = Floor113,
 				},
 			},
 			items = {},
@@ -393,12 +393,12 @@ levels = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor04,
+					leadsTo = Floor104,
 				},
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor14,
+					leadsTo = Floor114,
 				},
 			},
 			items = {},
@@ -419,12 +419,12 @@ levels = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor05,
+					leadsTo = Floor105,
 				},
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor15,
+					leadsTo = Floor115,
 				},
 			},
 			items = {},
@@ -445,12 +445,12 @@ levels = {
 				{
 					direction = 'right',
 					open = 'open',
-					leadsTo = Floor12,
+					leadsTo = Floor112,
 				},
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor06,
+					leadsTo = Floor106,
 				},
 			},
 			items = {},
@@ -471,12 +471,12 @@ levels = {
 				{
 					direction = 'left',
 					open = 'open',
-					leadsTo = Floor11,
+					leadsTo = Floor111,
 				},
 				{
 					direction = 'right',
 					open = 'open',
-					leadsTo = Floor13,
+					leadsTo = Floor113,
 				},
 			},
 			items = {},
@@ -497,17 +497,17 @@ levels = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor08,
+					leadsTo = Floor108,
 				},
 				{
 					direction = 'right',
 					open = 'open',
-					leadsTo = Floor14,
+					leadsTo = Floor114,
 				},
 				{
 					direction = 'left',
 					open = 'open',
-					leadsTo = Floor12,
+					leadsTo = Floor112,
 				},
 			},
 			items = {},
@@ -528,12 +528,12 @@ levels = {
 				{
 					direction = 'left',
 					open = 'open',
-					leadsTo = Floor13,
+					leadsTo = Floor113,
 				},
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor09,
+					leadsTo = Floor109,
 				},
 			},
 			items = {},
@@ -554,7 +554,7 @@ levels = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor10,
+					leadsTo = Floor110,
 				},
 			},
 			items = {},

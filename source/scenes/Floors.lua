@@ -1,119 +1,194 @@
-Floor01 = {}
-class("Floor01").extends(MazeScene)
+Floor101 = {}
+class("Floor101").extends(MazeScene)
 
-function Floor01:init()
+function Floor101:init()
 	self:setFloor(1)
-	Floor01.super.init(self)
+	Floor101.super.init(self)
 end
 
-Floor02 = {}
-class("Floor02").extends(MazeScene)
+function Floor101:exit()
+	Floor101.super.exit(self)
+	PlayerData.saveLevel = Floor101
+end
 
-function Floor02:init()
+Floor102 = {}
+class("Floor102").extends(MazeScene)
+
+function Floor102:init()
 	self:setFloor(2)
-	Floor02.super.init(self)
+	Floor102.super.init(self)
 end
 
-Floor03 = {}
-class("Floor03").extends(MazeScene)
+function Floor102:exit()
+	Floor102.super.exit(self)
+	PlayerData.saveLevel = Floor102
+end
 
-function Floor03:init()
+Floor103 = {}
+class("Floor103").extends(MazeScene)
+
+function Floor103:init()
 	self:setFloor(3)
-	Floor03.super.init(self)
+	Floor103.super.init(self)
 end
 
-Floor04 = {}
-class("Floor04").extends(MazeScene)
+function Floor103:exit()
+	Floor103.super.exit(self)
+	PlayerData.saveLevel = Floor103
+end
 
-function Floor04:init()
+Floor104 = {}
+class("Floor104").extends(MazeScene)
+
+function Floor104:init()
 	self:setFloor(4)
-	Floor04.super.init(self)
+	Floor104.super.init(self)
 end
 
-Floor05 = {}
-class("Floor05").extends(MazeScene)
+function Floor104:exit()
+	Floor104.super.exit(self)
+	PlayerData.saveLevel = Floor104
+end
 
-function Floor05:init()
+Floor105 = {}
+class("Floor105").extends(MazeScene)
+
+function Floor105:init()
 	self:setFloor(5)
-	Floor05.super.init(self)
+	Floor105.super.init(self)
 end
 
-Floor06 = {}
-class("Floor06").extends(MazeScene)
+function Floor105:exit()
+	Floor105.super.exit(self)
+	PlayerData.saveLevel = Floor105
+end
 
-function Floor06:init()
+Floor106 = {}
+class("Floor106").extends(MazeScene)
+
+function Floor106:init()
 	self:setFloor(6)
-	Floor06.super.init(self)
+	Floor106.super.init(self)
 end
 
-Floor07 = {}
-class("Floor07").extends(MazeScene)
+function Floor106:exit()
+	Floor106.super.exit(self)
+	PlayerData.saveLevel = Floor106
+end
 
-function Floor07:init()
+Floor107 = {}
+class("Floor107").extends(MazeScene)
+
+function Floor107:init()
 	self:setFloor(7)
-	Floor07.super.init(self)
+	Floor107.super.init(self)
 end
 
-Floor08 = {}
-class("Floor08").extends(MazeScene)
+function Floor107:exit()
+	Floor107.super.exit(self)
+	PlayerData.saveLevel = Floor107
+end
 
-function Floor08:init()
+Floor108 = {}
+class("Floor108").extends(MazeScene)
+
+function Floor108:init()
 	self:setFloor(8)
-	Floor08.super.init(self)
+	Floor108.super.init(self)
 end
 
-Floor09 = {}
-class("Floor09").extends(MazeScene)
+function Floor108:exit()
+	Floor108.super.exit(self)
+	PlayerData.saveLevel = Floor108
+end
 
-function Floor09:init()
+Floor109 = {}
+class("Floor109").extends(MazeScene)
+
+function Floor109:init()
 	self:setFloor(9)
-	Floor09.super.init(self)
+	Floor109.super.init(self)
 end
 
-Floor10 = {}
-class("Floor10").extends(MazeScene)
+function Floor109:exit()
+	Floor109.super.exit(self)
+	PlayerData.saveLevel = Floor109
+end
 
-function Floor10:init()
+Floor110 = {}
+class("Floor110").extends(MazeScene)
+
+function Floor110:init()
 	self:setFloor(10)
-	Floor10.super.init(self)
+	Floor110.super.init(self)
 end
 
-Floor11 = {}
-class("Floor11").extends(MazeScene)
+function Floor110:exit()
+	Floor110.super.exit(self)
+	PlayerData.saveLevel = Floor110
+end
 
-function Floor11:init()
+Floor111 = {}
+class("Floor111").extends(MazeScene)
+
+function Floor111:init()
 	self:setFloor(11)
-	Floor11.super.init(self)
+	Floor111.super.init(self)
 end
 
-Floor12 = {}
-class("Floor12").extends(MazeScene)
+function Floor111:exit()
+	Floor111.super.exit(self)
+	PlayerData.saveLevel = Floor111
+end
 
-function Floor12:init()
+Floor112 = {}
+class("Floor112").extends(MazeScene)
+
+function Floor112:init()
 	self:setFloor(12)
-	Floor12.super.init(self)
+	Floor112.super.init(self)
 end
 
-Floor13 = {}
-class("Floor13").extends(MazeScene)
+function Floor112:exit()
+	Floor112.super.exit(self)
+	PlayerData.saveLevel = Floor112
+end
 
-function Floor13:init()
+Floor113 = {}
+class("Floor113").extends(MazeScene)
+
+function Floor113:init()
 	self:setFloor(13)
-	Floor13.super.init(self)
+	Floor113.super.init(self)
 end
 
-Floor14 = {}
-class("Floor14").extends(MazeScene)
+function Floor113:exit()
+	Floor113.super.exit(self)
+	PlayerData.saveLevel = Floor113
+end
 
-function Floor14:init()
+Floor114 = {}
+class("Floor114").extends(MazeScene)
+
+function Floor114:init()
 	self:setFloor(14)
-	Floor14.super.init(self)
+	Floor114.super.init(self)
 end
 
-Floor15 = {}
-class("Floor15").extends(MazeScene)
+function Floor114:exit()
+	Floor114.super.exit(self)
+	PlayerData.saveLevel = Floor114
+end
 
-function Floor15:init()
+Floor115 = {}
+class("Floor115").extends(MazeScene)
+
+function Floor115:init()
 	self:setFloor(15)
-	Floor15.super.init(self)
+	Floor115.super.init(self)
+end
+
+function Floor115:exit()
+	Floor115.super.exit(self)
+	PlayerData.saveLevel = Floor115
 end

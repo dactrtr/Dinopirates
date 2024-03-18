@@ -72,11 +72,11 @@ function scene:init()
 		Noble.transition(TitleScene) 
 	end)
 	menu:addItem("Retry from last room", function()
-		-- Mark: TODO, retry isnt from the last floor, it's actually just from the first floor and keeps everything
-		Noble.transition(Floor01)
-		resetData()
+		-- Mark: TODO, retry isn't from the last floor, it's actually just from the first floor and keeps everything
+		Noble.transition(PlayerData.saveLevel)
+		--resetData()
 	 end)
-	menu:select("Retry")
+	menu:select("Exit")
 	
 end
 

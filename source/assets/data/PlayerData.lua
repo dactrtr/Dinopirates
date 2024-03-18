@@ -15,6 +15,7 @@ PlayerData = {
 	lastRoom = nil,
 	actualLevel = nil,
 	actualRoom = nil,
+	saveLevel= nil,
 	playerSpawn ={
 		x = 200,
 		y = 200,

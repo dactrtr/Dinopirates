@@ -54,9 +54,8 @@ function scene:init()
 	scene.super.init(self)
 	
 	cheat.onComplete = function()
-		--PlayerData.battery = 100
 	end
-	PlayerData.isGaming = true
+	
 	-- Your code here
 	
 end
@@ -71,6 +70,7 @@ function scene:enter()
 	-- Your code here
 	
 	
+	PlayerData.isGaming = true
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
 	
@@ -188,7 +188,10 @@ end
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
-	
+	if playdate.file.exists('playerSave') then
+		print('savedgame')
+		--playerData
+	end
 end
 
 -- This runs once per frame.
@@ -215,7 +218,10 @@ end
 -- This runs as as soon as a transition to another scene begins.
 function scene:exit()
 	scene.super.exit(self)
-	--rooms[PlayerData.room].visited = false
+	
+	playdate.datastore.write(levels, 'levelSave', true)
+	playdate.datastore.write(PlayerData, 'playerSave', true)
+	
 	uiScreen:removeAll()
 	floor:remove()
 	if shadow then
@@ -233,6 +239,8 @@ end
 function scene:pause()
 	scene.super.pause(self)
 	-- Your code here
+	playdate.datastore.write(levels, 'levelSave', true)
+	playdate.datastore.write(PlayerData, 'playerSave', true)
 end
 function scene:movePlayer(direction)
 	if PlayerData.isTalking == false then
@@ -257,6 +265,7 @@ scene.inputHandler = {
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		end
+		
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
@@ -271,8 +280,13 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
+		if playdate.file.exists("saveLevels.json") then
+			   --levels = playdate.datastore.read("save")
+			   --printTable(savelevels[1].floor.triggers)
+			   -- levelsTest = json.decodeFile('saveLevels.json')
+			   -- printTable(levels[1].floor.enemies)
+		end
 		
-	printTable(levels[1].floor.triggers)
 	end,
 	BButtonHeld = function()
 		

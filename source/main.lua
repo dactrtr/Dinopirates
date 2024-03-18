@@ -14,7 +14,6 @@ import 'assets/data/script'
 
 Noble.Settings.setup({
 	Difficulty = "Medium",
-	debug = false
 })
 Noble.showFPS = false
 
@@ -22,7 +21,7 @@ Noble.GameData.setup({
 	Score = 0,
 })
 
-
+debug = false
 
 ZIndex = {
 	player = 4,
@@ -47,6 +46,10 @@ function resetData()
 	PlayerData.hasKey = false
 end
 
+if playdate.file.exists('playerSave') ~= true then
+	--print('savedgame')
+	--playerData
+end
 
 local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
@@ -54,6 +57,9 @@ local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene)
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
+	if debug == false then
+		debug = true
+	end
 	if Noble.showFPS == false then
 		Noble.showFPS = true
 	else 

@@ -40,6 +40,8 @@ TitleScene.inputHandler = {
 function scene:init()
 	scene.super.init(self)
 	-- Your code here
+	-- Check save game
+	
 	menu = Noble.Menu.new(
 			true,
 			Noble.Text.ALIGN_LEFT,
@@ -49,8 +51,10 @@ function scene:init()
 		)
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-		menu:addItem("New Run", function() Noble.transition(Floor07) end)
-		menu:addItem("Comic", function() Noble.transition(DeadScene) end)
+		menu:addItem("New Run", function() Noble.transition(Floor106) end)
+		if playdate.file.exists('PlayerSave.json') then
+			menu:addItem("Continue", function() Noble.transition(PlayerData.saveLevel) end)
+		end
 		menu:addItem("Test", function() Noble.transition(TestScene) end)
 		menu:select("New Run")
 end
