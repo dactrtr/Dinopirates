@@ -280,15 +280,13 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-		if playdate.file.exists("levelSave.json") then
-			   --levels = playdate.datastore.read("save")
-			   --printTable(levels[1])
-			   local tablelevel = json.decodeFile('levelSave.json')
-			   printTable(tablelevel[1])
-			   -- levelsTest = json.decodeFile('saveLevels.json')
-			   -- printTable(levels[1].floor.enemies)
-		end
-		
+	print(PlayerData.saveLevel)
+		local lastLevel = RoomTranslate(PlayerData.saveLevel)
+		print(PlayerData.saveLevel)
+		print('-t-')
+		print(RoomTranslate(PlayerData.saveLevel))
+		print('-s-')
+		print(lastLevel)
 	end,
 	BButtonHeld = function()
 		

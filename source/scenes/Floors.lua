@@ -8,7 +8,7 @@ end
 
 function Floor101:exit()
 	Floor101.super.exit(self)
-	PlayerData.saveLevel = Floor101
+	PlayerData.saveLevel = 101
 end
 
 Floor102 = {}
@@ -21,7 +21,7 @@ end
 
 function Floor102:exit()
 	Floor102.super.exit(self)
-	PlayerData.saveLevel = Floor102
+	PlayerData.saveLevel = 102
 end
 
 Floor103 = {}
@@ -34,7 +34,7 @@ end
 
 function Floor103:exit()
 	Floor103.super.exit(self)
-	PlayerData.saveLevel = Floor103
+	PlayerData.saveLevel = 103
 end
 
 Floor104 = {}
@@ -47,7 +47,7 @@ end
 
 function Floor104:exit()
 	Floor104.super.exit(self)
-	PlayerData.saveLevel = Floor104
+	PlayerData.saveLevel = 104
 end
 
 Floor105 = {}
@@ -60,7 +60,7 @@ end
 
 function Floor105:exit()
 	Floor105.super.exit(self)
-	PlayerData.saveLevel = Floor105
+	PlayerData.saveLevel = 105
 end
 
 Floor106 = {}
@@ -73,7 +73,7 @@ end
 
 function Floor106:exit()
 	Floor106.super.exit(self)
-	PlayerData.saveLevel = Floor106
+	PlayerData.saveLevel = 106
 end
 
 Floor107 = {}
@@ -86,7 +86,7 @@ end
 
 function Floor107:exit()
 	Floor107.super.exit(self)
-	PlayerData.saveLevel = Floor107
+	PlayerData.saveLevel = 107
 end
 
 Floor108 = {}
@@ -99,7 +99,7 @@ end
 
 function Floor108:exit()
 	Floor108.super.exit(self)
-	PlayerData.saveLevel = Floor108
+	PlayerData.saveLevel = 108
 end
 
 Floor109 = {}
@@ -112,7 +112,7 @@ end
 
 function Floor109:exit()
 	Floor109.super.exit(self)
-	PlayerData.saveLevel = Floor109
+	PlayerData.saveLevel = 109
 end
 
 Floor110 = {}
@@ -125,7 +125,7 @@ end
 
 function Floor110:exit()
 	Floor110.super.exit(self)
-	PlayerData.saveLevel = Floor110
+	PlayerData.saveLevel = 110
 end
 
 Floor111 = {}
@@ -138,7 +138,7 @@ end
 
 function Floor111:exit()
 	Floor111.super.exit(self)
-	PlayerData.saveLevel = Floor111
+	PlayerData.saveLevel = 111
 end
 
 Floor112 = {}
@@ -151,7 +151,7 @@ end
 
 function Floor112:exit()
 	Floor112.super.exit(self)
-	PlayerData.saveLevel = Floor112
+	PlayerData.saveLevel = 112
 end
 
 Floor113 = {}
@@ -164,7 +164,7 @@ end
 
 function Floor113:exit()
 	Floor113.super.exit(self)
-	PlayerData.saveLevel = Floor113
+	PlayerData.saveLevel = 113
 end
 
 Floor114 = {}
@@ -177,7 +177,7 @@ end
 
 function Floor114:exit()
 	Floor114.super.exit(self)
-	PlayerData.saveLevel = Floor114
+	PlayerData.saveLevel = 114
 end
 
 Floor115 = {}
@@ -190,5 +190,5 @@ end
 
 function Floor115:exit()
 	Floor115.super.exit(self)
-	PlayerData.saveLevel = Floor115
+	PlayerData.saveLevel = 115
 end

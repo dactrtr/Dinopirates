@@ -1,5 +1,3 @@
-import 'assets/data/map'
-print(map[1].doors.down)
 levels = {
 	{
 		floor = {
