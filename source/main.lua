@@ -40,21 +40,18 @@ CollideGroups = {
 }
 
 
-function resetData()
-	PlayerData.battery = 100
-	PlayerData.sanity = 100
-	PlayerData.hasKey = false
-end
-
-if playdate.file.exists('playerSave') ~= true then
-	--print('savedgame')
+if playdate.file.exists('playerSave.json') ~= true then
+	print('savedgame')
 	--playerData
 end
 
 local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
-	resetData()
 	Noble.transition(TitleScene)
+end)
+local menuItem, error = menu:addMenuItem("Delete Save", function()
+	playdate.file.delete('playerSave.json')
+	playdate.file.delete('levelSave.json')
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	if debug == false then
@@ -66,7 +63,6 @@ local menuItem, error = menu:addMenuItem("debug", function()
 		Noble.showFPS = false
 	end
 end)
--- Noble.showFPS = true
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 

@@ -188,10 +188,7 @@ end
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
-	if playdate.file.exists('playerSave') then
-		print('savedgame')
-		--playerData
-	end
+	
 end
 
 -- This runs once per frame.
@@ -221,6 +218,9 @@ function scene:exit()
 	
 	playdate.datastore.write(levels, 'levelSave', true)
 	playdate.datastore.write(PlayerData, 'playerSave', true)
+	
+--	PlayerData = json.decodeFile('playerSave.json')
+	--levels = json.decodeFile('levelSave.json')
 	
 	uiScreen:removeAll()
 	floor:remove()
@@ -280,9 +280,11 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-		if playdate.file.exists("saveLevels.json") then
+		if playdate.file.exists("levelSave.json") then
 			   --levels = playdate.datastore.read("save")
-			   --printTable(savelevels[1].floor.triggers)
+			   --printTable(levels[1])
+			   local tablelevel = json.decodeFile('levelSave.json')
+			   printTable(tablelevel[1])
 			   -- levelsTest = json.decodeFile('saveLevels.json')
 			   -- printTable(levels[1].floor.enemies)
 		end
