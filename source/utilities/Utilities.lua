@@ -99,5 +99,8 @@ function RandomScreen(axis)
 	end
 end
 
-
+function RoomTranslate(roomNumber)
+	local floorClass = "Floor" .. roomNumber
+	return _G[floorClass]
+end
 

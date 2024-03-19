@@ -27,7 +27,7 @@ end
 
 function Door:init(direction, status, nextRoom, zIndex)
   
-  self.nextRoom = nextRoom
+  self.nextRoom = RoomTranslate(nextRoom)
   self.direction = direction
   self.status = status
   
