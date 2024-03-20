@@ -52,11 +52,11 @@ function scene:init()
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
 		menu:addItem("New Run", function() Noble.transition(Floor106) end)
-		if playdate.file.exists('PlayerSave.json') then
-			
+		
+		if playdate.file.exists('playerSave.json') == true then
 			menu:addItem("Continue", function() Noble.transition(RoomTranslate(PlayerData.saveLevel)) end)
 		end
-		menu:addItem("Test", function() Noble.transition(TestScene) end)
+		--menu:addItem("Test", function() Noble.transition(TestScene) end)
 		menu:select("New Run")
 end
 
@@ -72,7 +72,9 @@ end
 function scene:start()
 	scene.super.start(self)
 	-- Your code here
-	
+	if playdate.file.exists('playerSave.json') == true then
+		print('savedgame')
+	end
 end
 
 -- This runs once per frame.

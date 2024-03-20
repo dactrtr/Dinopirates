@@ -241,6 +241,7 @@ function scene:pause()
 	-- Your code here
 	playdate.datastore.write(levels, 'levelSave', true)
 	playdate.datastore.write(PlayerData, 'playerSave', true)
+	
 end
 function scene:movePlayer(direction)
 	if PlayerData.isTalking == false then
@@ -280,13 +281,7 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-	print(PlayerData.saveLevel)
-		local lastLevel = RoomTranslate(PlayerData.saveLevel)
-		print(PlayerData.saveLevel)
-		print('-t-')
-		print(RoomTranslate(PlayerData.saveLevel))
-		print('-s-')
-		print(lastLevel)
+	
 	end,
 	BButtonHeld = function()
 		

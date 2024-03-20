@@ -40,9 +40,10 @@ CollideGroups = {
 }
 
 
-if playdate.file.exists('playerSave.json') ~= true then
+if playdate.file.exists('playerSave.json') == nil then
 	print('savedgame')
-	--playerData
+	playdate.datastore.write(levels, 'levelOriginal', true)
+	playdate.datastore.write(PlayerData, 'playerOriginal', true)
 end
 
 local menu = playdate.getSystemMenu()
@@ -51,6 +52,7 @@ local menuItem, error = menu:addMenuItem("Title", function()
 end)
 local menuItem, error = menu:addMenuItem("Delete Save", function()
 	playdate.file.delete('playerSave.json')
+	playdate.file.delete('PlayerSave.json')
 	playdate.file.delete('levelSave.json')
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
