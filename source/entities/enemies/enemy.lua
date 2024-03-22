@@ -144,7 +144,7 @@ function Frogcolli:init(x, y, moveSpeed, Zindex, player)
   
   self.moveSpeed = moveSpeed
   self.initialSpeed = moveSpeed
-  self.viewRange = 3
+  self.viewRange = 10
   self.player = player
   self:setGroups(CollideGroups.enemy)
   self:setCollidesWithGroups(

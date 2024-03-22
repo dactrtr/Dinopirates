@@ -51,13 +51,13 @@ function scene:init()
 		)
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-		menu:addItem("New Run", function() Noble.transition(Floor106) end)
+		menu:addItem("New Game", function() Noble.transition(Floor107) end)
 		
 		if playdate.file.exists('playerSave.json') == true then
 			menu:addItem("Continue", function() Noble.transition(RoomTranslate(PlayerData.saveLevel)) end)
 		end
 		--menu:addItem("Test", function() Noble.transition(TestScene) end)
-		menu:select("New Run")
+		menu:select("New Game")
 end
 
 -- When transitioning from another scene, this runs as soon as this
