@@ -393,7 +393,7 @@ levels = {
 				{
 					direction = 'down',
 					open = 'open',
-					leadsTo = Floor114,
+					leadsTo = 114,
 				},
 			},
 			items = {},
@@ -414,7 +414,7 @@ levels = {
 				{
 					direction = 'top',
 					open = 'open',
-					leadsTo = Floor105,
+					leadsTo = 105,
 				},
 				{
 					direction = 'down',
