@@ -38,7 +38,7 @@ function playdate.gameWillPause()
 			Graphics.popContext() 
 		end
 		
-		for i = 1, table.getsize(levels) do 
+		for i = 1, 15 do 
 			
 				posX = 40
 				posY = 26

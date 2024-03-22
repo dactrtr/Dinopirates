@@ -216,17 +216,16 @@ end
 function scene:exit()
 	scene.super.exit(self)
 	
-	playdate.datastore.write(levels, 'levelSave', true)
-	playdate.datastore.write(PlayerData, 'playerSave', true)
+	SaveGame()
 	
---	PlayerData = json.decodeFile('playerSave.json')
-	--levels = json.decodeFile('levelSave.json')
+
 	
 	uiScreen:removeAll()
 	floor:remove()
 	if shadow then
 		shadow:removeAll()
 	end
+	
 	Graphics.sprite.removeAll()
 end
 
@@ -234,13 +233,13 @@ end
 function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
+	PlayerData.isGaming = false
 end
 
 function scene:pause()
 	scene.super.pause(self)
 	-- Your code here
-	playdate.datastore.write(levels, 'levelSave', true)
-	playdate.datastore.write(PlayerData, 'playerSave', true)
+	SaveGame()
 	
 end
 function scene:movePlayer(direction)
