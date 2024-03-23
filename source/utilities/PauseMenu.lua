@@ -74,8 +74,7 @@ function playdate.gameWillPause()
 		
 		end
 		playdate.setMenuImage(menuImg)
-	else 
-		menuImg:clear(Graphics.kColorBlack)
-		playdate.setMenuImage(menuImg)
+	else
+		playdate.setMenuImage(nil)
 	end
 end
