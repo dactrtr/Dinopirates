@@ -43,8 +43,6 @@ CollideGroups = {
 if playdate.file.exists('playerSave.json') == false then
 	playdate.datastore.write(levels, 'levelOriginal', true)
 	playdate.datastore.write(PlayerData, 'playerOriginal', true)
-	--PlayerDataSave = PlayerData
-	--levelsSave = levels
 	print('save copies')
 end
 

@@ -8,7 +8,7 @@ end
 
 function Floor101:exit()
 	Floor101.super.exit(self)
-	PlayerData.saveLevel = 101
+	PlayerData.saveLevel = 101 -- this should be on enter
 end
 
 Floor102 = {}

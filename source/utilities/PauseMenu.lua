@@ -8,7 +8,6 @@ function playdate.gameWillPause()
 		local col = 0
 		local posX = 0
 		local posY = 0
-		
 		--fills first floor
 		for i = 1, 15 do
 			posX = 40
@@ -71,8 +70,12 @@ function playdate.gameWillPause()
 				
 				Graphics.popContext() 
 			
+			end
+		
 		end
 		playdate.setMenuImage(menuImg)
-		end
+	else 
+		menuImg:clear(Graphics.kColorBlack)
+		playdate.setMenuImage(menuImg)
 	end
 end

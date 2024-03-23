@@ -52,7 +52,10 @@ function scene:init()
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
 		menu:addItem("New Game", function()
-			PlayerData = PlayerDataOriginal
+			print('new game started')
+			if playdate.file.exists('playerSave.json') == true then
+				ResetGame()
+			end
 			Noble.transition(Floor107) 
 		 end)
 		
@@ -71,9 +74,7 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
-	--PlayerData.isGaming = false
-	print(PlayerData.saveLevel)
-	printTable(PlayerData)
+	PlayerData.isGaming = false
 	self:addSprite(background)
 end
 

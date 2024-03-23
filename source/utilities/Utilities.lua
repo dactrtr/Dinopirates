@@ -111,3 +111,7 @@ function LoadGame()
 	PlayerData = json.decodeFile('playerSave.json')
 	levels = json.decodeFile('levelSave.json')
 end
+function ResetGame()
+	PlayerData = json.decodeFile('playerOriginal.json')
+	levels = json.decodeFile('levelOriginal.json')
+end
