@@ -52,7 +52,6 @@ function scene:init()
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
 		menu:addItem("New Game", function()
-			print('new game started')
 			if playdate.file.exists('playerSave.json') == true then
 				ResetGame()
 			end
@@ -82,9 +81,7 @@ end
 function scene:start()
 	scene.super.start(self)
 	-- Your code here
-	if playdate.file.exists('playerSave.json') == true then
-		print('savedgame')
-	end
+	
 end
 
 -- This runs once per frame.

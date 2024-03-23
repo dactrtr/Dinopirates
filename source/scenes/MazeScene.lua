@@ -280,12 +280,7 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-	if PlayerData.isGaming == true then
-		gaming = 'true'
-	else
-		gaming = 'false'
-	end
-	print(gaming)
+	
 	end,
 	BButtonHeld = function()
 		
