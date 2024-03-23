@@ -148,8 +148,8 @@ levels = {
 			visited = false,
 			tile = 2,
 			floorNumber = 2,
-			light = 0.4,
-			shadow = false,
+			light = 1,
+			shadow = true,
 			triggers = {
 				{
 					usedTrigger = false,
@@ -162,12 +162,12 @@ levels = {
 				
 			},
 			enemies = {
-				{
-					name = "brocorat",
-					x = 280,
-					y = 160,
-					speed = 0.7
-				},
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 280,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
 				{
 					name = "frogcolli",
 					x = 200,
@@ -333,34 +333,34 @@ levels = {
 			visited = false,
 			tile = 2,
 			floorNumber = 7,
-			light = 0.4,
-			shadow = false,
+			light = 0.8,
+			shadow = true,
 			enemies = {},
 			triggers = {
-				{
-					usedTrigger = false,
-					x = 170,
-					y = 150,
-					width = 60,
-					height = 30,
-					script = 2
-				},
-				{
-					usedTrigger = false,
-					x = 220,
-					y = 100,
-					width = 60,
-					height = 30,
-					script = 3
-				},
-				{
-					usedTrigger = false,
-					x = 200,
-					y = 55,
-					width = 60,
-					height = 30,
-					script = 4
-				},
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 170,
+				-- 	y = 150,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 2
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 220,
+				-- 	y = 100,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 3
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 200,
+				-- 	y = 55,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 4
+				-- },
 			},
 			doors = {
 				{
@@ -369,7 +369,18 @@ levels = {
 					leadsTo = 102,
 				},
 			},
-			items = {},
+			items = {
+				{
+					type = 'radio',
+					x = 230,
+					y = 80
+				},
+				{
+					type = 'lamp',
+					x = 280,
+					y = 80
+				},
+			},
 			props = {}
 		}
 	},

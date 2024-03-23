@@ -145,8 +145,8 @@ function scene:enter()
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
 	
 	-- Mark: FX
-	if levels[room].floor.shadow then
-		shadow = FXshadow(player, 70,levels[room].floor.light, ZIndex.fx)
+	if levels[room].floor.shadow == true then
+		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
 	else
 		player:fillBattery()
 	end

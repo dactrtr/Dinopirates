@@ -23,6 +23,7 @@ function Battery:update()
             Graphics.fillRect(0, 0, batteryPercent,6)
         Graphics.popContext()
         self:setImage(batteryFill)
+        batteryCanister:add()
     else
         batteryCanister:remove()
     end

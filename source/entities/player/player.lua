@@ -283,6 +283,7 @@ end
 
 function Player:grabLamp()
   PlayerData.hasLamp = true
+  PlayerData.battery = 100
 end
 
 function Player:grabRadio()
