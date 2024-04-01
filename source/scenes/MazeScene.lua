@@ -265,7 +265,9 @@ scene.inputHandler = {
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		end
-		
+		-- if PlayerData.hasRadio == true  then
+		-- 	PlayerData.sonarActive = true
+		-- end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
@@ -275,6 +277,9 @@ scene.inputHandler = {
 	end,
 	AButtonUp = function()				-- Runs once when button is released.
 		-- Your code here
+		-- if PlayerData.hasRadio == true  then
+		-- 	PlayerData.sonarActive = false
+		-- end
 	end,
 
 	-- B button

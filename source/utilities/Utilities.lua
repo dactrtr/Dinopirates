@@ -108,11 +108,15 @@ function SaveGame()
 	playdate.datastore.write(PlayerData, 'playerSave', true)
 end
 function LoadGame()
-	PlayerData = json.decodeFile('playerSave.json')
-	levels = json.decodeFile('levelSave.json')
+	PlayerData = playdate.datastore.read('playerSave')
+	levels = playdate.datastore.read('levelSave')
 end
 function ResetGame()
 	--PlayerData = json.decodeFile('playerOriginal.json')
 	PlayerData = PlayerDataOriginal
-	levels = json.decodeFile('levelOriginal.json')
+	levels = playdate.datastore.read('levelOriginal')
+end
+function DeleteGame()
+	playdate.datastore.delete('playerSave.json')
+	playdate.datastore.delete('levelSave.json')
 end

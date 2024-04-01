@@ -39,13 +39,6 @@ CollideGroups = {
 	wall = 5
 }
 
-
-if playdate.file.exists('playerSave.json') == false then
-	playdate.datastore.write(levels, 'levelOriginal', true)
-	playdate.datastore.write(PlayerData, 'playerOriginal', true)
-	print('save copies')
-end
-
 local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene)

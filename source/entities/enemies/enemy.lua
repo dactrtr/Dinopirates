@@ -71,10 +71,14 @@ end
 
 local screenImage = Graphics.image.new(80,80)
 
--- function Enemy:sonar()
---   local sonar = FXsonar(self.x,self.y)
---   sonar:activate(self.x, self.y, 'enemy')
--- end
+function Enemy:sonar()
+  -- local sonar = FXsonar(self.x,self.y)
+  -- if PlayerData.sonarActive == true then
+  --   sonar:activate(self.x, self.y, 'enemy')
+  -- else
+  --   sonar:remove()
+  -- end
+end
 
 
 Brocorat = {}

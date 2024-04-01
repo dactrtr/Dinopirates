@@ -41,7 +41,10 @@ function scene:init()
 	scene.super.init(self)
 	-- Your code here
 	-- Check save game
-	
+	if playdate.file.exists('playerSave.json') == false then
+		playdate.datastore.write(levels, 'levelOriginal', true)
+		playdate.datastore.write(PlayerData, 'playerOriginal', true)
+	end
 	menu = Noble.Menu.new(
 			true,
 			Noble.Text.ALIGN_LEFT,
