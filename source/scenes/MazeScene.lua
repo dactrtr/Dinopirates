@@ -75,6 +75,7 @@ function scene:enter()
 	sequence:start()
 	
 	PlayerData.room = levels[room].floor.floorNumber
+	PlayerData.isInDarkness = levels[room].floor.shadow
 	PlayerData.floor = room
 	
 	PlayerData.actualLevel = levels[room].floor.level

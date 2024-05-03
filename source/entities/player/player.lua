@@ -41,7 +41,7 @@ function Player:init(x, y, speed, Zindex)
   self.animation:addState('charge', 32, 35)
   self.animation.charge.frameDuration = 12
   
-  if self.hasLamp == true then
+  if self.hasLamp == true and self.isInDarkness == true then
     self.animation:setState('lampIdle')
   else
     self.animation:setState('idle')
@@ -77,6 +77,7 @@ function Player:init(x, y, speed, Zindex)
   PlayerData.battery = PlayerData.battery
   self.hasKey = false
   self.hasLamp = PlayerData.hasLamp
+  self.isInDarkness = PlayerData.isInDarkness
   
   -- Mark: add to scene
   dialogUI = dialogScreen()
@@ -133,7 +134,7 @@ end
 
 function Player:idle()
   if self.isAlive == true then
-    if self.hasLamp == true then
+    if self.hasLamp == true and self.isInDarkness == true then
       self.animation:setState('lampIdle')
     else
       self.animation:setState('idle')
@@ -187,7 +188,7 @@ function Player:move(direction)
     self:drainBattery(1)
     
     if (direction == "left") then
-      if self.hasLamp == true then
+      if self.hasLamp == true and self.isInDarkness == true then
         self.animation:setState('lampLeft')
       else
         self.animation:setState('left')
@@ -195,7 +196,7 @@ function Player:move(direction)
       movementX = self.x - self.speed
       movementY = self.y
     elseif (direction == "right") then
-      if self.hasLamp == true then
+      if self.hasLamp == true and self.isInDarkness == true then
         self.animation:setState('lampRight')
       else
         self.animation:setState('right')
@@ -203,7 +204,7 @@ function Player:move(direction)
       movementX = self.x + self.speed
       movementY = self.y
     elseif (direction == "up") then
-      if self.hasLamp == true then
+      if self.hasLamp == true and self.isInDarkness == true then
         self.animation:setState('up')
       else
         self.animation:setState('up')
@@ -211,7 +212,7 @@ function Player:move(direction)
       movementX = self.x 
       movementY = self.y - self.speed
     elseif (direction == "down") then
-      if self.hasLamp == true then
+      if self.hasLamp == true and self.isInDarkness == true then
         self.animation:setState('lampDown')
       else
         self.animation:setState('down')
