@@ -139,6 +139,7 @@ function Player:idle()
     else
       self.animation:setState('idle')
     end
+    PlayerData.direction = 'idle'
   end
 end
 
@@ -186,7 +187,7 @@ function Player:move(direction)
     local movementY = 0
     
     self:drainBattery(1)
-    
+    --PlayerData.direction = direction
     if (direction == "left") then
       if self.hasLamp == true and self.isInDarkness == true then
         self.animation:setState('lampLeft')
@@ -221,7 +222,7 @@ function Player:move(direction)
       movementY = self.y + self.speed
     end
     local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
-    
+    PlayerData.direction = direction
   end
 end
 
@@ -259,6 +260,9 @@ function Player:fillBattery()
     PlayerData.battery = 100
 end
 function Player:update()
+  -- Mark: save actual position
+  PlayerData.x = self.x
+  PlayerData.y = self.y
   -- Mark: battery bounds
   if PlayerData.battery < 0 then
     PlayerData.battery = 0
@@ -276,6 +280,7 @@ function Player:update()
     self.speed = 0.5 * self.initialSpeed
   end
   self.isActive = false
+  print(PlayerData.direction)
 end
 
 function Player:grabKey()

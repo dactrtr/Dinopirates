@@ -58,7 +58,7 @@ function scene:init()
 			if playdate.file.exists('playerSave.json') == true then
 				ResetGame()
 			end
-			Noble.transition(Floor107) 
+			Noble.transition(Floor102)--107 
 		 end)
 		
 		if playdate.file.exists('playerSave.json') == true then

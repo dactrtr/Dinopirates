@@ -308,6 +308,7 @@ scene.inputHandler = {
 	end,
 	leftButtonUp = function()
 		player:idle()
+		shadow:refresh()
 	end,
 
 	-- D-pad right
@@ -320,6 +321,7 @@ scene.inputHandler = {
 	end,
 	rightButtonUp = function()
 		player:idle()
+		shadow:refresh()
 	end,
 
 	-- D-pad up
@@ -332,6 +334,7 @@ scene.inputHandler = {
 	end,
 	upButtonUp = function()
 		player:idle()
+		shadow:refresh()
 	end,
 
 	-- D-pad down
@@ -344,6 +347,7 @@ scene.inputHandler = {
 	end,
 	downButtonUp = function()
 		player:idle()
+		shadow:refresh()
 	end,
 
 	-- Crank

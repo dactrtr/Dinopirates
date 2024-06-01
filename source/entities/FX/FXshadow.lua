@@ -51,8 +51,39 @@ function FXshadow:refresh()
 	local decreaseSize = maskSize/10
 	local lightAmount = self.globalLightAmount
 	shadow:clear(Graphics.kColorClear)
+	-- Mark: Draw polygons
+	-- if PlayerData.direction == 'idle'
+	local Direction = PlayerData.direction
+	local ix = PlayerData.x
+	local iy = PlayerData.y
+	local d = 100
+	local h = 20
+	if Direction == 'left' or Direction == 'down' then
+		d = d * -1
+	end
+	
+	local Light = playdate.geometry.polygon.new(ix ,iy )
+	if Direction == 'left' or Direction == 'right'then
+		Light = playdate.geometry.polygon.new(
+			ix ,iy ,
+			ix + d, iy - h, 
+			ix + d, iy + h,
+			ix, iy
+		)	
+		Light:close()
+	elseif (Direction == 'up' or Direction == 'down') then
+		Light = playdate.geometry.polygon.new(
+			ix ,iy,
+			ix - h, iy - d, 
+			ix + h, iy - d,
+			ix, iy
+		)	
+		Light:close()
+	end
+	
 	
 	if PlayerData.hasLamp == true then
+		
 		if battery > 120 and battery <= 160 then
 			maskSize -= decreaseSize*1
 			lightAmount = 0.2
@@ -84,6 +115,9 @@ function FXshadow:refresh()
 			lightSourceAmount = 0.9
 			self.globalLightAmount = 0.01
 		end
+		--Graphics.drawArc(PlayerData.x, PlayerData.y, 30, 0, 1)
+			
+
 	else
 		maskSize = 50
 		lightAmount = 1
@@ -105,7 +139,12 @@ function FXshadow:refresh()
 	
 		Graphics.setColor(Graphics.kColorBlack)
 		Graphics.setDitherPattern(lightAmount, Graphics.image.kDitherTypeBayer8x8)
-		Graphics.fillCircleAtPoint(self.player.x, self.player.y, maskSize)
+		if Direction == 'idle' then
+			Graphics.fillCircleAtPoint(self.player.x, self.player.y, maskSize)
+		else
+			Graphics.fillPolygon(Light)
+			Graphics.drawPolygon(Light)
+		end
 		
 	Graphics.popContext()
 	
@@ -115,8 +154,17 @@ function FXshadow:refresh()
 	
 		Graphics.setColor(Graphics.kColorBlack)
 		Graphics.setDitherPattern(lightSourceAmount, Graphics.image.kDitherTypeBayer8x8)
-		Graphics.fillCircleAtPoint(self.player.x, self.player.y, lightSourceSize)
+		if Direction == 'idle' then
+			Graphics.fillCircleAtPoint(self.player.x, self.player.y, lightSourceSize)
+		else
+			Graphics.fillCircleAtPoint(self.player.x, self.player.y, lightSourceSize - 8)
+		end
 		
 	Graphics.popContext()
+	
+end
+
+function idleLight()
+	
 	
 end
