@@ -99,6 +99,14 @@ function RandomScreen(axis)
 	end
 end
 
+function checkBool(bool)
+	local string
+	if bool == true then
+		print('true')
+	elseif (bool == false) then
+		print('false')
+	end
+end
 function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
