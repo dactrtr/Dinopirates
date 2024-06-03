@@ -144,7 +144,9 @@ function scene:enter()
 	-- Mark: Player
 	local spawnPoint = PlayerData.playerSpawn
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
-	
+	PlayerData.x = player.x
+	PlayerData.y = player.y
+	PlayerData.direction = 'idle'
 	-- Mark: FX
 	if levels[room].floor.shadow == true then
 		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)

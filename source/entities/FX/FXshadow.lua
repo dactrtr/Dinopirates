@@ -176,6 +176,7 @@ function FXshadow:refresh()
 		end
 		
 	Graphics.popContext()
+	print(ix .." ".. iy)
 	
 end
 
