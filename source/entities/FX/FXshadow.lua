@@ -175,9 +175,7 @@ function FXshadow:refresh()
 			Graphics.fillCircleAtPoint(self.player.x + centerX, self.player.y, lightSourceSize - 8)
 		end
 		
-	Graphics.popContext()
-	print(ix .." ".. iy)
-	
+	Graphics.popContext()	
 end
 
 function idleLight()
