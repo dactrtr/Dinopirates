@@ -51,31 +51,46 @@ function FXshadow:refresh()
 	local decreaseSize = maskSize/10
 	local lightAmount = self.globalLightAmount
 	shadow:clear(Graphics.kColorClear)
+	
 	-- Mark: Draw polygons
-	-- if PlayerData.direction == 'idle'
 	local Direction = PlayerData.direction
 	local ix = PlayerData.x
 	local iy = PlayerData.y
-	local d = 100
-	local h = 20
+	local d = 120
+	local h = 8
+	local centerX = 0 
+	local centerY = 0
 	if Direction == 'left' or Direction == 'down' then
 		d = d * -1
+	end
+	if Direction == 'left' then
+		centerX = -18
 	end
 	
 	local Light = playdate.geometry.polygon.new(ix ,iy )
 	if Direction == 'left' or Direction == 'right'then
 		Light = playdate.geometry.polygon.new(
 			ix ,iy ,
-			ix + d, iy - h, 
-			ix + d, iy + h,
+			ix + d, iy - 4*h, 
+			ix + 1.1*d, iy - 3.5*h, 
+			ix + 1.2*d, iy - 2*h, 
+			ix + 1.25*d, iy, 
+			ix + 1.2*d, iy + 2*h,
+			ix + 1.1*d, iy + 3.5*h,
+			ix + d, iy + 4*h,
 			ix, iy
 		)	
 		Light:close()
 	elseif (Direction == 'up' or Direction == 'down') then
 		Light = playdate.geometry.polygon.new(
 			ix ,iy,
-			ix - h, iy - d, 
-			ix + h, iy - d,
+			ix - 4*h, iy - d, 
+			ix - 3.5*h, iy - 1.1*d,
+			ix - 2*h, iy - 1.2*d, 
+			ix , iy - 1.25*d, 
+			ix + 2*h, iy - 1.2*d,
+			ix + 3.5*h, iy - 1.1*d,
+			ix + 4*h, iy - d,
 			ix, iy
 		)	
 		Light:close()
@@ -157,7 +172,7 @@ function FXshadow:refresh()
 		if Direction == 'idle' then
 			Graphics.fillCircleAtPoint(self.player.x, self.player.y, lightSourceSize)
 		else
-			Graphics.fillCircleAtPoint(self.player.x, self.player.y, lightSourceSize - 8)
+			Graphics.fillCircleAtPoint(self.player.x + centerX, self.player.y, lightSourceSize - 8)
 		end
 		
 	Graphics.popContext()
