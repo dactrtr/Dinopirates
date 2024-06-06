@@ -38,17 +38,13 @@ CollideGroups = {
 	items = 4,
 	wall = 5
 }
-
+playdate.datastore.write(levels, 'levelOriginal', true) -- DEBUG
 local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene)
 end)
 local menuItem, error = menu:addMenuItem("Delete Save", function()
-	playdate.file.delete('playerSave.json')
-	playdate.file.delete('PlayerSave.json')
-	playdate.file.delete('levelSave.json')
-	playdate.file.delete('levelOriginal.json')
-	playdate.file.delete('playerOriginal.json')
+	DeleteGame()
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	if debug == false then

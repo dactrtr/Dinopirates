@@ -164,7 +164,7 @@ function Player:sanityCheck()
     end
     
   end
-  playdate.timer.keyRepeatTimerWithDelay(1000, 1000, checkSanity)
+  playdate.timer.keyRepeatTimerWithDelay(2000, 2000, checkSanity)
     
 end
 
@@ -238,6 +238,16 @@ function Player:sonar()
   --   playdate.timer.performAfterDelay(100, toggleSonar)
   -- end
 end
+function Player:focus()
+    print('dino its focusing')
+    PlayerData.isFocused = true
+end
+function Player:deFocus()
+  if PlayerData.isFocused == true then
+    print('dino its distracted')
+    PlayerData.isFocused = false
+  end
+end
 
 function Player:drainBattery(amount)
   if levels[PlayerData.floor].floor.shadow == true then
@@ -268,6 +278,7 @@ function Player:update()
   elseif PlayerData.battery >= 100 then
     PlayerData.battery = 100
   end
+  -- Mark: Reduce speed in the dark
   if PlayerData.hasLamp == true then
     if PlayerData.battery < 20 then 
       self.speed = 0.5 * self.initialSpeed

@@ -55,10 +55,8 @@ function scene:init()
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
 		menu:addItem("New Game", function()
-			if playdate.file.exists('playerSave.json') == true then
-				ResetGame()
-			end
-			Noble.transition(Floor102)--107 
+			ResetGame()
+			Noble.transition(Floor107)--107 
 		 end)
 		
 		if playdate.file.exists('playerSave.json') == true then

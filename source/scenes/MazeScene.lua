@@ -293,11 +293,13 @@ scene.inputHandler = {
 	BButtonHeld = function()
 		
 		player.loadingPower = true
+		player:focus()
 	end,
 	BButtonHold = function()
 	end,
 	BButtonUp = function()
 		player.loadingPower = false
+		player:deFocus()
 	end,
 
 	-- D-pad left

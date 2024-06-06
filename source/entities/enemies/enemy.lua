@@ -123,9 +123,13 @@ function Brocorat:update()
     self:search(self.player)
   end
   
- if PlayerData.sonarActive == true  then
-   self:sonar()
- end
+  if PlayerData.sonarActive == true  then
+    self:sonar()
+  end
+  
+  if PlayerData.isFocused == true then
+    print('Player its looking for us')
+  end
 end
 
 Frogcolli = {}
@@ -170,7 +174,7 @@ function Frogcolli:update()
     self:search(self.player)
   end
   if PlayerData.sonarActive == true  then
-     self:sonar()
-   end
+    self:sonar()
+  end
 end
 

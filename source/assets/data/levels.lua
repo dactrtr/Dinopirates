@@ -8,50 +8,50 @@ levels = {
 			light = 0.1,
 			shadow = false,
 			triggers = {
-				{
-					usedTrigger = false,
-					x = 170,
-					y = 150,
-					width = 60,
-					height = 30,
-					script = 2
-				},
-				{
-					usedTrigger = false,
-					x = 220,
-					y = 100,
-					width = 60,
-					height = 30,
-					script = 3
-				},
-				{
-					usedTrigger = false,
-					x = 200,
-					y = 55,
-					width = 60,
-					height = 30,
-					script = 4
-				},
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 170,
+				-- 	y = 150,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 2
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 220,
+				-- 	y = 100,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 3
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 200,
+				-- 	y = 55,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 4
+				-- },
 			},
 			enemies = {
-				{
-					name = "brocorat",
-					x = 280,
-					y = 160,
-					speed = 0.7
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 120,
-					speed = 3
-				},
-				{
-					name = "frogcolli",
-					x = 200,
-					y = 40,
-					speed = 3
-				}
+				-- {
+				-- 	name = "brocorat",
+				-- 	x = 280,
+				-- 	y = 160,
+				-- 	speed = 0.7
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 120,
+				-- 	speed = 3
+				-- },
+				-- {
+				-- 	name = "frogcolli",
+				-- 	x = 200,
+				-- 	y = 40,
+				-- 	speed = 3
+				-- }
 			
 			},
 			doors = {
@@ -162,12 +162,12 @@ levels = {
 				
 			},
 			enemies = {
-				-- {
-				-- 	name = "brocorat",
-				-- 	x = 280,
-				-- 	y = 160,
-				-- 	speed = 0.7
-				-- },
+				{
+					name = "brocorat",
+					x = 350,
+					y = 160,
+					speed = 0.7
+				},
 				-- {
 				-- 	name = "frogcolli",
 				-- 	x = 200,
@@ -336,35 +336,35 @@ levels = {
 			light = 0.1,
 			shadow = false,
 			triggers = {
-				{
-					usedTrigger = false,
-					x = 170,
-					y = 150,
-					width = 60,
-					height = 30,
-					script = 2
-				},
-				{
-					usedTrigger = false,
-					x = 220,
-					y = 100,
-					width = 60,
-					height = 30,
-					script = 3
-				},
-				{
-					usedTrigger = false,
-					x = 200,
-					y = 55,
-					width = 60,
-					height = 30,
-					script = 4
-				},
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 170,
+				-- 	y = 150,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 2
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 220,
+				-- 	y = 100,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 3
+				-- },
+				-- {
+				-- 	usedTrigger = false,
+				-- 	x = 200,
+				-- 	y = 55,
+				-- 	width = 60,
+				-- 	height = 30,
+				-- 	script = 4
+				-- },
 			},
 			enemies = {
 				{
 					name = "brocorat",
-					x = 28,
+					x = 128,
 					y = 160,
 					speed = 0.7
 				},
