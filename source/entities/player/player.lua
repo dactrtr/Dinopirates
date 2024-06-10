@@ -180,7 +180,7 @@ function Player:dead()
 end
 
 function Player:move(direction)
-  if self.isAlive == true then
+  if self.isAlive == true and PlayerData.isCharging == false then
     self.isActive = true
     self.direction = direction
     local movementX = 0
