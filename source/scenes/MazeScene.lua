@@ -151,7 +151,7 @@ function scene:enter()
 	if levels[room].floor.shadow == true then
 		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
 	else
-		player:fillBattery()
+		--player:fillBattery() -- Mark: dunno why I ws fillin the battery instantly
 	end
 	
 	-- Mark: UI

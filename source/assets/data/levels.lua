@@ -164,7 +164,25 @@ levels = {
 			enemies = {
 				{
 					name = "brocorat",
+					x = 50,
+					y = 160,
+					speed = 0.7
+				},
+				{
+					name = "brocorat",
 					x = 350,
+					y = 60,
+					speed = 0.7
+				},
+				{
+					name = "brocorat",
+					x = 350,
+					y = 100,
+					speed = 0.7
+				},
+				{
+					name = "brocorat",
+					x = 250,
 					y = 160,
 					speed = 0.7
 				},

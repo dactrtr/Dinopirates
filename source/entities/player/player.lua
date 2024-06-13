@@ -69,7 +69,7 @@ function Player:init(x, y, speed, Zindex)
   self.sanityLoss = 10
   self.sanity = PlayerData.sanity
   
-  self.isActive = false
+  PlayerData.isActive = false
   self.loadingPower = false
   self.isAlive = true
   
@@ -147,9 +147,9 @@ function Player:sanityCheck()
   
   local function checkSanity()
     
-    if PlayerData.battery < 20 then
+    if PlayerData.battery < 20 and PlayerData.isInDarkness == true then 
       PlayerData.sanity -= 2 * self.sanityLoss
-    elseif PlayerData.battery < 40 then
+    elseif PlayerData.battery < 40 and PlayerData.isInDarkness == true then
       PlayerData.sanity -= self.sanityLoss
     end
     
@@ -181,7 +181,7 @@ end
 
 function Player:move(direction)
   if self.isAlive == true and PlayerData.isCharging == false then
-    self.isActive = true
+    PlayerData.isActive = true
     self.direction = direction
     local movementX = 0
     local movementY = 0
@@ -225,26 +225,16 @@ function Player:move(direction)
   end
 end
 
-function Player:sonar()
-  -- if PlayerData.battery > 20 then
-  --   local function toggleSonar()
-  --     PlayerData.sonarActive = false
-  --   end
-  --   if PlayerData.sonarActive == false then
-  --     self:drainBattery(20)
-  --     PlayerData.sonarActive = true
-  --     
-  --   end
-  --   playdate.timer.performAfterDelay(100, toggleSonar)
-  -- end
-end
+
 function Player:focus()
-    print('dino its focusing')
+  if PlayerData.sanity > 0 then
+    PlayerData.sanity -= 2 
     PlayerData.isFocused = true
+  end
 end
+
 function Player:deFocus()
   if PlayerData.isFocused == true then
-    print('dino its distracted')
     PlayerData.isFocused = false
   end
 end
@@ -262,7 +252,7 @@ function Player:chargeBattery(amount)
     self.animation:setState('lampIdle')
   end
   PlayerData.battery += amount
-  self.isActive = true
+  PlayerData.isActive = true
 end
 
 function Player:fillBattery()
@@ -289,7 +279,8 @@ function Player:update()
   if levels[PlayerData.floor].floor.shadow == true and PlayerData.hasLamp == false then
     self.speed = 0.5 * self.initialSpeed
   end
-  self.isActive = false
+  PlayerData.isActive = false
+  print('S: '..PlayerData.sanity ..' B: ' .. PlayerData.battery)
 end
 
 function Player:grabKey()
@@ -298,7 +289,7 @@ end
 
 function Player:grabLamp()
   PlayerData.hasLamp = true
-  PlayerData.battery = 100
+  self:fillBattery()
 end
 
 function Player:grabRadio()
