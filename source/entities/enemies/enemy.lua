@@ -56,8 +56,6 @@ function Enemy:moveCollision(movementX,movementY, player)
   end
 end
 
-function Enemy:updateSound(player)
-end
 
 function Enemy:collisionResponse(other)
  if other:isa(Items) then
@@ -71,13 +69,16 @@ function Enemy:collisionResponse(other)
  end
 end
 
-function Enemy:sonar() -- Mark: Delete this
-  if PlayerData.isFocused == true and PlayerData.isInDarkness == true and PlayerData.sanity > 0 then
-    self.animation:setState('shine')
-    self:setZIndex(10)
-  else
-    self:setZIndex(ZIndex.enemy)
-    self.animation:setState('idle')
+function Enemy:sonar()
+  if (PlayerData.x - 60) > (self.x) or (PlayerData.x + 60) < (self.x) then
+    if PlayerData.isFocused == true and PlayerData.isInDarkness == true and PlayerData.sanity > 0 then
+      self.animation.shine.frameDuration = math.random(1,16)
+      self.animation:setState('shine')
+      self:setZIndex(10)
+    else
+      self:setZIndex(self.Zindex)
+      self.animation:setState('idle')
+    end
   end
 end
 
@@ -95,8 +96,9 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
   self.animation.walk.frameDuration = 6
   self.animation:addState('empty', 9, 9)
   self.animation.empty.frameDuration = 6
-  self.animation:addState('shine', 9, 12)
+  self.animation:addState('shine', 9, 14)
   self.animation.shine.frameDuration = 6
+  
   
   self:setSize(32,32)
   self:moveTo(x,y)
@@ -126,8 +128,8 @@ function Brocorat:update()
   if PlayerData.isActive == true then
     self:search(self.player)
   end
-  self:sonar()
   
+  self:sonar()
 end
 
 Frogcolli = {}

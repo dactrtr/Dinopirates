@@ -228,7 +228,7 @@ end
 
 function Player:focus()
   if PlayerData.sanity > 0 then
-    PlayerData.sanity -= 2 
+    PlayerData.sanity -= 10 
     PlayerData.isFocused = true
   end
 end
@@ -280,7 +280,6 @@ function Player:update()
     self.speed = 0.5 * self.initialSpeed
   end
   PlayerData.isActive = false
-  print('S: '..PlayerData.sanity ..' B: ' .. PlayerData.battery)
 end
 
 function Player:grabKey()
