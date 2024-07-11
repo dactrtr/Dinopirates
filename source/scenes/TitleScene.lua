@@ -39,7 +39,6 @@ TitleScene.inputHandler = {
 -- first thing that happens when transitining away from another scene.
 function scene:init()
 	scene.super.init(self)
-	-- Your code here
 	-- Check save game
 	if playdate.file.exists('playerSave.json') == false then
 		playdate.datastore.write(levels, 'levelOriginal', true)
