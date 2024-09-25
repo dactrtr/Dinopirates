@@ -9,7 +9,7 @@ function Player:init(x, y, speed, Zindex)
   
   -- Mark: animation states
   self.animation:addState('idle', 1, 4)
-  self.animation.idle.frameDuration = 12
+  self.animation.idle.frameDuration = 24
   
   self.animation:addState('right', 5, 7)
   self.animation.right.frameDuration = 12
@@ -41,7 +41,11 @@ function Player:init(x, y, speed, Zindex)
   self.animation:addState('charge', 32, 35)
   self.animation.charge.frameDuration = 12
   
-  self.animation:setState('lampIdle')
+  if (PlayerData.hasLamp == true and PlayerData.isInDarkness == true) then
+    self.animation:setState('lampIdle')
+  else
+    self.animation:setState('idle')
+  end
   
   -- Mark: basic properties
   self:setSize(48, 52)
@@ -64,14 +68,16 @@ function Player:init(x, y, speed, Zindex)
   self.initialBattery = PlayerData.battery
   self.sanityLoss = 10
   self.sanity = PlayerData.sanity
-  self.isActive = false
+  
+  PlayerData.isActive = false
   self.loadingPower = false
   self.isAlive = true
   
   -- Mark: Custom items properties
   PlayerData.battery = PlayerData.battery
   self.hasKey = false
-  self.hasLamp = true
+  PlayerData.hasLamp = PlayerData.hasLamp
+  PlayerData.isInDarkness = PlayerData.isInDarkness
   
   -- Mark: add to scene
   dialogUI = dialogScreen()
@@ -86,20 +92,37 @@ function Player:collisionResponse(other)
     return self:dead()
   elseif other:isa(Box) then
     return 'freeze' 
-  elseif other:isa(Items) then
+  elseif other:isa(Trigger) then
+      PlayerData.isTalking = true
+      dialogUI:addScreen(other:returnScript(),other.sourceFeed)
+    return 'freeze'
+  elseif other:isa(Items) and other.type == 'keycard' then
     other:removeAll()
     self:grabKey()
     return 'overlap'
-    elseif other:isa(Door) then
-      if PlayerData.hasKey == true then
-        other:prevRoom(other.direction)
-        other:goTo()
-      else
-        PlayerData.isTalking = true
-        dialogUI:addScreen(1)
-        return 'freeze'
-      end
+  elseif other:isa(Items) and other.type == 'lamp' then
+    other:removeAll()
+    self:grabLamp()
     return 'overlap'
+  elseif other:isa(Items) and other.type == 'radio' then
+    other:removeAll()
+    self:grabRadio()
+    return 'overlap'
+  elseif other:isa(Door) then
+    
+    other:prevRoom(other.direction)
+    other:goTo()
+    
+    -- if (PlayerData.hasKey == true and other.status == 'closed') or other.status=='open'then
+    -- if PlayerData.hasKey == true then
+    --   other:prevRoom(other.direction)
+    --   other:goTo()
+    -- else
+    --   PlayerData.isTalking = true
+    --   dialogUI:addScreen(1)
+    --   return 'freeze'
+    -- end
+  return 'overlap'
   end
   
   
@@ -110,12 +133,13 @@ function Player:displayDialog(script)
 end
 
 function Player:idle()
-  if self.isAlive then
-    if self.hasLamp then
+  if self.isAlive == true then
+    if PlayerData.hasLamp == true then
       self.animation:setState('lampIdle')
     else
       self.animation:setState('idle')
     end
+    PlayerData.direction = 'idle'
   end
 end
 
@@ -123,9 +147,9 @@ function Player:sanityCheck()
   
   local function checkSanity()
     
-    if PlayerData.battery < 20 then
+    if PlayerData.battery < 20 and PlayerData.isInDarkness == true then 
       PlayerData.sanity -= 2 * self.sanityLoss
-    elseif PlayerData.battery < 40 then
+    elseif PlayerData.battery < 40 and PlayerData.isInDarkness == true then
       PlayerData.sanity -= self.sanityLoss
     end
     
@@ -140,7 +164,7 @@ function Player:sanityCheck()
     end
     
   end
-  playdate.timer.keyRepeatTimerWithDelay(1000, 1000, checkSanity)
+  playdate.timer.keyRepeatTimerWithDelay(2000, 2000, checkSanity)
     
 end
 
@@ -156,16 +180,15 @@ function Player:dead()
 end
 
 function Player:move(direction)
-  if self.isAlive == true then
-    self.isActive = true
+  if self.isAlive == true and PlayerData.isCharging == false then
+    PlayerData.isActive = true
     self.direction = direction
     local movementX = 0
     local movementY = 0
     
-    self:drainBattery(1)
-    
+    self:drainBattery(0.5)
     if (direction == "left") then
-      if self.hasLamp then
+      if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
         self.animation:setState('lampLeft')
       else
         self.animation:setState('left')
@@ -173,7 +196,7 @@ function Player:move(direction)
       movementX = self.x - self.speed
       movementY = self.y
     elseif (direction == "right") then
-      if self.hasLamp then
+      if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
         self.animation:setState('lampRight')
       else
         self.animation:setState('right')
@@ -181,7 +204,7 @@ function Player:move(direction)
       movementX = self.x + self.speed
       movementY = self.y
     elseif (direction == "up") then
-      if self.hasLamp then
+      if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
         self.animation:setState('up')
       else
         self.animation:setState('up')
@@ -189,7 +212,7 @@ function Player:move(direction)
       movementX = self.x 
       movementY = self.y - self.speed
     elseif (direction == "down") then
-      if self.hasLamp then
+      if PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
         self.animation:setState('lampDown')
       else
         self.animation:setState('down')
@@ -198,26 +221,26 @@ function Player:move(direction)
       movementY = self.y + self.speed
     end
     local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
-    
+    PlayerData.direction = direction
   end
 end
 
-function Player:sonar()
-  -- if PlayerData.battery > 20 then
-  --   local function toggleSonar()
-  --     PlayerData.sonarActive = false
-  --   end
-  --   if PlayerData.sonarActive == false then
-  --     self:drainBattery(20)
-  --     PlayerData.sonarActive = true
-  --     
-  --   end
-  --   playdate.timer.performAfterDelay(100, toggleSonar)
-  -- end
+
+function Player:focus()
+  if PlayerData.sanity > 0 then
+    PlayerData.sanity -= 10 
+    PlayerData.isFocused = true
+  end
+end
+
+function Player:deFocus()
+  if PlayerData.isFocused == true then
+    PlayerData.isFocused = false
+  end
 end
 
 function Player:drainBattery(amount)
-  if levels[PlayerData.floor].floor.shadow then
+  if levels[PlayerData.floor].floor.shadow == true then
     PlayerData.battery -= amount
   end
 end
@@ -229,27 +252,45 @@ function Player:chargeBattery(amount)
     self.animation:setState('lampIdle')
   end
   PlayerData.battery += amount
-  self.isActive = true
+  PlayerData.isActive = true
 end
 
 function Player:fillBattery()
     PlayerData.battery = 100
 end
 function Player:update()
+  -- Mark: save actual position
+  PlayerData.x = self.x
+  PlayerData.y = self.y
   -- Mark: battery bounds
   if PlayerData.battery < 0 then
     PlayerData.battery = 0
   elseif PlayerData.battery >= 100 then
     PlayerData.battery = 100
   end
-  if PlayerData.battery < 20 then 
-    self.speed = 0.5 * self.initialSpeed
-  elseif PlayerData.battery > 20 then
-    self.speed = self.initialSpeed
+  -- Mark: Reduce speed in the dark
+  if PlayerData.hasLamp == true then
+    if PlayerData.battery < 20 then 
+      self.speed = 0.5 * self.initialSpeed
+    elseif PlayerData.battery > 20 then
+      self.speed = self.initialSpeed
+    end
   end
-  self.isActive = false
+  if levels[PlayerData.floor].floor.shadow == true and PlayerData.hasLamp == false then
+    self.speed = 0.5 * self.initialSpeed
+  end
+  PlayerData.isActive = false
 end
 
 function Player:grabKey()
   PlayerData.hasKey = true
+end
+
+function Player:grabLamp()
+  PlayerData.hasLamp = true
+  self:fillBattery()
+end
+
+function Player:grabRadio()
+  PlayerData.hasRadio = true
 end

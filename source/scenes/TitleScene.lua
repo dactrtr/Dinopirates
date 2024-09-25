@@ -39,7 +39,11 @@ TitleScene.inputHandler = {
 -- first thing that happens when transitining away from another scene.
 function scene:init()
 	scene.super.init(self)
-	-- Your code here
+	-- Check save game
+	if playdate.file.exists('playerSave.json') == false then
+		playdate.datastore.write(levels, 'levelOriginal', true)
+		playdate.datastore.write(PlayerData, 'playerOriginal', true)
+	end
 	menu = Noble.Menu.new(
 			true,
 			Noble.Text.ALIGN_LEFT,
@@ -49,10 +53,19 @@ function scene:init()
 		)
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-		menu:addItem("New Run", function() Noble.transition(Floor01) end)
-		menu:addItem("Comic", function() Noble.transition(DeadScene) end)
-		menu:addItem("Test", function() Noble.transition(TestScene) end)
-		menu:select("New Run")
+		menu:addItem("New Game", function()
+			ResetGame()
+			Noble.transition(Floor107)--107 
+		 end)
+		
+		if playdate.file.exists('playerSave.json') == true then
+			LoadGame()
+			menu:addItem("Continue", function() 
+				Noble.transition(RoomTranslate(PlayerData.saveLevel)) 
+			end)
+		end
+		--menu:addItem("Test", function() Noble.transition(TestScene) end)
+		menu:select("New Game")
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -60,6 +73,7 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
+	PlayerData.isGaming = false
 	self:addSprite(background)
 end
 
@@ -77,6 +91,9 @@ function scene:update()
 	scene.super.update(self)
 	-- Your code here
 	menu:draw(8, 120)
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+	--Graphics.setColor(playdate.graphics.kColorWhite)
+	Graphics.drawText("*v 0.1*", 2, 2)
 end
 
 -- This runs once per frame, and is meant for drawing code.
@@ -89,12 +106,14 @@ end
 function scene:exit()
 	scene.super.exit(self)
 	-- Your code here
+	--Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 end
 
 -- This runs once a transition to another scene completes.
 function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
+	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 end
 
 function scene:pause()

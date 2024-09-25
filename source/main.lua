@@ -1,51 +1,28 @@
 import 'libraries/noble/Noble'
 
 import 'utilities/Utilities'
+import 'utilities/PauseMenu'
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/Floors'
 --import 'scenes/StarScene'
 import 'scenes/TestScene'
 import 'scenes/TitleScene'
+import 'assets/data/PlayerData'
+import 'assets/data/levels'
+import 'assets/data/script'
 
 Noble.Settings.setup({
-	Difficulty = "Medium"
+	Difficulty = "Medium",
 })
-
-Noble.showFPS = true
+Noble.showFPS = false
 
 Noble.GameData.setup({
 	Score = 0,
 })
--- Mark: This should be a separate file(JSON)
 
-PlayerData = {
-	battery = 100, 
-	sanity = 100,
-	hasKey = false,
-	hasLamp = true,
-	sonarActive = false,
-	isActive = false,
-	isTalking = false,
-	floor = 1,
-	room = 1,
-	lastRoom = nil,
-	playerSpawn ={
-		x = 200,
-		y = 100,
-	}
-}
-rooms = {
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false },
-	{ visited = false }
-}
+debug = false
+
 ZIndex = {
 	player = 4,
 	enemy = 3,
@@ -61,212 +38,24 @@ CollideGroups = {
 	items = 4,
 	wall = 5
 }
-levels = {
-	{
-		floor = {
-			tile = 2,
-			floorNumber = 7,
-			light = 0.1,
-			debug = false,
-			shadow = false,
-			enemies = {
-				-- {
-				-- 	name = "brocorat",
-				-- 	x = 280,
-				-- 	y = 160,
-				-- 	speed = 0.7
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 120,
-				-- 	speed = 3
-				-- },
-				-- {
-				-- 	name = "frogcolli",
-				-- 	x = 200,
-				-- 	y = 40,
-				-- 	speed = 3
-				-- }
-			
-			},
-			doors = {
-				{
-					direction = 'top',
-					open = 'open',
-					leadsTo = Floor02,
-				}
-			},
-			items = {
-				{
-					type = 'key',
-					x = 50,
-					y = 100
-				}
-			},
-			props = {
-				{
-					type = 'chair',
-					x = 80,
-					y = 150
-				},
-				{
-					type = 'toxic',
-					x = 160,
-					y = 50
-				}
-			}
-		}
-	},
-	{
-		floor = {
-			tile = 2,
-			floorNumber = 4,
-			light = 0.1,
-			debug = false,
-			shadow = false,
-			enemies = {
-			},
-			doors = {
-				{
-					direction = 'down',
-					open = 'open',
-					leadsTo = Floor01,
-				},
-				{
-					direction = 'right',
-					open = 'open',
-					leadsTo = Floor03,
-				}
-			},
-			items = {
-			},
-			props = {
-				{
-					type = 'chair',
-					x = 80,
-					y = 150
-				},
-				{
-					type = 'chair',
-					x = 180,
-					y = 50
-				}
-			}
-		}
-	},
-	{
-		floor = {
-			tile = 2,
-			floorNumber = 5,
-			light = 0.1,
-			debug = false,
-			shadow = false,
-			enemies = {
-			},
-			doors = {
-				{
-					direction = 'left',
-					open = 'open',
-					leadsTo = Floor02,
-				},
-				{
-					direction = 'down',
-					open = 'open',
-					leadsTo = Floor04,
-				}
-			},
-			items = {
-			},
-			props = {
-				{
-					type = 'chair',
-					x = 80,
-					y = 150
-				},
-				{
-					type = 'chair',
-					x = 180,
-					y = 50
-				}
-			}
-		}
-	},
-	{
-		floor = {
-			tile = 2,
-			floorNumber = 8,
-			light = 0.1,
-			debug = false,
-			shadow = false,
-			enemies = {
-			},
-			doors = {
-				{
-					direction = 'top',
-					open = 'open',
-					leadsTo = Floor03,
-				},
-				{
-					direction = 'right',
-					open = 'open',
-					leadsTo = TitleScene,
-				}
-			},
-			items = {
-			},
-			props = {
-				{
-					type = 'chair',
-					x = 80,
-					y = 150
-				},
-				{
-					type = 'chair',
-					x = 280,
-					y = 50
-				}
-			}
-		}
-	},
-	-- repeat
-}
-script = {
-	{
-		-- no door key
-		dialog = {
-			{
-				video = 'player',
-				text = 'Quien cerro la puerta?, ahhh donde esta la llave'
-			},
-			{
-				video = 'player',
-				text = 'de seguro la dejaron tirada en alguna parte en el piso'
-			},
-		}
-	}
-}
-
-function resetData()
-	PlayerData.battery = 100
-	PlayerData.sanity = 100
-	PlayerData.hasKey = false
-end
-
+playdate.datastore.write(levels, 'levelOriginal', true) -- DEBUG
 local menu = playdate.getSystemMenu()
-debug = false
 local menuItem, error = menu:addMenuItem("Title", function()
-	resetData()
 	Noble.transition(TitleScene)
+end)
+local menuItem, error = menu:addMenuItem("Delete Save", function()
+	DeleteGame()
 end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	if debug == false then
 		debug = true
+	end
+	if Noble.showFPS == false then
+		Noble.showFPS = true
 	else 
-		debug = false
+		Noble.showFPS = false
 	end
 end)
--- Noble.showFPS = true
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 

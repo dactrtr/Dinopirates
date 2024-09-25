@@ -3,3 +3,44 @@
 "menuNewGame" =			"New Game"
 "menuOptions" =			"Options"
 "menuCredits" =			"Credits"
+
+-- floor 1 door closed
+
+"door" = "duh! of course I need a *key card*, that probably *left somewhere*..."
+
+"door2" = "... MR Jani...tor ...*key card*... safe on... ground... leave... *tidy and clean*..."
+
+"door3" = "... *thank you*... keep your hard work"
+
+"door4" = "... *safe* ... *ground*, this *DR* are so unreliable"
+
+"door5" = "that will be *deducted from your next pay roll*"
+
+"door6" = "wait, they even pay me?"
+
+-- floor 1 mess
+"mess"="Ok, no more *Trex-tilas*, that welcome party was wild, and barely remember..."
+
+"mess2"="where is everyone? why it's such a big mess?"
+
+
+-- floor 1 chair
+
+"chairs"="wait the chairs are *glued to the floor*?"
+
+"chairs1"="what's that thing on the ground, it's like some kind of device"
+
+-- floor 1 welcome
+
+"welcome"="*cof cof cof cof*"
+"welcome1"="Welcome to the *SS Waterqueen Super Ship type 2*... This is ... ..., from *Dinosaur Resources*...."
+"welcome2"="signal... watch for the...liens... rescue... es... shi...ife proceed, to the kitchen "
+"welcome3"="hello? how does this thing work.. *hellooooo* seems there's no signal, *call me... maybe?*"
+"welcome4"="... and, yes!, we glued the chairs and tables, for security reasons, trust *DR* "
+
+-- Kitchen
+
+"kitchen"="oh? what's this, I can't see, it's cold and round... "
+"kitchen2"="*CERVEZA CRISTAL, UNICA GRANDE Y NUESTRA...*"
+"kitchen3"="sweet, some *Chilean pee in a can* maybe I can use it later"
+"kitchen4"="just gonna keep walking straight, I really don't like dark places"

@@ -72,10 +72,11 @@ function scene:init()
 		Noble.transition(TitleScene) 
 	end)
 	menu:addItem("Retry", function()
-		Noble.transition(Floor01)
-		resetData()
+		
+		Noble.transition(RoomTranslate(PlayerData.saveLevel))
+		--resetData()
 	 end)
-	menu:select("Retry")
+	menu:select("Exit")
 	
 end
 

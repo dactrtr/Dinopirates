@@ -8,7 +8,6 @@ function BatteryCanister:init(x,y,Zindex)
 	self:setImage(canister)
 	self:setZIndex(Zindex)
 	self:add()	
-	
 end
 
 

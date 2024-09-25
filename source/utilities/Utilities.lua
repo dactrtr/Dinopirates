@@ -99,5 +99,34 @@ function RandomScreen(axis)
 	end
 end
 
-
-
+function checkBool(bool)
+	local string
+	if bool == true then
+		print('true')
+	elseif (bool == false) then
+		print('false')
+	end
+end
+function RoomTranslate(roomNumber)
+	local floorClass = "Floor" .. roomNumber
+	return _G[floorClass]
+end
+function SaveGame()
+	playdate.datastore.write(levels, 'levelSave', true)
+	playdate.datastore.write(PlayerData, 'playerSave', true)
+end
+function LoadGame()
+	PlayerData = playdate.datastore.read('playerSave')
+	levels = playdate.datastore.read('levelSave')
+end
+function ResetGame()
+	PlayerData = json.decodeFile('playerOriginal.json')
+	PlayerData = PlayerDataOriginal
+	levels = playdate.datastore.read('levelOriginal')
+end
+function DeleteGame()
+	playdate.file.delete('playerSave.json')
+	playdate.file.delete('levelSave.json')
+	playdate.datastore.delete('playerSave.json')
+	playdate.datastore.delete('levelSave.json')
+end

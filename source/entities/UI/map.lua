@@ -3,11 +3,17 @@ class('MapBG').extends(Graphics.sprite)
 
 local maze <const> = Graphics.image.new("assets/images/ui/map.png")
 local fog <const> = Graphics.image.new(27, 27)
+local yPos = nil
 
 function MapBG:init()
     self:setImage(maze)
     self:setZIndex(ZIndex.ui)
-    self:moveTo(16,34)
+    if Noble.showFPS == true then
+        yPos =34
+    else
+        yPos = 16
+    end
+    self:moveTo(16,yPos)
     self:add()
 end
 
@@ -19,7 +25,12 @@ function Map:init()
     
     self:setImage(fog)
     self:setZIndex(ZIndex.ui+1)
-    self:moveTo(16,34)
+    if Noble.showFPS == true then
+        yPos =34
+    else
+        yPos = 16
+    end
+    self:moveTo(16,yPos)
     mapbg = MapBG()
        
     --    Graphics.pushContext(maze)
@@ -58,11 +69,6 @@ function Map:init()
          end
      end
     self:add()
-end
-
-function Map:removeAll()
-    mapbg:remove()
-    self:remove()
 end
 
 

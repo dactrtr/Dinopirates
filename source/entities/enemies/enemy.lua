@@ -35,11 +35,13 @@ function Enemy:linealSearch(player)
 end
 
 function Enemy:moveCollision(movementX,movementY, player)
-  if PlayerData.battery == 0 then
+  
+  if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
     self.moveSpeed = 0
-  elseif PlayerData.battery > 60 then
+  elseif PlayerData.battery > 60  and PlayerData.isInDarkness == true then
     self.moveSpeed = self.initialSpeed
   end
+  
   local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
   if lenght > 0 then
     for index, collision in pairs(collisions) do
@@ -54,8 +56,6 @@ function Enemy:moveCollision(movementX,movementY, player)
   end
 end
 
-function Enemy:updateSound(player)
-end
 
 function Enemy:collisionResponse(other)
  if other:isa(Items) then
@@ -69,12 +69,18 @@ function Enemy:collisionResponse(other)
  end
 end
 
-local screenImage = Graphics.image.new(80,80)
-
--- function Enemy:sonar()
---   local sonar = FXsonar(self.x,self.y)
---   sonar:activate(self.x, self.y, 'enemy')
--- end
+function Enemy:sonar()
+  if (PlayerData.x - 60) > (self.x) or (PlayerData.x + 60) < (self.x) then
+    if PlayerData.isFocused == true and PlayerData.isInDarkness == true and PlayerData.sanity > 0 then
+      self.animation.shine.frameDuration = math.random(1,16)
+      self.animation:setState('shine')
+      self:setZIndex(10)
+    else
+      self:setZIndex(self.Zindex)
+      self.animation:setState('idle')
+    end
+  end
+end
 
 
 Brocorat = {}
@@ -90,6 +96,9 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
   self.animation.walk.frameDuration = 6
   self.animation:addState('empty', 9, 9)
   self.animation.empty.frameDuration = 6
+  self.animation:addState('shine', 9, 14)
+  self.animation.shine.frameDuration = 6
+  
   
   self:setSize(32,32)
   self:moveTo(x,y)
@@ -98,6 +107,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
   self.moveSpeed = moveSpeed
   self.initialSpeed = moveSpeed
   self.player = player
+  self.Zindex = Zindex
   self:setGroups(CollideGroups.enemy)
   self:setCollidesWithGroups(
   {
@@ -106,7 +116,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player)
     CollideGroups.wall,
     CollideGroups.enemy
   })
-  self:setZIndex(Zindex)
+  self:setZIndex(self.Zindex)
   self:add(x,y)
 end
 
@@ -115,13 +125,11 @@ function Brocorat:search(player)
 end
   
 function Brocorat:update()
-  if self.player.isActive == true then
+  if PlayerData.isActive == true then
     self:search(self.player)
   end
   
- if PlayerData.sonarActive == true  then
-   self:sonar()
- end
+  self:sonar()
 end
 
 Frogcolli = {}
@@ -144,7 +152,7 @@ function Frogcolli:init(x, y, moveSpeed, Zindex, player)
   
   self.moveSpeed = moveSpeed
   self.initialSpeed = moveSpeed
-  self.viewRange = 3
+  self.viewRange = 10
   self.player = player
   self:setGroups(CollideGroups.enemy)
   self:setCollidesWithGroups(
@@ -162,11 +170,11 @@ function Frogcolli:search(player)
   self:linealSearch(player)
 end
 function Frogcolli:update()
-  if self.player.isActive == true then
+  if PlayerData.isActive == true then
     self:search(self.player)
   end
   if PlayerData.sonarActive == true  then
-     self:sonar()
-   end
+    self:sonar()
+  end
 end
 

@@ -21,9 +21,9 @@ import "entities/enemies/enemy"
 import 'entities/props/propItem'
 import 'entities/props/door'
 import 'entities/items/Items'
+import 'entities/props/trigger'
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
-import "entities/UI/map"
 
 -- It is recommended that you declare, but don't yet define,
 -- your scene-specific variables and methods here. Use "local" where possible.
@@ -34,13 +34,14 @@ import "entities/UI/map"
 -- ...
 --
 
+
+
 -- Mark: player related
 local player = nil
 local shadow = nil
 
 -- Mark: UI
 local uiScreen = nil
-local map = nil
 -- Mark: Utilities
 local cheat = CheatCode("up", "up", "up", "down")
 
@@ -53,8 +54,8 @@ function scene:init()
 	scene.super.init(self)
 	
 	cheat.onComplete = function()
-		PlayerData.battery = 100
 	end
+	
 	-- Your code here
 	
 end
@@ -69,12 +70,17 @@ function scene:enter()
 	-- Your code here
 	
 	
+	PlayerData.isGaming = true
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
 	sequence:start()
-	debug = levels[room].floor.debug
+	
 	PlayerData.room = levels[room].floor.floorNumber
+	PlayerData.isInDarkness = levels[room].floor.shadow
 	PlayerData.floor = room
-	rooms[PlayerData.room].visited = true
+	
+	PlayerData.actualLevel = levels[room].floor.level
+	PlayerData.actualRoom = levels[room].floor.floorNumber
+	levels[room].floor.visited = true
 	
 	-- Mark: floor
 	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
@@ -113,46 +119,45 @@ function scene:enter()
 	end
 	
 	
-	-- Mark: Props & items
+	-- Mark: Props 
 	arrayData = levels[room].floor.props
 	
 	for _, propData in ipairs(arrayData) do
 		local type = propData.type
 		local x = propData.x
 		local y = propData.y
-		
-		PropItem(x, y, type, ZIndex.props)
+		local collide = propData.nocollide
+		PropItem(x, y, type, ZIndex.props, collide)
 	end
 	
-	if PlayerData.hasKey == false then
-		arrayData = levels[room].floor.items
-		for _, itemData in ipairs(arrayData) do
-			local type = itemData.type
-			local x = itemData.x
-			local y = itemData.y
-			
-			Items(x, y, ZIndex.props)
+	-- Mark: Items
+	arrayData = levels[room].floor.items
+	for _, itemData in ipairs(arrayData) do
+		local type = itemData.type
+		local x = itemData.x
+		local y = itemData.y
+		if (type == 'keycard' and PlayerData.hasKey == false) or (type == 'lamp' and PlayerData.hasLamp == false) or (type == 'radio' and PlayerData.hasRadio == false) then
+			Items(x, y, type)
 		end
 	end
 	
 	-- Mark: Player
 	local spawnPoint = PlayerData.playerSpawn
-	player = Player(spawnPoint.x, spawnPoint.y, 1, ZIndex.player)
-	
+	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
+	PlayerData.x = player.x
+	PlayerData.y = player.y
+	PlayerData.direction = 'idle'
 	-- Mark: FX
 	if levels[room].floor.shadow == true then
-		shadow = FXshadow(player, 70,levels[room].floor.light, ZIndex.fx)
+		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
 	else
-		player:fillBattery()
+		--player:fillBattery() -- Mark: dunno why I ws fillin the battery instantly
 	end
 	
 	-- Mark: UI
 	uiScreen = playerHud()
-	map = Map()
 	
-	-- dialogUI = dialogScreen()
-	
-	-- Mark: Enemies from table
+	-- Mark: Enemies 
 	arrayData = levels[room].floor.enemies
 	
 	for _, enemyData in ipairs(arrayData) do
@@ -168,6 +173,19 @@ function scene:enter()
 		end
 	end
 	
+	-- Mark: dialog triggers
+	
+	arrayData = levels[room].floor.triggers
+	for i, triggerData in ipairs(arrayData) do
+		if triggerData.usedTrigger == false then
+			local x = triggerData.x
+			local y = triggerData.y
+			local width = triggerData.width
+			local height = triggerData.height
+			local script = triggerData.script
+			Trigger(x,y,width,height,script, i, room)
+		end
+	end
 end
 
 -- This runs once a transition from another scene is complete.
@@ -179,12 +197,11 @@ end
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
-	-- Mark: DEBUG
 	-- Mark: cheat code
 	cheat:update()
 	
 	-- Mark: Crank notification
-	if PlayerData.battery == 0  and playdate.isCrankDocked() then
+	if PlayerData.battery == 0  and playdate.isCrankDocked() and PlayerData.hasLamp == true then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 	
@@ -201,31 +218,38 @@ end
 -- This runs as as soon as a transition to another scene begins.
 function scene:exit()
 	scene.super.exit(self)
-	debug = false
-	rooms[PlayerData.room].visited = false
+	
+	SaveGame()
+	
+
+	
 	uiScreen:removeAll()
 	floor:remove()
-	if shadow == true then
+	if shadow then
 		shadow:removeAll()
 	end
-	map:removeAll()
+	
+	Graphics.sprite.removeAll()
 end
 
 -- This runs once a transition to another scene completes.
 function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
+	PlayerData.isGaming = false
 end
 
 function scene:pause()
 	scene.super.pause(self)
 	-- Your code here
+	SaveGame()
+	
 end
 function scene:movePlayer(direction)
 	if PlayerData.isTalking == false then
 		if player.isAlive == true then
 			player:move(direction)
-			if shadow == true then
+			if shadow  then
 				shadow:move(direction)
 			end
 		end
@@ -244,6 +268,9 @@ scene.inputHandler = {
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		end
+		-- if PlayerData.hasRadio == true  then
+		-- 	PlayerData.sonarActive = true
+		-- end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
@@ -253,20 +280,26 @@ scene.inputHandler = {
 	end,
 	AButtonUp = function()				-- Runs once when button is released.
 		-- Your code here
+		-- if PlayerData.hasRadio == true  then
+		-- 	PlayerData.sonarActive = false
+		-- end
 	end,
 
 	-- B button
 	--
 	BButtonDown = function()
+	
 	end,
 	BButtonHeld = function()
 		
 		player.loadingPower = true
+		player:focus()
 	end,
 	BButtonHold = function()
 	end,
 	BButtonUp = function()
 		player.loadingPower = false
+		player:deFocus()
 	end,
 
 	-- D-pad left
@@ -279,6 +312,9 @@ scene.inputHandler = {
 	end,
 	leftButtonUp = function()
 		player:idle()
+		if shadow then
+			shadow:refresh()
+		end
 	end,
 
 	-- D-pad right
@@ -291,6 +327,9 @@ scene.inputHandler = {
 	end,
 	rightButtonUp = function()
 		player:idle()
+		if shadow then
+			shadow:refresh()
+		end
 	end,
 
 	-- D-pad up
@@ -303,6 +342,9 @@ scene.inputHandler = {
 	end,
 	upButtonUp = function()
 		player:idle()
+		if shadow then
+			shadow:refresh()
+		end
 	end,
 
 	-- D-pad down
@@ -315,6 +357,9 @@ scene.inputHandler = {
 	end,
 	downButtonUp = function()
 		player:idle()
+		if shadow then
+			shadow:refresh()
+		end
 	end,
 
 	-- Crank
