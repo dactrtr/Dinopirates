@@ -120,7 +120,7 @@ function LoadGame()
 	levels = playdate.datastore.read('levelSave')
 end
 function ResetGame()
-	--PlayerData = json.decodeFile('playerOriginal.json')
+	PlayerData = json.decodeFile('playerOriginal.json')
 	PlayerData = PlayerDataOriginal
 	levels = playdate.datastore.read('levelOriginal')
 end
