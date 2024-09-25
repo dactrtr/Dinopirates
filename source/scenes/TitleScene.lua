@@ -91,6 +91,9 @@ function scene:update()
 	scene.super.update(self)
 	-- Your code here
 	menu:draw(8, 120)
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
+	--Graphics.setColor(playdate.graphics.kColorWhite)
+	Graphics.drawText("*v 0.1*", 2, 2)
 end
 
 -- This runs once per frame, and is meant for drawing code.
@@ -103,12 +106,14 @@ end
 function scene:exit()
 	scene.super.exit(self)
 	-- Your code here
+	--Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 end
 
 -- This runs once a transition to another scene completes.
 function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
+	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 end
 
 function scene:pause()
