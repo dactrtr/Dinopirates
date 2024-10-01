@@ -149,6 +149,7 @@ function scene:enter()
 	PlayerData.direction = 'idle'
 	-- Mark: FX
 	if levels[room].floor.shadow == true then
+		
 		shadow = FXshadow(player, 70, 0.08, ZIndex.fx)
 	else
 		--player:fillBattery() -- Mark: dunno why I ws fillin the battery instantly
@@ -199,9 +200,9 @@ function scene:update()
 	scene.super.update(self)
 	-- Mark: cheat code
 	cheat:update()
-	
+	checkBool(PlayerData.isInDarkness)
 	-- Mark: Crank notification
-	if PlayerData.battery == 0  and playdate.isCrankDocked() and PlayerData.hasLamp == true then
+	if PlayerData.battery == 0  and playdate.isCrankDocked() and PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 	
