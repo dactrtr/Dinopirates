@@ -53,19 +53,31 @@ function scene:init()
 		)
 	
 		--menu:addItem("Old Space", function() Noble.transition(SpaceScene) end)
-		menu:addItem("New Game", function()
-			ResetGame()
-			Noble.transition(Floor107)--107 
-		 end)
-		
 		if playdate.file.exists('playerSave.json') == true then
 			LoadGame()
 			menu:addItem("Continue", function() 
 				Noble.transition(RoomTranslate(PlayerData.saveLevel)) 
 			end)
 		end
+		
+		menu:addItem("New Game", function()
+			ResetGame()
+			Noble.transition(Floor107)--107 
+		 end)
+		
+		
+		if playdate.file.exists('playerSave.json') == true then
+			menu:addItem("Delete save", function() 
+				DeleteGame()
+				Noble.transition(TitleScene)
+			end)
+		end
 		--menu:addItem("Test", function() Noble.transition(TestScene) end)
-		menu:select("New Game")
+		if playdate.file.exists('playerSave.json') == true then
+			menu:select("Continue")
+		else
+			menu:select("New Game")
+		end
 end
 
 -- When transitioning from another scene, this runs as soon as this
@@ -92,7 +104,6 @@ function scene:update()
 	-- Your code here
 	menu:draw(8, 120)
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillWhite)
-	--Graphics.setColor(playdate.graphics.kColorWhite)
 	Graphics.drawText("*v 0.1.1*", 2, 2)
 end
 

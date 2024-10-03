@@ -221,8 +221,6 @@ function scene:exit()
 	
 	SaveGame()
 	
-
-	
 	uiScreen:removeAll()
 	floor:remove()
 	if shadow then

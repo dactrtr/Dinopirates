@@ -126,5 +126,5 @@ end
 function DeleteGame()
 	playdate.file.delete('playerSave.json')
 	playdate.file.delete('levelSave.json')
-	playdate.file.delete('playerOriginal.json')
+	--playdate.file.delete('playerOriginal.json')
 end

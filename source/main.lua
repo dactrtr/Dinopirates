@@ -43,9 +43,6 @@ local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene)
 end)
-local menuItem, error = menu:addMenuItem("Delete Save", function()
-	DeleteGame()
-end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	if debug == false then
 		debug = true
