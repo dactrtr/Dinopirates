@@ -200,7 +200,6 @@ function scene:update()
 	scene.super.update(self)
 	-- Mark: cheat code
 	cheat:update()
-	checkBool(PlayerData.isInDarkness)
 	-- Mark: Crank notification
 	if PlayerData.battery == 0  and playdate.isCrankDocked() and PlayerData.hasLamp == true and PlayerData.isInDarkness == true then
 		playdate.ui.crankIndicator:draw(0, 0)
@@ -289,7 +288,15 @@ scene.inputHandler = {
 	-- B button
 	--
 	BButtonDown = function()
-	
+	if PlayerData.hasKey == true then
+		print("has key")
+	end
+	if PlayerData.hasLamp == true then
+		print("has lamp")
+	end
+	if PlayerData.hasRadio == true then
+		print("has radio")
+	end
 	end,
 	BButtonHeld = function()
 		

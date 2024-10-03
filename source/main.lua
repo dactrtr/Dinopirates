@@ -8,7 +8,7 @@ import 'scenes/Floors'
 --import 'scenes/StarScene'
 import 'scenes/TestScene'
 import 'scenes/TitleScene'
-import 'assets/data/PlayerData'
+import 'assets/data/PlayerDataTables'
 import 'assets/data/levels'
 import 'assets/data/script'
 
