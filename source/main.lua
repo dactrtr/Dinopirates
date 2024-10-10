@@ -38,7 +38,8 @@ CollideGroups = {
 	items = 4,
 	wall = 5
 }
-playdate.datastore.write(levels, 'levelOriginal', true) -- DEBUG
+playdate.datastore.write(levels, 'levelOriginal', true) 
+playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)-- DEBUG
 local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene)
