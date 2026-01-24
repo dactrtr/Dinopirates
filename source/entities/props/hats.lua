@@ -11,7 +11,7 @@ function Hats:init(x, y, type, zIndex)
   --- animation states
   self.animation:addState('CM001', 1, 1)
   self.animation:addState('CM002', 2, 2)
-  self.animation:addState('CM003', 2, 2)
+  self.animation:addState('CM003', 3, 3)
   self.animation:setState(type)
   -- position and z-index
   self:setSize(20, 16)

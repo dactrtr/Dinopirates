@@ -19,9 +19,9 @@ function Player:lightBurst()
         return
     end
     
-    -- Check if lamp is available
-    if not PlayerData.items.hasLamp then
-        print("No lamp available!")
+    -- Check if lamp is available (item + skill)
+    if not PlayerData.items.hasLamp or not PlayerData.skills.canFlash then
+        print("No lamp or flash skill available!")
         return
     end
     
@@ -74,7 +74,7 @@ function Player:lightBurst()
     -- Distribute motion tokens to enemies/crew
     self:distributeMovementTokens(1) -- 1 Token = ~1 second of movement
     
-    print("✅ Light burst completed!")
+    printDebug("✅ Light burst completed!")
 end
 
 function Player:createLightCone(direction)

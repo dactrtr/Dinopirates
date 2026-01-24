@@ -8,7 +8,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	
 	-- error handling
 	if moveSpeed == nil then
-		moveSpeed = 1
+		moveSpeed = 1.5
 	end
 	-- MARK: Animation states
 	self.animation:addState('walk', 1, 4)
@@ -18,6 +18,8 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	-- self.animation:addState('hide', 9, 11, 'hole')
 	self.animation:addState('hide', 12, 13)
 	self.animation.hide.frameDuration = 6
+	self.animation:addState('stunned', 15, 18)
+	self.animation.stunned.frameDuration = 6
 	-- self.animation.hole.frameDuration = 4
 		
 	self:setSize(48, 48)
@@ -28,6 +30,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.position = position
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
+	self.damage = 0
 	self.player = player
 	self.Zindex = Zindex
 	self.crewId = crewId  -- Store the crew member ID
@@ -35,12 +38,12 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	-- Performance: Frame counter for throttling updates
 	self.updateFrameCounter = math.random(0, 2) -- Random offset to stagger enemy updates
 	
-	self:setGroups(CollideGroups.enemy)
+	self:setGroups(CollideGroups.crewMember)
 	self:setCollidesWithGroups({
-		CollideGroups.player,
 		CollideGroups.props,
 		CollideGroups.wall,
-		CollideGroups.enemy
+		CollideGroups.enemy,
+		CollideGroups.crewMember
 	})
 	self.iid = iid
 	self:setZIndex(self.Zindex)
@@ -66,7 +69,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.recentBounceCount = 0 -- How many bounces happened recently  
 	self.bounceCountDecayFrames = 0 -- Frames until bounce count decays
 	self.bounceCountDecayRate = 30 -- Frames before bounce count resets (if no new bounces)
-	self.bouncesRequiredToHide = 3 -- Number of bounces in quick succession to trigger hiding
+	self.bouncesRequiredToHide = 2 -- Number of bounces in quick succession to trigger hiding
 	-- ============================================
 	
 	-- Store original collide rect for restoration
@@ -77,7 +80,7 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.blindFrames = 0
 	self.blindDuration = 60 -- Default blind duration in frames (approx 2 seconds)
 	
-	print("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
+	printDebug("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
 end
 
 function CrewMember:addMovementTokens(amount)
@@ -147,11 +150,11 @@ function CrewMember:moveCollision(movementX, movementY, player)
 		self.recentBounceCount = self.recentBounceCount + 1
 		self.bounceCountDecayFrames = self.bounceCountDecayRate
 		
-		print("💥 Bounce detected! Count:", self.recentBounceCount, "/ Required:", self.bouncesRequiredToHide) -- Debug
+		printDebug("💥 Bounce detected! Count:", self.recentBounceCount, "/ Required:", self.bouncesRequiredToHide) -- Debug
 		
 		-- Check if enough bounces to trigger hiding (trapped in corner)
 		if self.recentBounceCount >= self.bouncesRequiredToHide then
-			print("🙈 Too many bounces - entering hiding!") -- Debug
+			printDebug("🙈 Too many bounces - entering hiding!") -- Debug
 			self:enterHiding()
 			return
 		end
@@ -182,16 +185,25 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	end
 end
 function CrewMember:collisionResponse(other)
-	-- Allow overlap with minifier props and triggers
-	if other:isa(PropItem) and other.type == 'minifier' then
-		return 'overlap'
-	elseif other:isa(Trigger) then
-		return 'overlap'
-	elseif other:isa(Wall) then
+	-- Physical collisions (walls and props)
+	if other:isa(Box) then
 		-- Use slide for walls so we can move along them
 		return 'slide'
-	else
+	elseif other:isa(Enemy) then
+		-- Slide on enemies (Brocorat, etc.) to trigger bounce
 		return 'slide'
+	elseif other:isa(PropItem) then
+		if other.type == 'minifier' then
+			-- Pass through minifiers
+			return 'overlap'
+		else
+			-- Slide on other props (chairs, tables, etc.)
+			return 'slide'
+		end
+	else
+		-- Pass through everything else in group 3 (Triggers, Items, etc.)
+		-- Note: player and enemy are already ignored via setCollidesWithGroups
+		return 'overlap'
 	end
 end
 
@@ -305,6 +317,10 @@ function CrewMember:taken()
 			else
 				print("🟢 CrewMember marked as taken:", currentIID, "(no crewId)")
 			end
+			-- Restore player's projectile
+			if self.player then
+				self.player.hasProjectile = true
+			end
 			break
 		end
 	end
@@ -313,6 +329,19 @@ function CrewMember:taken()
 	if self.hat then
 		self.hat:remove()
 	end
+end
+
+function CrewMember:stunInfinite()
+    self.isStunnedInfinitely = true
+    self.movementFrames = 0
+    self.animation:setState('stunned')
+    
+    -- Hide the hat while stunned
+    if self.hat then
+        self.hat:setVisible(false)
+    end
+    
+    print("✨ CrewMember stunned INFINITELY!")
 end
 
 -- Blinds the crew member for a specific number of frames
@@ -375,7 +404,7 @@ end
 
 function CrewMember:update()
 	-- Performance: Only update AI every 3 frames
-	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
+	self.updateFrameCounter = (self.updateFrameCounter + 1) % 2
 	
 	-- If hiding, don't move - just check exit conditions periodically
 	if self.isHiding then
@@ -388,21 +417,29 @@ function CrewMember:update()
 		return
 	end
 	
-	if self.isBlinded then
-		self.blindFrames = self.blindFrames - 1
-		if self.blindFrames <= 0 then
-			self.isBlinded = false
-			print("👁️ CrewMember no longer blinded")
+	if self.isBlinded or self.isStunnedInfinitely then
+		if self.isBlinded then
+			self.blindFrames = self.blindFrames - 1
+			if self.blindFrames <= 0 then
+				self.isBlinded = false
+				print("👁️ CrewMember no longer blinded")
+			end
 		end
-		-- Return early to skip movement logic while blinded
+		
+		-- Ensure stunned animation stays active
+		if self.isStunnedInfinitely and self.animation.currentState ~= 'stunned' then
+			self.animation:setState('stunned')
+		end
+		
+		-- Return early to skip movement logic while blinded or stunned infinitely
 		return
 	end
 
 	if self.movementFrames > 0 then
 		self.movementFrames = self.movementFrames - 1
 		
-		-- When tokens are available, move regardless of isActive
-		if self.updateFrameCounter == 0 then
+		-- Performance: Update AI every 2 frames for smoother/faster movement
+		if self.updateFrameCounter % 2 == 0 then
 			self:search(self.player)
 		end
 	else

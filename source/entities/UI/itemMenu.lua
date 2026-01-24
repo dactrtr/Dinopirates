@@ -10,6 +10,8 @@ function itemMenu:init(__item,__zindex)
 	self.animation:addState('lampSelected',2,2)
 	self.animation:addState('boot',3,3)
 	self.animation:addState('bootSelected',4,4)
+	self.animation:addState('plunger',1,1) -- Placeholder frames
+	self.animation:addState('plungerSelected',2,2) -- Placeholder frames
 	self.animation:setState(__item)
 	self:setZIndex(__zindex)
 	self:setSize(32, 32)
@@ -28,6 +30,12 @@ function itemMenu:update()
 			self.animation:setState('bootSelected')
 		else
 			self.animation:setState('boot')
+		end
+	elseif self.item == "plunger" then
+		if PlayerData.activeItem == 3 then
+			self.animation:setState('plungerSelected')
+		else
+			self.animation:setState('plunger')
 		end
 	end
 end

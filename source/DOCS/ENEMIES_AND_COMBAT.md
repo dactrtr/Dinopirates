@@ -19,11 +19,13 @@ Located in `source/assets/data/PlayerDataTables.lua`, these values scale the dif
 - **`blindSearch(player)`**: Moves the enemy directly toward the player's current X/Y.
 - **`linealSearch(player)`**: An alternative AI where enemies only move if the player is aligned on the same X or Y axis.
 - **Speed Scaling**: `updateMoveSpeed()` adjusts enemy speed based on the player's battery and darkness. They slow down significantly when the player is in darkness with low battery.
+- **Group Separation**: Enemies (group `enemy`) are distinct from Crew Members (group `crewMember`). This separation prevents the player from unintentionally triggering combat-specific logic (like the Dance Scene) when interacting with crew members.
 - **Movement Tokens**: Like CrewMembers, enemies use `movementFrames` to throttle their updates for performance.
 
 ### 3. Special Behaviors
 - **Sonar**: `sonar()` makes enemies "shine" when the player is nearby, focused, and in darkness, providing visual feedback of their presence.
-- **Blinding**: `blind(frames)` temporarily stops enemy movement when hit by a light flash.
+- **Projectile (Plungerang)**: Hit detection logic in `projectile.lua` includes `CollideGroups.enemy`. If hit, `hitEntity(other)` is called, which typically blinds/stuns the enemy for 60 frames.
+- **Blinding**: `blind(frames)` temporarily stops enemy movement when hit by a light flash or projectile.
 - **Edible Props**: Some enemies can "eat" certain `PropItem` objects if their `powerLevel` is high enough.
 
 ---

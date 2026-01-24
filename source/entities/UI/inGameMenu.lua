@@ -29,6 +29,7 @@ function inGameMenu:init()
   
   lampItem = itemMenu("lamp",ZIndex.menu+3)
   bootItem = itemMenu("boot",ZIndex.menu+3)
+  plungerItem = itemMenu("plunger",ZIndex.menu+3)
   self:add()
 end
 
@@ -51,8 +52,8 @@ end
 
 function inGameMenu:drawCrewHats()
     -- Create sprites for captured crew member hats in the menu
-    local hatX = 232  -- Starting X position for hats
-    local hatY = 13  -- Starting Y position for hats
+    local hatX = 43  -- Starting X position for hats
+    local hatY = 108  -- Starting Y position for hats
     local hatSpacing = 20  -- Space between hats
     local rowSpacing = 16  -- Space between rows
     local maxHatsPerRow = 8 -- Max hats before starting a new row
@@ -78,33 +79,28 @@ function inGameMenu:drawCrewHats()
             end
         end
         
-        -- Sort the crew IDs alphabetically (CM001, CM002, CM003, etc.)
-        table.sort(capturedCrewIds)
-        
-        -- Create sprites in sorted order
-        for _, crewId in ipairs(capturedCrewIds) do
-            -- Get the hat image based on crew ID
-            local hatFrameIndex = 1  -- Default to first frame
-            if crewId == "CM001" then
-                hatFrameIndex = 1
-            elseif crewId == "CM002" then
-                hatFrameIndex = 2
-            elseif crewId == "CM003" then
-                hatFrameIndex = 3
-            end
-            
-            -- Create a sprite for this hat
-            local hatImage = hatSpriteSheet:getImage(hatFrameIndex)
-            if hatImage then
-                local hatSprite = Graphics.sprite.new(hatImage)
-                hatSprite:setCenter(0, 0)
-                local row = math.floor(hatIndex / maxHatsPerRow)
-                local col = hatIndex % maxHatsPerRow
-                hatSprite:moveTo(hatX + (col * hatSpacing), hatY + (row * rowSpacing))
-                hatSprite:setZIndex(ZIndex.menu + 9)
-                hatSprite:add()
-                table.insert(self.hatSprites, hatSprite)
-                hatIndex += 1
+        -- Create sprites based on crew ID to ensure fixed positions
+        for crewId, isCaptured in pairs(PlayerData.CrewMemberData.idNumbers) do
+            if isCaptured then
+                -- Get the slot index from the ID (CM001 -> 0, CM002 -> 1, CM003 -> 2)
+                local idSuffix = crewId:match("(%d+)$")
+                local slotIndex = tonumber(idSuffix) - 1
+                
+                -- Get the hat image based on crew ID
+                local hatFrameIndex = tonumber(idSuffix)
+                
+                -- Create a sprite for this hat
+                local hatImage = hatSpriteSheet:getImage(hatFrameIndex)
+                if hatImage then
+                    local hatSprite = Graphics.sprite.new(hatImage)
+                    hatSprite:setCenter(0, 0)
+                    local row = math.floor(slotIndex / maxHatsPerRow)
+                    local col = slotIndex % maxHatsPerRow
+                    hatSprite:moveTo(hatX + (col * hatSpacing), hatY + (row * rowSpacing))
+                    hatSprite:setZIndex(ZIndex.menu + 9)
+                    hatSprite:add()
+                    table.insert(self.hatSprites, hatSprite)
+                end
             end
         end
     end
@@ -114,6 +110,7 @@ function inGameMenu:closeMenu()
     shadow:clear(Graphics.kColorClear)
     lampItem:remove()
     bootItem:remove()
+    plungerItem:remove()
     if menuSprite then
         menuSprite:remove()
     end
@@ -181,6 +178,9 @@ function inGameMenu:selectItem()
     elseif PlayerData.activeItem == 2 and PlayerData.skills.canDash == true then
         print("dash selected!")
         -- Acción para las botas
+    elseif PlayerData.activeItem == 3 and PlayerData.skills.canPlungerang == true then
+        print("plunge selected!")
+        -- Acción para el desatascador
     end
 end
 
@@ -189,6 +189,7 @@ function inGameMenu:getActiveSkillsCount()
     local count = 0
     if PlayerData.skills.canFlash == true then count = count + 1 end
     if PlayerData.skills.canDash == true then count = count + 1 end
+    if PlayerData.skills.canPlungerang == true then count = count + 1 end
     return count
 end
 
@@ -197,6 +198,7 @@ function inGameMenu:getActiveSkillsList()
     local skills = {}
     if PlayerData.skills.canFlash == true then table.insert(skills, 1) end  -- 1 = Flash/Lamp
     if PlayerData.skills.canDash == true then table.insert(skills, 2) end   -- 2 = Dash/Boot
+    if PlayerData.skills.canPlungerang == true then table.insert(skills, 3) end  -- 3 = Plunge/Plunger
     return skills
 end
 
@@ -245,6 +247,9 @@ function inGameMenu:update()
     end
     if PlayerData.skills.canDash == true then
         bootItem:show(48, 153)
+    end
+    if PlayerData.skills.canPlungerang == true then
+        plungerItem:show(78, 153) -- Positioned next to boot
     end
   end
 end

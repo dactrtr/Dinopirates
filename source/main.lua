@@ -69,7 +69,8 @@ CollideGroups = {
 	props = 3,
 	items = 4,
 	wall = 5,
-	noCollide = 6
+	noCollide = 6,
+	crewMember = 7
 }
 
 -- Button type constants
@@ -105,7 +106,6 @@ if levelsLDTK then
 			roomsByIid[room.uniqueIdentifer] = room
 		end
 	end
-	print("📋 Room index created with " .. table.getsize(roomsByIid) .. " rooms")
 end
 
 local menu = playdate.getSystemMenu()

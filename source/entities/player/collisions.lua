@@ -6,7 +6,20 @@ function Player:collisionResponse(other)
       PlayerData.lastEnemyTouched.id = other.id
       PlayerData.lastEnemyTouched.x = other.x
       PlayerData.lastEnemyTouched.y = other.y
-      self:fight()
+      
+      -- Add damage logic
+      if not self.isInvincible then
+        PlayerData.healthPoints -= (other.damage or 1)
+        print("💥 Player hit by Brocorat! HP:", PlayerData.healthPoints)
+        
+        -- Trigger dance only if HP < threshold
+        if PlayerData.healthPoints < (PlayerData.danceThresholdHP or 5) then
+          self:fight()
+        else
+          self:startInvincibility(1000) -- 1 second cooldown
+        end
+      end
+      
       return 'overlap'
 
     end
@@ -17,7 +30,9 @@ function Player:collisionResponse(other)
       if other.crewId == 'CM001' then
         -- custom screen here after validating the crewId
       end
-      self.dialogUI:addScreen("gotcha",other.sourceFeed)
+      
+      
+      self.dialogUI:addScreen("gotcha",other.sourceFeed) -- default screen for the 1st time
     end
     other:taken()
 
@@ -74,7 +89,12 @@ function Player:collisionResponse(other)
 
   elseif other:isa(Items) and other.type == 'notes' then
     other:removeAll()
-    self:grabNotes()
+    self:grabNotes(other.grants)
+    return 'overlap'
+
+  elseif other:isa(Items) and (other.type == 'itemgift' or other.type == 'itemGift') then
+    other:removeAll()
+    self:grabItemGift(other.grants)
     return 'overlap'
 
   elseif other:isa(Items) and other.type == 'bag' then
@@ -97,9 +117,9 @@ function Player:collisionResponse(other)
     self:grabBoots()
   return 'overlap'
 
-  elseif other:isa(Items) and other.type == 'antislip' then
+  elseif other:isa(Items) and other.type == 'plunger' then
     other:removeAll()
-    self:grabAntiSlip()
+    self:grabPlunger()
   return 'overlap'
 
   elseif other:isa(PropItem) and other.isHole then
@@ -118,16 +138,16 @@ function Player:collisionResponse(other)
   end
   
   elseif other:isa(PropItem) and other.isSlime then
-    -- If player has antislip boots with battery, can walk over slime
-    if PlayerData.items.hasAntiSlip == true and PlayerData.battery > 0 then
+    -- If player has plunger boots, can walk over slime (no battery required)
+    if PlayerData.items.hasPlunger == true then
       if PlayerData.isTiny == true then
-        self:drainBattery(0.2)
+        -- No battery drain
       else
-        self:drainBattery(0.5)
+        -- No battery drain
       end
       return 'overlap'
     else
-      -- Without antislip or without battery = slide
+      -- Without plunger or without battery = slide
       self:startSliding(self.direction)
       return 'overlap'
     end
@@ -136,11 +156,7 @@ function Player:collisionResponse(other)
     self.currentMinifier = other
     PlayerData.readyToShrink = true
     self:showUIHUD()
-    if PlayerData.isTiny == false then
-      self.uiHud:setCrankAntiClock()
-    else
-      self.uiHud:setCrankClock()
-    end
+    self.uiHud:setPressA()
     
   return 'overlap'
 

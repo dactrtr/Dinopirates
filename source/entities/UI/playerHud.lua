@@ -4,10 +4,12 @@ class("playerHud").extends(NobleSprite)
 import "entities/UI/battery"
 import "entities/UI/keyHud"
 import "entities/UI/sanityHud"
+import "entities/UI/healthIndicator"
 
 local batteryIndicator = nil
 local keyIndicator = nil
 local sanityIndicator = nil
+local healthIndicator = nil
 
 -- local background <const> = Graphics.image.new('assets/images/ui/statusbar.png')
 
@@ -17,7 +19,7 @@ function playerHud:init(player)
 	
 	-- Mark: animation states
 	local frameduration = 12
-	self.animation:addState('sanity100', 1, 2)
+	self.animation:addState('sanity100', 1, 1)
 	self.animation.sanity100.frameDuration =  frameduration
 	self.animation:addState('sanity80', 3, 4)
 	self.animation.sanity80.frameDuration = frameduration
@@ -46,6 +48,7 @@ function playerHud:init(player)
 	self:moveTo(x, y)
 	
 	self.batteryIndicator = Battery(x,y, player, ZIndex.hud+1)
+	self.healthIndicator = HealthIndicator(x, y, player, ZIndex.hud+2)
 	self:add()
 end
 
@@ -57,6 +60,10 @@ function playerHud:update()
 		
 		if self.batteryIndicator then
 			self.batteryIndicator:moveTo(tx , ty-3)
+		end
+		
+		if self.healthIndicator then
+			self.healthIndicator:moveTo(tx, ty)
 		end
 	end
 
@@ -79,6 +86,9 @@ end
 function playerHud:removeAll()
 	if self.batteryIndicator then
 		self.batteryIndicator:remove()
+	end
+	if self.healthIndicator then
+		self.healthIndicator:remove()
 	end
 	self:remove()
 end

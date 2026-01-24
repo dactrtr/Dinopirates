@@ -11,13 +11,6 @@ local achievementData = {
 			scoreValue = 2
 		},
 		{
-			id = "notebook",
-			name = "Dear diary",
-			description = "Its easier to navigate with a map",
-			descriptionLocked = "How can I track this?",
-			icon = "assets/images/achievements/achievements-2"
-		},
-		{
 			id = "comms",
 			name = "Moshi moshi",
 			description = "Achievement 1 Description",

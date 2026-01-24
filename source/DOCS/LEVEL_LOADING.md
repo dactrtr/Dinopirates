@@ -46,7 +46,7 @@ Before Entering, the game searches `levelsLDTK` for the entry matching the desir
 ### 3. Entity Spawning
 The scene iterates through the room's `entities` table:
 - **Props**: Spawns `PropItem` instances, checking if they were previously `destroyed`.
-- **Items**: Spawns `Items` (pickups) only if the player doesn't already have them.
+- **Items**: Spawns `Items` (pickups) only if the player doesn't already have them. For `itemgift` and `notes`, it checks the `grants` field to see if the player owns the specific items or skills listed.
 - **Enemies**: Spawns `Brocorat`, `Bosscolli`, or `CrewMember` based on their `dead` or `isTaken` status.
 
 ---

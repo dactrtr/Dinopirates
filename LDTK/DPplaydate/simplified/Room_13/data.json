@@ -33,7 +33,7 @@
 		}
 	],
 	"customFields": {
-		"shadow": false,
+		"shadow": true,
 		"light": 0,
 		"visited": false,
 		"comic_name": null,
@@ -96,6 +96,22 @@
 					"NeedsKey": true,
 					"DoorsConnection": "Right",
 					"KeyNumber": 1
+				}
+			}
+		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "8d8b4e70-d380-11f0-88fd-ff6f09b90ad9",
+				"layer": "CrewMembers",
+				"x": 124,
+				"y": 76,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "CM002"
 				}
 			}
 		]

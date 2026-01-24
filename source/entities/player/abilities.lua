@@ -23,6 +23,9 @@ function Player:useAbility()
     elseif activeItem == 2 then
         -- Boot ability (Dash)
         self:useBootAbility()
+    elseif activeItem == 3 then
+        -- Plunger ability (Plunge)
+        self:usePlungeAbility()
     else
         print("Unknown item selected: " .. tostring(activeItem))
     end
@@ -38,4 +41,10 @@ end
 function Player:useBootAbility()
     -- Call the existing dash function
     self:dash()
+end
+
+-- Plunger ability - Boomerang projectile
+function Player:usePlungeAbility()
+    -- Call the new plunge function
+    self:plunge()
 end

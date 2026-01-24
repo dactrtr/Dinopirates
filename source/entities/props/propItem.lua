@@ -91,9 +91,9 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
       self:clearCollideRect()
     end
     if self.isHole then
-      print("🕳️  Hole created:", type, "at", x, y)
+      printDebug("🕳️  Hole created:", type, "at", x, y)
     else
-      print("💧 Slime created:", type, "at", x, y)
+      printDebug("💧 Slime created:", type, "at", x, y)
     end
   end
 

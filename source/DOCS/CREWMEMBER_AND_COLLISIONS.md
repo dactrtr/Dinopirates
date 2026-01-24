@@ -15,11 +15,17 @@ The `CrewMember` is a specialized enemy entity with complex behavior for escapin
     - `addMovementFrames(frames)`: Adds raw frames of movement (capped at 90).
     - The `update` loop only processes AI search/movement if `movementFrames > 0`.
 
-### 2. Collision & Bouncing
-In `moveCollision(movementX, movementY, player)`, the entity detects if its movement is blocked by walls or props:
-- **Slide Response**: Returns `'slide'` for walls/props to allow moving along surfaces.
-- **Bounce Mechanic**: If blocked, it increments `recentBounceCount`.
-- **Direction Redirect**: If a collision is detected, it enters a "bounce" state for 20 frames, choosing a perpendicular direction (up/down if horizontal block, left/right if vertical block).
+### 2. Collision & Bouncing [UPDATED]
+The `CrewMember` has refined collisions to balance navigation and obstacle avoidance.
+- **Collision Mask**: It uses the dedicated `CollideGroups.crewMember` group. It checks for collisions with `CollideGroups.props`, `CollideGroups.wall`, and `CollideGroups.enemy`.
+- **Response Logic (`collisionResponse`)**:
+    - **Walls (`Box`)**: Set to `'slide'`.
+    - **Enemies (`Enemy`)**: Set to `'slide'`. This blocks movement and triggers the bounce logic, allowing crew members to avoid each other and other enemies.
+    - **Physical Props**: Set to `'slide'` (chairs, tables, etc.).
+    - **Minifier**: Set to `'overlap'`. Crew members pass through the pod freely without triggering interactions.
+    - **Items & Triggers**: Set to `'overlap'`.
+- **Bounce Mechanic**: If blocked by a physical obstacle (including enemies), it increments `recentBounceCount`.
+- **Direction Redirect**: If blocked, it enters a "bounce" state for 20 frames, choosing a perpendicular direction.
 
 ### 3. Hiding State
 If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`), it enters the **Hiding State**:
@@ -31,6 +37,7 @@ If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`
 
 ### 4. Special Interactions
 - **Blinding**: `blind(frames)` stops the entity for a duration.
+- **Projectile (Plungerang)**: The `Projectile` entity is configured to hit the `crewMember` group. When hit, it calls `stunInfinite()` on the crew member.
 - **Taking**: `taken()` marks the crew member as captured in `PlayerData`, updates the UI count, and removes the sprite.
 
 ---
@@ -39,8 +46,10 @@ If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`
 
 Screens (dialogs/UI overlays) are managed via `PlayerData` and the `dialogUI` component.
 
-### 1. The Collision Hook
+### 1. The Collision Hook [UPDATED]
 In `source/entities/player/collisions.lua`, the `Player:collisionResponse(other)` function handles interactions.
+
+**Note**: Colliding with a `CrewMember` does **NOT** trigger damage, blinking, or invincibility. It only initiates the capture logic.
 
 To show a custom screen when hitting a specific `CrewMember`:
 ```lua

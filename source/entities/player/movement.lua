@@ -1,7 +1,7 @@
 function Player:move(direction)
   if PlayerData.isGaming == true then
-    -- Don't allow normal movement while dashing or sliding
-    if self.isDashing or self.isSliding then
+    -- Don't allow normal movement while dashing, sliding or plunging
+    if self.isDashing or self.isSliding or self.isPlunging then
       return
     end
     

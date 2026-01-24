@@ -198,7 +198,7 @@ function scene:enter()
 					if isKeyEntity then
 						type = "keycard"
 					else
-						type = cf.type or entityType:lower()
+						type = (cf.type or entityType):lower()
 					end
 					
 					-- Get KeyNumber (try both uppercase and lowercase)
@@ -212,7 +212,7 @@ function scene:enter()
 						bag = "items.hasBag",
 						tools = "items.hasTools",
 						boots= "items.hasBoots",
-						antislip = "items.hasAntiSlip"
+						plunger = "items.hasPlunger"
 					}
 					
 					-- Special handling for keycards with key numbers
@@ -222,6 +222,20 @@ function scene:enter()
 						local keyNum = keyNumber or 1
 						shouldGenerate = not PlayerData.keys[keyNum]
 						printDebug("🔑 Checking keycard generation - KeyNumber:", keyNum, "shouldGenerate:", shouldGenerate)
+					elseif cf.grants then
+						-- If item has a grants field, check if player already has those items/skills
+						shouldGenerate = true
+						for pair in string.gmatch(cf.grants, "([^,]+)") do
+							local key, value = string.match(pair, "([^:]+):([^:]+)")
+							if key and value then
+								key = key:gsub("%s+", "")
+								-- Check both items and skills tables
+								if PlayerData.items[key] == true or PlayerData.skills[key] == true then
+									shouldGenerate = false
+									break
+								end
+							end
+						end
 					elseif itemRequirements[type] then
 						-- For other items, check the boolean flag in items table
 						local itemPath = itemRequirements[type]
@@ -236,8 +250,8 @@ function scene:enter()
 					
 					-- Generate item if player doesn't have it
 					if shouldGenerate then
-						printDebug("✅ Generating item:", type, "at position (", x, ",", y, ") with keyNumber:", keyNumber)
-						Items(x, y, type, keyNumber)
+						printDebug("✅ Generating item:", type, "at position (", x, ",", y, ") with keyNumber:", keyNumber, "grants:", cf.grants)
+						Items(x, y, type, keyNumber, cf.grants)
 					end
 				end
 			end
@@ -288,7 +302,7 @@ function scene:enter()
 				for _, enemy in ipairs(entitiesList) do
 					local cf = enemy.customFields or {}
 					local x, y, id = enemy.x, enemy.y, enemy.iid
-					local speed = cf.speed or 1
+					local speed = cf.speed
 					local dead = cf.dead or false
 	
 					if not dead then
@@ -313,7 +327,7 @@ function scene:enter()
 		for i, crewData in ipairs(entities.CrewMember) do
 			local cf = crewData.customFields or {}
 			local x, y = crewData.x, crewData.y
-			local speed = cf.speed or 1
+			local speed = cf.speed
 			local crewId = cf.crewID or i
 			local crewIid = crewData.iid
 			local taken = cf.isTaken or false
@@ -465,6 +479,11 @@ scene.inputHandler = {
 		-- Seleccionar item cuando está en el menú de equipamiento
 		if PlayerData.isEquiping == true then
 			inGameEquip:selectItem()
+		end
+
+		-- Trigger minifier if ready
+		if PlayerData.readyToShrink == true and PlayerData.isGaming == true then
+			player:startMinifying()
 		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
@@ -628,46 +647,45 @@ scene.inputHandler = {
 			player:burnCalories(1)
 		end
 		
-		if PlayerData.readyToShrink == true and PlayerData.actualPlayerSize < PlayerData.playerSize and PlayerData.actualPlayerSize > 0 then
-			player:transformCycle()
-		end
-		
 		if PlayerData.isGaming == true then
 			if ticksValue > 0 then
-				if player.loadingPower then
-					-- posible charged skill
-				end
-				
-				if PlayerData.battery < 100 and PlayerData.readyToShrink == false and  PlayerData.isTiny == false then
+				if PlayerData.battery < 100 and PlayerData.readyToShrink == false and PlayerData.isTiny == false then
 					player:chargeBattery(3)
 					if shadow then
 						shadow:refresh()
 					end
 				end
-				
-				if PlayerData.readyToShrink == true and PlayerData.isTiny == true then
-					PlayerData.actualPlayerSize += 1
-					if PlayerData.actualPlayerSize == PlayerData.playerSize then
-						player:grow()
+			end
+		else
+			-- Handle manual transformation when locked on minifier
+			if PlayerData.readyToShrink == true then
+				if ticksValue ~= 0 then
+					player:transformCycle()
+					
+					if not PlayerData.isTiny then
+						-- Shrinking (Counter-clockwise)
+						if ticksValue < 0 then
+							PlayerData.actualPlayerSize -= math.abs(ticksValue)
+							if PlayerData.actualPlayerSize <= 0 then
+								PlayerData.actualPlayerSize = 0
+								player:shrink()
+								player:finishMinifying()
+							end
+						end
+					else
+						-- Growing (Clockwise)
+						if ticksValue > 0 then
+							PlayerData.actualPlayerSize += math.abs(ticksValue)
+							if PlayerData.actualPlayerSize >= PlayerData.playerSize then
+								PlayerData.actualPlayerSize = PlayerData.playerSize
+								player:grow()
+								player:finishMinifying()
+							end
+						end
 					end
 				end
 			end
-			
-			if (ticksValue < 0) then
-				if PlayerData.readyToShrink == true and PlayerData.isTiny == false then
-					PlayerData.actualPlayerSize -= 1
-					if PlayerData.actualPlayerSize == 0 then
-						player:shrink()
-					end
-				end
-			end
-			
 		end
-		
-		
-		
-		
-
 		-- scene:PowerCrank()
 		
 	end,

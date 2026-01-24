@@ -84,27 +84,12 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "d954c9c0-d380-11f0-a276-551a34d10b3c",
-				"layer": "Doors",
-				"x": 88,
-				"y": 232,
-				"width": 48,
-				"height": 16,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
 				"iid": "e1699320-d380-11f0-a276-052d46aa38e7",
 				"layer": "Doors",
 				"x": 344,
-				"y": 232,
+				"y": 236,
 				"width": 16,
-				"height": 16,
+				"height": 8,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
@@ -146,7 +131,7 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": "tinyKnifeTiny",
+					"tinyScript": "tinyKnife",
 					"conditionalScripts": [
 						"items.hasLamp:nolamp"
 					]
@@ -204,6 +189,21 @@
 					"mapPercent": 0,
 					"tinyScript": null,
 					"conditionalScripts": []
+				}
+			}
+		],
+		"Plunger": [
+			{
+				"id": "Plunger",
+				"iid": "6c594530-d380-11f0-88fd-99e8bcab21ec",
+				"layer": "Items",
+				"x": 324,
+				"y": 156,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "plunger"
 				}
 			}
 		],
@@ -599,23 +599,6 @@
 				"color": 12470831,
 				"customFields": {
 					"type": "kitchenStorage",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Minifier": [
-			{
-				"id": "Minifier",
-				"iid": "c8814d60-d380-11f0-a276-e3aac22ec5f9",
-				"layer": "Props",
-				"x": 108,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 2943221,
-				"customFields": {
-					"type": "minifier",
 					"nocollider": false,
 					"destroyed": false
 				}

@@ -12,7 +12,7 @@ function Player:startSliding(direction)
         return
     end
 
-    print("💧 Slime slide started! Direction:", slideDir)
+    printDebug("💧 Slime slide started! Direction:", slideDir)
     self.isSliding = true
     self.slidingDirection = slideDir
     self.slidingSpeed = 4 -- Slower than dash (8), faster than normal (1-2)
@@ -81,7 +81,7 @@ function Player:updateSliding()
     end
 
     if hitSolid or not overlappingSlime then
-        print("💧 Slime slide ended. HitSolid:", hitSolid, "StillOnSlime:", overlappingSlime)
+        printDebug("💧 Slime slide ended. HitSolid:", hitSolid, "StillOnSlime:", overlappingSlime)
         self:endSliding()
     end
 end
@@ -92,5 +92,5 @@ function Player:endSliding()
     
     -- Restore idle animation
     self:idle()
-    print("✅ Slime slide completed!")
+    printDebug("✅ Slime slide completed!")
 end

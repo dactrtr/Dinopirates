@@ -13,6 +13,8 @@ import "entities/player/dash"
 import "entities/player/abilities"
 import "entities/player/lightburst"
 import "entities/player/sliding"
+import "entities/player/projectile"
+import "entities/player/plunge"
 local dialogUI = nil
 local uiHud = nil
 
@@ -25,14 +27,15 @@ function Player:init(x, y, speed, Zindex)
     self:moveTo(x, y)
     self:setCollideRect(8, 24, 30, 24)
     if PlayerData.isTiny == true then
-        self:setCollideRect(16, 32, 16, 16)
+        self:setCollideRect(17, 32, 14, 14)
     end
     self:setCollidesWithGroups(
         {
             CollideGroups.enemy,
             CollideGroups.props,
             CollideGroups.items,
-            CollideGroups.wall
+            CollideGroups.wall,
+            CollideGroups.crewMember
         })
     self:setGroups(CollideGroups.player)
 
@@ -58,6 +61,8 @@ function Player:init(x, y, speed, Zindex)
     PlayerData.isActive = false
     self.loadingPower = false
     self.isAlive = true
+    self.isInvincible = false
+    self.invincibilityTimer = 0
     self.dashCooldown = 0     -- Cooldown timer for dash attack
     self.lightBurstCooldown = 0 -- Cooldown timer for light burst
 
@@ -73,6 +78,9 @@ function Player:init(x, y, speed, Zindex)
     self.isSliding = false
     self.slidingDirection = nil
     self.slidingSpeed = 4
+
+    self.isPlunging = false
+    self.hasProjectile = true
 
     -- MARK: Add to scene
     self.dialogUI = dialogScreen()

@@ -13,13 +13,22 @@ Items are specialized sprites that grant the player new abilities or resources u
 - **`radio` / `notes`**: Story-relevant items.
 - **`bag`**: Required to capture CrewMembers.
 - **`boots`**: Prevents falling into holes if battery is available.
-- **`antislip`**: Prevents sliding on slime if battery is available.
+- **`plunger`**: Prevents sliding on slime.
+- **`itemgift`**: A generic delivery item that can grant any boolean flag in `PlayerData.items` (e.g., `hasPlunger:true`).
 
-### 2. Interaction Flow
+### 2. Dynamic Grants (LDtk)
+Items like `itemgift` and `notes` use a `grants` custom field in LDtk to dynamically update `PlayerData`.
+- **Format**: `"key1:value1,key2:value2"` (e.g., `"hasPlunger:true"` or `"canFlash:true"`).
+- **Processing**:
+    - `itemgift` updates the `PlayerData.items` table.
+    - `notes` updates the `PlayerData.skills` table.
+- **Conditional Rendering**: In `MazeScene.lua`, items with a `grants` field are only spawned if the player **does not** already possess the granted item/skill. This ensures objects disappear from the world permanently once collected.
+
+### 3. Interaction Flow
 In `collisions.lua`:
 - Hitting an item usually calls `other:removeAll()`.
-- It then calls a corresponding "grab" function on the player (e.g., `self:grabKey(num)` or `self:grabLamp()`).
-- Grabbing an item typically updates a boolean in `PlayerData.items` or `PlayerData.keys`.
+- It then calls a corresponding "grab" function on the player (e.g., `self:grabItemGift(other.grants)` or `self:grabNotes(other.grants)`).
+- Grabbing an item typically updates a boolean in `PlayerData.items`, `PlayerData.skills`, or `PlayerData.keys`.
 
 ---
 
@@ -35,11 +44,14 @@ Props share a single image sheet (`props.png`) and use animation states like `ch
 - **Holes**: Defined by type (e.g., `holeCenter`, `holeLeft`).
     - **Falling**: In `collisions.lua`, hitting a hole without boots/battery triggers `self:fallBelow()`.
     - **Walking**: With boots, the player drains battery but remains in the room.
-- **Minifiers**: Special pods used to change the player's size via a crank interaction (`isTiny`).
+- **Minifiers**: Special pods used to change the player's size (`isTiny`) via a two-stage interaction:
+    1.  **Locking**: Standing on a minifier displays "Press A". Pressing A centers the player and locks movement (`isGaming = false`).
+    2.  **Transformation**: The player must manually rotate the physical **crank** to change size. Rotating counter-clockwise shrinks the player, while clockwise returns them to normal size. The `transformCycle` animation plays during this phase.
+    3.  **Completion**: Once the target size is reached, movement is restored and the player can walk away.
 - **Slime (Tile 46)**: Environmental hazard that causes the player to slide.
     - **Sliding**: When stepped on, the player automatically moves in a straight line at a fixed speed (`slidingSpeed = 4`).
     - **Stopping**: The slide ends if the player hits a solid obstacle (wall, solid prop) or exits the slime patch.
-    - **Antislip Protection**: If the player has **Antislip Boots** and battery, they can walk over slime normally while draining battery.
+    - **Antislip Protection**: If the player has **plunger**, they can walk over slime normally without consuming battery.
     - **Control**: Manual movement is disabled during a slide.
 
 ### 3. Destruction & Persistence
@@ -49,9 +61,14 @@ Props can be destroyed by certain enemies or effects.
 
 ---
 
-## 🌍 World Rendering
-- **Z-Ordering**: Static props and the player use Y-sorting to handle depth correctly.
-- **Occlusion**: `FXshadow` uses prop positions to determine visibility, though mostly it centers on the player's light source.
+## 👥 Entity Interactions
+
+Different entities have distinct rules for interacting with the environment:
+
+- **CrewMember**: Now has its own dedicated collision group (`crewMember`).
+    - **Solid Collisions**: Collide and slide against solid props (chairs, tables, cabinets), walls, and other **Enemies**. Colliding with enemies triggers their "bounce" logic.
+    - **Pass-through**: Pass through non-solid props (Minifier pods, blood, debris), pickup items (Keycards, items), and triggers.
+- **Enemies (Brocorat)**: Standard enemies may have different rules, such as being able to "eat" certain edible props depending on their power level.
 
 > [!TIP]
 > Items use a `FXsonar` instance to "ping" their location, helping the player find them in low-visibility or dark areas.

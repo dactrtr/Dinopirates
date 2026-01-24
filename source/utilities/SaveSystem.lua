@@ -92,10 +92,10 @@ function SaveSystem.restoreLevelState(levelState)
 
             -- Check uniqueIdentifer in case order changed
             if levelsLDTK[i].uniqueIdentifer ~= state.uniqueIdentifer then
-                print("⚠️ Level mismatch at index", i)
+                
                 for j, level in ipairs(levelsLDTK) do
                     if level.uniqueIdentifer == state.uniqueIdentifer then
-                        print("✅ Found correct level at index", j)
+                        
                         i = j
                         break
                     end
@@ -118,11 +118,11 @@ function SaveSystem.restoreLevelState(levelState)
             for entityType, savedEntities in pairs(state.entities) do
                 local targetList = levelsLDTK[i].entities[entityType]
 
-                -- 🔥 Fallback: if entityType does not match, try by layer = "Triggers"
+                -- Fallback: if entityType does not match, try by layer = "Triggers"
                 if not targetList and (entityType == "Triggers") then
                     for key, list in pairs(levelsLDTK[i].entities) do
                         if list[1] and list[1].layer == "Triggers" then
-                            print("🔄 Fallback: redirecting Triggers →", key)
+                            
                             targetList = list
                             break
                         end
@@ -157,7 +157,7 @@ function SaveSystem.restoreLevelState(levelState)
                                         currentEntity.customFields.isTaken = savedEntity.isTaken
                                     end
 
-                                    -- ⭐ TRIGGERS (fix)
+                                    -- Triggers (fix)
                                     if savedEntity.usedTrigger ~= nil then
                                         currentEntity.customFields.usedTrigger = savedEntity.usedTrigger
                                     end
@@ -215,16 +215,16 @@ function SaveSystem.save()
             end
         end
     end
-    print("📊 Saving " .. triggerCount .. " triggers (" .. usedTriggerCount .. " used)")
+    
 
     -- Write to datastore (no .json extension needed)
     local success = playdate.datastore.write(saveData, 'gameState', true)
     
     if success ~= false then
-        print("💾 Game saved successfully")
+        printDebug("💾 Game saved successfully")
         return true
     else
-        print("❌ Failed to save game")
+        printDebug("❌ Failed to save game")
         return false
     end
 end
@@ -259,13 +259,13 @@ function SaveSystem.load()
                     end
                 end
             end
-            print("📊 Loading " .. triggerCount .. " triggers (" .. usedTriggerCount .. " used)")
+            
             
             SaveSystem.restoreLevelState(saveData.levelState)
-            print("✅ Save loaded (LDTK format)")
+            
             return true, saveData.player.saveLevel
         else
-            print("⚠️ Old save format detected, migration needed")
+            printDebug("⚠️ Old save format detected, migration needed")
             return false, nil
         end
     end
@@ -315,7 +315,6 @@ end
 function SaveSystem.createOriginalBackup()
     if not levelsLDTKOriginal then
         levelsLDTKOriginal = table.deepcopy(levelsLDTK)
-        print("📋 Original levelsLDTK backup created")
     end
 end
 

@@ -46,7 +46,7 @@ levelsLDTK = {
 	  }
 	},
 	customFields = {
-	  shadow = true,
+	  shadow = false,
 	  light = 0.5,
 	  visited = false,
 	  comic_name = "pick-the-device",
@@ -61,7 +61,7 @@ levelsLDTK = {
 	  play = "Cutscene"
 	},
 	layers = {
-	  "Tilemap.png"
+	  "BGTilemap.png"
 	},
 	entities = {
 	  Doors = {
@@ -97,57 +97,18 @@ levelsLDTK = {
 		},
 		{
 		  id = "Doors",
-		  iid = "184c7a60-d380-11f0-a276-ef271e0ad648",
-		  layer = "Doors",
-		  x = 88,
-		  y = 8,
-		  width = 48,
-		  height = 16,
-		  color = 7552569,
-		  customFields = {
-			NeedsKey = false,
-			DoorsConnection = "Top",
-			KeyNumber = nil
-		  }
-		},
-		{
-		  id = "Doors",
-		  iid = "1bcb67f0-d380-11f0-a276-2346b055c822",
+		  iid = "c25a9ea0-d380-11f0-a276-5f29b940eae6",
 		  layer = "Doors",
 		  x = 344,
-		  y = 8,
-		  width = 48,
-		  height = 16,
+		  y = 4,
+		  width = 16,
+		  height = 8,
 		  color = 7552569,
 		  customFields = {
 			NeedsKey = false,
 			DoorsConnection = "Top",
 			KeyNumber = nil
 		  }
-		}
-	  },
-	  PlayerSpawnPoints = {
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "c8f4e8d0-ac70-11f0-aeab-7787f16bcbb3",
-		  layer = "PSpawnPoints",
-		  x = 196,
-		  y = 196,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
-		},
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "d3da1040-ac70-11f0-aeab-e9fbfa179061",
-		  layer = "PSpawnPoints",
-		  x = 204,
-		  y = 36,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
 		}
 	  },
 	  CrewMember = {
@@ -155,8 +116,8 @@ levelsLDTK = {
 		  id = "CrewMember",
 		  iid = "8366b660-d380-11f0-8084-d509bca39075",
 		  layer = "CrewMembers",
-		  x = 204,
-		  y = 100,
+		  x = 124,
+		  y = 60,
 		  width = 48,
 		  height = 48,
 		  color = 14984818,
@@ -169,39 +130,56 @@ levelsLDTK = {
 	  Lamp = {
 		{
 		  id = "Lamp",
-		  iid = "16280d40-ac70-11f0-aeab-878c73817b92",
+		  iid = "73408b10-d380-11f0-88fd-fbddcd5c6de8",
 		  layer = "Items",
-		  x = 308,
-		  y = 36,
-		  width = 48,
-		  height = 48,
+		  x = 348,
+		  y = 196,
+		  width = 32,
+		  height = 32,
 		  color = 15389866,
 		  customFields = {
 			type = "lamp"
 		  }
 		}
 	  },
-	  Boots = {
+	  Notes = {
 		{
-		  id = "antislip",
-		  iid = "63ff5cd0-d380-11f0-8084-2fa54ff69747",
+		  id = "Notes",
+		  iid = "6552a7b0-d380-11f0-88fd-8d7e941e4618",
 		  layer = "Items",
-		  x = 308,
-		  y = 100,
-		  width = 48,
-		  height = 48,
+		  x = 356,
+		  y = 68,
+		  width = 32,
+		  height = 32,
 		  color = 15389866,
 		  customFields = {
-			type = "antislip"
+			type = "notes",
+			grants = "canPlungerang:true"
+		  }
+		}
+	  },
+	  ItemGift = {
+		{
+		  id = "ItemGift",
+		  iid = "733afd00-d380-11f0-88fd-bd64032fb015",
+		  layer = "Items",
+		  x = 276,
+		  y = 148,
+		  width = 32,
+		  height = 32,
+		  color = 15389866,
+		  customFields = {
+			type = "itemGift",
+			grants = "hasPlunger:true"
 		  }
 		}
 	  },
 	  Brocorat = {
 		{
 		  id = "Brocorat",
-		  iid = "580605f0-ac70-11f0-8539-0d60ca94c541",
+		  iid = "e2567b60-d380-11f0-a276-63562531dd93",
 		  layer = "Enemies",
-		  x = 340,
+		  x = 68,
 		  y = 204,
 		  width = 32,
 		  height = 32,
@@ -212,177 +190,13 @@ levelsLDTK = {
 		  }
 		}
 	  },
-	  Trash = {
-		{
-		  id = "Trash",
-		  iid = "252024e0-ac70-11f0-aeab-e91d62eb17a6",
-		  layer = "Props",
-		  x = 356,
-		  y = 164,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			nocollider = false,
-			destroyed = false,
-			type = "trash"
-		  }
-		},
-		{
-		  id = "Trash",
-		  iid = "41bbe7b0-ac70-11f0-aeab-930a568dd8e7",
-		  layer = "Props",
-		  x = 316,
-		  y = 164,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			nocollider = false,
-			destroyed = false,
-			type = "trash"
-		  }
-		}
-	  },
-	  Chair = {
-		{
-		  id = "Chair",
-		  iid = "f9aa8a40-d380-11f0-8084-092d86659016",
-		  layer = "Props",
-		  x = 364,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			nocollider = false,
-			destroyed = false,
-			type = "chair"
-		  }
-		},
-		{
-		  id = "Chair",
-		  iid = "fa797300-d380-11f0-8084-0bc7bf19847c",
-		  layer = "Props",
-		  x = 332,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			nocollider = false,
-			destroyed = false,
-			type = "chair"
-		  }
-		}
-	  },
-	  Box = {
-		{
-		  id = "Box",
-		  iid = "fcbfe090-d380-11f0-8084-cb86dd00197e",
-		  layer = "Props",
-		  x = 292,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			nocollider = false,
-			destroyed = false,
-			type = "box"
-		  }
-		},
-		{
-		  id = "Box",
-		  iid = "fd64ac10-d380-11f0-8084-6beaf808de1c",
-		  layer = "Props",
-		  x = 252,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			nocollider = false,
-			destroyed = false,
-			type = "box"
-		  }
-		}
-	  },
-	  Table = {
-		{
-		  id = "Table",
-		  iid = "fee29980-d380-11f0-8084-af8b422ce012",
-		  layer = "Props",
-		  x = 212,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			type = "table",
-			nocollider = false,
-			destroyed = false
-		  }
-		}
-	  },
-	  FellTable = {
-		{
-		  id = "FellTable",
-		  iid = "00bbc650-d380-11f0-8084-17ea7a2862ae",
-		  layer = "Props",
-		  x = 172,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			type = "fellTable",
-			nocollider = false,
-			destroyed = false
-		  }
-		}
-	  },
-	  Toxic = {
-		{
-		  id = "Toxic",
-		  iid = "03095fd0-d380-11f0-8084-9d4759245410",
-		  layer = "Props",
-		  x = 132,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			nocollider = false,
-			destroyed = false,
-			type = "toxic"
-		  }
-		}
-	  },
-	  Smalltable = {
-		{
-		  id = "Smalltable",
-		  iid = "070a4ea0-d380-11f0-8084-cbbd1f7b7474",
-		  layer = "Props",
-		  x = 92,
-		  y = 148,
-		  width = 32,
-		  height = 32,
-		  color = 12470831,
-		  customFields = {
-			type = "smallTable",
-			nocollider = false,
-			destroyed = false
-		  }
-		}
-	  },
 	  Minifier = {
 		{
 		  id = "Minifier",
-		  iid = "160b4520-d380-11f0-8084-e5f28f69cc1a",
+		  iid = "e2facc00-d380-11f0-88fd-e7a9eaa6c333",
 		  layer = "Props",
-		  x = 140,
-		  y = 44,
+		  x = 204,
+		  y = 84,
 		  width = 32,
 		  height = 32,
 		  color = 2943221,
@@ -396,13 +210,13 @@ levelsLDTK = {
 	  Slime = {
 		{
 		  id = "Slime",
-		  iid = "87193ee0-d380-11f0-b365-cbf5a31b90f7",
+		  iid = "e6685470-d380-11f0-88fd-db34493a7ee9",
 		  layer = "Props",
-		  x = 76,
-		  y = 28,
+		  x = 244,
+		  y = 204,
 		  width = 32,
 		  height = 32,
-		  color = 2513986,
+		  color = 1578021,
 		  customFields = {
 			type = "slime",
 			nocollider = false,
@@ -411,13 +225,13 @@ levelsLDTK = {
 		},
 		{
 		  id = "Slime",
-		  iid = "8822bfa0-d380-11f0-b365-5ff81a5395eb",
+		  iid = "e6c8c3f0-d380-11f0-88fd-47079a9a0ad5",
 		  layer = "Props",
-		  x = 76,
-		  y = 60,
+		  x = 212,
+		  y = 204,
 		  width = 32,
 		  height = 32,
-		  color = 2513986,
+		  color = 1578021,
 		  customFields = {
 			type = "slime",
 			nocollider = false,
@@ -426,13 +240,13 @@ levelsLDTK = {
 		},
 		{
 		  id = "Slime",
-		  iid = "895488e0-d380-11f0-b365-b3fcaf8dd7db",
+		  iid = "e810d450-d380-11f0-88fd-5f030745d488",
 		  layer = "Props",
-		  x = 76,
-		  y = 92,
+		  x = 180,
+		  y = 204,
 		  width = 32,
 		  height = 32,
-		  color = 2513986,
+		  color = 1578021,
 		  customFields = {
 			type = "slime",
 			nocollider = false,
@@ -441,13 +255,13 @@ levelsLDTK = {
 		},
 		{
 		  id = "Slime",
-		  iid = "8f89e3e0-d380-11f0-b365-876f09f280f9",
+		  iid = "e8f58f00-d380-11f0-88fd-3115f5984c86",
 		  layer = "Props",
-		  x = 76,
-		  y = 124,
+		  x = 148,
+		  y = 204,
 		  width = 32,
 		  height = 32,
-		  color = 2513986,
+		  color = 1578021,
 		  customFields = {
 			type = "slime",
 			nocollider = false,
@@ -1111,7 +925,7 @@ levelsLDTK = {
 	  play = nil
 	},
 	layers = {
-	  "Tilemap.png"
+	  "BGTilemap.png"
 	},
 	entities = {
 	  Doors = {
@@ -1147,57 +961,18 @@ levelsLDTK = {
 		},
 		{
 		  id = "Doors",
-		  iid = "d954c9c0-d380-11f0-a276-551a34d10b3c",
-		  layer = "Doors",
-		  x = 88,
-		  y = 232,
-		  width = 48,
-		  height = 16,
-		  color = 7552569,
-		  customFields = {
-			NeedsKey = false,
-			DoorsConnection = "Down",
-			KeyNumber = nil
-		  }
-		},
-		{
-		  id = "Doors",
 		  iid = "e1699320-d380-11f0-a276-052d46aa38e7",
 		  layer = "Doors",
 		  x = 344,
-		  y = 232,
-		  width = 48,
-		  height = 16,
+		  y = 236,
+		  width = 16,
+		  height = 8,
 		  color = 7552569,
 		  customFields = {
 			NeedsKey = false,
 			DoorsConnection = "Down",
 			KeyNumber = nil
 		  }
-		}
-	  },
-	  PlayerSpawnPoints = {
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "2d256870-ac70-11f0-aeab-6fff7a188b1a",
-		  layer = "PSpawnPoints",
-		  x = 36,
-		  y = 116,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
-		},
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "262240b0-ac70-11f0-aeab-c3d6b49f013f",
-		  layer = "PSpawnPoints",
-		  x = 196,
-		  y = 196,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
 		}
 	  },
 	  Triggers = {
@@ -1233,9 +1008,10 @@ levelsLDTK = {
 			usedTrigger = false,
 			type = "Search",
 			mapPercent = 0,
-			tinyScript = "tinyKnifeTiny",
+			tinyScript = "tinyKnife",
 			conditionalScripts = {
-			  "items.hasLamp:nolamp"
+			  "isBig:kitchenWeapons",
+			  "isTiny:tinyKnife"
 			}
 		  }
 		},
@@ -1291,6 +1067,21 @@ levelsLDTK = {
 			mapPercent = 0,
 			tinyScript = nil,
 			conditionalScripts = {}
+		  }
+		}
+	  },
+	  Plunger = {
+		{
+		  id = "Plunger",
+		  iid = "6c594530-d380-11f0-88fd-99e8bcab21ec",
+		  layer = "Items",
+		  x = 324,
+		  y = 156,
+		  width = 32,
+		  height = 32,
+		  color = 15389866,
+		  customFields = {
+			type = "plunger"
 		  }
 		}
 	  },
@@ -1632,8 +1423,8 @@ levelsLDTK = {
 		  id = "Smalltable",
 		  iid = "d78991a0-d380-11f0-a276-f7b032b235ae",
 		  layer = "Props",
-		  x = 348,
-		  y = 188,
+		  x = 372,
+		  y = 172,
 		  width = 32,
 		  height = 32,
 		  color = 12470831,
@@ -1686,23 +1477,6 @@ levelsLDTK = {
 		  color = 12470831,
 		  customFields = {
 			type = "kitchenStorage",
-			nocollider = false,
-			destroyed = false
-		  }
-		}
-	  },
-	  Minifier = {
-		{
-		  id = "Minifier",
-		  iid = "c8814d60-d380-11f0-a276-e3aac22ec5f9",
-		  layer = "Props",
-		  x = 108,
-		  y = 196,
-		  width = 32,
-		  height = 32,
-		  color = 2943221,
-		  customFields = {
-			type = "minifier",
 			nocollider = false,
 			destroyed = false
 		  }
@@ -3135,7 +2909,7 @@ levelsLDTK = {
 	  }
 	},
 	customFields = {
-	  shadow = false,
+	  shadow = true,
 	  light = 0,
 	  visited = false,
 	  comic_name = nil,
@@ -3151,7 +2925,7 @@ levelsLDTK = {
 	  play = nil
 	},
 	layers = {
-	  "Tilemap.png"
+	  "BGTilemap.png"
 	},
 	entities = {
 	  Doors = {
@@ -3201,39 +2975,20 @@ levelsLDTK = {
 		  }
 		}
 	  },
-	  PlayerSpawnPoints = {
+	  CrewMember = {
 		{
-		  id = "PlayerSpawnPoints",
-		  iid = "5c1a52c0-ac70-11f0-aeab-5dec0ea534cd",
-		  layer = "PSpawnPoints",
-		  x = 196,
-		  y = 32,
+		  id = "CrewMember",
+		  iid = "8d8b4e70-d380-11f0-88fd-ff6f09b90ad9",
+		  layer = "CrewMembers",
+		  x = 124,
+		  y = 76,
 		  width = 48,
 		  height = 48,
-		  color = 16705377,
-		  customFields = {}
-		},
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "7a12e670-ac70-11f0-aeab-bd94f6a5fe5a",
-		  layer = "PSpawnPoints",
-		  x = 36,
-		  y = 116,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
-		},
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "c18e4ee0-ac70-11f0-aeab-61d47ecd3507",
-		  layer = "PSpawnPoints",
-		  x = 364,
-		  y = 120,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "CM002"
+		  }
 		}
 	  }
 	}

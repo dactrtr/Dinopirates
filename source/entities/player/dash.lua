@@ -8,6 +8,12 @@ function Player:dash()
         print("Dash requires boots to be equipped!")
         return
     end
+
+    -- Check if can dash (item + skill)
+    if not PlayerData.items.hasBoots or not PlayerData.skills.canDash then
+        print("Skill 'Dash' not available!")
+        return
+    end
     
     -- Check if dash is on cooldown
     if self.dashCooldown and playdate.getCurrentTimeMilliseconds() < self.dashCooldown then
@@ -42,9 +48,9 @@ function Player:dash()
     
     -- Consume battery
     PlayerData.battery = PlayerData.battery - batteryCost
-    print("🔋 Battery consumed: -" .. batteryCost .. " (remaining: " .. PlayerData.battery .. ")")
+    printDebug("🔋 Battery consumed: -" .. batteryCost .. " (remaining: " .. PlayerData.battery .. ")")
     
-    print("🏃 Dash started in direction: " .. direction)
+    printDebug("🏃 Dash started in direction: " .. direction)
     
     -- Set dash state
     self.isDashing = true
@@ -139,7 +145,7 @@ function Player:updateDash()
     
     -- Check if dash is complete
     if self.dashProgress >= self.dashTotalDistance then
-        print("Dash successful!")
+        printDebug("Dash successful!")
         self:endDash()
     end
 end
@@ -156,5 +162,5 @@ function Player:endDash()
         self.animation:setState('idle')
     end
     
-    print("✅ Dash completed!")
+    printDebug("✅ Dash completed!")
 end

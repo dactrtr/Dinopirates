@@ -16,8 +16,8 @@ Doors are initialized based on their location in the room:
 
 ### 2. Room Transitions
 Transitions are handled via `Door:goTo()` and `Door:prevRoom(direction)`:
-- **`prevRoom`**: Calculates where the player should spawn in the **next** room based on where they left the current one (e.g., exiting "top" spawns you at the "bottom" - Y=196 - of the next room).
-- **Navigation**: Uses `Noble.transition` to move to the scene index stored in `PlayerData.floor`.
+- **`prevRoom`**: Calculates where the player should spawn in the **next** room based on where they left the current one (e.g., exiting "top" spawns you at the "bottom" - Y=196 - of the next room). It also sets `PlayerData.lastRoom`.
+- **Navigation**: Uses `Noble.transition` to move to the scene class identified by the room number (e.g. `Floor220`), which is looked up via `RoomTranslate`.
 
 ### 3. LDtk Loading
 Doors are generated dynamically in `MazeScene.lua` via `CreateDoorsFromLDTK(currentRoom)`:
