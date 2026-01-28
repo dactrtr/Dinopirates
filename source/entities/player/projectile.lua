@@ -69,7 +69,7 @@ function Projectile:update()
             for i = 1, length do
                 local other = collisions[i].other
                 if other:isa(CrewMember) then
-                    print("🎯 Projectile hit CrewMember! Projectile lost.")
+                    printDebug("🎯 Projectile hit CrewMember! Projectile lost.")
                     if other.stunInfinite then
                         other:stunInfinite()
                     end
@@ -84,7 +84,7 @@ function Projectile:update()
                     self.returning = true
                     break
                 elseif other:isa(PropItem) or other:isa(Box) then
-                    print("🧱 Projectile hit prop/wall! Returning.")
+                    printDebug("🧱 Projectile hit prop/wall! Returning.")
                     self.returning = true
                     break
                 end
@@ -99,7 +99,7 @@ function Projectile:update()
 end
 
 function Projectile:hitEntity(entity)
-    print("🎯 Projectile hit: " .. tostring(entity))
+    printDebug("🎯 Projectile hit: " .. tostring(entity))
     if entity.blind then
         -- Use standard blind/stun duration
         entity:blind(60)
@@ -107,7 +107,7 @@ function Projectile:hitEntity(entity)
 end
 
 function Projectile:onCaught()
-    print("🪃 Projectile caught!")
+    printDebug("🪃 Projectile caught!")
     if self.player.onProjectileCaught then
         self.player:onProjectileCaught()
     end

@@ -226,4 +226,30 @@ script = {
             
         }
     },
+    {
+        name = "myGift",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "mygift-01",
+    },
+                    {
+        video = 'playerSurprise',
+        text = "mygift-02",
+    },
+                    {
+        video = 'playerHappy',
+        text = "mygift-03",
+    },
+                    {
+        video = 'player',
+        text = "mygift-04",
+    },
+                    {
+        video = 'playerSurprise',
+        text = "mygift-05",
+    }
+            
+        }
+    },
 }

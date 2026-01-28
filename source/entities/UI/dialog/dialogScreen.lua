@@ -58,7 +58,7 @@ function dialogScreen:addScreen(scriptName)
 	end
 	
 	-- Si no se encuentra el diálogo, imprimir error
-	print("Warning: Dialog '" .. scriptName .. "' not found")
+	printDebug("Warning: Dialog '" .. scriptName .. "' not found")
 end
 function dialogScreen:nextDialog()
 	dialogbg:add()
@@ -71,10 +71,12 @@ function dialogScreen:nextDialog()
 		
 		if dialogcounter <= table.getsize(dialogArray)then
 			if videoActive == false then
+				local videoState = dialogArray[dialogcounter].video
 				if PlayerData.isTiny == true then
-					video = videoFeed(400,240,'tiny', ZIndex.alert)
+					-- Check if a tiny version of this state exists, otherwise fallback to 'tiny'
+					video = videoFeed(400,240,videoState .. '-tiny', ZIndex.alert)
 				else	
-					video = videoFeed(400,240,dialogArray[dialogcounter].video, ZIndex.alert)
+					video = videoFeed(400,240,videoState, ZIndex.alert)
 				end
 				videoActive = true
 			end

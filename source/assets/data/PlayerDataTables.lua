@@ -20,8 +20,9 @@ local DefaultPlayerData = {
 	y = 200, 
 	speed = 1.5,
 	healthPoints = 10,
-	danceThresholdHP = 5,
-	battery = 0, 
+	danceThresholdHP = 1,
+	healedHP = 2,
+	battery = 100, 
 	sanity = 100,
 	calories = 100, -- top 500
 	steps = 0,
@@ -74,11 +75,10 @@ local DefaultPlayerData = {
 	items={
 		hasLamp = false,
 		hasRadio = true,
+		hasDWatch = false,
 		hasNotes = true,
 		hasBoots = false,
 		hasPlunger = false,
-		hasBag = false,
-		hasTools = false,
 	},
 	skills ={
 		canFlash = false,
@@ -87,15 +87,13 @@ local DefaultPlayerData = {
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20
-		sightRadius = 50, -- min 50
+		sightRadius = 150, -- min 50
 		isEvolved = false,
 	},
 	CrewMemberData ={
 		amountTaken = 0,
 		idNumbers={
-			CM001 = false,
-			CM002 = false,
-			CM003 = false
+			
 		}
 	}
 }
@@ -106,5 +104,5 @@ PlayerData = deepcopy(DefaultPlayerData)
 -- Global function to reset PlayerData to default state
 function ResetPlayerData()
 	PlayerData = deepcopy(DefaultPlayerData)
-	print("🔄 PlayerData has been reset to defaults")
+	printDebug("🔄 PlayerData has been reset to defaults")
 end

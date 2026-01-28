@@ -68,8 +68,7 @@ scene.backgroundColor = Graphics.kColorWhite
 function scene:init()
 	scene.super.init(self)
 	cheat.onComplete = function()
-		PlayerData.battery = 100
-		player:grabBoots()
+		Utilities.iddqd()
 	end
 	playdate.display.setRefreshRate(50)
 	-- Your code here
@@ -114,9 +113,7 @@ function scene:enter()
 	
 	-- MARK: UI
 	inGameEquip = inGameMenu()
-	-- MARK: Floor tilemap
-	map:setSize(25, 15) -- 25 tiles wide, 15 tiles tall
-	
+
 	renderTileMap(tileMapData[PlayerData.actualTilemap], map)
 	
 	floor = Graphics.sprite.new()
@@ -209,8 +206,6 @@ function scene:enter()
 						lamp = "items.hasLamp",
 						radio = "items.hasRadio",
 						notes = "items.hasNotes",
-						bag = "items.hasBag",
-						tools = "items.hasTools",
 						boots= "items.hasBoots",
 						plunger = "items.hasPlunger"
 					}
@@ -491,7 +486,7 @@ scene.inputHandler = {
 	end,
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
 		-- Your code here
-		if PlayerData.isGaming == true then
+		if PlayerData.isGaming == true and PlayerData.items.hasDWatch == true then
 			inGameEquip:displayMenu(player.x,player.y)
 		end
 	end,
@@ -508,13 +503,14 @@ scene.inputHandler = {
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
 			inGameEquip:closeMenu()
+		-- Break out of minifier if blocked
+		elseif PlayerData.isGaming == false and PlayerData.readyToShrink == true then
+			player:finishMinifying()
 		-- Trigger ability based on selected item
 		elseif PlayerData.isGaming == true and player.isAlive == true then
 			player:useAbility()
 		end
 		player:distributeMovementTokens(5) 
-		print(PlayerData.playerSize)
-		checkBool(PlayerData.isTiny)
 		-- playerFocus() -- Commented out for ability system
 	end,
 	BButtonHeld = function()

@@ -15,10 +15,6 @@ function Items:init(x, y, type, keyNumber, grants)
   self.animation.itemgift.frameDuration = 8 
   self.animation:addState('notes', 10, 12)
   self.animation.notes.frameDuration = 8
-  -- self.animation:addState('tools', 34, 37)
-  -- self.animation.tools.frameDuration = 8
-  -- self.animation:addState('bag', 38, 41)
-  -- self.animation.bag.frameDuration = 8   
   self.animation:addState('boots', 1, 3)
   self.animation.boots.frameDuration = 8  
   self.animation:addState('plunger', 4, 6)

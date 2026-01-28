@@ -4,13 +4,13 @@
 function Player:lightBurst()
     -- Validate that lamp is equipped (activeItem == 1)
     if PlayerData.activeItem ~= 1 then
-        print("Light burst requires lamp to be equipped!")
+        printDebug("Light burst requires lamp to be equipped!")
         return
     end
     
     -- Check if light burst is on cooldown
     if self.lightBurstCooldown and playdate.getCurrentTimeMilliseconds() < self.lightBurstCooldown then
-        print("Light burst on cooldown!")
+        printDebug("Light burst on cooldown!")
         return
     end
     
@@ -21,22 +21,22 @@ function Player:lightBurst()
     
     -- Check if lamp is available (item + skill)
     if not PlayerData.items.hasLamp or not PlayerData.skills.canFlash then
-        print("No lamp or flash skill available!")
+        printDebug("No lamp or flash skill available!")
         return
     end
     
     -- Check if there's enough battery 
     local batteryCost = 10
     if PlayerData.battery < batteryCost then
-        print("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
+        printDebug("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
         return
     end
     
-    print("💡 Light burst activated!")
+    printDebug("💡 Light burst activated!")
     
     -- Consume battery
     PlayerData.battery = PlayerData.battery - batteryCost
-    print("🔋 Battery consumed: -" .. batteryCost .. " (remaining: " .. PlayerData.battery .. ")")
+    printDebug("🔋 Battery consumed: -" .. batteryCost .. " (remaining: " .. PlayerData.battery .. ")")
     
     -- Show the light cone
     PlayerData.showLightCone = true
@@ -48,7 +48,7 @@ function Player:lightBurst()
     local lightPolygon = self:createLightCone(direction)
     
     if not lightPolygon then
-        print("Cannot create light cone in idle state")
+        printDebug("Cannot create light cone in idle state")
         PlayerData.showLightCone = false
         return
     end
@@ -62,7 +62,7 @@ function Player:lightBurst()
     end
     
     if #affectedEntities == 0 then
-        print("No entities affected by light burst")
+        printDebug("No entities affected by light burst")
     end
     
     -- Set cooldown (1000ms = 1 second)
@@ -153,7 +153,7 @@ function Player:affectEntity(entity)
     if entity:isa(Brocorat) or entity:isa(Bosscolli) then
         -- For enemies, print that they were blinded with their ID
         local enemyId = entity.id or "unknown"
-        print("👁️ Enemy blinded! ID: " .. tostring(enemyId))
+        printDebug("👁️ Enemy blinded! ID: " .. tostring(enemyId))
         
         -- If enemies also have blinding implementation, call it here
         if entity.blind then
@@ -162,7 +162,7 @@ function Player:affectEntity(entity)
     elseif entity:isa(CrewMember) then
         -- For crew members, call the blind method
         local crewId = entity.crewId or entity.iid or "unknown"
-        print("👁️ Crew member blinded! ID: " .. tostring(crewId))
+        printDebug("👁️ Crew member blinded! ID: " .. tostring(crewId))
         
         if entity.blind then
             entity:blind(blindDuration)

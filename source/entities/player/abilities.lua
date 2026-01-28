@@ -9,7 +9,7 @@ function Player:useAbility()
     
     -- Check if player has items
     if not PlayerData.items or table.getSize(PlayerData.items) == 0 then
-        print("No items available!")
+        printDebug("No items available!")
         return
     end
     
@@ -27,7 +27,7 @@ function Player:useAbility()
         -- Plunger ability (Plunge)
         self:usePlungeAbility()
     else
-        print("Unknown item selected: " .. tostring(activeItem))
+        printDebug("Unknown item selected: " .. tostring(activeItem))
     end
 end
 

@@ -21,7 +21,7 @@ function Trigger:returnScript()
     
     local roomData = levelsLDTK[self.room]
     if not roomData or not roomData.entities or not roomData.entities.Triggers then
-        print("⚠️ No trigger data found for room:", self.room)
+        printDebug("⚠️ No trigger data found for room:", self.room)
         return self.script
     end
     
@@ -75,7 +75,7 @@ function Trigger:returnScript()
                     elseif op == "!=" then isMet = currentVal ~= val
                     end
                     
-                    print(string.format("🔍 Comparación: %s (%s) %s %s -> %s", path, tostring(currentVal), op, valStr, tostring(isMet)))
+                    printDebug(string.format("🔍 Comparación: %s (%s) %s %s -> %s", path, tostring(currentVal), op, valStr, tostring(isMet)))
                 else
                     -- Boolean Logic (Original)
                     local invert = false
@@ -99,11 +99,11 @@ function Trigger:returnScript()
                 if isMet then
                     if isTerminal then
                         cf.usedTrigger = true
-                        print("✅ Trigger marcado como usado (Terminal):", triggerData.iid)
+                        printDebug("✅ Trigger marcado como usado (Terminal):", triggerData.iid)
                     else
-                        print("ℹ️ Trigger mantenido activo (Transient):", triggerData.iid)
+                        printDebug("ℹ️ Trigger mantenido activo (Transient):", triggerData.iid)
                     end
-                    print("✅ Trigger ejecutando script:", targetScript)
+                    printDebug("✅ Trigger ejecutando script:", targetScript)
                     return targetScript
                 end
             end
@@ -115,26 +115,26 @@ function Trigger:returnScript()
     -- EXCEPT if it is a "Search" trigger, which should persist by default.
     if self.type ~= "Search" then
         cf.usedTrigger = true
-        print("✅ Trigger fallback marcado como usado:", triggerData.iid)
+        printDebug("✅ Trigger fallback marcado como usado:", triggerData.iid)
     else
-        print("ℹ️ Trigger Search mantenido activo (Fallback):", triggerData.iid)
+        printDebug("ℹ️ Trigger Search mantenido activo (Fallback):", triggerData.iid)
     end
 
     local scriptToReturn = self.script
     if PlayerData.isTiny and cf.tinyScript then
         scriptToReturn = cf.tinyScript
-        print("🔍 Usando script tiny:", cf.tinyScript)
+        printDebug("🔍 Usando script tiny:", cf.tinyScript)
     end
     
     return scriptToReturn
 end
 
--- ⭐ Función alternativa para marcar como usado sin clearCollideRect
+
 function Trigger:markAsUsed()
     local roomData = levelsLDTK[self.room]
     
     if not roomData or not roomData.entities or not roomData.entities.Triggers then
-        print("⚠️ No trigger data found for room:", self.room)
+        printDebug("⚠️ No trigger data found for room:", self.room)
         return
     end
     
@@ -142,7 +142,7 @@ function Trigger:markAsUsed()
         if triggerData.iid == self.iid then
             local cf = triggerData.customFields or {}
             cf.usedTrigger = true
-            print("✅ Trigger marcado como usado:", triggerData.iid)
+            printDebug("✅ Trigger marcado como usado:", triggerData.iid)
             break
         end
     end

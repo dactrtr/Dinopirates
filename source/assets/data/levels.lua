@@ -125,6 +125,48 @@ levelsLDTK = {
 			isTaken = false,
 			crewID = "CM001"
 		  }
+		},
+		{
+		  id = "CrewMember",
+		  iid = "ab5be230-d380-11f0-88fd-e1d52cbf931c",
+		  layer = "CrewMembers",
+		  x = 84,
+		  y = 116,
+		  width = 48,
+		  height = 48,
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "CM012"
+		  }
+		},
+		{
+		  id = "CrewMember",
+		  iid = "b07c71d0-d380-11f0-88fd-efc30ce22f17",
+		  layer = "CrewMembers",
+		  x = 228,
+		  y = 116,
+		  width = 48,
+		  height = 48,
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "CM015"
+		  }
+		},
+		{
+		  id = "CrewMember",
+		  iid = "b4a58210-d380-11f0-88fd-e74a7cb9ec28",
+		  layer = "CrewMembers",
+		  x = 268,
+		  y = 52,
+		  width = 48,
+		  height = 48,
+		  color = 14984818,
+		  customFields = {
+			isTaken = false,
+			crewID = "CM002"
+		  }
 		}
 	  },
 	  Lamp = {
@@ -154,7 +196,7 @@ levelsLDTK = {
 		  color = 15389866,
 		  customFields = {
 			type = "notes",
-			grants = "canPlungerang:true"
+			grants = "canFlash:true"
 		  }
 		}
 	  },
@@ -170,7 +212,7 @@ levelsLDTK = {
 		  color = 15389866,
 		  customFields = {
 			type = "itemGift",
-			grants = "hasPlunger:true"
+			grants = "has:Plunger"
 		  }
 		}
 	  },
@@ -368,7 +410,7 @@ levelsLDTK = {
 	  play = nil
 	},
 	layers = {
-	  "Tilemap.png"
+	  "BGTilemap.png"
 	},
 	entities = {
 	  Doors = {
@@ -403,30 +445,6 @@ levelsLDTK = {
 		  }
 		}
 	  },
-	  PlayerSpawnPoints = {
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "0cd9e410-ac70-11f0-aeab-b3666237bf74",
-		  layer = "PSpawnPoints",
-		  x = 364,
-		  y = 116,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
-		},
-		{
-		  id = "PlayerSpawnPoints",
-		  iid = "0d9bdf10-ac70-11f0-aeab-cff62883b2fa",
-		  layer = "PSpawnPoints",
-		  x = 196,
-		  y = 196,
-		  width = 48,
-		  height = 48,
-		  color = 16705377,
-		  customFields = {}
-		}
-	  },
 	  Triggers = {
 		{
 		  id = "Triggers",
@@ -440,7 +458,10 @@ levelsLDTK = {
 		  customFields = {
 			script = "giftFor100",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {}
 		  }
 		},
 		{
@@ -455,7 +476,10 @@ levelsLDTK = {
 		  customFields = {
 			script = "giftFor233",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {}
 		  }
 		},
 		{
@@ -470,7 +494,44 @@ levelsLDTK = {
 		  customFields = {
 			script = "entranceMess",
 			usedTrigger = false,
-			type = "Search"
+			type = "Search",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {}
+		  }
+		},
+		{
+		  id = "Triggers",
+		  iid = "54d22370-d380-11f0-88fd-914d0158f881",
+		  layer = "Triggers",
+		  x = 196,
+		  y = 140,
+		  width = 24,
+		  height = 24,
+		  color = 16711748,
+		  customFields = {
+			script = "myGift",
+			usedTrigger = false,
+			type = "Story",
+			mapPercent = 0,
+			tinyScript = nil,
+			conditionalScripts = {}
+		  }
+		}
+	  },
+	  ItemGift = {
+		{
+		  id = "ItemGift",
+		  iid = "ab0e6080-d380-11f0-88fd-23cdcf2dde52",
+		  layer = "Items",
+		  x = 196,
+		  y = 140,
+		  width = 32,
+		  height = 32,
+		  color = 15389866,
+		  customFields = {
+			type = "itemGift",
+			grants = "hasDWatch:true"
 		  }
 		}
 	  },

@@ -22,6 +22,7 @@ local barY = 56
 local condition = nil
 
 
+
 -- Enemy Pattern Profiles
 
 local EnemyPatterns = {
@@ -169,7 +170,7 @@ function scene:enter()
             self.numberOfButtons = 12
         end
         self.enemyEvolving = true
-        print("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+        printDebug("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
     
     else
         -- Roll failed: stay basic
@@ -178,7 +179,7 @@ function scene:enter()
         self.bpm = 16
         self.numberOfButtons = 4
     
-        print("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
+        printDebug("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
     end
 
    -- Create ButtonPress instances using enemy pattern profile
@@ -355,7 +356,8 @@ function scene:update()
       
       resultsScreen:win()
       PlayerData.isDancing = false
-      condition = "win"  
+      condition = "win"
+      
             
    end
    
@@ -371,7 +373,10 @@ end
 
 function scene:exit()
 	scene.super.exit(self)
-
+    
+    -- Player reset
+    PlayerData.healthPoints = 2
+    
 	Noble.Input.setCrankIndicatorStatus(false)
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	sequence:start();
@@ -417,7 +422,9 @@ function scene:checkDanceResults()
             
       -- Find an enemy and kill it
       findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
+      -- health regain
       
+      PlayerData.healthPoints += PlayerData.healedHP
       -- captures player position and goes back to the original room
       PlayerData.playerSpawn.x = PlayerData.playerExit.x
       PlayerData.playerSpawn.y = PlayerData.playerExit.y
@@ -433,6 +440,7 @@ function scene:checkDanceResults()
       
    elseif (condition == "lose") then
       condition = nil
+      
       Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus) 
    end   
 end

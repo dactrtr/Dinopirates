@@ -11,14 +11,6 @@ function Player:grabPlunger()
   self:fillBattery()
 end
 
-function Player:grabBag()
-  PlayerData.items.hasBag = true
-end
-
-function Player:grabTools()
-  PlayerData.items.hasTools = true
-end
-
 function Player:grabKey(keyNumber)
   keyNumber = keyNumber or 1  -- Default to key 1 if no number provided
   PlayerData.keys[keyNumber] = true

@@ -38,6 +38,7 @@ The main controller. It manages:
 ### 2. `videoFeed`
 Displays an animated portrait in the dialog box.
 - Supported states include: `player`, `playerWorry`, `playerSurprise`, `playerHappy`, `playerAngry`, `playerSleepy`, `radioHand`, `radioRing`, `notesHand`, and `tiny`.
+- **Dynamic "Tiny" States**: If the player is in the "tiny" state (`PlayerData.isTiny == true`), the system automatically attempts to display a `-tiny` version of the requested video state (e.g., `radioHand-tiny`). If a specific tiny state is not defined in `videoFeed.lua`, it will fallback to a default behavior or error depending on implementation (currently it appends `-tiny`).
 
 ### 3. `imageScreen`
 A helper sprite used to display static images (defined in the script's `screen` field) above the dialog box.

@@ -5,19 +5,19 @@
 function Player:dash()
     -- Validate that boots are equipped (activeItem == 2)
     if PlayerData.activeItem ~= 2 then
-        print("Dash requires boots to be equipped!")
+        printDebug("Dash requires boots to be equipped!")
         return
     end
 
     -- Check if can dash (item + skill)
     if not PlayerData.items.hasBoots or not PlayerData.skills.canDash then
-        print("Skill 'Dash' not available!")
+        printDebug("Skill 'Dash' not available!")
         return
     end
     
     -- Check if dash is on cooldown
     if self.dashCooldown and playdate.getCurrentTimeMilliseconds() < self.dashCooldown then
-        print("Dash on cooldown!")
+        printDebug("Dash on cooldown!")
         return
     end
     
@@ -36,13 +36,13 @@ function Player:dash()
     
     -- Don't dash if player is idle or hasn't moved yet
     if direction == 'idle' or direction == nil then
-        print("No direction to dash!")
+        printDebug("No direction to dash!")
         return
     end
     -- Check if there's enough battery 
     local batteryCost = 10
     if PlayerData.battery < batteryCost then
-        print("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
+        printDebug("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
         return
     end
     
@@ -135,7 +135,7 @@ function Player:updateDash()
         self:moveWithCollisions(bounceX, bounceY)
         self.uiHud:moveTo(bounceX + self.playerUIX, bounceY - self.playerUIY)
         
-        print("Dash collided! Bouncing back.")
+        printDebug("Dash collided! Bouncing back.")
         self:endDash()
         return
     end

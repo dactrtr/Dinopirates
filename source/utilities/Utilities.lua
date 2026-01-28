@@ -22,7 +22,42 @@ function Box:init(x, y, width, height)
 	self:setGroups(CollideGroups.wall)
 end
 
-
+function Utilities.iddqd()
+	print("IDDQD")
+	PlayerData.items.hasLamp = true
+	PlayerData.items.hasRadio = true
+	PlayerData.items.hasDWatch = true
+	PlayerData.items.hasNotes = true
+	PlayerData.items.hasBoots = true
+	PlayerData.items.hasPlunger = true
+	
+	PlayerData.skills.canFlash = true
+	PlayerData.skills.canDash = true
+	PlayerData.skills.canPlungerang = true
+	
+	PlayerData.CrewMemberData.amountTaken = 21
+	PlayerData.CrewMemberData.idNumbers.CM001 = true
+	PlayerData.CrewMemberData.idNumbers.CM002 = true
+	PlayerData.CrewMemberData.idNumbers.CM003 = true
+	PlayerData.CrewMemberData.idNumbers.CM004 = true
+	PlayerData.CrewMemberData.idNumbers.CM005 = true
+	PlayerData.CrewMemberData.idNumbers.CM006 = true
+	PlayerData.CrewMemberData.idNumbers.CM007 = true
+	PlayerData.CrewMemberData.idNumbers.CM008 = true
+	PlayerData.CrewMemberData.idNumbers.CM009 = true
+	PlayerData.CrewMemberData.idNumbers.CM010 = true
+	PlayerData.CrewMemberData.idNumbers.CM011 = true
+	PlayerData.CrewMemberData.idNumbers.CM012 = true
+	PlayerData.CrewMemberData.idNumbers.CM013 = true
+	PlayerData.CrewMemberData.idNumbers.CM014 = true
+	PlayerData.CrewMemberData.idNumbers.CM015 = true
+	PlayerData.CrewMemberData.idNumbers.CM016 = true
+	PlayerData.CrewMemberData.idNumbers.CM017 = true
+	PlayerData.CrewMemberData.idNumbers.CM018 = true 
+	PlayerData.CrewMemberData.idNumbers.CM019 = true
+	PlayerData.CrewMemberData.idNumbers.CM020 = true
+	PlayerData.CrewMemberData.idNumbers.CM021 = true
+end
 
 -- MARK: Cheat codes
 
@@ -374,7 +409,7 @@ function findAndDestroyPropById(propId)
 				if prop.iid == propId then
 					if not cf.destroyed then
 						cf.destroyed = true
-						print("💥 Prop destroyed:", propId, "in", entityType)
+						printDebug("💥 Prop destroyed:", propId, "in", entityType)
 					end
 					return
 				end
@@ -551,7 +586,6 @@ function Utilities.toggle(value)
   return not value
 end
 
-local TILE_SIZE = 16
 
 function CurrentTile()
 	local floor = PlayerData.actualTilemap or 1

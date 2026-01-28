@@ -5,6 +5,7 @@
 "menuCredits" =			"Credits"
 
 "nolamp-01" = "I need a lamp"
+"nokeys" = "I dont have the key to enter"
 "gotcha-01" = "got you!!"
 
 "wakeup-01" = "wow that was a good *dino nap*, better than those beauty naps.."
@@ -72,3 +73,13 @@
 "notnormalbrocoli-02" = "looks tasty, maybe should I try it?"
 
 "notnormalbrocoli-03" = "no, last time I ate something from the ground ended losing an eye, can’t do that again."
+
+"mygift-01" = "I found a gift?? whats this??"
+
+"mygift-02" = "A DINOWATCH 4 PRO, it has some health metrics"
+
+"mygift-03" = "and I can check message..."
+
+"mygift-04" = "from “dino not human resources” this is a employee watch, isnt even a pro is a SE"
+
+"mygift-05" = "if I hold A I can check my tasks and my health metric..."

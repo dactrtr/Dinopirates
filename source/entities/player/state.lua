@@ -1,11 +1,11 @@
 function Player:fallBelow()
-  print("💀 Player falling...")
+  printDebug("💀 Player falling...")
 
   local currentRoomIndex = PlayerData.floor  -- Current index in levelsLDTK
   local lowerRoomNumber, lowerRoomData = GetLowerRoom(currentRoomIndex)
 
   if not lowerRoomNumber then
-    print("⚠️  Cannot fall from this room")
+    printDebug("⚠️  Cannot fall from this room")
     -- Optional: show message to player
     return
   end
@@ -17,28 +17,28 @@ function Player:fallBelow()
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
 
-    print("✅ Transitioning to room:", lowerRoomNumber)
+    printDebug("✅ Transitioning to room:", lowerRoomNumber)
 
     Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable, {
       imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
       imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
     })
   else
-    print("❌ Scene Floor" .. lowerRoomNumber .. " not found")
+    printDebug("❌ Scene Floor" .. lowerRoomNumber .. " not found")
     -- Fallback: Player fell into the void, transition to DeadScene
-    print("💀 Transitioning to DeadScene (fell into void)")
+    printDebug("💀 Transitioning to DeadScene (fell into void)")
     Noble.transition(DeadScene, 1.5, Noble.Transition.Default)
   end
 end
 
 function Player:riseAbove()
-  print("🚀 Player climbing...")
+  printDebug("🚀 Player climbing...")
 
   local currentRoomIndex = PlayerData.floor
   local upperRoomNumber, upperRoomData = GetUpperRoom(currentRoomIndex)
 
   if not upperRoomNumber then
-    print("⚠️  Cannot climb from this room")
+    printDebug("⚠️  Cannot climb from this room")
     return
   end
 
@@ -48,12 +48,12 @@ function Player:riseAbove()
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
 
-    print("✅ Transitioning to room:", upperRoomNumber)
+    printDebug("✅ Transitioning to room:", upperRoomNumber)
 
     Noble.transition(nextScene, 1.5, Noble.Transition.Default)
   else
-    print("❌ Scene Floor" .. upperRoomNumber .. " not found")
-    print("⚠️  Cannot climb higher (no upper room)")
+    printDebug("❌ Scene Floor" .. upperRoomNumber .. " not found")
+    printDebug("⚠️  Cannot climb higher (no upper room)")
     -- Do nothing, player stays in current room
   end
 end
@@ -111,7 +111,7 @@ end
 
 function Player:shrink()
   PlayerData.isTiny = true
-  self:setCollideRect(17, 32, 14, 14)
+  self:setCollideRect(19, 32, 10, 10)
   self.animation:setState('transformTo')
 end
 
@@ -130,7 +130,7 @@ function Player:startMinifying()
     
     -- Auto center on minifier
     local targetX = self.currentMinifier.x
-    local targetY = self.currentMinifier.y
+    local targetY = self.currentMinifier.y - 10
     self:moveTo(targetX, targetY)
     if shadow then shadow:moveTo(targetX, targetY) end
 

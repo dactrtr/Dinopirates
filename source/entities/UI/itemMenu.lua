@@ -6,8 +6,8 @@ function itemMenu:init(__item,__zindex)
 	itemMenu.super.init(self,'assets/images/ui/menu/menuitems', true)
 	self.item = __item
 	
-	self.animation:addState('lamp',1,1)
-	self.animation:addState('lampSelected',2,2)
+	self.animation:addState('lamp',5,5)
+	self.animation:addState('lampSelected',6,6)
 	self.animation:addState('boot',3,3)
 	self.animation:addState('bootSelected',4,4)
 	self.animation:addState('plunger',1,1) -- Placeholder frames

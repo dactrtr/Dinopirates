@@ -70,7 +70,7 @@ function MapDrawer.drawMap(targetImage)
 	
 	-- Safety check: ensure levelsLDTK exists
 	if not levelsLDTK then
-		print("⚠️  levelsLDTK not loaded")
+		printDebug("⚠️  levelsLDTK not loaded")
 		return
 	end
 	
@@ -83,14 +83,14 @@ function MapDrawer.drawMap(targetImage)
 		
 		-- Skip if essential data is missing
 		if not level or not roomNumber then
-			print("⚠️  Skipping level - missing level or roomNumber")
+			printDebug("⚠️  Skipping level - missing level or roomNumber")
 			goto continue
 		end
 		
 		-- Check if this floor is configured
 		local config = floorConfig[level]
 		if not config then
-			print("⚠️  Floor", level, "not configured, skipping")
+			printDebug("⚠️  Floor", level, "not configured, skipping")
 			goto continue
 		end
 		
@@ -99,7 +99,7 @@ function MapDrawer.drawMap(targetImage)
 		local roomIndexOnFloor = roomNumber - config.startRoom
 		
 		if roomIndexOnFloor < 0 or roomIndexOnFloor >= totalRooms then
-			print("⚠️  Room", roomNumber, "out of bounds for floor", level)
+			printDebug("⚠️  Room", roomNumber, "out of bounds for floor", level)
 			goto continue
 		end
 		

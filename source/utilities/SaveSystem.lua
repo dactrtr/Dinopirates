@@ -270,7 +270,7 @@ function SaveSystem.load()
         end
     end
 
-    print("🔭 No save file found")
+    printDebug("🔭 No save file found")
     return false, nil
 end
 
@@ -283,7 +283,7 @@ function SaveSystem.reset()
     if levelsLDTKOriginal then
         levelsLDTK = table.deepcopy(levelsLDTKOriginal)
     end
-    print("🔄 Game state reset")
+    printDebug("🔄 Game state reset")
 end
 
 
@@ -295,9 +295,9 @@ function SaveSystem.delete()
     local success = playdate.datastore.delete('gameState')
     
     if success ~= false then
-        print("🗑️ Save deleted successfully")
+        printDebug("🗑️ Save deleted successfully")
     else
-        print("⚠️ Could not delete save file (may not exist)")
+        printDebug("⚠️ Could not delete save file (may not exist)")
     end
     
     -- Reset to original state

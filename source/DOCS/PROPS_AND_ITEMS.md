@@ -47,7 +47,8 @@ Props share a single image sheet (`props.png`) and use animation states like `ch
 - **Minifiers**: Special pods used to change the player's size (`isTiny`) via a two-stage interaction:
     1.  **Locking**: Standing on a minifier displays "Press A". Pressing A centers the player and locks movement (`isGaming = false`).
     2.  **Transformation**: The player must manually rotate the physical **crank** to change size. Rotating counter-clockwise shrinks the player, while clockwise returns them to normal size. The `transformCycle` animation plays during this phase.
-    3.  **Completion**: Once the target size is reached, movement is restored and the player can walk away.
+    3.  **Breakout**: If the player is locked in the minifier state (after pressing A), they can press **B** at any time to cancel the process, hide the HUD, and restore normal movement.
+    4.  **Completion**: Once the target size is reached, movement is restored automatically and the player can walk away.
 - **Slime (Tile 46)**: Environmental hazard that causes the player to slide.
     - **Sliding**: When stepped on, the player automatically moves in a straight line at a fixed speed (`slidingSpeed = 4`).
     - **Stopping**: The slide ends if the player hits a solid obstacle (wall, solid prop) or exits the slime patch.

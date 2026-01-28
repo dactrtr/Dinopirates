@@ -10,7 +10,7 @@ function Player:collisionResponse(other)
       -- Add damage logic
       if not self.isInvincible then
         PlayerData.healthPoints -= (other.damage or 1)
-        print("💥 Player hit by Brocorat! HP:", PlayerData.healthPoints)
+        printDebug("💥 Player hit by Brocorat! HP:", PlayerData.healthPoints)
         
         -- Trigger dance only if HP < threshold
         if PlayerData.healthPoints < (PlayerData.danceThresholdHP or 5) then

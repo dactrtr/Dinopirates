@@ -43,7 +43,8 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 		CollideGroups.props,
 		CollideGroups.wall,
 		CollideGroups.enemy,
-		CollideGroups.crewMember
+		CollideGroups.crewMember,
+		CollideGroups.player
 	})
 	self.iid = iid
 	self:setZIndex(self.Zindex)
@@ -140,7 +141,7 @@ function CrewMember:moveCollision(movementX, movementY, player)
 		-- Reset bounce count if enough time passed without bounces
 		if self.recentBounceCount > 0 then
 			self.recentBounceCount = 0
-			-- print("🔄 Bounce count reset") -- Debug
+			-- printDebug("🔄 Bounce count reset") -- Debug
 		end
 	end
 	
@@ -182,6 +183,15 @@ function CrewMember:moveCollision(movementX, movementY, player)
 		
 		-- Set bounce frames (how long to maintain this direction)
 		self.bounceFrames = 20
+	end
+
+	-- Check for player contact to trigger interaction
+	if length > 0 then
+		for _, collision in ipairs(collisions) do
+			if collision.other:isa(Player) then
+				collision.other:collisionResponse(self)
+			end
+		end
 	end
 end
 function CrewMember:collisionResponse(other)
@@ -268,7 +278,7 @@ function CrewMember:exitHiding()
 	self.bounceDirection = nil
 	self.bounceFrames = 0
 	
-	print("👀 CrewMember exited hiding state - CrewID:", self.crewId)
+	printDebug("👀 CrewMember exited hiding state - CrewID:", self.crewId)
 end
 
 -- Check if conditions are met to exit hiding
@@ -313,9 +323,9 @@ function CrewMember:taken()
 			-- Mark the specific crew member as captured in PlayerData using stored crewId
 			if self.crewId then
 				PlayerData.CrewMemberData.idNumbers[self.crewId] = true
-				print("🟢 CrewMember marked as taken:", currentIID, "ID:", self.crewId)
+				printDebug("🟢 CrewMember marked as taken:", currentIID, "ID:", self.crewId)
 			else
-				print("🟢 CrewMember marked as taken:", currentIID, "(no crewId)")
+				printDebug("🟢 CrewMember marked as taken:", currentIID, "(no crewId)")
 			end
 			-- Restore player's projectile
 			if self.player then
@@ -341,7 +351,7 @@ function CrewMember:stunInfinite()
         self.hat:setVisible(false)
     end
     
-    print("✨ CrewMember stunned INFINITELY!")
+    printDebug("✨ CrewMember stunned INFINITELY!")
 end
 
 -- Blinds the crew member for a specific number of frames
@@ -357,7 +367,7 @@ function CrewMember:blind(frames)
     -- Visual feedback: use idle or a specific state if available
     self.animation:setState('idle')
     
-    print("✨ CrewMember blinded! Frames:", self.blindFrames)
+    printDebug("✨ CrewMember blinded! Frames:", self.blindFrames)
 end
 
 function CrewMember:escape(player)
@@ -422,7 +432,7 @@ function CrewMember:update()
 			self.blindFrames = self.blindFrames - 1
 			if self.blindFrames <= 0 then
 				self.isBlinded = false
-				print("👁️ CrewMember no longer blinded")
+				printDebug("👁️ CrewMember no longer blinded")
 			end
 		end
 		

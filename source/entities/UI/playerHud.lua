@@ -67,19 +67,30 @@ function playerHud:update()
 		end
 	end
 
-	local sanity = PlayerData.sanity
-	if sanity > 80 then
-		self.animation:setState('sanity100')
-	elseif sanity > 60 then
-		self.animation:setState('sanity80')
-	elseif sanity > 40 then
-		self.animation:setState('sanity60')
-	elseif sanity > 20 then
-		self.animation:setState('sanity40')
-	elseif sanity > 0 then
-		self.animation:setState('sanity20')
+	local hasDWatch = PlayerData.items.hasDWatch
+	if hasDWatch then
+		self:setVisible(true)
+		if self.batteryIndicator then self.batteryIndicator:setVisible(true) end
+		if self.healthIndicator then self.healthIndicator:setVisible(true) end
+
+		local sanity = PlayerData.sanity
+		if sanity > 80 then
+			self.animation:setState('sanity100')
+		elseif sanity > 60 then
+			self.animation:setState('sanity80')
+		elseif sanity > 40 then
+			self.animation:setState('sanity60')
+		elseif sanity > 20 then
+			self.animation:setState('sanity40')
+		elseif sanity > 0 then
+			self.animation:setState('sanity20')
+		else
+			self.animation:setState('sanity0')
+		end
 	else
-		self.animation:setState('sanity0')
+		self:setVisible(false)
+		if self.batteryIndicator then self.batteryIndicator:setVisible(false) end
+		if self.healthIndicator then self.healthIndicator:setVisible(false) end
 	end
 end
 

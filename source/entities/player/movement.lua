@@ -1,3 +1,5 @@
+local DRAIN_BATTERY_ON_WALK = false
+
 function Player:move(direction)
   if PlayerData.isGaming == true then
     -- Don't allow normal movement while dashing, sliding or plunging
@@ -10,7 +12,14 @@ function Player:move(direction)
       self.direction = direction
       local movementX = 0
       local movementY = 0
+      
+      -- Drain battery in darkness
       if PlayerData.isInDarkness == true then
+        self:drainBattery(0.5)
+      end
+
+      -- Drain battery with DWatch while walking
+      if DRAIN_BATTERY_ON_WALK and PlayerData.items.hasDWatch == true then
         self:drainBattery(0.5)
       end
       if (direction == "left") then

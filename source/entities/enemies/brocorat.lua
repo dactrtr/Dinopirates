@@ -84,7 +84,7 @@ function Brocorat:update()
 		self.blindFrames = self.blindFrames - 1
 		if self.blindFrames <= 0 then
 			self.isBlinded = false
-			print("👁️ Enemy (Brocorat) no longer blinded")
+			printDebug("👁️ Enemy (Brocorat) no longer blinded")
 		end
 		-- Return early to skip movement logic while blinded
 		return
