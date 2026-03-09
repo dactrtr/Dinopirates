@@ -110,8 +110,8 @@ function dialogScreen:removeAll()
 	PlayerData.isTalking = false
 	PlayerData.isGaming = true
 	videoActive = false
-	dialogbg:remove()
-	video:remove()
-	screenimg:remove()
+	if dialogbg ~= nil then dialogbg:remove() end
+	if video ~= nil then video:remove() end
+	if screenimg ~= nil then screenimg:remove() end
 	self:remove()
 end

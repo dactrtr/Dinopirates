@@ -25,6 +25,11 @@ function Player:collisionResponse(other)
     end
 
   elseif other:isa(CrewMember) then
+    if PlayerData.isTiny then
+        self.currentTrigger = other
+        return 'overlap'
+    end
+    
     -- Validate having the capture bag
     if PlayerData.CrewMemberData.amountTaken == 0 then
       if other.crewId == 'CM001' then
@@ -137,21 +142,6 @@ function Player:collisionResponse(other)
       return 'overlap'
   end
   
-  elseif other:isa(PropItem) and other.isSlime then
-    -- If player has plunger boots, can walk over slime (no battery required)
-    if PlayerData.items.hasPlunger == true then
-      if PlayerData.isTiny == true then
-        -- No battery drain
-      else
-        -- No battery drain
-      end
-      return 'overlap'
-    else
-      -- Without plunger or without battery = slide
-      self:startSliding(self.direction)
-      return 'overlap'
-    end
-  
   elseif other:isa(PropItem) and other.type == 'minifier' then
     self.currentMinifier = other
     PlayerData.readyToShrink = true
@@ -160,6 +150,14 @@ function Player:collisionResponse(other)
     
   return 'overlap'
 
+  elseif other:isa(PropItem) and other.isTube then
+    -- Pneumatic tube, allow climbing up if correct DoorsConnection AND player is tiny
+    if PlayerData.isTiny == true then
+      self:riseAbove()
+      return 'overlap'
+    else
+      return 'freeze'
+    end
 
   elseif other:isa(PropItem) then
   return 'freeze'

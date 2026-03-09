@@ -1,6 +1,7 @@
 inGameMenu = {}
 class('inGameMenu').extends(Graphics.sprite)
 import "entities/UI/itemMenu"
+import "entities/UI/skillInfo"
 import "entities/props/hats"
 import 'utilities/MapDrawer'
 
@@ -30,6 +31,7 @@ function inGameMenu:init()
   lampItem = itemMenu("lamp",ZIndex.menu+3)
   bootItem = itemMenu("boot",ZIndex.menu+3)
   plungerItem = itemMenu("plunger",ZIndex.menu+3)
+  equippedInfoPanel = skillInfo('equipped', ZIndex.menu+4)
   self:add()
 end
 
@@ -104,6 +106,9 @@ function inGameMenu:closeMenu()
     lampItem:remove()
     bootItem:remove()
     plungerItem:remove()
+    if equippedInfoPanel then
+        equippedInfoPanel:remove()
+    end
     if menuSprite then
         menuSprite:remove()
     end
@@ -243,6 +248,11 @@ function inGameMenu:update()
     end
     if PlayerData.items.hasPlunger == true then
         plungerItem:show(256, 128) -- Positioned next to boot
+    end
+    
+    -- Show equipped item info panel (only when an item is active)
+    if PlayerData.activeItem and PlayerData.activeItem > 0 then
+        equippedInfoPanel:show(220, 180)
     end
   end
 end

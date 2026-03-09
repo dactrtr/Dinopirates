@@ -34,7 +34,7 @@
 	],
 	"customFields": {
 		"shadow": true,
-		"light": 0,
+		"light": 0.7,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
@@ -57,9 +57,9 @@
 				"id": "Doors",
 				"iid": "e35e4010-ac70-11f0-8539-cfa071292c9d",
 				"layer": "Doors",
-				"x": 8,
+				"x": 4,
 				"y": 120,
-				"width": 16,
+				"width": 8,
 				"height": 48,
 				"color": 7552569,
 				"customFields": {
@@ -73,9 +73,9 @@
 				"iid": "f2cac460-ac70-11f0-8539-f32c05a0c6fe",
 				"layer": "Doors",
 				"x": 200,
-				"y": 8,
+				"y": 4,
 				"width": 48,
-				"height": 16,
+				"height": 8,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
@@ -85,33 +85,37 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "f5938150-ac70-11f0-8539-2555dd027d3e",
+				"iid": "863f89e0-fa90-11f0-b8f3-9dd3148d6d6a",
 				"layer": "Doors",
-				"x": 392,
-				"y": 120,
-				"width": 16,
-				"height": 48,
+				"x": 396,
+				"y": 176,
+				"width": 8,
+				"height": 32,
 				"color": 7552569,
 				"customFields": {
-					"NeedsKey": true,
+					"NeedsKey": false,
 					"DoorsConnection": "Right",
-					"KeyNumber": 1
+					"KeyNumber": null
 				}
 			}
 		],
-		"CrewMember": [
+		"Triggers": [
 			{
-				"id": "CrewMember",
-				"iid": "8d8b4e70-d380-11f0-88fd-ff6f09b90ad9",
-				"layer": "CrewMembers",
-				"x": 124,
-				"y": 76,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
+				"id": "Triggers",
+				"iid": "f5c64900-fa90-11f0-bb17-3998f48db633",
+				"layer": "Triggers",
+				"x": 268,
+				"y": 36,
+				"width": 24,
+				"height": 56,
+				"color": 16711748,
 				"customFields": {
-					"isTaken": false,
-					"crewID": "CM002"
+					"script": "secondCall",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"tinyScript": null,
+					"conditionalScripts": []
 				}
 			}
 		]

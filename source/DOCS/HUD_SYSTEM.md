@@ -59,3 +59,11 @@ The HUD and its children use a layered Z-Index to ensure correct rendering order
 
 > [!TIP]
 > All indicators read directly from the global `PlayerData` (or `_G.PlayerData`) for synchronization.
+
+---
+
+## 🎒 In-Game Menu Overlay
+Path: `entities/UI/inGameMenu.lua`
+
+The in-game menu is a separate UI component that overlays the screen to display equipment (Lamp, Boots, Plungerang), a map, and collected crew member hats. 
+For deep details on how the menu operates and examples for implementing it in Love2D, refer to the [In-Game Menu Documentation](file:///Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/INGAME_MENU.md).

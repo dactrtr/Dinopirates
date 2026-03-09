@@ -10,7 +10,7 @@ function Player:dash()
     end
 
     -- Check if can dash (item + skill)
-    if not PlayerData.items.hasBoots or not PlayerData.skills.canDash then
+    if not PlayerData.items.hasBoots or not PlayerData.skills.canDash or PlayerData.isTiny == true then
         printDebug("Skill 'Dash' not available!")
         return
     end
@@ -104,12 +104,22 @@ function Player:updateDash()
     
     -- Filter collisions to only count solid objects (ignore triggers and items)
     local hasSolidCollision = false
+    local hitBoxProp = nil
+    
     if length > 0 then
         for i = 1, length do
             local other = collisions[i].other
             -- Only count collision if it's NOT a trigger or item
             -- Solid objects: walls, boxes, closed doors, enemies
-            if not other:isa(Trigger) and not other:isa(Items) and not other:isa(PropItem) then
+            
+            -- If it's a PropItem with type 'box' and it's not destroyed, count it as solid
+            if other:isa(PropItem) then
+                if other.type == 'box' and not other.isDestroyed then
+                    hasSolidCollision = true
+                    hitBoxProp = other
+                    break
+                end
+            elseif not other:isa(Trigger) and not other:isa(Items) then
                 hasSolidCollision = true
                 break
             end
@@ -118,6 +128,11 @@ function Player:updateDash()
     
     -- Check if we hit a solid object
     if hasSolidCollision then
+        -- If we hit a destructible box prop, destroy it!
+        if hitBoxProp then
+            hitBoxProp:hitBoxDash()
+        end
+        
         -- Collision detected, bounce back
         local bounceX = actualX
         local bounceY = actualY

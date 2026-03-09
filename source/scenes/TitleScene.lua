@@ -216,7 +216,7 @@ function scene:enter()
 			action = function()
 				PlayerData.playerSpawn.x = 200
 				PlayerData.playerSpawn.y = 200
-				Noble.transition(Floor120, 0.3, Noble.Transition.MetroNexus)
+				Noble.transition(Floor409, 0.3, Noble.Transition.MetroNexus)
 			end
 		})
 		currentY = currentY + spacing

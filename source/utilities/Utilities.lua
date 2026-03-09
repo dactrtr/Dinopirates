@@ -471,7 +471,34 @@ function renderTileMap(tileData, tilemap)
 end
 
 local SECTION_TILE_IDS = {
+	 [1] = true,
+	 [2] = true,
+	 [3] = true,
 	 [5] = true,
+	 [6] = true,
+	 [50] = true,
+	 [66] = true,
+	 [67] = true,
+	 [68] = true,
+	 [69] = true,
+	 [72] = true,
+	 [73] = true,
+	 [74] = true,
+	 [75] = true,
+	 [77] = true,
+	 [79] = true,
+	 [80] = true,
+	 [81] = true,
+	 [82] = true,
+	 [89] = true,
+	 [90] = true,
+	 [91] = true,
+	 [92] = true,
+	 [93] = true,
+	 [94] = true,
+	 [95] = true,
+	 [96] = true,
+	 [97] = true,
  }
 local TILE_SIZE = 16
 
@@ -620,6 +647,51 @@ function CurrentTile()
 		"🧭 Piso %d | Player (%.1f, %.1f) | Tile (%d, %d) = %d",
 		floor, x, y, tileX, tileY, tileNumber
 	))
+end
+
+-- Returns the tile ID at a given pixel position (or player position by default)
+function GetTileUnderPlayer(px, py)
+	local floor = PlayerData.actualTilemap or 1
+	local x = px or tonumber(PlayerData.x) or 0
+	local y = py or tonumber(PlayerData.y) or 0
+
+	local tileX = math.floor(x / TILE_SIZE) + 1
+	local tileY = math.floor(y / TILE_SIZE) + 1
+
+	local floorData = tileMapData[floor]
+	if not floorData then return nil end
+
+	local row = floorData[tileY]
+	if not row then return nil end
+
+	return row[tileX]
+end
+
+-- Slime tile IDs (89 to 97)
+SLIME_TILE_IDS = {}
+for i = 89, 98 do
+	SLIME_TILE_IDS[i] = true
+end
+
+-- Checks if the player is standing on a slime tile using a 16x16 area at their feet.
+-- The player sprite is 48x48 with center at (px, py). The feet are at ~py+12.
+-- Samples a 16x16 grid (5 points) to catch overlap with tile edges.
+function IsPlayerOnSlime(px, py)
+	-- Feet center is at py + 12 (bottom of the collider rect)
+	local feetY = py + 12
+	-- Tiny mode collider is 10px wide (±5px), normal is 30px wide (±8px sample)
+	local halfW = PlayerData.isTiny and 5 or 8
+	local xOffsets = { -halfW, 0, halfW }
+	local yOffsets = { -4, 0, 4 }
+	for _, dx in ipairs(xOffsets) do
+		for _, dy in ipairs(yOffsets) do
+			local tileID = GetTileUnderPlayer(px + dx, feetY + dy)
+			if tileID and SLIME_TILE_IDS[tileID] then
+				return true
+			end
+		end
+	end
+	return false
 end
 
 local function formatNumberK(n)

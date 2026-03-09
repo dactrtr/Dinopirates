@@ -111,10 +111,10 @@ function CrewMember:addMovementFrames(frames)
 end
 
 function CrewMember:search(player)
-	if not self:isPlayerOutOfVision() then
+	if not self:isPlayerOutOfVision() and not PlayerData.isTiny then
 		self:escape(player)
 	else
-		-- Ensure idle animation if player is not in vision
+		-- Ensure idle animation if player is not in vision or is tiny
 		if self.animation.currentState ~= 'idle' then
 			self.animation:setState('idle')
 		end
@@ -303,6 +303,36 @@ function CrewMember:isPlayerOutOfVision()
 	local distance = math.sqrt(dx * dx + dy * dy)
 	
 	return distance > self.hidingVisionRange
+end
+
+function CrewMember:returnScript()
+    local roomData = levelsLDTK[self.room]
+    local fallbackScript = self.crewId and (self.crewId .. "_tiny") or "default_tiny"
+    
+    if not roomData or not roomData.entities or not roomData.entities.CrewMember then
+        printDebug("⚠️ No CrewMember data found for room:", self.room)
+        return fallbackScript
+    end
+    
+    local crewData
+    for _, c in ipairs(roomData.entities.CrewMember) do
+        if c.iid == self.iid then
+            crewData = c
+            break
+        end
+    end
+
+    if not crewData then 
+        return fallbackScript
+    end
+
+    local cf = crewData.customFields or {}
+    
+    -- Prioritize tinyScript from LDtk, check script as fallback, then our constructed fallback
+    local scriptToReturn = cf.tinyScript or cf.script or fallbackScript
+    printDebug("🔍 CrewMember returnScript:", scriptToReturn)
+    
+    return scriptToReturn
 end
 
 function CrewMember:taken()

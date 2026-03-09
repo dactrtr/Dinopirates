@@ -40,6 +40,12 @@ If the `CrewMember` bounces 3 times in quick succession (`bouncesRequiredToHide`
 - **Projectile (Plungerang)**: The `Projectile` entity is configured to hit the `crewMember` group. When hit, it calls `stunInfinite()` on the crew member.
 - **Taking**: `taken()` marks the crew member as captured in `PlayerData`, updates the UI count, and removes the sprite.
 
+### 5. Tiny Mode Interactions [NEW]
+If the player is in Tiny Mode (`PlayerData.isTiny == true`):
+- **No Escape**: The crewmember will not run away (the `search` function defaults to `idle`).
+- **Trigger Behavior**: Instead of being captured immediately, colliding with the crewmember sets them as the player's `currentTrigger` (`'overlap'` response instead of capture).
+- **Dialogs**: This allows the player to press 'A' to interact, opening a dialog exactly like a standard `Trigger` entity. It uses the `tinyScript` from LDtk, falling back to `<crewId>_tiny` or `default_tiny` in `script.lua`.
+
 ---
 
 ## 📺 Custom Screens in Collisions

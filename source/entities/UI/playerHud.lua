@@ -42,7 +42,11 @@ function playerHud:init(player)
 	local y = 0
 	if player then
 		x = player.x
-		y = player.y - 36
+		local yOffset = -36
+		if PlayerData.isTiny then
+			yOffset = -22
+		end
+		y = player.y + yOffset
 	end
 	
 	self:moveTo(x, y)
@@ -55,7 +59,11 @@ end
 function playerHud:update()
 	if self.player then
 		local tx = self.player.x
-		local ty = self.player.y - 36
+		local yOffset = -36
+		if PlayerData.isTiny then
+			yOffset = -22
+		end
+		local ty = self.player.y + yOffset
 		self:moveTo(tx, ty)
 		
 		if self.batteryIndicator then

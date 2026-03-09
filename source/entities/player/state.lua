@@ -1,19 +1,18 @@
 function Player:fallBelow()
   printDebug("💀 Player falling...")
 
-  local currentRoomIndex = PlayerData.floor  -- Current index in levelsLDTK
+  local currentRoomIndex = PlayerData.floor
+  
   local lowerRoomNumber, lowerRoomData = GetLowerRoom(currentRoomIndex)
 
   if not lowerRoomNumber then
     printDebug("⚠️  Cannot fall from this room")
-    -- Optional: show message to player
     return
   end
 
   local nextScene = RoomTranslate(lowerRoomNumber)
 
   if nextScene then
-    -- Keep X and Y position when falling
     PlayerData.playerSpawn.x = self.x
     PlayerData.playerSpawn.y = self.y
 
@@ -25,7 +24,6 @@ function Player:fallBelow()
     })
   else
     printDebug("❌ Scene Floor" .. lowerRoomNumber .. " not found")
-    -- Fallback: Player fell into the void, transition to DeadScene
     printDebug("💀 Transitioning to DeadScene (fell into void)")
     Noble.transition(DeadScene, 1.5, Noble.Transition.Default)
   end
@@ -35,6 +33,7 @@ function Player:riseAbove()
   printDebug("🚀 Player climbing...")
 
   local currentRoomIndex = PlayerData.floor
+  
   local upperRoomNumber, upperRoomData = GetUpperRoom(currentRoomIndex)
 
   if not upperRoomNumber then
@@ -54,7 +53,6 @@ function Player:riseAbove()
   else
     printDebug("❌ Scene Floor" .. upperRoomNumber .. " not found")
     printDebug("⚠️  Cannot climb higher (no upper room)")
-    -- Do nothing, player stays in current room
   end
 end
 
@@ -92,7 +90,7 @@ function Player:fight()
   Noble.transition(DanceScene)
 end
 
-function Player:dead() -- unused
+function Player:dead()
   self.isAlive = false
   local function deathScreen()
 
@@ -102,7 +100,7 @@ function Player:dead() -- unused
   playdate.timer.performAfterDelay(1000, deathScreen)
 end
 
-function Player:focus() -- unused
+function Player:focus()
   if PlayerData.sanity > 20 then
     PlayerData.sanity -= 20
     PlayerData.isFocused = true
@@ -163,7 +161,7 @@ function Player:burnCalories(calories)
     PlayerData.calories -= calories
 end
 
-function Player:deFocus() -- unused
+function Player:deFocus()
   if PlayerData.isFocused == true then
     PlayerData.isFocused = false
   end
@@ -171,7 +169,11 @@ end
 function Player:showUIHUD()
   -- Base position above the player
   local hudX = self.x + self.playerUIX
-  local hudY = self.y - 40 -- normal default above player
+  local hudYOffset = -40
+  if PlayerData.isTiny then
+    hudYOffset = -17
+  end
+  local hudY = self.y + hudYOffset -- normal default above player
 
   -- Adjust for top of screen
   if self.y < 60 then
@@ -206,18 +208,6 @@ function Player:checkMinifier()
 end
 
 function Player:checkTrigger()
-    -- Check for dialog activation (A button)
-    if self.currentTrigger and playdate.buttonJustPressed(playdate.kButtonA) then
-        local trigger = self.currentTrigger
-
-        PlayerData.isGaming = false
-        PlayerData.isTalking = true
-        self.dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
-
-        Utilities.grantAchievementIfNeeded(trigger.script)
-    end
-
-    -- Performance: Only check overlapping sprites if player moved significantly
     local distanceMoved = math.abs(self.x - self.lastCheckX) + math.abs(self.y - self.lastCheckY)
     local shouldCheckOverlap = distanceMoved > 5 or self.currentTrigger ~= nil
 
@@ -232,8 +222,6 @@ function Player:checkTrigger()
               stillInside = true
 
               self:showUIHUD()
-
-              -- Solo se activa una vez cuando el jugador entra en el trigger
               if not self.triggerEnteredOnce then
                 if self.currentTrigger.type == "Call" then
                   self.uiHud:setRing()
@@ -242,7 +230,7 @@ function Player:checkTrigger()
                 elseif self.currentTrigger.type == nil then
                   self.uiHud:setPressA()
                 end
-                self.triggerEnteredOnce = true -- Marca que ya se ejecutó
+                self.triggerEnteredOnce = true
               end
 
               break
@@ -252,7 +240,7 @@ function Player:checkTrigger()
           if not stillInside then
               self.uiHud:setVisible(false)
               self.currentTrigger = nil
-              self.triggerEnteredOnce = false -- Reset para el próximo trigger
+              self.triggerEnteredOnce = false
           end
       end
     end
@@ -265,6 +253,9 @@ function Player:update()
   -- Update sliding movement if on slime
   self:updateSliding()
 
+  -- Check if player is on a slime tile (IDs 89-97)
+  self:checkSlimeTile()
+
   -- Hide light cone after display time
   if self.lightConeHideTime and playdate.getCurrentTimeMilliseconds() >= self.lightConeHideTime then
     PlayerData.showLightCone = false
@@ -272,7 +263,7 @@ function Player:update()
   end
 
   self:setZIndex(self.y)
-
+  
   self:checkTrigger()
   self:checkMinifier()
 
@@ -280,27 +271,23 @@ function Player:update()
   -- PlayerData.isRinging = true
   -- end
 
-  -- Mark: save actual position
   PlayerData.x = self.x
   PlayerData.y = self.y
-  -- Mark: battery bounds
   if PlayerData.battery < 0 then
     PlayerData.battery = 0
   elseif PlayerData.battery >= 100 then
     PlayerData.battery = 100
   end
-  -- Mark: Reduce speed in the dark
   if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
     if PlayerData.battery < 20 then
-      self.speed = 0.5 * self.initialSpeed
+      self.speed = 0.8 * self.initialSpeed
     elseif PlayerData.battery > 20 then
       self.speed = self.initialSpeed
     end
   end
   if PlayerData.isInDarkness == true and PlayerData.items.hasLamp == false then
-    self.speed = 0.5 * self.initialSpeed
+    self.speed = 0.7 * self.initialSpeed
   end
-  -- Mark: invincibility timer
   if self.isInvincible then
     local refreshRate = playdate.display.getRefreshRate() or 30
     self.invincibilityTimer -= 1000 / refreshRate
@@ -320,5 +307,4 @@ function Player:update()
   end
 
   PlayerData.isActive = false
-  -- Performance: Achievement check removed from update loop (handled by events)
 end

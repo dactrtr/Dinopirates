@@ -192,21 +192,6 @@
 				}
 			}
 		],
-		"Plunger": [
-			{
-				"id": "Plunger",
-				"iid": "6c594530-d380-11f0-88fd-99e8bcab21ec",
-				"layer": "Items",
-				"x": 324,
-				"y": 156,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "plunger"
-				}
-			}
-		],
 		"FellTable": [
 			{
 				"id": "FellTable",

@@ -1,90 +1,76 @@
-# Sistema de Triggers Condicionales
+# Conditional Trigger System
 
-Este sistema permite que los Triggers ejecuten diferentes scripts dependiendo del estado del jugador.
+This system allows Triggers to execute different scripts depending on the player's state and interaction type.
 
-## 1. Configuración en LDTK
+## 1. LDtk Configuration
 
-Agrega los siguientes **Custom Fields** a tu entidad `Triggers`:
+Add the following **Custom Fields** to your `Triggers` entity in LDtk:
 
-*   **Identificador**: `conditionalScripts`
-    *   **Tipo**: `Array<String>`
-*   **Identificador**: `type`
-    *   **Tipo**: `String` (Opciones: `Story`, `Cutscene`, `Search`, `Call`, `Counter`)
+*   **Identifier**: `conditionalScripts`
+    *   **Type**: `Array<String>`
+*   **Identifier**: `type`
+    *   **Type**: `String` (Options: `Story`, `Cutscene`, `Search`, `Call`, `Counter`)
+*   **Identifier**: `script`
+    *   **Type**: `String` (Used as a fallback or for simple triggers)
 
-## 2. Tipos de Condiciones
+## 2. Trigger Types and Behaviors
 
-Las condiciones en `conditionalScripts` siguen el formato `condicion:script`.
+The `type` field determines how the trigger is activated and how the player interacts with it.
 
-### A. Condiciones Booleanas
-*   `isTiny:script` (Si es tiny)
-*   `!isTiny:script` (Si NO es tiny)
-*   `items.hasLamp:script` (Si tiene lámpara)
+### A. Automatic Triggers
+*   **`Story`**: Activated automatically upon collision. It immediately triggers a dialogue sequence using the script name returned by the condition logic.
+*   **`Cutscene`**: Activated automatically upon collision. It disables normal gameplay input and starts a cutscene (comic-style).
+*   **`Counter`**: Activated automatically upon collision. It increments the global `PlayerData.storyCounter` and removes itself immediately.
 
-### B. Comparaciones Numéricas
-Operadores soportados: `>`, `<`, `>=`, `<=`, `==`, `!=`
+### B. Manual Triggers (Interactable)
+These triggers do not activate automatically. Instead, they show a HUD prompt when the player is inside the trigger area, requiring the player to press **A** to activate.
+
+*   **`Search`**: Displays an "Investigate" HUD icon. Used for inspecting objects in the world.
+*   **`Call`**: Displays a "Radio Ring" HUD icon. Used for incoming or outgoing radio communications.
+*   **`null` (None)**: If no type is specified, it defaults to showing a standard "Press A" HUD icon.
+
+## 3. Condition Logic (`conditionalScripts`)
+
+Conditions in `conditionalScripts` follow the format `condition:script`.
+
+### A. Boolean Conditions
+*   `isTiny:script` (If player is tiny)
+*   `!isTiny:script` (If player is NOT tiny)
+*   `items.hasLamp:script` (If player has the lamp)
+
+### B. Numerical Comparisons
+Supported operators: `>`, `<`, `>=`, `<=`, `==`, `!=`
 *   `mapPercent>50:midGameDialogue`
 *   `battery<20:lowBatteryWarning`
 
-## 3. Persistencia (IMPORTANTE)
+Evaluating follows a **top-to-bottom** priority. The first condition met will be executed.
 
-Por defecto, los scripts condicionales **NO eliminan el trigger**. Esto es útil para mensajes de rechazo o pistas que el jugador puede volver a ver.
+## 4. Persistence and Single-Use (IMPORTANT)
 
-Para hacer que un script **SI elimine el trigger** (es decir, que sea de un solo uso), agrega `!` al final del nombre del script.
+By default, conditional scripts **DO NOT remove the trigger**. This is useful for repeatable hints or "locked" messages.
 
-*   `!hasKey:msgLocked` -> **Mantiene** el trigger. (Puedes verlo muchas veces).
-*   `hasKey:openDoor!` -> **Elimina** el trigger. (Solo ocurre una vez).
+To make a script **remove the trigger** after one use, append `!` to the end of the script name.
 
-Si usas el campo `script` normal (fallback), este **siempre elimina el trigger** (comportamiento clásico), **EXCEPTO** si el Trigger es de tipo `Search`. Los triggers de tipo Search persisten por defecto.
+*   `!hasKey:msgLocked` -> **Keeps** the trigger (Player can see it multiple times).
+*   `hasKey:openDoor!` -> **Removes** the trigger (Occurs only once).
 
-## 4. Prioridad
+**Persistence Defaults:**
+*   **Manual Triggers (`Search`, `Call`)**: Persist by default unless `!` is used.
+*   **`Story` / `Cutscene`**: Usually intended to be single-use. If using the legacy `script` field (not conditional), they are removed automatically after activation.
+*   **`Counter`**: Always removed after activation.
 
-El juego evalúa la lista de **arriba a abajo**. La primera condición que se cumpla ganará.
+## 5. Dialog Integration
 
-**Ejemplo completo:**
-1.  `!items.hasKey:msgDoorLocked` (Sin llave -> Mensaje recurrente)
-2.  `items.hasKey:enterSecretRoom!` (Con llave -> Entrar y borrar trigger)
+The trigger system communicates with `dialogUI:addScreen(scriptName)` to display text.
 
-## 5. Diálogos y Traducciones
+### Character Portraits (Video Feed)
+Each dialog entry can specify a `video` state (e.g., `player`, `playerHappy`). 
+*   **Tiny State Support**: If `PlayerData.isTiny` is true, the system automatically appends `-tiny` to the video state (e.g., `player-tiny`) to show the correct miniature portrait.
 
-El sistema de triggers se integra con el sistema de diálogos para mostrar mensajes al jugador.
+### Localization
+All text keys used in `script.lua` must be defined in the localization files:
+*   `source/en.strings` (English)
+*   `source/jp.strings` (Japanese)
 
-### A. Trigger Tipo `Story`
-
-Un trigger con el campo `type` configurado como `Story` ejecutará automáticamente un diálogo al entrar en contacto.
-
-*   **Funcionamiento**: Llama a `dialogUI:addScreen(scriptName)` usando el nombre del script retornado por la lógica de condiciones.
-
-### B. Definición de Diálogos (`assets/data/script.lua`)
-
-Los diálogos se definen en una tabla global llamada `script`. Cada entrada tiene:
-
-*   `name`: El identificador que usa el Trigger (p.ej., `nolamp`).
-*   `dialog`: Un array de páginas de diálogo.
-    *   `text`: Clave de traducción (localización).
-    *   `video`: Nombre del video/animación del personaje (p.ej., `playerSurprise`).
-        *   **Nota**: Si el jugador es "tiny", el sistema buscará automáticamente la versión `-tiny` (ej: `playerSurprise-tiny`).
-    *   `screen` (Opcional): Imagen que se muestra en la pantalla de la radio/comunicador.
-
-```lua
-{
-    name = "example",
-    dialog = {
-        { video = 'player', text = "key-01" },
-        { video = 'playerHappy', text = "key-02", screen = image }
-    }
-}
-```
-
-### C. Archivos de Traducción (`en.strings`, `jp.strings`)
-
-El juego utiliza archivos estándar de Playdate para la localización. El sistema busca la clave definida en el `text` del script.
-
-*   **Ubicación**: Raíz del proyecto (`source/en.strings`, `source/jp.strings`).
-*   **Formato**: `"clave" = "Texto a mostrar"`
-
-El motor selecciona automáticamente el archivo basado en el idioma configurado (`Panels.vars.lang`).
-
-**Ejemplo en `en.strings`**:
-```strings
-"key-01" = "Hello! I found a key."
-```
+**Example Entry in `en.strings`**:
+`"door-locked" = "It's locked from the other side."`

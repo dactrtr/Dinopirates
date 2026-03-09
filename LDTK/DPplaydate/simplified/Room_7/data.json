@@ -95,7 +95,9 @@
 					"type": "Story",
 					"mapPercent": 0,
 					"tinyScript": null,
-					"conditionalScripts": []
+					"conditionalScripts": [
+						"!isReadyToShrink:test"
+					]
 				}
 			},
 			{

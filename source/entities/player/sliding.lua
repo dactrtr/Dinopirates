@@ -1,5 +1,29 @@
--- Sliding module for player when on slime
+-- Sliding module for player when on slime tiles (IDs 89-97)
 -- Moves the player in a straight line until they hit a wall or leave the slime
+
+-- Check if the player is standing on a slime tile and start sliding
+function Player:checkSlimeTile()
+    if self.isSliding or self.isDashing or self.isPlunging then
+        return
+    end
+
+    -- If the player just hit a wall, don't auto-slide again.
+    -- Wait until they voluntarily move (cleared in startSliding).
+    if self.slideHitWall then
+        return
+    end
+
+    if not IsPlayerOnSlime(self.x, self.y) then
+        return
+    end
+
+    -- Player has plunger = immune to slime
+    if PlayerData.items.hasPlunger == true then
+        return
+    end
+    -- Start sliding in current direction
+    self:startSliding(self.direction)
+end
 
 function Player:startSliding(direction)
     if self.isSliding or self.isDashing then
@@ -29,16 +53,16 @@ function Player:updateSliding()
 
     if self.slidingDirection == "left" then
         moveX = -self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyLeft') else self.animation:setState('left') end
+        if PlayerData.isTiny then self.animation:setState('slideTiny') else self.animation:setState('slideLeft') end
     elseif self.slidingDirection == "right" then
         moveX = self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyRight') else self.animation:setState('right') end
+        if PlayerData.isTiny then self.animation:setState('slideTiny') else self.animation:setState('slideRight') end
     elseif self.slidingDirection == "up" then
         moveY = -self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyUp') else self.animation:setState('up') end
+        if PlayerData.isTiny then self.animation:setState('slideTiny') else self.animation:setState('slideUp') end
     elseif self.slidingDirection == "down" then
         moveY = self.slidingSpeed
-        if PlayerData.isTiny then self.animation:setState('tinyDown') else self.animation:setState('down') end
+        if PlayerData.isTiny then self.animation:setState('slideTiny') else self.animation:setState('slideDown') end
     end
 
     local targetX = self.x + moveX
@@ -49,48 +73,56 @@ function Player:updateSliding()
     -- Update UI position
     self.uiHud:moveTo(actualX + self.playerUIX, actualY - self.playerUIY)
 
-    -- Logic to decide when to stop sliding:
-    -- 1. Hit a solid object (wall, prop with collision)
-    -- 2. Stopped overlapping with any slime prop
-
+    -- Check if we hit a solid object
     local hitSolid = false
     if length > 0 then
         for i = 1, length do
             local other = collisions[i].other
-            -- Check if we hit a solid object
-            -- PropItems that are NOT slimes and NOT holes are solid (return 'freeze' in collisionResponse)
             if other:isa(PropItem) then
-                if not other.isSlime and not other.isHole and other.type ~= 'minifier' then
+                if not other.isHole and other.type ~= 'minifier' then
                     hitSolid = true
                 end
             elseif not other:isa(Items) and not other:isa(Trigger) and not other:isa(Enemy) and not other:isa(CrewMember) then
-                -- Assume other things (like tilemap walls) are solid
                 hitSolid = true
             end
         end
     end
 
-    -- Check if we are still on slime
-    local overlappingSlime = false
-    local overlapping = self:overlappingSprites()
-    for _, sprite in ipairs(overlapping) do
-        if sprite:isa(PropItem) and sprite.isSlime then
-            overlappingSlime = true
-            break
-        end
-    end
+    -- Check if we are still on a slime tile (16x16 area at feet)
+    local stillOnSlime = IsPlayerOnSlime(actualX, actualY)
 
-    if hitSolid or not overlappingSlime then
-        printDebug("💧 Slime slide ended. HitSolid:", hitSolid, "StillOnSlime:", overlappingSlime)
-        self:endSliding()
+    if hitSolid or not stillOnSlime then
+        printDebug("💧 Slime slide ended. HitSolid:", hitSolid, "StillOnSlime:", tostring(stillOnSlime))
+        self:endSliding(hitSolid)
     end
 end
 
-function Player:endSliding()
+function Player:endSliding(hitWall)
+    local lastDir = self.slidingDirection
     self.isSliding = false
     self.slidingDirection = nil
+
+    -- If we hit a wall while still on slime, block auto-re-slide until
+    -- the player picks a new direction voluntarily.
+    if hitWall then
+        self.slideHitWall = true
+    end
     
-    -- Restore idle animation
-    self:idle()
+    -- Play exit animation based on direction
+    if PlayerData.isTiny then
+        self:idle()
+    elseif lastDir == "right" then
+        self.animation:setState('slideExitRight')
+    elseif lastDir == "left" then
+        self.animation:setState('slideExitLeft')
+    elseif lastDir == "up" then
+        self.animation:setState('slideExitUp')
+    elseif lastDir == "down" then
+        self.animation:setState('slideExitDown')
+    else
+        self:idle()
+    end
+
+    PlayerData.direction = 'idle'
     printDebug("✅ Slime slide completed!")
 end

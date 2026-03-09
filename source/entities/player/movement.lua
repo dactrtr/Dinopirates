@@ -10,6 +10,9 @@ function Player:move(direction)
     if self.isAlive == true and PlayerData.isCharging == false then
       PlayerData.isActive = true
       self.direction = direction
+      -- If the player presses a direction while on slime after hitting a wall,
+      -- allow a new slide in this direction on the next frame.
+      self.slideHitWall = false
       local movementX = 0
       local movementY = 0
       

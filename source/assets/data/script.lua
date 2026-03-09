@@ -1,5 +1,127 @@
 script = {
     {
+        name = "secondCall",
+        dialog = {
+            {
+        video = 'playerSurprise',
+        text = "secondcall-01",
+    },
+                    {
+        video = 'radioHand',
+        text = "secondcall-02",
+    },
+                    {
+        video = 'radioHand',
+        text = "secondcall-03",
+    },
+                    {
+        video = 'playerCry',
+        text = "secondcall-04",
+    },
+                    {
+        video = 'radioHand',
+        text = "secondcall-05",
+    },
+                    {
+        video = 'radioHand',
+        text = "secondcall-06",
+    },
+                    {
+        video = 'radioHand',
+        text = "secondcall-07",
+    },
+                    {
+        video = 'radioHand',
+        text = "secondcall-08",
+    },
+                    {
+        video = 'player',
+        text = "secondcall-09",
+    }
+            
+        }
+    },
+    {
+        name = "reachComputer",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "reachcomputer-01",
+    },
+                    {
+        video = 'playerAngry',
+        text = "reachcomputer-02",
+    }
+            
+        }
+    },
+    {
+        name = "firstCall",
+        dialog = {
+            {
+        video = 'player',
+        text = "firstcall-01",
+    },
+                    {
+        video = 'radioHand',
+        text = "firstcall-02",
+    },
+                    {
+        video = 'radioHand',
+        text = "firstcall-03",
+    },
+                    {
+        video = 'radioHand',
+        text = "firstcall-04",
+    },
+                    {
+        video = 'radioHand',
+        text = "firstcall-05",
+    },
+                    {
+        video = 'playerWorry',
+        text = "firstcall-06",
+    },
+                    {
+        video = 'radioHand',
+        text = "firstcall-07",
+    },
+                    {
+        video = 'playerWorry',
+        text = "firstcall-08",
+    }
+            
+        }
+    },
+    {
+        name = "hugeXmas",
+        dialog = {
+            {
+        video = 'playerSurprise',
+        text = "hugexmas-01",
+    },
+                    {
+        video = 'player',
+        text = "hugexmas-02",
+    },
+                    {
+        video = 'playerHappy',
+        text = "hugexmas-03",
+    }
+            
+        }
+    },
+    {
+        name = "whyXmas",
+        dialog = {
+            {
+        video = 'player',
+        text = "whyxmas-01",
+    }
+            
+        }
+    },
+    {
         name = "nolamp",
         dialog = {
             {
@@ -250,6 +372,15 @@ script = {
         text = "mygift-05",
     }
             
+        }
+    },
+    {
+        name = "CM001_tiny",
+        dialog = {
+            {
+            video = 'playerWorry',
+            text = "CM001-01",
+            }, 
         }
     },
 }

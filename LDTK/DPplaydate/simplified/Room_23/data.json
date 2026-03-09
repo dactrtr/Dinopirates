@@ -58,12 +58,109 @@
 		"roomNumber": 23,
 		"tile": 23,
 		"DoorsConnection": [
-			"Top"
+			"Upper"
 		],
 		"play": null
 	},
 	"layers": [
 		"BGTilemap.png"
 	],
-	"entities" : {}
+	"entities": {
+		"PneumaticTube": [
+			{
+				"id": "PneumaticTube",
+				"iid": "b62df370-fa90-11f0-b30d-935794ec5f17",
+				"layer": "Props",
+				"x": 332,
+				"y": 132,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "pneumaticTube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Tube": [
+			{
+				"id": "Tube",
+				"iid": "b8aed1f0-fa90-11f0-b30d-9767e2593e69",
+				"layer": "Props",
+				"x": 332,
+				"y": 100,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Tube",
+				"iid": "b97444d0-fa90-11f0-b30d-1516530fbe42",
+				"layer": "Props",
+				"x": 332,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Tube",
+				"iid": "ba446610-fa90-11f0-b30d-a5d542c284cf",
+				"layer": "Props",
+				"x": 332,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Tube",
+				"iid": "bddfb540-fa90-11f0-b30d-69e74fd1f321",
+				"layer": "Props",
+				"x": 332,
+				"y": 12,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "6bae5640-fa90-11f0-b30d-2177c10ad5cf",
+				"layer": "Props",
+				"x": 164,
+				"y": 188,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		]
+	}
 }

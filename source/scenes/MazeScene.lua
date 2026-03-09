@@ -470,7 +470,14 @@ scene.inputHandler = {
 	AButtonDown = function()			-- Runs once when button is pressed.
 		if PlayerData.isTalking == true then
 			player:displayDialog()
+		elseif player.currentTrigger and PlayerData.isGaming == true then
+			local trigger = player.currentTrigger
+			PlayerData.isGaming = false
+			PlayerData.isTalking = true
+			player.dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
+			Utilities.grantAchievementIfNeeded(trigger.script)
 		end
+		
 		-- Seleccionar item cuando está en el menú de equipamiento
 		if PlayerData.isEquiping == true then
 			inGameEquip:selectItem()

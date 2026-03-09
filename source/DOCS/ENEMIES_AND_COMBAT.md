@@ -61,3 +61,59 @@ The `DanceScene` selects a pattern profile based on `PlayerData.EnemiesData.powe
 
 > [!IMPORTANT]
 > The `determineDifficultyUpgrade()` function in `DanceScene` uses a weighted calculation of Player **Sanity**, **Power**, and **Calories** to decide if an encounter should be harder than the base level.
+
+---
+
+## 🛠️ Love2D Porting Guide: Rhythm Combat
+
+This section details implementation of the **DanceScene** mechanics in Love2D.
+
+### 1. Input Handling (`Noble.Input` vs. `love.keypressed`)
+Playdate uses a table-based `inputHandler` with callbacks like `AButtonDown`.
+- **Love2D Implementation**:
+    - Use the standard `love.keypressed(key)` callback in your Scene state.
+    - **Mapping**:
+        ```lua
+        function DanceScene:keypressed(key)
+            if key == "return" or key == "space" then
+                self:input("aButton")
+            elseif key == "escape" or key == "shift" then
+                self:input("bButton")
+            elseif key == "left" then self:input("leftButton")
+            elseif key == "right" then self:input("rightButton")
+            elseif key == "up" then self:input("upButton")
+            elseif key == "down" then self:input("downButton")
+            end
+        end
+        ```
+    - The `DanceScene.lua` logic for `scene:danceStep(key)` can be reused almost exactly once the input is routed.
+
+### 2. Visual Primitives & Drawing
+The scene relies on `Graphics.drawRect`, `drawLine`, and `drawCentered` (Playdate SDK).
+- **Love2D Implementation**:
+    - **Primitives**: Use `love.graphics.rectangle('line', ...)` and `love.graphics.line(...)`.
+    - **Images**: Playdate images have methods like `drawCentered(x, y)`. In Love2D, `love.graphics.draw(img, x, y)` draws from the top-left.
+        - **Correction**: To draw centered: `love.graphics.draw(img, x - img:getWidth()/2, y - img:getHeight()/2)`.
+
+### 3. Scene Lifecycle
+The game uses `NobleScene` for management (`init`, `enter`, `update`, `exit`).
+- **Love2D Implementation**:
+    - Use a library like **Hump Gamestate**. The method names `enter`, `update`, `draw`, `leave` map very closely to Noble's lifecycle.
+    - **Transitions**: Complex transitions (like `MetroNexus`) are specific to Noble. You will need to implement custom screen wipes (e.g., a simple fade-to-black or sliding rectangle) in Love2D.
+
+### 4. Randomness (RNG)
+The scene seeds RNG using `playdate.getCurrentTimeMilliseconds()` to ensure unique difficulty rolls.
+- **Love2D Implementation**:
+    - Use `math.randomseed(os.time())` in `love.load()`.
+    - Lua's `math.random` works consistently across both platforms.
+
+### 5. Hit Detection
+The `HitZone` checks for overlapping sprites (`overlappingSprites()`).
+- **Love2D Implementation**:
+    - Since `ButtonPress` objects are simple moving entities (not full physics bodies), you can use simple AABB (Rectangle) intersection checks in `update()`:
+    ```lua
+    function checkOverlap(a, b)
+        return a.x < b.x + b.w and a.x + a.w > b.x and
+               a.y < b.y + b.h and a.y + a.h > b.y
+    end
+    ```
