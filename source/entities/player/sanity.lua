@@ -1,11 +1,11 @@
 function Player:sanityCheck()
 
   local function checkSanity()
-    local lastSanity = PlayerData.sanity 
-    if PlayerData.battery < 20 and PlayerData.isInDarkness == true then 
-      PlayerData.sanity -= 2 * self.sanityLoss
-    elseif PlayerData.battery < 40 and PlayerData.isInDarkness == true then
-      PlayerData.sanity -= self.sanityLoss
+    local lastSanity = PlayerData.sanity
+    if PlayerData.battery < Config.Sanity.batteryThresholdLow and PlayerData.isInDarkness == true then
+      PlayerData.sanity -= Config.Sanity.lossLowBattery * self.sanityLoss
+    elseif PlayerData.battery < Config.Sanity.batteryThresholdMid and PlayerData.isInDarkness == true then
+      PlayerData.sanity -= Config.Sanity.lossMidBattery * self.sanityLoss
     end
 
     -- Check if sanity just reached zero
@@ -16,8 +16,8 @@ function Player:sanityCheck()
       Utilities.checkSanityAchievements()
     end
 
-    if PlayerData.battery > 50 or PlayerData.isInDarkness == false then
-      PlayerData.sanity += 2 * self.sanityLoss
+    if PlayerData.battery > Config.Sanity.batteryThresholdHigh or PlayerData.isInDarkness == false then
+      PlayerData.sanity += Config.Sanity.gainHighBattery * self.sanityLoss
     end
 
     if PlayerData.sanity >= 100 then
@@ -32,7 +32,7 @@ function Player:sanityCheck()
     lastSanity = PlayerData.sanity
   end
 
-  playdate.timer.keyRepeatTimerWithDelay(2000, 2000, checkSanity)
+  playdate.timer.keyRepeatTimerWithDelay(Config.Sanity.tickInterval, Config.Sanity.tickInterval, checkSanity)
 end
 
 function Player:drainBattery(amount)

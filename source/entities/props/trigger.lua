@@ -120,13 +120,7 @@ function Trigger:returnScript()
         printDebug("ℹ️ Trigger Search mantenido activo (Fallback):", triggerData.iid)
     end
 
-    local scriptToReturn = self.script
-    if PlayerData.isTiny and cf.tinyScript then
-        scriptToReturn = cf.tinyScript
-        printDebug("🔍 Usando script tiny:", cf.tinyScript)
-    end
-    
-    return scriptToReturn
+    return self.script
 end
 
 

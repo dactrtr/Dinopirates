@@ -94,7 +94,6 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": [
 						"!isReadyToShrink:test"
 					]
@@ -114,7 +113,6 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": []
 				}
 			},
@@ -132,7 +130,6 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": []
 				}
 			}

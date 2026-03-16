@@ -25,9 +25,11 @@ function Player:init(x, y, speed, Zindex)
     self:setSize(48, 48)
     self:setZIndex(Zindex)
     self:moveTo(x, y)
-    self:setCollideRect(8, 24, 30, 24)
+    local cr = Config.Player.collideRect
+    self:setCollideRect(cr.x, cr.y, cr.w, cr.h)
     if PlayerData.isTiny == true then
-        self:setCollideRect(19, 32, 10, 10)
+        local crt = Config.Player.collideRectTiny
+        self:setCollideRect(crt.x, crt.y, crt.w, crt.h)
     end
     self:setCollidesWithGroups(
         {
@@ -46,8 +48,8 @@ function Player:init(x, y, speed, Zindex)
     self.initialBattery = PlayerData.battery
     self.sanityLoss = 1
     self.sanity = PlayerData.sanity
-    self.playerUIX = 30
-    self.playerUIY = 30
+    self.playerUIX = Config.Player.uiOffsetX
+    self.playerUIY = Config.Player.uiOffsetY
     self.isBehind = false
     self.direction = PlayerData.direction -- Initialize self.direction
     self.triggerEnteredOnce = false
@@ -70,14 +72,14 @@ function Player:init(x, y, speed, Zindex)
     self.isDashing = false
     self.dashDirection = nil
     self.dashProgress = 0
-    self.dashSpeed = 8
-    self.dashTotalDistance = 32
-    self.dashBounceDistance = 16
+    self.dashSpeed = Config.Dash.speed
+    self.dashTotalDistance = Config.Dash.totalDistance
+    self.dashBounceDistance = Config.Dash.bounceDistance
 
     -- Sliding state variables
     self.isSliding = false
     self.slidingDirection = nil
-    self.slidingSpeed = 4
+    self.slidingSpeed = Config.Slide.speed
     self.slideHitWall = false  -- Prevents re-slide immediately after hitting a wall
 
     self.isPlunging = false

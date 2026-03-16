@@ -11,9 +11,9 @@ function Projectile:init(player, direction)
     self.startX = px
     self.startY = py
     self.distanceTravelled = 0
-    self.maxDistance = 100 
+    self.maxDistance = Config.Projectile.maxDistance
     self.returning = false
-    self.speed = 8 -- Increased speed for better feel
+    self.speed = Config.Projectile.speed
     
     self:setZIndex(ZIndex.player + 10)
     self:setSize(24, 24)
@@ -101,8 +101,7 @@ end
 function Projectile:hitEntity(entity)
     printDebug("🎯 Projectile hit: " .. tostring(entity))
     if entity.blind then
-        -- Use standard blind/stun duration
-        entity:blind(60)
+        entity:blind(Config.Projectile.blindDuration)
     end
 end
 

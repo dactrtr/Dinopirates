@@ -101,21 +101,23 @@ function Player:dead()
 end
 
 function Player:focus()
-  if PlayerData.sanity > 20 then
-    PlayerData.sanity -= 20
+  if PlayerData.sanity > Config.Sanity.focusCost then
+    PlayerData.sanity -= Config.Sanity.focusCost
     PlayerData.isFocused = true
   end
 end
 
 function Player:shrink()
   PlayerData.isTiny = true
-  self:setCollideRect(19, 32, 10, 10)
+  local crt = Config.Player.collideRectTiny
+  self:setCollideRect(crt.x, crt.y, crt.w, crt.h)
   self.animation:setState('transformTo')
 end
 
 function Player:grow()
     PlayerData.isTiny = false
-    self:setCollideRect(8, 24, 30, 24)
+    local cr = Config.Player.collideRect
+    self:setCollideRect(cr.x, cr.y, cr.w, cr.h)
     self:idle()
 end
 
@@ -150,11 +152,11 @@ function Player:finishMinifying()
     self.uiHud:setVisible(false)
 end
 function Player:pedometer()
-  PlayerData.steps += 0.5
-  PlayerData.totalSteps += 0.5
-  if PlayerData.steps >= 200 then
+  PlayerData.steps += Config.Pedometer.stepsPerMovement
+  PlayerData.totalSteps += Config.Pedometer.stepsPerMovement
+  if PlayerData.steps >= Config.Pedometer.stepsToTrigger then
     PlayerData.steps = 0
-    self:burnCalories(10)
+    self:burnCalories(Config.Pedometer.caloriesPerBurn)
   end
 end
 function Player:burnCalories(calories)
@@ -169,9 +171,9 @@ end
 function Player:showUIHUD()
   -- Base position above the player
   local hudX = self.x + self.playerUIX
-  local hudYOffset = -40
+  local hudYOffset = Config.Player.hudOffsetY
   if PlayerData.isTiny then
-    hudYOffset = -17
+    hudYOffset = Config.Player.hudOffsetYTiny
   end
   local hudY = self.y + hudYOffset -- normal default above player
 
@@ -209,7 +211,7 @@ end
 
 function Player:checkTrigger()
     local distanceMoved = math.abs(self.x - self.lastCheckX) + math.abs(self.y - self.lastCheckY)
-    local shouldCheckOverlap = distanceMoved > 5 or self.currentTrigger ~= nil
+    local shouldCheckOverlap = distanceMoved > Config.Player.triggerCheckDist or self.currentTrigger ~= nil
 
     if shouldCheckOverlap then
       self.lastCheckX = self.x
@@ -279,21 +281,21 @@ function Player:update()
     PlayerData.battery = 100
   end
   if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
-    if PlayerData.battery < 20 then
-      self.speed = 0.8 * self.initialSpeed
-    elseif PlayerData.battery > 20 then
+    if PlayerData.battery < Config.Sanity.batteryThresholdLow then
+      self.speed = Config.Player.speedLowBattery * self.initialSpeed
+    elseif PlayerData.battery > Config.Sanity.batteryThresholdLow then
       self.speed = self.initialSpeed
     end
   end
   if PlayerData.isInDarkness == true and PlayerData.items.hasLamp == false then
-    self.speed = 0.7 * self.initialSpeed
+    self.speed = Config.Player.speedDarkNoLamp * self.initialSpeed
   end
   if self.isInvincible then
     local refreshRate = playdate.display.getRefreshRate() or 30
     self.invincibilityTimer -= 1000 / refreshRate
     
     -- Visual feedback: Flicker
-    if math.floor(self.invincibilityTimer / 100) % 2 == 0 then
+    if math.floor(self.invincibilityTimer / Config.Invincibility.flickerRate) % 2 == 0 then
         self:setVisible(false)
     else
         self:setVisible(true)

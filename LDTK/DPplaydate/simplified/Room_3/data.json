@@ -96,6 +96,21 @@
 					"DoorsConnection": "Down",
 					"KeyNumber": null
 				}
+			},
+			{
+				"id": "Doors",
+				"iid": "49e32660-fa90-11f0-9f0d-3381c910a0b4",
+				"layer": "Doors",
+				"x": 88,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
 			}
 		],
 		"Triggers": [
@@ -113,7 +128,6 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": []
 				}
 			},
@@ -131,7 +145,6 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": "tinyKnife",
 					"conditionalScripts": [
 						"items.hasLamp:nolamp"
 					]
@@ -151,7 +164,6 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": []
 				}
 			},
@@ -169,7 +181,6 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": []
 				}
 			},
@@ -187,7 +198,6 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": []
 				}
 			}

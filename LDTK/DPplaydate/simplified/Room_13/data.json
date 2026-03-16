@@ -85,7 +85,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "863f89e0-fa90-11f0-b8f3-9dd3148d6d6a",
+				"iid": "5b6513e0-fa90-11f0-b965-f9db40bfdb74",
 				"layer": "Doors",
 				"x": 396,
 				"y": 176,
@@ -114,7 +114,6 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"tinyScript": null,
 					"conditionalScripts": []
 				}
 			}

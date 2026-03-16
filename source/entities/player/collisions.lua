@@ -16,7 +16,7 @@ function Player:collisionResponse(other)
         if PlayerData.healthPoints < (PlayerData.danceThresholdHP or 5) then
           self:fight()
         else
-          self:startInvincibility(1000) -- 1 second cooldown
+          self:startInvincibility(Config.Invincibility.duration)
         end
       end
       
@@ -131,9 +131,9 @@ function Player:collisionResponse(other)
   -- If player has boots with battery, can walk over the hole
   if PlayerData.items.hasBoots == true and PlayerData.battery > 0 then
     if PlayerData.isTiny == true then
-      self:drainBattery(0.2)
+      self:drainBattery(Config.Battery.drainHoleTiny)
     else
-      self:drainBattery(0.5)
+      self:drainBattery(Config.Battery.drainHoleNormal)
     end
       return 'overlap'
   else

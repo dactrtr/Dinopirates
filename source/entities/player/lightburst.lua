@@ -25,8 +25,8 @@ function Player:lightBurst()
         return
     end
     
-    -- Check if there's enough battery 
-    local batteryCost = 10
+    -- Check if there's enough battery
+    local batteryCost = Config.LightBurst.batteryCost
     if PlayerData.battery < batteryCost then
         printDebug("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
         return
@@ -65,11 +65,8 @@ function Player:lightBurst()
         printDebug("No entities affected by light burst")
     end
     
-    -- Set cooldown (1000ms = 1 second)
-    self.lightBurstCooldown = playdate.getCurrentTimeMilliseconds() + 1000
-    
-    -- Hide the light cone after a short delay (1000ms = 1 second)
-    self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + 1000
+    self.lightBurstCooldown = playdate.getCurrentTimeMilliseconds() + Config.LightBurst.cooldown
+    self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + Config.LightBurst.displayTime
     
     -- Distribute motion tokens to enemies/crew
     self:distributeMovementTokens(1) -- 1 Token = ~1 second of movement
@@ -86,8 +83,8 @@ function Player:createLightCone(direction)
     -- Use same parameters as FXshadow.lua
     local ix = PlayerData.x
     local iy = PlayerData.y
-    local d = 200     -- Distance the light reaches forward (FX is 120)
-    local h = 12      -- Height scaling for the cone shape (FX is 8)
+    local d = Config.LightBurst.coneDistance
+    local h = Config.LightBurst.coneHeight
     
     -- Adjust distance depending on direction
     if direction == 'left' or direction == 'down' then
@@ -147,8 +144,7 @@ function Player:getEntitiesInLightCone(lightPolygon)
 end
 
 function Player:affectEntity(entity)
-    -- Define blind duration in frames (60 frames = approx 2 seconds)
-    local blindDuration = 60
+    local blindDuration = Config.LightBurst.blindDuration
     
     if entity:isa(Brocorat) or entity:isa(Bosscolli) then
         -- For enemies, print that they were blinded with their ID

@@ -930,7 +930,7 @@ levelsLDTK = {
 		  height = 32,
 		  color = 7552569,
 		  customFields = {
-			NeedsKey = true,
+			NeedsKey = false,
 			DoorsConnection = "Left",
 			KeyNumber = 1
 		  }

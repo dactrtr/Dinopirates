@@ -39,8 +39,8 @@ function Player:dash()
         printDebug("No direction to dash!")
         return
     end
-    -- Check if there's enough battery 
-    local batteryCost = 10
+    -- Check if there's enough battery
+    local batteryCost = Config.Dash.batteryCost
     if PlayerData.battery < batteryCost then
         printDebug("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
         return
@@ -56,9 +56,9 @@ function Player:dash()
     self.isDashing = true
     self.dashDirection = direction
     self.dashProgress = 0
-    self.dashSpeed = 6  -- Pixels per frame (32 total / 4 frames = 8 per frame)
-    self.dashTotalDistance = 56
-    self.dashBounceDistance = 16
+    self.dashSpeed = Config.Dash.speed
+    self.dashTotalDistance = Config.Dash.totalDistance
+    self.dashBounceDistance = Config.Dash.bounceDistance
     
     -- Set animation state for the direction
     if direction == "left" then
@@ -71,8 +71,7 @@ function Player:dash()
         self.animation:setState('dashDown')
     end
     
-    -- Set cooldown (500ms = 0.5 seconds)
-    self.dashCooldown = playdate.getCurrentTimeMilliseconds() + 500
+    self.dashCooldown = playdate.getCurrentTimeMilliseconds() + Config.Dash.cooldown
 end
 
 function Player:updateDash()

@@ -57,7 +57,7 @@
 				"iid": "e9b65690-ac70-11f0-8539-3392c72a1b66",
 				"layer": "Doors",
 				"x": 4,
-				"y": 173,
+				"y": 176,
 				"width": 8,
 				"height": 32,
 				"color": 7552569,
@@ -69,22 +69,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "07f5afe0-ac70-11f0-8539-1df82db73e07",
-				"layer": "Doors",
-				"x": 392,
-				"y": 120,
-				"width": 16,
-				"height": 48,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Right",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "faba1c90-fa90-11f0-b8f3-19ade803f38b",
+				"iid": "6f73a900-fa90-11f0-b965-0bc3730f853d",
 				"layer": "Doors",
 				"x": 200,
 				"y": 4,

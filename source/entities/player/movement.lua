@@ -18,7 +18,7 @@ function Player:move(direction)
       
       -- Drain battery in darkness
       if PlayerData.isInDarkness == true then
-        self:drainBattery(0.5)
+        self:drainBattery(Config.Battery.drainMovementDark)
       end
 
       -- Drain battery with DWatch while walking

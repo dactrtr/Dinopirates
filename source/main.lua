@@ -3,9 +3,11 @@ import 'libraries/panels/Panels'
 -- import 'libraries/ldtk/LDtk'
 import 'achievements/all'
 
+import 'assets/data/Config'
+
 import 'utilities/Utilities'
 -- import 'utilities/PauseMenu'
-import 'utilities/SaveSystem' 
+import 'utilities/SaveSystem'
 
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
@@ -52,26 +54,8 @@ shinonome = Graphics.font.new('assets/fonts/JF-Dot-Shinonome16')
 Graphics.setFont(shinonome, 'normal')
 
 Panels.Settings.path = ""
-ZIndex = {
-	player = 4,
-	enemy = 3,
-	props = 2,
-	items = 4,
-	fx = 1999,
-	ui = 2000,
-	hud = 2000,
-	menu = 2100,
-	alert = 2200
-}
-CollideGroups = {
-	player = 1,
-	enemy = 2,
-	props = 3,
-	items = 4,
-	wall = 5,
-	noCollide = 6,
-	crewMember = 7
-}
+ZIndex = Config.ZIndex
+CollideGroups = Config.CollideGroups
 
 -- Button type constants
 ButtonTypes = {

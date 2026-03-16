@@ -24,8 +24,9 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 		
 	self:setSize(48, 48)
 	self:moveTo(x, y)
-	self:setCollideRect(12, 24, 24, 24)
-	self.hatDelta = 15
+	local ccr = Config.CrewMember.collideRect
+	self:setCollideRect(ccr.x, ccr.y, ccr.w, ccr.h)
+	self.hatDelta = Config.CrewMember.hatDelta
 	self.room = room
 	self.position = position
 	self.moveSpeed = moveSpeed
@@ -61,31 +62,31 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	-- HIDING STATE CONFIGURATION (Fine-tuning variables)
 	-- ============================================
 	self.isHiding = false -- Whether the CrewMember is currently hiding
-	self.hidingMovementTokensRequired = 3 -- Movement tokens needed to exit hiding (adjust for timing)
-	self.hidingMovementTokensAccumulated = 0 -- Accumulated movement tokens while hiding
-	self.hidingVisionRange = 80 -- Distance player must be to be considered "out of vision" (pixels)
-	self.cornerDetectionThreshold = 0.5 -- Threshold for detecting blocked movement (pixels)
+	self.hidingMovementTokensRequired = Config.CrewMember.hidingTokensRequired
+	self.hidingMovementTokensAccumulated = 0
+	self.hidingVisionRange = Config.CrewMember.hidingVisionRange
+	self.cornerDetectionThreshold = Config.CrewMember.cornerDetectionThreshold
 	
 	-- Corner/Trapped detection: count bounces to detect being stuck
-	self.recentBounceCount = 0 -- How many bounces happened recently  
-	self.bounceCountDecayFrames = 0 -- Frames until bounce count decays
-	self.bounceCountDecayRate = 30 -- Frames before bounce count resets (if no new bounces)
-	self.bouncesRequiredToHide = 2 -- Number of bounces in quick succession to trigger hiding
+	self.recentBounceCount = 0
+	self.bounceCountDecayFrames = 0
+	self.bounceCountDecayRate = Config.CrewMember.bounceCountDecayRate
+	self.bouncesRequiredToHide = Config.CrewMember.bouncesRequiredToHide
 	-- ============================================
 	
 	-- Store original collide rect for restoration
-	self.originalCollideRect = {x = 12, y = 24, w = 24, h = 24}
-	
+	self.originalCollideRect = Config.CrewMember.collideRect
+
 	-- Blinded state
 	self.isBlinded = false
 	self.blindFrames = 0
-	self.blindDuration = 60 -- Default blind duration in frames (approx 2 seconds)
+	self.blindDuration = Config.CrewMember.blindDuration
 	
 	printDebug("🧩 CrewMember spawned with IID:", self.iid, "CrewID:", crewId)
 end
 
 function CrewMember:addMovementTokens(amount)
-	local FRAMES_PER_TOKEN = 30
+	local FRAMES_PER_TOKEN = Config.CrewMember.framesPerToken
 	
 	-- If hiding, accumulate tokens for exit check instead of normal movement
 	if self.isHiding then
@@ -100,13 +101,11 @@ end
 function CrewMember:addMovementFrames(frames)
 	-- If hiding, convert frames to tokens and accumulate
 	if self.isHiding then
-		-- Convert frames to approximate tokens (30 frames = 1 token)
-		local tokenEquivalent = frames / 30
+		local tokenEquivalent = frames / Config.CrewMember.framesPerToken
 		self.hidingMovementTokensAccumulated = self.hidingMovementTokensAccumulated + tokenEquivalent
 		self:checkExitHiding()
 	else
-		-- Cap at reasonable max to prevent accumulation (3 seconds = 90 frames)
-		self.movementFrames = math.min(self.movementFrames + frames, 90)
+		self.movementFrames = math.min(self.movementFrames + frames, Config.CrewMember.movementFramesCap)
 	end
 end
 
@@ -120,10 +119,10 @@ function CrewMember:search(player)
 		end
 	end
 end
-function CrewMember:moveCollision(movementX, movementY, player) 
-	if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
+function CrewMember:moveCollision(movementX, movementY, player)
+	if PlayerData.battery < Config.CrewMember.batteryThresholdStop and PlayerData.isInDarkness == true then
 		self.moveSpeed = 0
-	elseif PlayerData.battery > 60 and PlayerData.isInDarkness == true then
+	elseif PlayerData.battery > Config.CrewMember.batteryThresholdRestore and PlayerData.isInDarkness == true then
 		self.moveSpeed = self.initialSpeed
 	end
 	
@@ -182,7 +181,7 @@ function CrewMember:moveCollision(movementX, movementY, player)
 		end
 		
 		-- Set bounce frames (how long to maintain this direction)
-		self.bounceFrames = 20
+		self.bounceFrames = Config.CrewMember.bounceFrames
 	end
 
 	-- Check for player contact to trigger interaction

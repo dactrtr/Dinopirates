@@ -68,43 +68,13 @@
 				"iid": "0330c2e0-ac70-11f0-8539-e9c343f3fe6a",
 				"layer": "Doors",
 				"x": 200,
-				"y": 4,
+				"y": 8,
 				"width": 48,
-				"height": 8,
+				"height": 16,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Top",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "19410d90-fa90-11f0-b8f3-cd81b9328a02",
-				"layer": "Doors",
-				"x": 4,
-				"y": 126,
-				"width": 8,
-				"height": 32,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Left",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "8784bea0-fa90-11f0-b8f3-433dde80761f",
-				"layer": "Doors",
-				"x": 200,
-				"y": 236,
-				"width": 48,
-				"height": 8,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
 					"KeyNumber": null
 				}
 			}
@@ -112,77 +82,16 @@
 		"CrewMember": [
 			{
 				"id": "CrewMember",
-				"iid": "157a0990-fa90-11f0-b8f3-fb166d64f4bf",
+				"iid": "0c11a640-fa90-11f0-9f0d-c9ca42f46487",
 				"layer": "CrewMembers",
-				"x": 28,
-				"y": 196,
+				"x": 124,
+				"y": 76,
 				"width": 48,
 				"height": 48,
 				"color": 14984818,
 				"customFields": {
 					"isTaken": false,
 					"crewID": "CM001"
-				}
-			},
-			{
-				"id": "CrewMember",
-				"iid": "3dc08dc0-fa90-11f0-b8f3-9da883b9e3da",
-				"layer": "CrewMembers",
-				"x": 284,
-				"y": 68,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
-				"customFields": {
-					"isTaken": false,
-					"crewID": "CM002"
-				}
-			}
-		],
-		"Boots": [
-			{
-				"id": "Boots",
-				"iid": "14029130-fa90-11f0-9a41-8baf55ac0161",
-				"layer": "Items",
-				"x": 36,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "boots"
-				}
-			}
-		],
-		"Notes": [
-			{
-				"id": "Notes",
-				"iid": "186500f0-fa90-11f0-9a41-73a695c798b9",
-				"layer": "Items",
-				"x": 36,
-				"y": 68,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "notes",
-					"grants": "canDance:true"
-				}
-			}
-		],
-		"Brocorat": [
-			{
-				"id": "Brocorat",
-				"iid": "3af597e0-fa90-11f0-b7cd-9d189686561c",
-				"layer": "Enemies",
-				"x": 340,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false
 				}
 			}
 		],
@@ -206,21 +115,6 @@
 		"Box": [
 			{
 				"id": "Box",
-				"iid": "26b53fd0-fa90-11f0-9a41-85e6ef5ae7f3",
-				"layer": "Props",
-				"x": 284,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "box"
-				}
-			},
-			{
-				"id": "Box",
 				"iid": "272ae500-fa90-11f0-9a41-890edd14f601",
 				"layer": "Props",
 				"x": 244,
@@ -238,7 +132,7 @@
 				"id": "Box",
 				"iid": "27cf6260-fa90-11f0-9a41-b3f1e08f1341",
 				"layer": "Props",
-				"x": 212,
+				"x": 204,
 				"y": 172,
 				"width": 32,
 				"height": 32,

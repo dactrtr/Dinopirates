@@ -8,12 +8,7 @@ local animationStates = {
   reverseOpen = 1
 }
 
-local positions = { -- art
-  right = {x = 393, y = 122},
-  left = {x = 4, y = 122},
-  down = {x = 203, y = 228},
-  top = {x = 203, y = 2}
-}
+local positions = Config.Doors.positions
 
 local function setRectValues(direction)
   local rectValues = {
@@ -80,11 +75,12 @@ end
 
 function Door:prevRoom(direction, playerX, playerY)
     PlayerData.lastRoom = direction
+    local sc = Config.Doors.spawnCoords
     local spawnCoordinates = {
-        top = {x = playerX or 196, y = 196},   -- Preserve X when entering from top/down
-        down = {x = playerX or 196, y = 32},
-        right = {x = 32, y = playerY or 116},  -- Preserve Y when entering from sides
-        left = {x = 364, y = playerY or 116}
+        top   = {x = playerX or sc.top.x,   y = sc.top.y  },
+        down  = {x = playerX or sc.down.x,  y = sc.down.y },
+        right = {x = sc.right.x, y = playerY or sc.right.y},
+        left  = {x = sc.left.x,  y = playerY or sc.left.y },
     }
     PlayerData.playerSpawn.x = spawnCoordinates[direction].x
     PlayerData.playerSpawn.y = spawnCoordinates[direction].y

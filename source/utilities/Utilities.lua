@@ -129,9 +129,9 @@ end
 
 function RandomScreen(axis)
 	if axis == "x" then
-		return math.random(20,380)
+		return math.random(Config.Screen.randomBoundsX.min, Config.Screen.randomBoundsX.max)
 	elseif axis == "y" then
-		return math.random(20,220)
+		return math.random(Config.Screen.randomBoundsY.min, Config.Screen.randomBoundsY.max)
 	end
 end
 
@@ -470,37 +470,11 @@ function renderTileMap(tileData, tilemap)
   end
 end
 
-local SECTION_TILE_IDS = {
-	 [1] = true,
-	 [2] = true,
-	 [3] = true,
-	 [5] = true,
-	 [6] = true,
-	 [50] = true,
-	 [66] = true,
-	 [67] = true,
-	 [68] = true,
-	 [69] = true,
-	 [72] = true,
-	 [73] = true,
-	 [74] = true,
-	 [75] = true,
-	 [77] = true,
-	 [79] = true,
-	 [80] = true,
-	 [81] = true,
-	 [82] = true,
-	 [89] = true,
-	 [90] = true,
-	 [91] = true,
-	 [92] = true,
-	 [93] = true,
-	 [94] = true,
-	 [95] = true,
-	 [96] = true,
-	 [97] = true,
- }
-local TILE_SIZE = 16
+local SECTION_TILE_IDS = {}
+for _, id in ipairs(Config.Tiles.walkable) do
+	SECTION_TILE_IDS[id] = true
+end
+local TILE_SIZE = Config.Tiles.size
 
 --- Creates wall colliders from tilemap data with 2D clustering (horizontal and vertical merging)
 -- @param tileData table The 2D matrix of tile IDs
@@ -667,10 +641,9 @@ function GetTileUnderPlayer(px, py)
 	return row[tileX]
 end
 
--- Slime tile IDs (89 to 97)
 SLIME_TILE_IDS = {}
-for i = 89, 98 do
-	SLIME_TILE_IDS[i] = true
+for _, id in ipairs(Config.Tiles.slime) do
+	SLIME_TILE_IDS[id] = true
 end
 
 -- Checks if the player is standing on a slime tile using a 16x16 area at their feet.

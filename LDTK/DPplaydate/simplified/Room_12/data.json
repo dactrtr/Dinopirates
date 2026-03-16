@@ -43,7 +43,8 @@
 		"tile": 12,
 		"DoorsConnection": [
 			"Left",
-			"Right"
+			"Right",
+			"Lower"
 		],
 		"play": null
 	},
@@ -182,6 +183,21 @@
 				"color": 15389866,
 				"customFields": {
 					"type": "plunger"
+				}
+			}
+		],
+		"Lamp": [
+			{
+				"id": "Lamp",
+				"iid": "d76e9610-fa90-11f0-b965-5fb453bb8492",
+				"layer": "Items",
+				"x": 52,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "lamp"
 				}
 			}
 		],
