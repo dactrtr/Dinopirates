@@ -47,16 +47,16 @@ end
 
 
 function dialogScreen:addScreen(scriptName)
-	PlayerData.isTalking = true
 	-- Buscar el diálogo por nombre
 	for i, scriptEntry in ipairs(script) do
 		if scriptEntry.name == scriptName then
 			dialogPosition = i
+			PlayerData.isTalking = true
 			self:nextDialog()
 			return
 		end
 	end
-	
+
 	-- Si no se encuentra el diálogo, imprimir error
 	printDebug("Warning: Dialog '" .. scriptName .. "' not found")
 end

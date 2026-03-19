@@ -31,6 +31,8 @@ function Utilities.iddqd()
 	PlayerData.items.hasBoots = true
 	PlayerData.items.hasPlunger = true
 	
+	PlayerData.battery = 100
+	
 	PlayerData.skills.canFlash = true
 	PlayerData.skills.canDash = true
 	PlayerData.skills.canPlungerang = true

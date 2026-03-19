@@ -116,6 +116,39 @@
 					"mapPercent": 0,
 					"conditionalScripts": []
 				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "e3ff23f0-21a0-11f1-9039-21f5d6ff2f4a",
+				"layer": "Triggers",
+				"x": 60,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 16711748,
+				"customFields": {
+					"script": "aLamp",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
+			}
+		],
+		"Lamp": [
+			{
+				"id": "Lamp",
+				"iid": "e0de0dd0-21a0-11f1-9039-3d34a18fc4f7",
+				"layer": "Items",
+				"x": 60,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "lamp",
+					"isItem": true
+				}
 			}
 		]
 	}

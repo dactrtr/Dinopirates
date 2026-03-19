@@ -383,4 +383,82 @@ script = {
             }, 
         }
     },
+    {
+        name = "tinyfier",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "tinyfier-01",
+    },
+                    {
+        video = 'player',
+        text = "tinyfier-02",
+    }
+    
+        }
+    },
+    {
+        name = "aLamp",
+        dialog = {
+            {
+        video = 'player',
+        text = "alamp-01",
+    }
+    
+        }
+    },
+    {
+        name = "abigJump",
+        dialog = {
+            {
+        video = 'player',
+        text = "abigjump-01",
+    }
+    
+        }
+    },
+    {
+        name = "whereDoor",
+        dialog = {
+            {
+        video = 'player',
+        text = "wheredoor-01",
+    }
+    
+        }
+    },
+    {
+        name = "bigEmptyRoom",
+        dialog = {
+            {
+        video = 'player',
+        text = "bigemptyroom-01",
+    }
+    
+        }
+    },
+    {
+        name = "smallSpaces",
+        dialog = {
+            {
+        video = 'player',
+        text = "smallspaces-01",
+    },
+                    {
+        video = 'player',
+        text = "smallspaces-02",
+    }
+    
+        }
+    },
+    {
+        name = "smallSpacesTiny",
+        dialog = {
+            {
+        video = 'player',
+        text = "smallspacestiny-01",
+    }
+    
+        }
+    },
 }

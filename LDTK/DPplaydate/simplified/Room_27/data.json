@@ -37,8 +37,8 @@
 		}
 	],
 	"customFields": {
-		"shadow": false,
-		"light": 0,
+		"shadow": true,
+		"light": 0.2,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
@@ -53,5 +53,23 @@
 	"layers": [
 		"BGTilemap.png"
 	],
-	"entities" : {}
+	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "727b6360-fa90-11f0-9039-d7e644e05329",
+				"layer": "Doors",
+				"x": 396,
+				"y": 176,
+				"width": 8,
+				"height": 32,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
 }

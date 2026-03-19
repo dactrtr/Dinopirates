@@ -184,7 +184,8 @@
 				"color": 15389866,
 				"customFields": {
 					"type": "itemGift",
-					"grants": "hasDWatch:true"
+					"grants": "hasDWatch:true",
+					"isItem": true
 				}
 			}
 		],

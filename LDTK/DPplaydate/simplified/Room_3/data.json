@@ -146,7 +146,7 @@
 					"type": "Search",
 					"mapPercent": 0,
 					"conditionalScripts": [
-						"items.hasLamp:nolamp"
+						"isTiny:tinyKnife"
 					]
 				}
 			},
@@ -282,21 +282,6 @@
 			},
 			{
 				"id": "Blood",
-				"iid": "0ed1c290-ac70-11f0-ae64-95329b483a8a",
-				"layer": "Props",
-				"x": 268,
-				"y": 60,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood",
 				"iid": "0e256780-ac70-11f0-8398-fb5fdad9133f",
 				"layer": "Props",
 				"x": 196,
@@ -341,68 +326,6 @@
 				"customFields": {
 					"type": "deadrat",
 					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Blood2": [
-			{
-				"id": "Blood2",
-				"iid": "fb5b9ce0-ac70-11f0-ae64-c17f4252e798",
-				"layer": "Props",
-				"x": 292,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood2",
-				"iid": "12214d40-ac70-11f0-8398-31a430f47a22",
-				"layer": "Props",
-				"x": 228,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood2",
-				"iid": "1975acd0-ac70-11f0-8398-9b842ef570b6",
-				"layer": "Props",
-				"x": 164,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood2",
-				"iid": "1f4d3060-ac70-11f0-8398-2ff5d145c0a9",
-				"layer": "Props",
-				"x": 204,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
 					"destroyed": false
 				}
 			}
@@ -540,8 +463,8 @@
 				"id": "Smalltable",
 				"iid": "d78991a0-d380-11f0-a276-f7b032b235ae",
 				"layer": "Props",
-				"x": 372,
-				"y": 172,
+				"x": 268,
+				"y": 52,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
@@ -572,7 +495,7 @@
 				"id": "KitchenStorage",
 				"iid": "421f6180-ac70-11f0-8398-3187f4a538f2",
 				"layer": "Props",
-				"x": 316,
+				"x": 308,
 				"y": 52,
 				"width": 32,
 				"height": 32,
@@ -588,13 +511,60 @@
 				"iid": "f90bc140-d380-11f0-a276-d3e851faf0a1",
 				"layer": "Props",
 				"x": 276,
-				"y": 68,
+				"y": 100,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
 				"customFields": {
 					"type": "kitchenStorage",
 					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Blood2": [
+			{
+				"id": "Blood2",
+				"iid": "12214d40-ac70-11f0-8398-31a430f47a22",
+				"layer": "Props",
+				"x": 228,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood2",
+					"nocollider": true,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Blood2",
+				"iid": "1975acd0-ac70-11f0-8398-9b842ef570b6",
+				"layer": "Props",
+				"x": 164,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood2",
+					"nocollider": true,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Blood2",
+				"iid": "1f4d3060-ac70-11f0-8398-2ff5d145c0a9",
+				"layer": "Props",
+				"x": 204,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "blood2",
+					"nocollider": true,
 					"destroyed": false
 				}
 			}

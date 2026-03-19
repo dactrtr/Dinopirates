@@ -56,7 +56,7 @@
 		"DoorsConnection": [
 			"Top",
 			"Down",
-			"Lower"
+			"Right"
 		],
 		"play": "Cutscene"
 	},
@@ -122,6 +122,21 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "1e6d98b0-fa90-11f0-9039-3be58b1a7a15",
+				"layer": "Doors",
+				"x": 394,
+				"y": 126,
+				"width": 8,
+				"height": 32,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
 					"KeyNumber": null
 				}
 			}
@@ -218,7 +233,7 @@
 				"id": "Trash",
 				"iid": "4eb548a0-fa90-11f0-bb17-ddd5be806714",
 				"layer": "Props",
-				"x": 180,
+				"x": 164,
 				"y": 164,
 				"width": 32,
 				"height": 32,
@@ -251,7 +266,7 @@
 				"iid": "e1dcbc80-fa90-11f0-bb17-abae770f562b",
 				"layer": "Props",
 				"x": 276,
-				"y": 164,
+				"y": 180,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
@@ -266,7 +281,7 @@
 				"iid": "e46f9c60-fa90-11f0-bb17-e702b3a82c8e",
 				"layer": "Props",
 				"x": 276,
-				"y": 204,
+				"y": 212,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
@@ -274,6 +289,23 @@
 					"nocollider": false,
 					"destroyed": false,
 					"type": "box"
+				}
+			}
+		],
+		"TubeExit": [
+			{
+				"id": "TubeExit",
+				"iid": "9fbc56a0-21a0-11f1-9039-37e7cd6f0338",
+				"layer": "Props",
+				"x": 36,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "TubeExit",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		]

@@ -54,7 +54,9 @@
 		"roomNumber": 9,
 		"tile": 9,
 		"DoorsConnection": [
-			"Top"
+			"Top",
+			"Down",
+			"Left"
 		],
 		"play": null
 	},
@@ -65,16 +67,31 @@
 		"Doors": [
 			{
 				"id": "Doors",
-				"iid": "0330c2e0-ac70-11f0-8539-e9c343f3fe6a",
+				"iid": "f1da76b0-fa90-11f0-9039-7f762bb19d4f",
 				"layer": "Doors",
 				"x": 200,
-				"y": 8,
+				"y": 235,
 				"width": 48,
-				"height": 16,
+				"height": 8,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
-					"DoorsConnection": "Top",
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "104fb470-fa90-11f0-9039-f5ad4ff8081c",
+				"layer": "Doors",
+				"x": 4,
+				"y": 128,
+				"width": 8,
+				"height": 32,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
 					"KeyNumber": null
 				}
 			}
@@ -92,6 +109,22 @@
 				"customFields": {
 					"isTaken": false,
 					"crewID": "CM001"
+				}
+			}
+		],
+		"Boots": [
+			{
+				"id": "Boots",
+				"iid": "80778710-21a0-11f1-9039-454013ab8924",
+				"layer": "Items",
+				"x": 220,
+				"y": 84,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "boots",
+					"isItem": true
 				}
 			}
 		],

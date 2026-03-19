@@ -54,6 +54,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.animation:addState('minifier', 45, 45)
   self.animation:addState('pneumaticTube', 47, 47)
   self.animation:addState('Tube', 48, 48)
+  self.animation:addState('TubeExit', 49, 49)
   self.animation:setState(type)
   
   -- Default properties

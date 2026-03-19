@@ -42,7 +42,7 @@
 		"roomNumber": 14,
 		"tile": 14,
 		"DoorsConnection": [
-			"Left",
+			"Top",
 			"Right"
 		],
 		"play": null

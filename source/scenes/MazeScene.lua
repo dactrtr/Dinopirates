@@ -178,81 +178,61 @@ function scene:enter()
 	end
 	
 	-- MARK: Items
+	local itemRequirements = {
+		keycard = "keys",
+		lamp = "items.hasLamp",
+		radio = "items.hasRadio",
+		notes = "items.hasNotes",
+		boots = "items.hasBoots",
+		plunger = "items.hasPlunger"
+	}
+
 	if entities ~= nil then
 		for entityType, entitiesList in pairs(entities) do
 			for _, item in ipairs(entitiesList) do
 				local cf = item.customFields or {}
-	
-				-- Detect if it belongs to Items layer, is an item type, or is a Keys entity
-				local isKeyEntity = (entityType == "Keys" or item.layer == "Keys")
-				local isItemEntity = (item.layer == "Items" or cf.isItem == true)
-				
-				if isKeyEntity or isItemEntity then
+
+				if cf.isItem == true then
 					local x, y = item.x, item.y
-					
-					-- For Keys entities, type is always keycard
-					local type
-					if isKeyEntity then
-						type = "keycard"
-					else
-						type = (cf.type or entityType):lower()
-					end
-					
-					-- Get KeyNumber (try both uppercase and lowercase)
+					local itemType = (cf.type or ""):lower()
 					local keyNumber = cf.KeyNumber or cf.keyNumber
-					
-					local itemRequirements = {
-						keycard = "keys",  -- Changed to check keys table
-						lamp = "items.hasLamp",
-						radio = "items.hasRadio",
-						notes = "items.hasNotes",
-						boots= "items.hasBoots",
-						plunger = "items.hasPlunger"
-					}
-					
-					-- Special handling for keycards with key numbers
 					local shouldGenerate = false
-					if type == "keycard" then
-						-- For keycards, check if player doesn't have this specific key
+
+					if itemType == "keycard" then
 						local keyNum = keyNumber or 1
 						shouldGenerate = not PlayerData.keys[keyNum]
-						printDebug("🔑 Checking keycard generation - KeyNumber:", keyNum, "shouldGenerate:", shouldGenerate)
+						printDebug("Checking keycard - KeyNumber:", keyNum, "shouldGenerate:", shouldGenerate)
 					elseif cf.grants then
-						-- If item has a grants field, check if player already has those items/skills
 						shouldGenerate = true
 						for pair in string.gmatch(cf.grants, "([^,]+)") do
 							local key, value = string.match(pair, "([^:]+):([^:]+)")
 							if key and value then
 								key = key:gsub("%s+", "")
-								-- Check both items and skills tables
 								if PlayerData.items[key] == true or PlayerData.skills[key] == true then
 									shouldGenerate = false
 									break
 								end
 							end
 						end
-					elseif itemRequirements[type] then
-						-- For other items, check the boolean flag in items table
-						local itemPath = itemRequirements[type]
+					elseif itemRequirements[itemType] then
+						local itemPath = itemRequirements[itemType]
 						if itemPath:match("^items%.") then
-							-- Extract the field name after "items."
 							local fieldName = itemPath:match("^items%.(.+)$")
 							shouldGenerate = PlayerData.items[fieldName] == false
 						else
 							shouldGenerate = PlayerData[itemPath] == false
 						end
 					end
-					
-					-- Generate item if player doesn't have it
+
 					if shouldGenerate then
-						printDebug("✅ Generating item:", type, "at position (", x, ",", y, ") with keyNumber:", keyNumber, "grants:", cf.grants)
-						Items(x, y, type, keyNumber, cf.grants)
+						printDebug("Generating item:", itemType, "at (", x, ",", y, ")")
+						Items(x, y, itemType, keyNumber, cf.grants)
 					end
 				end
 			end
 		end
 	end
-	-- MARK: Player
+		-- MARK: Player
 	local spawnPoint = PlayerData.playerSpawn
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
 	uiScreen = playerHud(player)
