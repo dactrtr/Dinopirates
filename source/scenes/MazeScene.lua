@@ -17,6 +17,8 @@ class("MazeScene").extends(NobleScene)
 local scene = MazeScene
 local room = nil -- Level in table position
 
+MazeScene.backgroundMusic = nil
+
 import "entities/player/init"
 
 import "assets/comics/comicsData"
@@ -75,8 +77,13 @@ function scene:init()
 		Utilities.iddqd()
 	end
 	playdate.display.setRefreshRate(50)
-	-- Your code here
-	
+
+	if not MazeScene.backgroundMusic then
+		MazeScene.backgroundMusic = playdate.sound.fileplayer.new('assets/sounds/music/game/shadow_dino_explore_ima')
+		if MazeScene.backgroundMusic then
+			MazeScene.backgroundMusic:setVolume(0.5)
+		end
+	end
 end
 function scene:setFloor(levelNumber, roomNumber)
 	for i, levelData in ipairs(levelsLDTK) do
@@ -92,9 +99,11 @@ end
 -- scene needs to be visible (this moment depends on which transition type is used).
 function scene:enter()
 	scene.super.enter(self)
-	-- Your code here
-	
-	
+
+	if MazeScene.backgroundMusic and not MazeScene.backgroundMusic:isPlaying() then
+		MazeScene.backgroundMusic:play(0)
+	end
+
 	PlayerData.isGaming = false
 	PlayerData.isEquiping = false
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)

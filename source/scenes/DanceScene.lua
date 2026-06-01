@@ -33,7 +33,10 @@ local barHeight = 10
 local barY = 56
 local condition = nil
 
-
+local battleMusicBasic = nil
+local currentBattleMusic = nil
+local kickSound = nil
+local snareSound = nil
 
 -- Enemy Pattern Profiles
 
@@ -120,6 +123,21 @@ function scene:init()
 
     -- defaults for button count (may change on enter)
     self.numberOfButtons = 4
+
+    battleMusicBasic = playdate.sound.fileplayer.new('assets/sounds/music/battle_music_test_ima')
+    if battleMusicBasic then
+        battleMusicBasic:setVolume(0.7)
+    end
+
+    kickSound = playdate.sound.sampleplayer.new('assets/sounds/music/drums/kick_test_ima')
+    if kickSound then
+        kickSound:setVolume(0.8)
+    end
+
+    snareSound = playdate.sound.sampleplayer.new('assets/sounds/music/drums/snare_test_ima')
+    if snareSound then
+        snareSound:setVolume(0.8)
+    end
 end
 
 -- Helper: calculate the probability (0-100) to upgrade difficulty
@@ -216,6 +234,20 @@ function scene:enter()
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
     backgroundDance = BackgroundDance()
     resultsScreen = ResultsScreen()
+
+    if MazeScene.backgroundMusic and MazeScene.backgroundMusic:isPlaying() then
+        MazeScene.backgroundMusic:stop()
+    end
+
+    if currentBattleMusic then
+        currentBattleMusic:stop()
+        currentBattleMusic = nil
+    end
+
+    if self.enemyType == "basic" and battleMusicBasic then
+        currentBattleMusic = battleMusicBasic
+        currentBattleMusic:play(0)
+    end
 end
 
 function scene:start()
@@ -396,6 +428,12 @@ function scene:exit()
     if sequence then sequence:stop() end
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	sequence:start()
+
+    if currentBattleMusic then
+        currentBattleMusic:stop()
+        currentBattleMusic = nil
+    end
+
     SaveSystem.save()
 end
 
@@ -483,6 +521,9 @@ scene.inputHandler = {
             scene:startBattle()
             return
         end
+        if snareSound and PlayerData.isDancing then
+            snareSound:play(1)
+        end
         scene:danceStep("aButton")
         scene:checkDanceResults()
     end,
@@ -517,6 +558,9 @@ scene.inputHandler = {
     --
     leftButtonDown = function()
         -- Your code here
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
         scene:danceStep("leftButton")
     end,
     leftButtonHold = function()
@@ -530,6 +574,9 @@ scene.inputHandler = {
     --
     rightButtonDown = function()
         -- Your code here
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
         scene:danceStep("rightButton")
     end,
     rightButtonHold = function()
@@ -543,6 +590,9 @@ scene.inputHandler = {
     --
     upButtonDown = function()
         -- Your code here
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
         scene:danceStep("upButton")
     end,
     upButtonHold = function()
@@ -556,6 +606,9 @@ scene.inputHandler = {
     --
     downButtonDown = function()
         -- Your code here
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
         scene:danceStep("downButton")
     end,
     downButtonHold = function()

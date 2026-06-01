@@ -13,6 +13,10 @@ local background = nil
 local isDebugMenu = false
 local versionSprite = nil
 
+local menuNavigationSoundUpFx = nil
+local menuNavigationSoundDownFx = nil
+local menuBackgroundMusic = nil
+
 scene.backgroundColor = Graphics.kColorWhite
 
 local function updateMenuSelection()
@@ -56,18 +60,30 @@ end
 TitleScene.inputHandler = {
 	upButtonDown = function()
 		selectPrevious()
+		if menuNavigationSoundUpFx then
+			menuNavigationSoundUpFx:play()
+		end
 	end,
 	downButtonDown = function()
 		selectNext()
+		if menuNavigationSoundDownFx then
+			menuNavigationSoundDownFx:play()
+		end
 	end,
 	cranked = function(change, _)
 		crankTick = crankTick + change
 		if crankTick > Config.Input.crankMenuThreshold then
 			crankTick = 0
 			selectNext()
+			if menuNavigationSoundDownFx then
+				menuNavigationSoundDownFx:play()
+			end
 		elseif crankTick < -Config.Input.crankMenuThreshold then
 			crankTick = 0
 			selectPrevious()
+			if menuNavigationSoundUpFx then
+				menuNavigationSoundUpFx:play()
+			end
 		end
 	end,
 	AButtonDown = function()
@@ -86,6 +102,20 @@ function scene:init()
 	-- Initialize original state if needed (legacy, puedes removerlo después)
 	if not playdate.file.exists('levelOriginal.json') then
 		playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
+	end
+
+	menuNavigationSoundUpFx = playdate.sound.sampleplayer.new('assets/sounds/menu_up_ima.wav')
+	if menuNavigationSoundUpFx then
+		menuNavigationSoundUpFx:setVolume(0.5)
+	end
+	menuNavigationSoundDownFx = playdate.sound.sampleplayer.new('assets/sounds/menu_down_ima.wav')
+	if menuNavigationSoundDownFx then
+		menuNavigationSoundDownFx:setVolume(0.5)
+	end
+
+	menuBackgroundMusic = playdate.sound.fileplayer.new('assets/sounds/music/game/shadow_dino_explore_intro_ima')
+	if menuBackgroundMusic then
+		menuBackgroundMusic:setVolume(0.4)
 	end
 end
 
@@ -260,6 +290,10 @@ function scene:enter()
 
 	selectedIndex = 1
 	updateMenuSelection()
+
+	if menuBackgroundMusic then
+		menuBackgroundMusic:play(0)
+	end
 end
 
 -- This runs once a transition from another scene is complete.
@@ -289,6 +323,9 @@ function scene:exit()
 	menuItems = {}
 	if background then background:remove() background = nil end
 	if versionSprite then versionSprite:remove() versionSprite = nil end
+	if menuBackgroundMusic and menuBackgroundMusic:isPlaying() then
+		menuBackgroundMusic:stop()
+	end
 end
 
 -- This runs once a transition to another scene completes.
