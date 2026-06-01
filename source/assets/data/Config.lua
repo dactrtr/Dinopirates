@@ -74,6 +74,7 @@ Config.DarkReveal = {
     crankThreshold        = 720,   -- degrees of total crank rotation required
     revealDuration        = 3000,  -- ms the full light lasts after activation
     rechargeBlockDuration = 3000,  -- ms recharge is blocked after reveal ends
+    selfDamage            = 1,     -- HP the player loses each time the reveal fires (0 = no self-damage)
 }
 
 -- Grappling Hook (charged plungerang in lit rooms)
@@ -132,7 +133,7 @@ Config.LightBurst = {
     coneDistance  = 200,    -- px forward
     coneHeight    = 12,     -- scaling factor
     blindDuration = 60,     -- frames enemies stay blinded
-    selfDamage    = 1,      -- HP the player loses each time the flash fires (0 = no self-damage)
+    selfDamage    = 0,      -- HP the player loses each time the flash fires (0 = no self-damage)
 }
 
 -- Projectile (plungerang)

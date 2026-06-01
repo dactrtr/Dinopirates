@@ -49,9 +49,25 @@ function Player:endDarkCharge()
 end
 
 function Player:activateDarkReveal()
+    -- Block the reveal if its self-damage would leave the player without life.
+    -- The cost ignores invincibility, so it is always real; refuse to fire when lethal.
+    local selfDamage = Config.DarkReveal.selfDamage or 0
+    if selfDamage > 0 and (PlayerData.healthPoints - selfDamage) < (PlayerData.danceThresholdHP or 5) then
+        printDebug("🚫 Dark reveal blocked: not enough HP (self-damage would leave the player without life)")
+        return
+    end
+
     PlayerData.battery = 0
     PlayerData.rechargeBlocked = true
     PlayerData.showFullLight = true
+
+    -- The reveal burns the player: it always costs HP and ignores invincibility.
+    -- The lethal case was already rejected above, so this can never drop the
+    -- player below the dance threshold.
+    if selfDamage > 0 then
+        PlayerData.healthPoints -= selfDamage
+        printDebug("🔥 Dark reveal self-damage: -" .. selfDamage .. " HP (now " .. PlayerData.healthPoints .. ")")
+    end
 
     -- Grant enemy/crew movement tokens now that the dark reveal actually activated
     self:distributeMovementTokens(Config.Player.movementTokensPerAction)

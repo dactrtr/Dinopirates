@@ -490,7 +490,7 @@ table.insert(levelsLDTK, {
           Conditions = {
             "isTiny:true"
           },
-          BlockedDialog = nil
+          BlockedDialog = "cabinetHole"
         }
       }
     }
@@ -1009,7 +1009,7 @@ table.insert(levelsLDTK, {
       {
         id = "Minifier",
         iid = "21887b30-fa90-11f0-9a41-eb80f350135c",
-        x = 356,
+        x = 100,
         y = 36,
         width = 32,
         height = 32,
@@ -1108,6 +1108,20 @@ table.insert(levelsLDTK, {
         customFields = {
           type = "food",
           grants = "hasitemname:bool",
+          isItem = true
+        }
+      }
+    },
+    Plunger = {
+      {
+        id = "Plunger",
+        iid = "8c9a4ee0-48b0-11f1-98a2-5d3443b1ee75",
+        x = 68,
+        y = 76,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "plunger",
           isItem = true
         }
       }

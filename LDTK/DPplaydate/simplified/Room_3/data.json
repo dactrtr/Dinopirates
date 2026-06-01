@@ -275,7 +275,7 @@
 					"Conditions": [
 						"isTiny:true"
 					],
-					"BlockedDialog": null
+					"BlockedDialog": "cabinetHole"
 				}
 			}
 		]
