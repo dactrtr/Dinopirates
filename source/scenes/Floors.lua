@@ -2,7 +2,8 @@ local floorRanges = {
 	{ start = 166, stop = 180 },
 	{ start = 231, stop = 274 },
 	{ start = 316, stop = 330 },
-	{ start = 401, stop = 415 }
+	{ start = 401, stop = 415 },
+	{ start = 481, stop = 481 }
 }
 
 for _, range in ipairs(floorRanges) do

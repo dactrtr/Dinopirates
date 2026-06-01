@@ -69,6 +69,19 @@ function Player:startInvincibility(duration)
     self.invincibilityTimer = duration
 end
 
+function Player:applyKnockback(enemyX, enemyY)
+    local k = Config.Player.knockbackDistance
+    local dx = 0
+    local dy = 0
+    if self.x ~= enemyX then
+        dx = (self.x > enemyX) and k or -k
+    end
+    if self.y ~= enemyY then
+        dy = (self.y > enemyY) and k or -k
+    end
+    self:moveWithCollisions(self.x + dx, self.y + dy)
+end
+
 function Player:idle()
   if self.isAlive == true then
     if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
@@ -150,6 +163,60 @@ function Player:finishMinifying()
     PlayerData.isGaming = true
     self.triggerEnteredOnce = false
     self.uiHud:setVisible(false)
+end
+
+function Player:startCooking()
+    if not self.currentMicrowave or PlayerData.isTalking or not PlayerData.isGaming then return end
+    -- Cooking is only possible while big — the tiny player can't operate the microwave.
+    if PlayerData.isTiny then
+        printDebug("Too small to use the microwave!")
+        return
+    end
+    -- Nothing to do? Don't enter cooking.
+    if (PlayerData.food or 0) <= 0 or PlayerData.healthPoints >= Config.Player.maxHealthPoints then return end
+
+    -- Lock player and center
+    PlayerData.isGaming = false
+    self.triggerEnteredOnce = true -- Stop trigger checks
+
+    -- Auto center on microwave
+    local targetX = self.currentMicrowave.x
+    local targetY = self.currentMicrowave.y - 10
+    self:moveTo(targetX, targetY)
+    if shadow then shadow:moveTo(targetX, targetY) end
+
+    -- Show crank prompt
+    -- Future hook: set a distinct cooking player animation + HUD state here (out of scope for v1).
+    self.uiHud:setCrankClock()
+    self:showUIHUD()
+
+    -- Reset crank accumulator
+    self.cookProgress = 0
+end
+
+function Player:finishCooking()
+    PlayerData.isGaming = true
+    self.triggerEnteredOnce = false
+    self.uiHud:setVisible(false)
+    self.cookProgress = 0
+end
+
+function Player:checkMicrowave()
+    if self.currentMicrowave then
+        local stillInside = false
+        for _, sprite in ipairs(self:overlappingSprites()) do
+            if sprite == self.currentMicrowave then
+                stillInside = true
+                break
+            end
+        end
+
+        if not stillInside then
+            self.uiHud:setVisible(false)
+            self.currentMicrowave = nil
+            PlayerData.readyToCook = false
+        end
+    end
 end
 function Player:pedometer()
   PlayerData.steps += Config.Pedometer.stepsPerMovement
@@ -248,15 +315,35 @@ function Player:checkTrigger()
     end
 end
 
+local wakeButtons = {
+  playdate.kButtonA, playdate.kButtonB,
+  playdate.kButtonUp, playdate.kButtonDown,
+  playdate.kButtonLeft, playdate.kButtonRight
+}
+
 function Player:update()
-  -- Update dash movement if dashing
-  self:updateDash()
-  
+  if self.isSleeping then
+    for _, btn in ipairs(wakeButtons) do
+      if playdate.buttonJustPressed(btn) then
+        self:onWakePress()
+        break
+      end
+    end
+    return
+  end
+
   -- Update sliding movement if on slime
   self:updateSliding()
 
+  -- Update grappling-hook pull if active
+  self:updateGrapplePull()
+
   -- Check if player is on a slime tile (IDs 89-97)
   self:checkSlimeTile()
+
+  -- Check if player is on a hole tile (IDs 104-115)
+  self:checkHoleTile()
+  self:checkTinyHoleTile()
 
   -- Hide light cone after display time
   if self.lightConeHideTime and playdate.getCurrentTimeMilliseconds() >= self.lightConeHideTime then
@@ -264,10 +351,12 @@ function Player:update()
     self.lightConeHideTime = nil
   end
 
-  self:setZIndex(self.y)
+
+  self:checkForegroundDepth()
   
   self:checkTrigger()
   self:checkMinifier()
+  self:checkMicrowave()
 
   -- if PlayerData.storyCounter == 4 then
   -- PlayerData.isRinging = true
@@ -279,6 +368,9 @@ function Player:update()
     PlayerData.battery = 0
   elseif PlayerData.battery >= 100 then
     PlayerData.battery = 100
+  end
+  if PlayerData.healthPoints > Config.Player.maxHealthPoints then
+    PlayerData.healthPoints = Config.Player.maxHealthPoints
   end
   if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
     if PlayerData.battery < Config.Sanity.batteryThresholdLow then
@@ -309,4 +401,43 @@ function Player:update()
   end
 
   PlayerData.isActive = false
+end
+
+function Player:checkForegroundDepth()
+    local TILE_SIZE = Config.Tiles.size
+    local hr = Config.Player.collideRectHead
+    local headX = self.x - 24 + hr.x + hr.w * 0.5
+    local headY = self.y - 24 + hr.y + hr.h * 0.5
+    local tX = math.floor(headX / TILE_SIZE) + 1
+    local tY = math.floor(headY / TILE_SIZE) + 1
+
+    local tileGrid = tileMapData[PlayerData.actualTilemap]
+    local row = tileGrid and tileGrid[tY]
+    local id  = row and row[tX] or 0
+
+    local walkable = { [0]=true,[1]=true,[2]=true,[3]=true,[4]=true,[5]=true }
+    if not walkable[id] then
+        self:setZIndex(ZIndex.foreground + 1)
+    else
+        self:setZIndex(self.y)
+    end
+end
+
+function Player:startSleeping()
+    self.isSleeping = true
+    self.wakeupPresses = 0
+    self.animation:setState('sleep')
+end
+
+function Player:onWakePress()
+    self.wakeupPresses += 1
+    if self.wakeupPresses >= 2 then
+        self:wake()
+    end
+end
+
+function Player:wake()
+    self.isSleeping = false
+    self:idle()
+    PlayerData.isGaming = true
 end

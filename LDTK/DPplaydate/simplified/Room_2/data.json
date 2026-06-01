@@ -16,8 +16,16 @@
 			"dir": "w"
 		},
 		{
+			"levelIid": "a82c8680-48b0-11f1-9f4d-49a4be703c65",
+			"dir": "n"
+		},
+		{
 			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
 			"dir": "e"
+		},
+		{
+			"levelIid": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+			"dir": "ne"
 		},
 		{
 			"levelIid": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
@@ -48,38 +56,22 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
-		"Doors": [
+		"TKNotes": [
 			{
-				"id": "Doors",
-				"iid": "b3283eb0-ac70-11f0-8539-f3c8ed5b1669",
-				"layer": "Doors",
-				"x": 200,
-				"y": 232,
-				"width": 48,
-				"height": 16,
-				"color": 7552569,
+				"id": "TKNotes",
+				"iid": "6f1ed150-21a0-11f1-b443-37273b02d9b7",
+				"layer": "Notes",
+				"x": 196,
+				"y": 76,
+				"width": 64,
+				"height": 32,
+				"color": 2943221,
 				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "b620e540-ac70-11f0-8539-71a575f15bb9",
-				"layer": "Doors",
-				"x": 392,
-				"y": 120,
-				"width": 16,
-				"height": 48,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Right",
-					"KeyNumber": null
+					"String": "Arbol de navidad y regalos"
 				}
 			}
 		],
@@ -88,8 +80,8 @@
 				"id": "Triggers",
 				"iid": "04803a80-ac70-11f0-ae64-7fad2120052d",
 				"layer": "Triggers",
-				"x": 172,
-				"y": 100,
+				"x": 156,
+				"y": 116,
 				"width": 40,
 				"height": 40,
 				"color": 16711748,
@@ -105,8 +97,8 @@
 				"id": "Triggers",
 				"iid": "0f48b230-ac70-11f0-ae64-49bfdc9ab6ce",
 				"layer": "Triggers",
-				"x": 220,
-				"y": 92,
+				"x": 228,
+				"y": 100,
 				"width": 40,
 				"height": 40,
 				"color": 16711748,
@@ -122,10 +114,10 @@
 				"id": "Triggers",
 				"iid": "7d672b30-ac70-11f0-ae64-79d729daa857",
 				"layer": "Triggers",
-				"x": 308,
-				"y": 180,
+				"x": 332,
+				"y": 188,
 				"width": 88,
-				"height": 88,
+				"height": 64,
 				"color": 16711748,
 				"customFields": {
 					"script": "entranceMess",
@@ -170,13 +162,30 @@
 						"isTiny:hugeXmas"
 					]
 				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "20aea340-48b0-11f1-b67e-6354679cdabc",
+				"layer": "Triggers",
+				"x": 60,
+				"y": 84,
+				"width": 40,
+				"height": 40,
+				"color": 16711748,
+				"customFields": {
+					"script": "justBoxes",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
 			}
 		],
 		"ItemGift": [
 			{
 				"id": "ItemGift",
 				"iid": "ab0e6080-d380-11f0-88fd-23cdcf2dde52",
-				"layer": "Items",
+				"layer": "Items_and_Props",
 				"x": 196,
 				"y": 140,
 				"width": 32,
@@ -189,402 +198,82 @@
 				}
 			}
 		],
-		"Xtree1": [
+		"Box": [
 			{
-				"id": "Xtree1",
-				"iid": "0b24fca0-ac70-11f0-985a-61d94463d05b",
-				"layer": "Props",
-				"x": 164,
-				"y": 44,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "xtree-1",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Xtree2": [
-			{
-				"id": "Xtree2",
-				"iid": "0cc60270-ac70-11f0-985a-1d1e859d73df",
-				"layer": "Props",
-				"x": 196,
-				"y": 44,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "xtree-2",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Xtree3": [
-			{
-				"id": "Xtree3",
-				"iid": "0ec1f980-ac70-11f0-985a-a3051c196f4b",
-				"layer": "Props",
-				"x": 164,
-				"y": 76,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "xtree-3",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Xtree4": [
-			{
-				"id": "Xtree4",
-				"iid": "1072ddd0-ac70-11f0-985a-077e223da91c",
-				"layer": "Props",
-				"x": 196,
-				"y": 76,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "xtree-4",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Gifts": [
-			{
-				"id": "Gifts",
-				"iid": "13ad2140-ac70-11f0-985a-d1b75f9e1484",
-				"layer": "Props",
-				"x": 140,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "gifts",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Gifts",
-				"iid": "1693c670-ac70-11f0-985a-51430b780b06",
-				"layer": "Props",
-				"x": 220,
-				"y": 92,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "gifts",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Gift": [
-			{
-				"id": "Gift",
-				"iid": "1afcecf0-ac70-11f0-985a-01e2a66cb28c",
-				"layer": "Props",
-				"x": 172,
-				"y": 100,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "gift",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Blood2": [
-			{
-				"id": "Blood2",
-				"iid": "2652d790-ac70-11f0-985a-25b699999ba6",
-				"layer": "Props",
-				"x": 108,
-				"y": 100,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood2",
-				"iid": "2929ec60-ac70-11f0-985a-4126f85ddd1f",
-				"layer": "Props",
-				"x": 252,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
-				}
-			}
-		],
-		"Blood": [
-			{
-				"id": "Blood",
-				"iid": "2dcb39e0-ac70-11f0-985a-45f325c18dbd",
-				"layer": "Props",
+				"id": "Box",
+				"iid": "0ee36e70-48b0-11f1-b67e-0304cf2370db",
+				"layer": "Items_and_Props",
 				"x": 84,
-				"y": 52,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood",
-				"iid": "2f6c18a0-ac70-11f0-985a-a1f4b58b53d7",
-				"layer": "Props",
-				"x": 300,
 				"y": 60,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
 				"customFields": {
-					"type": "blood",
-					"nocollider": true,
+					"type": "box",
+					"nocollider": false,
 					"destroyed": false
 				}
 			},
 			{
-				"id": "Blood",
-				"iid": "31637bd0-ac70-11f0-985a-7b97c4a1ea96",
-				"layer": "Props",
-				"x": 140,
-				"y": 132,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			}
-		],
-		"Table": [
-			{
-				"id": "Table",
-				"iid": "46dec050-ac70-11f0-985a-132726764f8b",
-				"layer": "Props",
-				"x": 36,
+				"id": "Box",
+				"iid": "101a67d0-48b0-11f1-b67e-cb9384f6940e",
+				"layer": "Items_and_Props",
+				"x": 28,
 				"y": 100,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
 				"customFields": {
-					"type": "table",
+					"type": "box",
 					"nocollider": false,
 					"destroyed": false
 				}
 			},
 			{
-				"id": "Table",
-				"iid": "487d5520-ac70-11f0-985a-cd8cc298fdae",
-				"layer": "Props",
-				"x": 356,
-				"y": 68,
+				"id": "Box",
+				"iid": "1162c650-48b0-11f1-b67e-f70975554232",
+				"layer": "Items_and_Props",
+				"x": 60,
+				"y": 84,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
 				"customFields": {
-					"type": "table",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Table",
-				"iid": "6d93cec0-ac70-11f0-ae64-1be5800770cc",
-				"layer": "Props",
-				"x": 300,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "table",
+					"type": "box",
 					"nocollider": false,
 					"destroyed": false
 				}
 			}
 		],
-		"FellTable": [
+		"Doors": [
 			{
-				"id": "FellTable",
-				"iid": "4abbfa80-ac70-11f0-985a-7319d2beaa22",
-				"layer": "Props",
-				"x": 324,
-				"y": 92,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
+				"id": "Doors",
+				"iid": "b3283eb0-ac70-11f0-8539-f3c8ed5b1669",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
 				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
 				}
 			},
 			{
-				"id": "FellTable",
-				"iid": "4c9c0520-ac70-11f0-985a-e99f3d0bf46f",
-				"layer": "Props",
-				"x": 36,
-				"y": 180,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
+				"id": "Doors",
+				"iid": "b620e540-ac70-11f0-8539-71a575f15bb9",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
 				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "FellTable",
-				"iid": "4db452f0-ac70-11f0-985a-cfe8262e92fe",
-				"layer": "Props",
-				"x": 364,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "FellTable",
-				"iid": "4fdbc6d0-ac70-11f0-985a-a5601f3ccd47",
-				"layer": "Props",
-				"x": 92,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "FellTable",
-				"iid": "6ed6af00-ac70-11f0-ae64-f7bb28f9916d",
-				"layer": "Props",
-				"x": 340,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Fellchair": [
-			{
-				"id": "Fellchair",
-				"iid": "518e7fe0-ac70-11f0-985a-93391a2015c0",
-				"layer": "Props",
-				"x": 316,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "fellchair"
-				}
-			},
-			{
-				"id": "Fellchair",
-				"iid": "53f63110-ac70-11f0-985a-d350bb30470b",
-				"layer": "Props",
-				"x": 348,
-				"y": 164,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "fellchair"
-				}
-			},
-			{
-				"id": "Fellchair",
-				"iid": "54ba1d50-ac70-11f0-985a-27fb7aa5ea82",
-				"layer": "Props",
-				"x": 252,
-				"y": 188,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "fellchair"
-				}
-			},
-			{
-				"id": "Fellchair",
-				"iid": "722d2d00-ac70-11f0-ae64-d9f2ef5111fe",
-				"layer": "Props",
-				"x": 324,
-				"y": 164,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "fellchair"
-				}
-			}
-		],
-		"Chair": [
-			{
-				"id": "Chair",
-				"iid": "7626a1c0-ac70-11f0-ae64-a5338e4e288e",
-				"layer": "Props",
-				"x": 364,
-				"y": 164,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "chair"
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
 				}
 			}
 		]

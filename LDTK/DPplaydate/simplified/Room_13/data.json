@@ -44,14 +44,68 @@
 		"DoorsConnection": [
 			"Top",
 			"Left",
-			"Right"
+			"Right",
+			"Lower"
 		],
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
+		"Triggers": [
+			{
+				"id": "Triggers",
+				"iid": "f5c64900-fa90-11f0-bb17-3998f48db633",
+				"layer": "Triggers",
+				"x": 268,
+				"y": 36,
+				"width": 24,
+				"height": 56,
+				"color": 16711748,
+				"customFields": {
+					"script": "secondCall",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "e3ff23f0-21a0-11f1-9039-21f5d6ff2f4a",
+				"layer": "Triggers",
+				"x": 60,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 16711748,
+				"customFields": {
+					"script": "aLamp",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
+			}
+		],
+		"Lamp": [
+			{
+				"id": "Lamp",
+				"iid": "e0de0dd0-21a0-11f1-9039-3d34a18fc4f7",
+				"layer": "Items_and_Props",
+				"x": 60,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "lamp",
+					"isItem": true
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",
@@ -96,58 +150,6 @@
 					"NeedsKey": false,
 					"DoorsConnection": "Right",
 					"KeyNumber": null
-				}
-			}
-		],
-		"Triggers": [
-			{
-				"id": "Triggers",
-				"iid": "f5c64900-fa90-11f0-bb17-3998f48db633",
-				"layer": "Triggers",
-				"x": 268,
-				"y": 36,
-				"width": 24,
-				"height": 56,
-				"color": 16711748,
-				"customFields": {
-					"script": "secondCall",
-					"usedTrigger": false,
-					"type": "Story",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			},
-			{
-				"id": "Triggers",
-				"iid": "e3ff23f0-21a0-11f1-9039-21f5d6ff2f4a",
-				"layer": "Triggers",
-				"x": 60,
-				"y": 52,
-				"width": 32,
-				"height": 32,
-				"color": 16711748,
-				"customFields": {
-					"script": "aLamp",
-					"usedTrigger": false,
-					"type": "Story",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			}
-		],
-		"Lamp": [
-			{
-				"id": "Lamp",
-				"iid": "e0de0dd0-21a0-11f1-9039-3d34a18fc4f7",
-				"layer": "Items",
-				"x": 60,
-				"y": 52,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "lamp",
-					"isItem": true
 				}
 			}
 		]

@@ -20,8 +20,10 @@ function MenuTitle:init(x, y, type, zIndex)
   self.animation:addState('selDeleteGame', 6, 6)
   self.animation:addState('defAchievements', 7, 7)
   self.animation:addState('selAchievements', 8, 8)
-  self.animation:addState('defPlayground', 9, 9)
-  self.animation:addState('selPlayground', 10, 10)
+  self.animation:addState('defCredits', 9, 9)
+  self.animation:addState('selCredits', 10, 10)
+  self.animation:addState('defPlayground', 11, 11)
+  self.animation:addState('selPlayground', 12, 12)
   self.animation:setState(type)
   
   -- position and z-index

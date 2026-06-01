@@ -22,8 +22,9 @@ function FXshadow:init(player, lightSize, globalLightAmount, Zindex)
 	self.lastLightSizeMulti = -1
 	self.lastGlobalLightAmountValue = -1
 	self.lastShowLightConeValue = false
+	self.lastShowFullLightValue = false
 
-	self:add()	
+	self:add()
 	self:refresh()                                     -- Trigger initial drawing
 end
 
@@ -55,6 +56,7 @@ function FXshadow:refresh()
 	local iy = PlayerData.y
 	local globalLightAmountValue = self.globalLightAmount
 	local showLightConeValue = PlayerData.showLightCone == true
+	local showFullLightValue = PlayerData.showFullLight == true
 
 	-- Check if anything changed before redrawing
 	if not self.shouldRefresh and
@@ -64,7 +66,8 @@ function FXshadow:refresh()
 	   iy == self.lastPlayerY and
 	   lightSizeMulti == self.lastLightSizeMulti and
 	   globalLightAmountValue == self.lastGlobalLightAmountValue and
-	   showLightConeValue == self.lastShowLightConeValue then
+	   showLightConeValue == self.lastShowLightConeValue and
+	   showFullLightValue == self.lastShowFullLightValue then
 		return
 	end
 
@@ -76,6 +79,7 @@ function FXshadow:refresh()
 	self.lastLightSizeMulti = lightSizeMulti
 	self.lastGlobalLightAmountValue = globalLightAmountValue
 	self.lastShowLightConeValue = showLightConeValue
+	self.lastShowFullLightValue = showFullLightValue
 	self.shouldRefresh = false
 
 	-- Create two mask images: one for soft lighting and one for focused light
@@ -225,6 +229,17 @@ function FXshadow:refresh()
 		lightAmount = 0
 		lightSourceAmount = 0
 		globalLightAmount = 0
+	end
+
+	-- Override for Dark Reveal skill (full level visibility)
+	if PlayerData.showFullLight == true then
+		lightAmount = 0
+		lightSourceAmount = 0
+		globalLightAmount = 0
+		globalDither = 0
+		maskSize = 800
+		Direction = 'idle'
+		self.shouldRefresh = true
 	end
 
 	-- === Draw global shadow ===

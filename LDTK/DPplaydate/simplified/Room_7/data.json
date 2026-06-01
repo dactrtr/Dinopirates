@@ -59,26 +59,10 @@
 		"play": "Enter"
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
-		"Doors": [
-			{
-				"id": "Doors",
-				"iid": "ad890930-ac70-11f0-8539-b927b406cff9",
-				"layer": "Doors",
-				"x": 200,
-				"y": 8,
-				"width": 48,
-				"height": 16,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Top",
-					"KeyNumber": null
-				}
-			}
-		],
 		"Triggers": [
 			{
 				"id": "Triggers",
@@ -101,15 +85,15 @@
 			},
 			{
 				"id": "Triggers",
-				"iid": "cc4b57d0-ac70-11f0-ae64-f1a43cc2526b",
+				"iid": "04397810-ac70-11f0-ae64-891aa0cc0d18",
 				"layer": "Triggers",
-				"x": 292,
-				"y": 140,
-				"width": 40,
+				"x": 92,
+				"y": 108,
+				"width": 48,
 				"height": 40,
 				"color": 16711748,
 				"customFields": {
-					"script": "someTrash",
+					"script": "justBoxes",
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
@@ -118,11 +102,11 @@
 			},
 			{
 				"id": "Triggers",
-				"iid": "04397810-ac70-11f0-ae64-891aa0cc0d18",
+				"iid": "05b2a150-21a0-11f1-8318-ef983af2b1a2",
 				"layer": "Triggers",
-				"x": 36,
+				"x": 292,
 				"y": 140,
-				"width": 48,
+				"width": 40,
 				"height": 40,
 				"color": 16711748,
 				"customFields": {
@@ -134,349 +118,52 @@
 				}
 			}
 		],
-		"Smalltable": [
+		"Box": [
 			{
-				"id": "Smalltable",
-				"iid": "76ab7410-ac70-11f0-998c-33dc7dd62999",
-				"layer": "Props",
-				"x": 252,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Smalltable",
-				"iid": "7828ec50-ac70-11f0-998c-e578b281f438",
-				"layer": "Props",
-				"x": 148,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Smalltable",
-				"iid": "7c36d370-ac70-11f0-998c-27835b3ae957",
-				"layer": "Props",
-				"x": 148,
-				"y": 188,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Smalltable",
-				"iid": "7e6b3fa0-ac70-11f0-998c-83ad0a5e8378",
-				"layer": "Props",
-				"x": 252,
-				"y": 188,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Smalltable",
-				"iid": "a99b3a10-ac70-11f0-ae64-bbea47082fb4",
-				"layer": "Props",
-				"x": 36,
-				"y": 44,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"FellTable": [
-			{
-				"id": "FellTable",
-				"iid": "850b9170-ac70-11f0-998c-afc1a9873d1e",
-				"layer": "Props",
-				"x": 156,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "FellTable",
-				"iid": "87335370-ac70-11f0-998c-972d0c2d0afa",
-				"layer": "Props",
-				"x": 244,
-				"y": 164,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "FellTable",
-				"iid": "9a8dc5b0-ac70-11f0-ae64-330b96106ce8",
-				"layer": "Props",
+				"id": "Box",
+				"iid": "f1bb3db0-21a0-11f1-8318-8978489998a1",
+				"layer": "Items_and_Props",
 				"x": 92,
-				"y": 44,
+				"y": 108,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
 				"customFields": {
-					"type": "fellTable",
+					"type": "box",
 					"nocollider": false,
 					"destroyed": false
 				}
-			}
-		],
-		"Trash": [
-			{
-				"id": "Trash",
-				"iid": "9019c4b0-ac70-11f0-998c-d97a85026dbd",
-				"layer": "Props",
-				"x": 164,
-				"y": 148,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "trash"
-				}
 			},
 			{
-				"id": "Trash",
-				"iid": "91764770-ac70-11f0-998c-ab2da21d72a7",
-				"layer": "Props",
+				"id": "Box",
+				"iid": "f354f080-21a0-11f1-8318-792ececf426d",
+				"layer": "Items_and_Props",
 				"x": 292,
 				"y": 140,
 				"width": 32,
 				"height": 32,
 				"color": 12470831,
 				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "trash"
-				}
-			}
-		],
-		"Blood": [
-			{
-				"id": "Blood",
-				"iid": "93028cc0-ac70-11f0-998c-e7d639f7f96f",
-				"layer": "Props",
-				"x": 52,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood",
-				"iid": "9d6f61d0-ac70-11f0-ae64-e33789cc7e0e",
-				"layer": "Props",
-				"x": 76,
-				"y": 76,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood",
-				"iid": "f186f080-ac70-11f0-ae64-a96276b15936",
-				"layer": "Props",
-				"x": 148,
-				"y": 76,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			}
-		],
-		"Blood2": [
-			{
-				"id": "Blood2",
-				"iid": "945f3690-ac70-11f0-998c-c1bfd067cd84",
-				"layer": "Props",
-				"x": 356,
-				"y": 188,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood2",
-				"iid": "ee1103a0-ac70-11f0-ae64-453fe6771b29",
-				"layer": "Props",
-				"x": 260,
-				"y": 68,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
-				}
-			}
-		],
-		"KitchenStorage": [
-			{
-				"id": "KitchenStorage",
-				"iid": "a331c4d0-ac70-11f0-998c-f77cabc0329c",
-				"layer": "Props",
-				"x": 252,
-				"y": 28,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "kitchenStorage",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "KitchenStorage",
-				"iid": "a3bffb10-ac70-11f0-998c-2bdf4a768139",
-				"layer": "Props",
-				"x": 284,
-				"y": 28,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "kitchenStorage",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "KitchenStorage",
-				"iid": "a474f330-ac70-11f0-998c-efbe99831fb3",
-				"layer": "Props",
-				"x": 316,
-				"y": 28,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "kitchenStorage",
+					"type": "box",
 					"nocollider": false,
 					"destroyed": false
 				}
 			}
 		],
-		"Box": [
+		"Doors": [
 			{
-				"id": "Box",
-				"iid": "a87f1450-ac70-11f0-998c-2d12bf7a5583",
-				"layer": "Props",
-				"x": 36,
-				"y": 140,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
+				"id": "Doors",
+				"iid": "ad890930-ac70-11f0-8539-b927b406cff9",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
 				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "box"
-				}
-			},
-			{
-				"id": "Box",
-				"iid": "aa01bcb0-ac70-11f0-998c-dffc56ebfc22",
-				"layer": "Props",
-				"x": 364,
-				"y": 132,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "box"
-				}
-			}
-		],
-		"Fellchair": [
-			{
-				"id": "Fellchair",
-				"iid": "0d7905b0-ac70-11f0-985a-d1c872a5fc59",
-				"layer": "Props",
-				"x": 164,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "fellchair"
-				}
-			},
-			{
-				"id": "Fellchair",
-				"iid": "1022f000-ac70-11f0-985a-9b3988f2af57",
-				"layer": "Props",
-				"x": 364,
-				"y": 28,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "fellchair"
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
 				}
 			}
 		]

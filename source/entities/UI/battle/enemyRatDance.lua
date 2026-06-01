@@ -1,10 +1,9 @@
 EnemyRatDance = {}
 class('EnemyRatDance').extends(NobleSprite)
 
-function EnemyRatDance:init(bpm, evolveType, isEvolving)
-	EnemyRatDance.super.init(self, 'assets/images/ui/battle/enemyDance',true)
-	self.lvl = lvl
-	if bpm == nil or bpm == 0 then
+function EnemyRatDance:init(bpm, evolveType, isEvolving, spritePath)
+	EnemyRatDance.super.init(self, spritePath or 'assets/images/ui/battle/enemyDance', true)
+if bpm == nil or bpm == 0 then
 		bpm = 6
 	end
 	self.evolveType = evolveType

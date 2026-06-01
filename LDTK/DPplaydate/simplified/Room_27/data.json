@@ -38,7 +38,7 @@
 	],
 	"customFields": {
 		"shadow": true,
-		"light": 0.2,
+		"light": 0.15,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
@@ -46,12 +46,13 @@
 		"roomNumber": 27,
 		"tile": 27,
 		"DoorsConnection": [
-			"Top"
+			"Right"
 		],
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
 		"Doors": [

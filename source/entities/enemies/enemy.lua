@@ -8,33 +8,32 @@ import 'entities/FX/FXsonar'
 -- Slowdown adicional en oscuridad con batería baja
 function Enemy:updateMoveSpeed()
     if PlayerData.battery == 0 and PlayerData.isInDarkness == true then
-        self.moveSpeed = 0.2
-    elseif PlayerData.battery <= 20 and PlayerData.isInDarkness == true then
-        self.moveSpeed = 0.5 * self.initialSpeed
-    elseif PlayerData.battery <= 60 and PlayerData.isInDarkness == true then
-        self.moveSpeed = 0.7 * self.initialSpeed
+        self.moveSpeed = Config.Enemy.moveSpeedBatteryEmpty
+    elseif PlayerData.battery <= Config.Enemy.batteryThresholdLow and PlayerData.isInDarkness == true then
+        self.moveSpeed = Config.Enemy.moveSpeedBatteryLow * self.initialSpeed
+    elseif PlayerData.battery <= Config.Enemy.batteryThresholdMid and PlayerData.isInDarkness == true then
+        self.moveSpeed = Config.Enemy.moveSpeedBatteryMid * self.initialSpeed
     else
         self.moveSpeed = self.initialSpeed
     end
-    
+
     -- Additional slowdown in darkness with low battery
-    if PlayerData.battery < 10 and PlayerData.isInDarkness == true then
-        self.moveSpeed = 0.5
+    if PlayerData.battery < Config.Enemy.batteryThresholdCritical and PlayerData.isInDarkness == true then
+        self.moveSpeed = Config.Enemy.moveSpeedCritical
     end
 end
 
 -- Add tokens (1 token = ~1 second of movement at 30fps)
 function Enemy:addMovementTokens(amount)
-    local FRAMES_PER_TOKEN = 30
     if not self.movementFrames then self.movementFrames = 0 end
-    self.movementFrames = self.movementFrames + (amount * FRAMES_PER_TOKEN)
+    self.movementFrames = self.movementFrames + (amount * Config.CrewMember.framesPerToken)
 end
 
 -- Add raw frames directly (for player movement sync - more efficient)
 function Enemy:addMovementFrames(frames)
     if not self.movementFrames then self.movementFrames = 0 end
     -- Cap at reasonable max to prevent accumulation (3 seconds = 90 frames)
-    self.movementFrames = math.min(self.movementFrames + frames, 90)
+    self.movementFrames = math.min(self.movementFrames + frames, Config.CrewMember.movementFramesCap)
 end
 
 --- Búsqueda ciega: el enemigo se mueve directamente hacia el jugador
@@ -77,8 +76,15 @@ end
 function Enemy:moveCollision(movementX, movementY, player)
     -- Speed is now managed by updateMoveSpeed() called before this function
 
+    -- Holes (IntGrid 3) are walkable tiles with no physical collider, so
+    -- moveWithCollisions won't stop the enemy. Sample the target tile and refuse
+    -- to step onto a hole — the enemy halts at the edge instead of crossing it.
+    if IsHoleAt(movementX, movementY) then
+        return
+    end
+
     local actualX, actualY, collisions, length = self:moveWithCollisions(movementX, movementY)
-    local bounceFactor = 3
+    local bounceFactor = Config.Enemy.bounceFactor
     if length > 0 then
         for index, collision in pairs(collisions) do
             local collideObject = collision['other']
@@ -91,9 +97,9 @@ function Enemy:moveCollision(movementX, movementY, player)
                 end
                 if collideObject:isa(PropItem) and collideObject.isEdible == true then
                     self.powerLevel += 1
-                    if (collideObject.type ~= "holeLeft" and collideObject.type ~= "holeRight" and collideObject.type ~= "holeDown" and collideObject.type ~= "holeTop") and self.powerLevel > 25 then
-                        collideObject:destroyProp(collideObject.id) 
-                        self.powerLevel -= 5
+                    if (collideObject.type ~= "holeLeft" and collideObject.type ~= "holeRight" and collideObject.type ~= "holeDown" and collideObject.type ~= "holeTop") and self.powerLevel > Config.Enemy.eatPropPowerThreshold then
+                        collideObject:destroyProp(collideObject.id)
+                        self.powerLevel -= Config.Enemy.eatPropPowerPenalty
                     end
                 end
                 

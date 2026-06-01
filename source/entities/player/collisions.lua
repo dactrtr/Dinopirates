@@ -17,6 +17,7 @@ function Player:collisionResponse(other)
           self:fight()
         else
           self:startInvincibility(Config.Invincibility.duration)
+          self:applyKnockback(other.x, other.y)
         end
       end
       
@@ -127,27 +128,33 @@ function Player:collisionResponse(other)
     self:grabPlunger()
   return 'overlap'
 
-  elseif other:isa(PropItem) and other.isHole then
-  -- If player has boots with battery, can walk over the hole
-  if PlayerData.items.hasBoots == true and PlayerData.battery > 0 then
-    if PlayerData.isTiny == true then
-      self:drainBattery(Config.Battery.drainHoleTiny)
-    else
-      self:drainBattery(Config.Battery.drainHoleNormal)
-    end
-      return 'overlap'
-  else
-      -- Without boots or without battery = fall
-      self:fallBelow()
-      return 'overlap'
-  end
-  
+  elseif other:isa(Items) and other.type == 'food' then
+    if other.iid then findAndCollectItemById(other.iid) end
+    other:removeAll()
+    self:grabFood()
+  return 'overlap'
+
+  elseif other:isa(NPC) then
+    self.currentTrigger = other
+    return 'overlap'
+
   elseif other:isa(PropItem) and other.type == 'minifier' then
     self.currentMinifier = other
     PlayerData.readyToShrink = true
     self:showUIHUD()
     self.uiHud:setPressA()
-    
+
+  return 'overlap'
+
+  elseif other:isa(PropItem) and other.type == 'microwave' then
+    self.currentMicrowave = other
+    PlayerData.readyToCook = true
+    -- Cooking is big-only: don't show the prompt to a tiny player who can't use it.
+    if not PlayerData.isTiny then
+      self:showUIHUD()
+      self.uiHud:setPressA()
+    end
+
   return 'overlap'
 
   elseif other:isa(PropItem) and other.isTube then
@@ -161,7 +168,20 @@ function Player:collisionResponse(other)
 
   elseif other:isa(PropItem) then
   return 'freeze'
-  
+
+  elseif other:isa(PortalDoor) then
+    if other:canEnter() then
+      other:setSpawn()
+      other:goTo()
+      return "overlap"
+    else
+      if not PlayerData.isTalking then
+        PlayerData.isGaming = false
+      self.dialogUI:addScreen(other.blockedDialog or "nokeys")
+      end
+      return 'freeze'
+    end
+
   elseif other:isa(Door) then
 
     if other.status == 'open' then

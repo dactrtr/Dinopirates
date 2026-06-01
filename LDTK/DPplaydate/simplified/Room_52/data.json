@@ -35,15 +35,16 @@
 		"comic_name": null,
 		"comic_wasPlayed": false,
 		"level": 2,
-		"roomNumber": 24,
-		"tile": 2,
+		"roomNumber": 52,
+		"tile": 52,
 		"DoorsConnection": [
 			"Top"
 		],
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities" : {}
 }

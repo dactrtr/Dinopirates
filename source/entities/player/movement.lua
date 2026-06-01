@@ -2,8 +2,8 @@ local DRAIN_BATTERY_ON_WALK = false
 
 function Player:move(direction)
   if PlayerData.isGaming == true then
-    -- Don't allow normal movement while dashing, sliding or plunging
-    if self.isDashing or self.isSliding or self.isPlunging then
+    -- Don't allow normal movement while sliding, plunging, in flight, or being pulled
+    if self.isSliding or self.isPlunging or self.isGrapplePulling or self.isGrappling then
       return
     end
     
@@ -71,7 +71,7 @@ function Player:move(direction)
       
       local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )
       -- Distribute movement frames to NPCs (capped at 90 frames to prevent accumulation)
-      self:distributeMovementFrames(3) -- 3 frames per movement = smooth follow
+      self:distributeMovementFrames(Config.Player.movementFramesPerAction)
       PlayerData.direction = direction
       self:pedometer()
     end

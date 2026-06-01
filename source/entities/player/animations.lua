@@ -30,18 +30,6 @@ function Player:initAnimations()
   self.animation:addState('charge', 36, 40)
   self.animation.charge.frameDuration = 12
   
-  self.animation:addState('dashRight', 65, 68)
-  self.animation.dashRight.frameDuration = 3
-  
-  self.animation:addState('dashLeft', 69, 72)
-  self.animation.dashLeft.frameDuration = 3
-  
-  self.animation:addState('dashUp', 65, 68)
-  self.animation.dashUp.frameDuration = 3
-  
-  self.animation:addState('dashDown', 65, 68)
-  self.animation.dashDown.frameDuration = 3
-  
   self.animation:addState('tinyIdle', 73, 81)
   self.animation.tinyIdle.frameDuration = frameDurationWalk/2
   
@@ -90,7 +78,12 @@ function Player:initAnimations()
   self.animation:addState('slideTiny', 142, 145)
   self.animation.slideTiny.frameDuration = 4
   
-  if (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
+  self.animation:addState('sleep', 147, 148)
+  self.animation.sleep.frameDuration = 18
+  
+  if PlayerData.fromTitle then
+    self.animation:setState('sleep')
+  elseif (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')
   elseif PlayerData.isTiny == true then
     self.animation:setState('tinyIdle')

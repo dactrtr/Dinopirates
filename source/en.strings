@@ -104,7 +104,7 @@
 
 "firstcall-08" = "Ah this stupid device don't let me communicate with *DR*, guess I'll need to find a *Radio*"
 
-"reachcomputer-01" = "Ahh this stupid boxes don't let me reach the computer"
+"reachcomputer-01" = "Ahh this stupid boxes don't let me reach the note"
 
 "reachcomputer-02" = "One of this days i'm just *gonna smash* those stupid boxes"
 "secondcall-01" = "another message? "
@@ -138,3 +138,11 @@
 
 "smallspaces-02" = "they are the only ones that fit this spaces, we need them!"
 "smallspacestiny-01" = "ok, now I can get through this."
+
+"npc-test-auth" = "Terminal online. Keycard dispensed."
+"npc-test-default" = "Insufficient clearance."
+
+"catnoboots-01" = "I feel the weird need of some shoes"
+"catnolamp-01" = "I have no lamp"
+"catwhat-01" = "What is this creature?"
+"cabinethole-01" = "Who made this hole to the kitchen sink"

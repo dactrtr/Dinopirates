@@ -1,0 +1,46 @@
+{
+	"identifier": "Room_82",
+	"uniqueIdentifer": "a82c8680-48b0-11f1-9f4d-49a4be703c65",
+	"x": 400,
+	"y": -240,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "69eb2d80-ac70-11f0-989f-95306126bd74",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+			"dir": "s"
+		},
+		{
+			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
+			"dir": "se"
+		},
+		{
+			"levelIid": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+			"dir": "e"
+		}
+	],
+	"customFields": {
+		"shadow": false,
+		"light": 0,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 82,
+		"tile": 82,
+		"DoorsConnection": [
+			"Down"
+		],
+		"play": null
+	},
+	"layers": [
+		"Gameplay.png",
+		"Foreground.png"
+	],
+	"entities" : {}
+}

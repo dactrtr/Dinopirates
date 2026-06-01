@@ -49,128 +49,10 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
-		"Doors": [
-			{
-				"id": "Doors",
-				"iid": "c6e3d930-ac70-11f0-8539-e78eb22c7faf",
-				"layer": "Doors",
-				"x": 396,
-				"y": 120,
-				"width": 8,
-				"height": 48,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Right",
-					"KeyNumber": null
-				}
-			}
-		],
-		"HoleTopRight": [
-			{
-				"id": "HoleTopRight",
-				"iid": "8a3458e0-fa90-11f0-b7cd-c97cf980cc80",
-				"layer": "Holes",
-				"x": 84,
-				"y": 124,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "holeTopRight",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"HoleTopLeft": [
-			{
-				"id": "HoleTopLeft",
-				"iid": "8db6a1d0-fa90-11f0-b7cd-8157126ec7f4",
-				"layer": "Holes",
-				"x": 28,
-				"y": 124,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "holeTopLeft",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"HoleTop": [
-			{
-				"id": "HoleTop",
-				"iid": "909ecda0-fa90-11f0-b7cd-ff148e274309",
-				"layer": "Holes",
-				"x": 60,
-				"y": 124,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "holeTop",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"HoleBottomLeft": [
-			{
-				"id": "HoleBottomLeft",
-				"iid": "9b7af460-fa90-11f0-b7cd-55367eb31a08",
-				"layer": "Holes",
-				"x": 28,
-				"y": 156,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "holeBottomLeft",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"HoleBottom": [
-			{
-				"id": "HoleBottom",
-				"iid": "a297c930-fa90-11f0-b7cd-231832d6fef2",
-				"layer": "Holes",
-				"x": 60,
-				"y": 156,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "holeBottom",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"HoleBottomRight": [
-			{
-				"id": "HoleBottomRight",
-				"iid": "a690a1b0-fa90-11f0-b7cd-3dad7ceb9f19",
-				"layer": "Holes",
-				"x": 84,
-				"y": 156,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "holeBottomRight",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
 		"Triggers": [
 			{
 				"id": "Triggers",
@@ -230,7 +112,7 @@
 			{
 				"id": "Plunger",
 				"iid": "f84981f0-fa90-11f0-8164-312164d448cc",
-				"layer": "Items",
+				"layer": "Items_and_Props",
 				"x": 84,
 				"y": 180,
 				"width": 32,
@@ -246,7 +128,7 @@
 			{
 				"id": "Minifier",
 				"iid": "cef907d0-fa90-11f0-8164-09f23df37bd8",
-				"layer": "Props",
+				"layer": "Items_and_Props",
 				"x": 356,
 				"y": 28,
 				"width": 32,
@@ -256,6 +138,23 @@
 					"type": "minifier",
 					"nocollider": false,
 					"destroyed": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "c6e3d930-ac70-11f0-8539-e78eb22c7faf",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
 				}
 			}
 		]

@@ -1,7 +1,6 @@
 
 function Player:grabBoots()
   PlayerData.items.hasBoots = true
-  PlayerData.skills.canDash = true
   self:fillBattery()
 end
 
@@ -24,6 +23,10 @@ end
 
 function Player:grabRadio()
   PlayerData.items.hasRadio = true
+end
+
+function Player:grabFood()
+  PlayerData.food = math.min((PlayerData.food or 0) + Config.Microwave.perPickup, Config.Microwave.carryMax)
 end
 
 function Player:processGrants(grants, targetTable)

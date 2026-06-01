@@ -52,10 +52,13 @@ Scenes extend `NobleScene`. Lifecycle: `init → enter → update → exit`.
 | `TitleScene` | `scenes/TitleScene.lua` | Main menu / title screen |
 | `MazeScene` | `scenes/MazeScene.lua` | Core gameplay — loads rooms, spawns entities |
 | `DanceScene` | `scenes/DanceScene.lua` | Rhythm combat when player touches an enemy |
-| `DeadScene` | `scenes/DeadScene.lua` | Game over |
+| `DeadScene` | `scenes/DeadScene.lua` | Game over — Retry / Exit menu with crank support |
+| `CockpitScene` | `scenes/CockpitScene.lua` | Accelerometer + D-pad button-sequence puzzle; leads to CreditsScene or TitleScene |
+| `SpaceScene` | `scenes/SpaceScene.lua` | Space escape shooter with crank-toggled fighter/travel modes |
+| `CreditsScene` | `scenes/CreditsScene.lua` | Scrolling credits sequence |
 | `FloorXXX` | `scenes/Floors.lua` | Auto-generated scene classes for every room |
 
-`Floors.lua` dynamically creates classes like `Floor120`, `Floor408`, etc. from the `levelsLDTK` table. Each FloorXXX class calls `MazeScene:setFloor(level, room)` before entering.
+`Floors.lua` generates classes from **hardcoded floor number ranges** (not from `levelsLDTK`). Current ranges: 166–180, 231–274, 316–330, 401–415. Each FloorXXX class calls `self:setFloor(level, room)` in `init()` (derived as `level = floor(i/100)`, `room = i % 100`) and sets `PlayerData.saveLevel = i`.
 
 **Room numbering**: `RoomID = level * 100 + roomNumber` (e.g., level 4, room 8 → `Floor408`).
 **Room lookup**: `RoomTranslate(roomNumber)` → looks up `_G["Floor408"]` to get the class for `Noble.transition`.
@@ -65,11 +68,12 @@ Scenes extend `NobleScene`. Lifecycle: `init → enter → update → exit`.
 ## Level Loading Flow (MazeScene)
 
 1. `setFloor(level, room)` — finds the index into `levelsLDTK` matching level+room, stores as `room`.
-2. `enter()` — reads metadata (`isInDarkness`, `actualTilemap`), renders tilemap, creates `FXshadow` if dark.
-3. `CreateTileColliders` — auto-generates wall colliders from non-walkable tile IDs.
+2. `enter()` — reads metadata into `PlayerData` (`actualLevel`, `actualRoom`, `actualTilemap`, `isInDarkness`), marks room `visited = true`, loads background PNG from `assets/images/rooms/floor{level}/{identifier}`.
+3. `CreateTileColliders` — auto-generates wall colliders from `tileMapData[actualTilemap]`.
 4. `CreateDoorsFromLDTK` — creates door sprites from `neighbourLevels` + `DoorsConnection` fields.
-5. Entity spawning loop — iterates `levelsLDTK[room].entities`, spawns `PropItem`, `Items`, `Brocorat`, `CrewMember` based on their saved state (`destroyed`, `dead`, `isTaken`, `collected`).
-6. `finish()` / on room exit — calls `SaveSystem.save()`.
+5. Entity spawning — in order: `PropItem` (skip if `destroyed`), `Items` (skip if already owned), `Player` + HUD, `FXshadow` (if dark), cutscene (if `play=="Enter"` and not played), `Brocorat`/`Bosscolli` (skip if `dead`), `CrewMember` (skip if `isTaken`), `NPC`, `Trigger` (skip if `usedTrigger`).
+6. `start()` — enables diagonal movement, sets `PlayerData.isGaming = true`.
+7. `finish()` and `pause()` — both call `SaveSystem.save()`.
 
 State mutations (kills, prop breaks) are written back into the live `levelsLDTK` table, then persisted by the save system.
 
@@ -126,12 +130,32 @@ Rooms connect vertically via `neighbourLevels` (with `dir = "<"` for lower, `dir
 
 ---
 
+## Workflow
+
+- **Never run `git commit`** during implementation, fixes, or any other work. The user commits manually. Skip all commit steps in plans. Compiling with `pdc` to verify is fine, but stop before committing.
+
+---
+
+## Noble Engine Notes
+
+- D-pad input callbacks use `upButtonHold` / `downButtonHold` / etc. (not `Held` suffix).
+- Per-frame movement should use `playdate.buttonIsPressed()` inside `update()`, not callbacks.
+
+---
+
 ## Key Docs
 
 Detailed system documentation lives in `source/DOCS/`:
 - `LEVEL_LOADING.md` — full room loading + vertical navigation
 - `PLAYER_SYSTEMS.md` — battery, sanity, inventory, skills
-- `ENEMIES_AND_COMBAT.md` — AI and DanceScene rhythm system
+- `ENEMIES_AND_COMBAT.md` — AI and DanceScene rhythm system overview
+- `DANCE_SCENE.md` — full DanceScene: lifecycle, difficulty, hit detection, balance bar, animations, outcomes
 - `SAVE_SYSTEM.md` — persistence layer
 - `PLUNGERANG.md` — projectile mechanics
+- `GRAPPLING_HOOK.md` — charged plungerang in lit rooms: tile-33 grapple, charge/pull, tokens
+- `MICROWAVE_AND_FOOD.md` — pick up food, cook it at a microwave by cranking to heal HP (mirrors the minifier); calorie byproduct, persistence, Config
+- `TITLE_SCENE.md` — TitleScene menu modes, input, Continue/NewGame/Delete flow
+- `CREDITS_SCENE.md` — CreditsScene scrolling system, item types, input
+- `COCKPIT_SCENE.md` — CockpitScene: accelerometer pointer, button layout, sequence matching, fail system
+- `SPACE_SCENE.md` — SpaceScene: ship modes, meteorites, danger bar, accelerometer controls
 - `DOORS_AND_KEYS.md`, `TRIGGER_SYSTEM.md`, `PROPS_AND_ITEMS.md`, `DIALOG_SYSTEM.md`, `HUD_SYSTEM.md`, `TILE_LOADING.md`, `CREWMEMBER_AND_COLLISIONS.md`

@@ -40,6 +40,8 @@ function Player:drainBattery(amount)
 end
 
 function Player:chargeBattery(amount)
+  if PlayerData.rechargeBlocked then return end
+  if self:isOnHole() then return end  -- can't recharge while crossing a hole
   if PlayerData.battery < 100 then
     self.animation:setState('charge')
   elseif PlayerData.battery >= 100 then

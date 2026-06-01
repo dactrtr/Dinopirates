@@ -51,41 +51,10 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
-		"Doors": [
-			{
-				"id": "Doors",
-				"iid": "d45ce9f0-fa90-11f0-9039-7ffe57d05b86",
-				"layer": "Doors",
-				"x": 336,
-				"y": 4,
-				"width": 32,
-				"height": 8,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Top",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "e1168340-fa90-11f0-9039-43e9ae1c70fa",
-				"layer": "Doors",
-				"x": 4,
-				"y": 176,
-				"width": 8,
-				"height": 32,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Left",
-					"KeyNumber": null
-				}
-			}
-		],
 		"Triggers": [
 			{
 				"id": "Triggers",
@@ -119,6 +88,38 @@
 					"type": "Search",
 					"mapPercent": 0,
 					"conditionalScripts": []
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "d45ce9f0-fa90-11f0-9039-7ffe57d05b86",
+				"layer": "Doors",
+				"x": 336,
+				"y": 4,
+				"width": 32,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e1168340-fa90-11f0-9039-43e9ae1c70fa",
+				"layer": "Doors",
+				"x": 4,
+				"y": 176,
+				"width": 8,
+				"height": 32,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
 				}
 			}
 		]

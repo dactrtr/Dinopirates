@@ -17,6 +17,8 @@ class("MazeScene").extends(NobleScene)
 local scene = MazeScene
 local room = nil -- Level in table position
 
+MazeScene.backgroundMusic = nil
+
 import "entities/player/init"
 
 import "assets/comics/comicsData"
@@ -26,9 +28,11 @@ import "entities/enemies/crewmember"
 
 import 'entities/props/propItem'
 import 'entities/props/door'
+import 'entities/props/portal_door'
 import 'entities/props/trigger'
 
 import 'entities/items/Items'
+import 'entities/props/npc'
 
 import "entities/FX/FXshadow"
 import "entities/UI/playerHud"
@@ -48,6 +52,7 @@ import "entities/UI/inGameMenu"
 -- MARK: Player related
 local player = nil
 local shadow = nil
+local foregroundSprite = nil
 local inGameMenuActive = nil
 -- MARK: UI
 local uiScreen = nil
@@ -58,6 +63,7 @@ local cheat = CheatCode("up", "up", "up", "down")
 local crankIsMoving = false
 local crankStopTimer = 0
 local CRANK_STOP_THRESHOLD = 0.1 -- seconds of inactivity before considering crank stopped
+local bButtonDownTime = nil -- ms timestamp when B was pressed; drives custom hold-to-charge (SDK Held is fixed at 1s)
 local tileColliders = {}
 
 -- This is the background color of this scene.
@@ -71,8 +77,13 @@ function scene:init()
 		Utilities.iddqd()
 	end
 	playdate.display.setRefreshRate(50)
-	-- Your code here
-	
+
+	if not MazeScene.backgroundMusic then
+		MazeScene.backgroundMusic = playdate.sound.fileplayer.new('assets/sounds/music/game/shadow_dino_explore_ima')
+		if MazeScene.backgroundMusic then
+			MazeScene.backgroundMusic:setVolume(0.5)
+		end
+	end
 end
 function scene:setFloor(levelNumber, roomNumber)
 	for i, levelData in ipairs(levelsLDTK) do
@@ -88,9 +99,11 @@ end
 -- scene needs to be visible (this moment depends on which transition type is used).
 function scene:enter()
 	scene.super.enter(self)
-	-- Your code here
-	
-	
+
+	if MazeScene.backgroundMusic and not MazeScene.backgroundMusic:isPlaying() then
+		MazeScene.backgroundMusic:play(0)
+	end
+
 	PlayerData.isGaming = false
 	PlayerData.isEquiping = false
 	sequence = Sequence.new():from(0):to(50, 1.5, Ease.outBounce)
@@ -106,22 +119,30 @@ function scene:enter()
 	levelsLDTK[room].customFields.visited = true
 	
 	-- MARK: Floor
-	tilesMap = Graphics.imagetable.new('assets/images/tile/tile')
-	map = Graphics.tilemap.new()
-	map:setImageTable(tilesMap) 
-	-- map:setSize(16,9)
-	
+	local roomBgPath = 'assets/images/rooms/floor' .. PlayerData.actualLevel
+	                   .. '/' .. levelsLDTK[room].identifier
+	floor = Graphics.sprite.new()
+	floor:setImage(Graphics.image.new(roomBgPath))
+	floor:setZIndex(1)
+	floor:moveTo(200, 120)
+	floor:add()
+
+	-- MARK: Foreground
+	if levelsLDTK[room].customFields.hasForeground == true then
+		local fgPath = 'assets/images/rooms/floor' .. PlayerData.actualLevel
+		               .. '/foreground_' .. PlayerData.actualRoom
+		local fgImage = Graphics.image.new(fgPath)
+		if fgImage then
+			foregroundSprite = Graphics.sprite.new()
+			foregroundSprite:setImage(fgImage)
+			foregroundSprite:setZIndex(ZIndex.foreground)
+			foregroundSprite:moveTo(200, 120)
+			foregroundSprite:add()
+		end
+	end
+
 	-- MARK: UI
 	inGameEquip = inGameMenu()
-
-	renderTileMap(tileMapData[PlayerData.actualTilemap], map)
-	
-	floor = Graphics.sprite.new()
-	floor:setZIndex(1)
-	floor:setTilemap(map)
-	floor:moveTo(0, 0) -- Top-left corner
-	floor:setCenter(0, 0) -- Anchor top-left instead of center
-	floor:add()
 	
 	-- MARK: Tile Colliders
 	if room and levelsLDTK[room] then
@@ -149,6 +170,7 @@ function scene:enter()
 		end
 		
 		CreateDoorsFromLDTK(currentRoom)
+		CreatePortalDoorsFromLDTK(currentRoom)
 	else
 		printDebug("❌ ERROR: room is", room, "or levelsLDTK[room] is nil")
 	end
@@ -214,6 +236,9 @@ function scene:enter()
 								end
 							end
 						end
+					elseif itemType == "food" then
+						-- Food is stackable: persist per-iid via the 'collected' flag
+						shouldGenerate = cf.collected ~= true
 					elseif itemRequirements[itemType] then
 						local itemPath = itemRequirements[itemType]
 						if itemPath:match("^items%.") then
@@ -226,7 +251,7 @@ function scene:enter()
 
 					if shouldGenerate then
 						printDebug("Generating item:", itemType, "at (", x, ",", y, ")")
-						Items(x, y, itemType, keyNumber, cf.grants)
+						Items(x, y, itemType, keyNumber, cf.grants, item.iid)
 					end
 				end
 			end
@@ -313,7 +338,16 @@ function scene:enter()
 		end
 	end
 	
-	
+
+	-- MARK: NPCs
+	local npcEntities = levelsLDTK[room].entities
+	if npcEntities and npcEntities.NPC then
+		for _, npcData in ipairs(npcEntities.NPC) do
+			local cf = npcData.customFields or {}
+			NPC(npcData.x, npcData.y, cf.type or "computer", npcData.iid, room, cf.sourceFeed or 0)
+		end
+	end
+
 -- MARK: Dialog triggers
 	local entities = levelsLDTK[room].entities
 	
@@ -340,7 +374,16 @@ end
 function scene:start()
 	scene.super.start(self)
 	self:setDiagonalMovement(diagonalMovement)
-	PlayerData.isGaming = true
+	if PlayerData.fromTitle then
+		PlayerData.fromTitle = false
+		if not PlayerData.isTiny then
+			player:startSleeping()
+		else
+			PlayerData.isGaming = true
+		end
+	else
+		PlayerData.isGaming = true
+	end
 end
 
 -- This runs once per frame.
@@ -352,6 +395,19 @@ function scene:update()
 		cheat:update()
 	end
 	
+	-- MARK: Custom B hold-to-charge (shorter than the SDK's fixed 1s Held)
+	if bButtonDownTime and player and player.isAlive and PlayerData.isGaming == true
+		and not player.isDarkCharging and not player.isGrappleCharging then
+		local holdDelay = PlayerData.isInDarkness and Config.DarkReveal.holdDelay or Config.Grapple.holdDelay
+		if playdate.getCurrentTimeMilliseconds() - bButtonDownTime >= holdDelay then
+			if PlayerData.isInDarkness then
+				player:beginDarkCharge()
+			else
+				player:beginGrappleCharge()
+			end
+		end
+	end
+
 	-- MARK: Crank stop detection
 	if crankIsMoving then
 		crankStopTimer += (1/50) -- Increment by frame time (assuming 50fps)
@@ -379,7 +435,7 @@ function scene:update()
 	end
 	
 	-- Mark: Crank notification (only when needed)
-	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true then
+	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true and PlayerData.isTiny == false and not PlayerData.showFullLight and not PlayerData.rechargeBlocked then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 end
@@ -397,6 +453,10 @@ function scene:exit()
 	
 	uiScreen:removeAll()
 	floor:remove()
+	if foregroundSprite then
+		foregroundSprite:remove()
+		foregroundSprite = nil
+	end
 	if shadow then
 		shadow:removeAll()
 	end
@@ -406,7 +466,9 @@ function scene:exit()
 	end
 	tileColliders = {}
 	
-	Graphics.sprite.removeAll()
+	Graphics.sprite.performOnAllSprites(function(s)
+		if s:getZIndex() ~= -32768 then s:remove() end
+	end)
 	
 	PlayerData.playerExit.x = player.x
 	PlayerData.playerExit.y = player.y
@@ -423,9 +485,13 @@ end
 
 function scene:pause()
 	scene.super.pause(self)
-	-- Your code here
 	SaveSystem.save()
-	
+end
+
+function MazeScene.onDeviceSleep()
+	if player and PlayerData.isGaming and not PlayerData.isTiny then
+		player:startSleeping()
+	end
 end
 
 function scene:movePlayer(direction)
@@ -448,6 +514,7 @@ scene.inputHandler = {
 	-- A button
 	--
 	AButtonDown = function()			-- Runs once when button is pressed.
+		if player and player.isSleeping then return end
 		if PlayerData.isTalking == true then
 			player:displayDialog()
 		elseif player.currentTrigger and PlayerData.isGaming == true then
@@ -458,21 +525,21 @@ scene.inputHandler = {
 			Utilities.grantAchievementIfNeeded(trigger.script)
 		end
 		
-		-- Seleccionar item cuando está en el menú de equipamiento
-		if PlayerData.isEquiping == true then
-			inGameEquip:selectItem()
-		end
-
 		-- Trigger minifier if ready
 		if PlayerData.readyToShrink == true and PlayerData.isGaming == true then
 			player:startMinifying()
+		end
+
+		-- Trigger microwave cooking if ready
+		if PlayerData.readyToCook == true and PlayerData.isGaming == true then
+			player:startCooking()
 		end
 	end,
 	AButtonHold = function()			-- Runs every frame while the player is holding button down.
 		-- Your code here
 	end,
 	AButtonHeld = function()			-- Runs after button is held for 1 second.
-		-- Your code here
+		if player and player.isSleeping then return end
 		if PlayerData.isGaming == true and PlayerData.items.hasDWatch == true then
 			inGameEquip:displayMenu(player.x,player.y)
 		end
@@ -485,41 +552,40 @@ scene.inputHandler = {
 	--
 
 	BButtonDown = function()
-		-- Close equipment menu if open
+		if player and player.isSleeping then return end
 		if PlayerData.isGaming == false and PlayerData.isEquiping == true then
 			PlayerData.isGaming = true
 			PlayerData.isEquiping = false
 			inGameEquip:closeMenu()
-		-- Break out of minifier if blocked
 		elseif PlayerData.isGaming == false and PlayerData.readyToShrink == true then
 			player:finishMinifying()
-		-- Trigger ability based on selected item
+		elseif PlayerData.isGaming == false and PlayerData.readyToCook == true then
+			player:finishCooking()
 		elseif PlayerData.isGaming == true and player.isAlive == true then
 			player:useAbility()
 		end
-		player:distributeMovementTokens(5) 
-		-- playerFocus() -- Commented out for ability system
-	end,
-	BButtonHeld = function()
-		
-		
+		-- Tokens are granted by each ability when it actually fires (flash / plungerang /
+		-- grapple launch), not here — so merely starting a charge while idle costs nothing.
+		-- Start the custom hold timer; update() begins the dark charge after holdDelay.
+		bButtonDownTime = playdate.getCurrentTimeMilliseconds()
 	end,
 	BButtonHold = function()
-		
 	end,
 	BButtonUp = function()
-		-- playerDefocus() -- Commented out for dash attack
+		bButtonDownTime = nil
+		if player then
+			player:endDarkCharge()
+			player:endGrappleCharge()
+		end
 	end,
 	-- D-pad left
 	--
 	leftButtonDown = function()
+		if player.isSleeping then return end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'left'
 			scene:movePlayer('left')
-		end
-		if PlayerData.isEquiping == true then
-			inGameEquip:prevItem()
 		end
 	end,
 	leftButtonHold = function()
@@ -528,6 +594,7 @@ scene.inputHandler = {
 		end
 	end,
 	leftButtonUp = function()
+		if player.isSleeping then return end
 		if currentMoveDirection == 'left' then
 			isPlayerMoving = false
 			currentMoveDirection = nil
@@ -541,13 +608,11 @@ scene.inputHandler = {
 	-- D-pad right
 	--
 	rightButtonDown = function()
+		if player.isSleeping then return end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'right'
 			scene:movePlayer('right')
-		end
-		if PlayerData.isEquiping == true then
-			inGameEquip:nextItem()
 		end
 	end,
 	rightButtonHold = function()
@@ -556,6 +621,7 @@ scene.inputHandler = {
 		end
 	end,
 	rightButtonUp = function()
+		if player.isSleeping then return end
 		if currentMoveDirection == 'right' then
 			isPlayerMoving = false
 			currentMoveDirection = nil
@@ -569,6 +635,7 @@ scene.inputHandler = {
 	-- D-pad up
 	--
 	upButtonDown = function()
+		if player.isSleeping then return end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'up'
@@ -581,6 +648,7 @@ scene.inputHandler = {
 		end
 	end,
 	upButtonUp = function()
+		if player.isSleeping then return end
 		if currentMoveDirection == 'up' then
 			isPlayerMoving = false
 			currentMoveDirection = nil
@@ -594,6 +662,7 @@ scene.inputHandler = {
 	-- D-pad down
 	--
 	downButtonDown = function()
+		if player.isSleeping then return end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'down'
@@ -606,6 +675,7 @@ scene.inputHandler = {
 		end
 	end,
 	downButtonUp = function()
+		if player.isSleeping then return end
 		if currentMoveDirection == 'down' then
 			isPlayerMoving = false
 			currentMoveDirection = nil
@@ -625,8 +695,22 @@ scene.inputHandler = {
 		
 		local ticksValue = playdate.getCrankTicks(4) -- maybe its better use change or acceleratedChange
 		if not player.isAlive then return end
-		
-		if ticksValue > 0 then
+
+		if player.isDarkCharging then
+			player:addDarkCrankDelta(change)
+			return
+		end
+
+		if player.isGrappleCharging then
+			player:addGrappleCrankDelta(change)
+			return
+		end
+
+		-- Cranking burns calories, EXCEPT while cooking at a microwave:
+		-- cooking's calorie byproduct (Config.Microwave.caloriesPerFood) must be the
+		-- only calorie effect, otherwise this per-tick burn cancels it out.
+		local isCooking = (PlayerData.isGaming == false and PlayerData.readyToCook == true)
+		if ticksValue > 0 and not isCooking then
 			player:burnCalories(1)
 		end
 		
@@ -640,6 +724,24 @@ scene.inputHandler = {
 				end
 			end
 		else
+			-- Handle microwave cooking when locked on a microwave
+			if PlayerData.readyToCook == true then
+				if ticksValue ~= 0 then
+					player.cookProgress = (player.cookProgress or 0) + math.abs(ticksValue)
+					while player.cookProgress >= Config.Microwave.crankPerFood
+							and (PlayerData.food or 0) > 0
+							and PlayerData.healthPoints < Config.Player.maxHealthPoints do
+						player.cookProgress -= Config.Microwave.crankPerFood
+						PlayerData.food -= 1
+						PlayerData.healthPoints = math.min(PlayerData.healthPoints + Config.Microwave.hpPerFood, Config.Player.maxHealthPoints)
+						PlayerData.calories = math.min((PlayerData.calories or 0) + Config.Microwave.caloriesPerFood, Config.Dance.caloriesMax)
+					end
+					-- Auto-finish when full or out of food
+					if PlayerData.healthPoints >= Config.Player.maxHealthPoints or (PlayerData.food or 0) <= 0 then
+						player:finishCooking()
+					end
+				end
+			end
 			-- Handle manual transformation when locked on minifier
 			if PlayerData.readyToShrink == true then
 				if ticksValue ~= 0 then

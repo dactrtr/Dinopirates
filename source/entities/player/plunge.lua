@@ -2,12 +2,6 @@
 -- Fires a boomerang projectile and locks movement until caught
 
 function Player:plunge()
-    -- Validate that plunger is equipped (activeItem == 3)
-    if PlayerData.activeItem ~= 3 then
-        printDebug("Plunge requires plunger to be equipped!")
-        return
-    end
-
     -- Check if can plunge (item + skill)
     if not PlayerData.items.hasPlunger or not PlayerData.skills.canPlungerang then
         printDebug("Skill 'Plunge' not available!")
@@ -47,10 +41,13 @@ function Player:plunge()
     printDebug("🪠 Plunge skill activated!")
     
     self.isPlunging = true
-    
+
     -- Create the projectile
     self.projectile = Projectile(self, direction)
-    
+
+    -- Grant enemy/crew movement tokens now that the plungerang actually fired
+    self:distributeMovementTokens(Config.Player.movementTokensPerAction)
+
     -- Set animation state to idle while plunging (locked)
     self:idle()
 end

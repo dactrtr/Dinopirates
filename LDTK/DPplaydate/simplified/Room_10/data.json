@@ -48,40 +48,8 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
-	"entities": {
-		"Doors": [
-			{
-				"id": "Doors",
-				"iid": "efce9a60-ac70-11f0-8539-8fc5e98ddb65",
-				"layer": "Doors",
-				"x": 200,
-				"y": 232,
-				"width": 48,
-				"height": 16,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "f2730670-ac70-11f0-8539-6b7de2b59e30",
-				"layer": "Doors",
-				"x": 200,
-				"y": 8,
-				"width": 48,
-				"height": 16,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Top",
-					"KeyNumber": null
-				}
-			}
-		]
-	}
+	"entities" : {}
 }

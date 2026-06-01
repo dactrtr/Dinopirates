@@ -31,7 +31,9 @@ function playerHud:init(player)
 	self.animation.sanity20.frameDuration = frameduration
 	self.animation:addState('sanity0', 12, 13)
 	self.animation.sanity0.frameDuration = frameduration
-	
+	self.animation.sanity20.frameDuration = frameduration
+	self.animation:addState('flash', 14, 15)
+	self.animation.flash.frameDuration = 4
 	self.animation:setState('sanity100')
 	
 	self:setSize(35,15)
@@ -64,14 +66,22 @@ function playerHud:update()
 			yOffset = -22
 		end
 		local ty = self.player.y + yOffset
-		self:moveTo(tx, ty)
-		
-		if self.batteryIndicator then
-			self.batteryIndicator:moveTo(tx , ty-3)
+
+		local wx, wy = 0, 0
+		if self.player.isDarkCharging and math.abs(playdate.getCrankChange()) > 0
+			and self.player.darkCrankAccum < Config.DarkReveal.crankThreshold then
+			wx = math.random(-2, 2)
+			wy = math.random(-2, 2)
 		end
-		
+
+		self:moveTo(tx + wx, ty + wy)
+
+		if self.batteryIndicator then
+			self.batteryIndicator:moveTo(tx + wx, ty - 3 + wy)
+		end
+
 		if self.healthIndicator then
-			self.healthIndicator:moveTo(tx, ty)
+			self.healthIndicator:moveTo(tx + wx, ty + wy)
 		end
 	end
 
@@ -81,19 +91,23 @@ function playerHud:update()
 		if self.batteryIndicator then self.batteryIndicator:setVisible(true) end
 		if self.healthIndicator then self.healthIndicator:setVisible(true) end
 
-		local sanity = PlayerData.sanity
-		if sanity > 80 then
-			self.animation:setState('sanity100')
-		elseif sanity > 60 then
-			self.animation:setState('sanity80')
-		elseif sanity > 40 then
-			self.animation:setState('sanity60')
-		elseif sanity > 20 then
-			self.animation:setState('sanity40')
-		elseif sanity > 0 then
-			self.animation:setState('sanity20')
+		if self.player.isDarkCharging and self.player.darkCrankAccum >= Config.DarkReveal.crankThreshold then
+			self.animation:setState('flash')
 		else
-			self.animation:setState('sanity0')
+			local sanity = PlayerData.sanity
+			if sanity > 80 then
+				self.animation:setState('sanity100')
+			elseif sanity > 60 then
+				self.animation:setState('sanity80')
+			elseif sanity > 40 then
+				self.animation:setState('sanity60')
+			elseif sanity > 20 then
+				self.animation:setState('sanity40')
+			elseif sanity > 0 then
+				self.animation:setState('sanity20')
+			else
+				self.animation:setState('sanity0')
+			end
 		end
 	else
 		self:setVisible(false)

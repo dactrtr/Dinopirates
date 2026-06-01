@@ -13,8 +13,10 @@ import 'scenes/DeadScene'
 import 'scenes/MazeScene'
 import 'scenes/DanceScene'
 import 'scenes/Floors'
---import 'scenes/StarScene'
+import 'scenes/SpaceScene'
 import 'scenes/TestScene'
+import 'scenes/CreditsScene'
+import 'scenes/CockpitScene'
 import 'scenes/TitleScene'
 
 import 'assets/data/PlayerDataTables'
@@ -47,7 +49,7 @@ Noble.GameData.setup({
 },1)
 
 Panels.vars.lang = "en"
-
+debugMenu = false
 debug = false
 diagonalMovement = true
 shinonome = Graphics.font.new('assets/fonts/JF-Dot-Shinonome16')
@@ -56,27 +58,6 @@ Graphics.setFont(shinonome, 'normal')
 Panels.Settings.path = ""
 ZIndex = Config.ZIndex
 CollideGroups = Config.CollideGroups
-
--- Button type constants
-ButtonTypes = {
-	A = "aButton",
-	B = "bButton",
-	LEFT = "leftButton",
-	RIGHT = "rightButton",
-	UP = "upButton",
-	DOWN = "downButton"
-}
-
--- Direction constants
-Directions = {
-	LEFT = "left",
-	RIGHT = "right",
-	UP = "up",
-	DOWN = "down",
-	IDLE = "idle",
-	TOP = "top",
-	BOTTOM = "down" -- Para puertas
-}
 
 -- playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true) -- Removed: using code-based reset now
 
@@ -97,20 +78,26 @@ local menu = playdate.getSystemMenu()
 local menuItem, error = menu:addMenuItem("Title", function()
 	Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus)
 end)
-local menuItem, error = menu:addMenuItem("Lang", function()
-	Utilities.switchLang()
-end)
+-- local menuItem, error = menu:addMenuItem("Lang", function()
+-- 	Utilities.switchLang()
+-- end)
 local menuItem, error = menu:addMenuItem("debug", function()
 	debug = Utilities.toggle(debug)
-	checkBool(debug)
-	if Noble.showFPS == false then
-		Noble.showFPS = true
-	else 
-		Noble.showFPS = false
+	debugMenu = Utilities.toggle(debugMenu)
+	if debug == true then
+		if Noble.showFPS == false then
+			Noble.showFPS = true
+		else 
+			Noble.showFPS = false
+		end
 	end
 end)
 
-playdate.display.setRefreshRate(35)
+playdate.display.setRefreshRate(50)
 timers = playdate.timer
+
+function playdate.deviceDidWake()
+	MazeScene.onDeviceSleep()
+end
 
 Noble.new(TitleScene, 0.3, Noble.Transition.MetroNexus)

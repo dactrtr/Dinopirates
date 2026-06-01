@@ -458,6 +458,56 @@ script = {
         video = 'player',
         text = "smallspacestiny-01",
     }
+
+        }
+    },
+    {
+        name = "npc_test_has_lamp",
+        dialog = {
+            { video = 'radioHand', text = "npc-test-auth" }
+        }
+    },
+    {
+        name = "npc_test_default",
+        dialog = {
+            { video = 'player', text = "npc-test-default" }
+        }
+    },
+    
+    {
+        name = "catWhat",
+        dialog = {
+            { video = 'player', text = "catwhat-01" }
+        }
+    },
+    
+    {
+        name = "catNoLamp",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "catnolamp-01",
+    }
+    
+        }
+    },
+    {
+        name = "catNoBoots",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "catnoboots-01",
+    }
+    
+        }
+    },
+    {
+        name = "cabinetHole",
+        dialog = {
+            {
+        video = 'playerWorry',
+        text = "cabinethole-01",
+    }
     
         }
     },

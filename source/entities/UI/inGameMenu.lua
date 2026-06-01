@@ -1,7 +1,5 @@
 inGameMenu = {}
 class('inGameMenu').extends(Graphics.sprite)
-import "entities/UI/itemMenu"
-import "entities/UI/skillInfo"
 import "entities/props/hats"
 import 'utilities/MapDrawer'
 
@@ -14,24 +12,17 @@ local hatImages = {}
 local hatSpriteSheet = Graphics.imagetable.new('assets/images/props/hats') 
 
 function inGameMenu:init()
-  self.activeItem = PlayerData.activeItem 
-  
   self:moveTo(200,120)
   self:setZIndex(ZIndex.menu)
   self:setImage(shadow)
-  
-  
+
   -- Crear sprite para el menú
   menuSprite = Graphics.sprite.new()
   menuSprite:setImage(menuImage)
   menuSprite:setCenter(0.5, 0.5)
   menuSprite:moveTo(200, 120)
   menuSprite:setZIndex(ZIndex.menu + 2)
-  
-  lampItem = itemMenu("lamp",ZIndex.menu+3)
-  bootItem = itemMenu("boot",ZIndex.menu+3)
-  plungerItem = itemMenu("plunger",ZIndex.menu+3)
-  equippedInfoPanel = skillInfo('equipped', ZIndex.menu+4)
+
   self:add()
 end
 
@@ -103,12 +94,6 @@ end
 
 function inGameMenu:closeMenu()
     shadow:clear(Graphics.kColorClear)
-    lampItem:remove()
-    bootItem:remove()
-    plungerItem:remove()
-    if equippedInfoPanel then
-        equippedInfoPanel:remove()
-    end
     if menuSprite then
         menuSprite:remove()
     end
@@ -121,138 +106,14 @@ function inGameMenu:closeMenu()
         end
         self.hatSprites = nil
     end
-    
-    -- remove all the icons also
 end
 
-function inGameMenu:prevItem()
-    local activeSkills = self:getActiveSkillsList()
-    if #activeSkills == 0 then return end -- No skills available
-    
-    -- Find current position in active skills list
-    local currentIndex = 1
-    for i, skillId in ipairs(activeSkills) do
-        if PlayerData.activeItem == skillId then
-            currentIndex = i
-            break
-        end
-    end
-    
-    -- Go to previous skill (with wraparound)
-    currentIndex = currentIndex - 1
-    if currentIndex < 1 then
-        currentIndex = #activeSkills
-    end
-    PlayerData.activeItem = activeSkills[currentIndex]
-end
-
-function inGameMenu:nextItem()
-    local activeSkills = self:getActiveSkillsList()
-    if #activeSkills == 0 then return end -- No skills available
-    
-    -- Find current position in active skills list
-    local currentIndex = 1
-    for i, skillId in ipairs(activeSkills) do
-        if PlayerData.activeItem == skillId then
-            currentIndex = i
-            break
-        end
-    end
-    
-    -- Go to next skill (with wraparound)
-    currentIndex = currentIndex + 1
-    if currentIndex > #activeSkills then
-        currentIndex = 1
-    end
-    PlayerData.activeItem = activeSkills[currentIndex]
-end
-
-function inGameMenu:selectItem()
-    printDebug("Item selected: " .. PlayerData.activeItem)
-    -- Aquí puedes agregar la lógica específica para cada item
-    if PlayerData.activeItem == 1 and PlayerData.skills.canFlash == true then
-        printDebug("flash selected!")
-        -- Acción para la lámpara
-    elseif PlayerData.activeItem == 2 and PlayerData.skills.canDash == true then
-        printDebug("dash selected!")
-        -- Acción para las botas
-    elseif PlayerData.activeItem == 3 and PlayerData.skills.canPlungerang == true then
-        printDebug("plunge selected!")
-        -- Acción para el desatascador
-    end
-end
-
--- Helper function to count active skills (skills that are true)
-function inGameMenu:getActiveSkillsCount()
-    local count = 0
-    if PlayerData.skills.canFlash == true then count = count + 1 end
-    if PlayerData.skills.canDash == true then count = count + 1 end
-    if PlayerData.skills.canPlungerang == true then count = count + 1 end
-    return count
-end
-
--- Helper function to get list of active skills in order
-function inGameMenu:getActiveSkillsList()
-    local skills = {}
-    if PlayerData.skills.canFlash == true then table.insert(skills, 1) end  -- 1 = Flash/Lamp
-    if PlayerData.skills.canDash == true then table.insert(skills, 2) end   -- 2 = Dash/Boot
-    if PlayerData.skills.canPlungerang == true then table.insert(skills, 3) end  -- 3 = Plunge/Plunger
-    return skills
-end
-
+-- The menu is purely visual: it shows the map and the captured crew hats.
+-- There is no skill/item selection — abilities fire from the B button directly.
 function inGameMenu:update()
   if PlayerData.isEquiping == true then
-    -- drawStatusText(menuImage)
-    
-    local activeSkillsCount = self:getActiveSkillsCount()
-    local activeSkills = self:getActiveSkillsList()
-    
-    -- If no skills are active, reset activeItem to 0 and don't allow selection
-    if activeSkillsCount == 0 then
-        PlayerData.activeItem = 0
-    else
-        -- Make sure activeItem is a valid skill
-        local isValidItem = false
-        for _, skillId in ipairs(activeSkills) do
-            if PlayerData.activeItem == skillId then
-                isValidItem = true
-                break
-            end
-        end
-        
-        -- If current activeItem is not valid, set to first available skill
-        if not isValidItem then
-            PlayerData.activeItem = activeSkills[1]
-        end
-        
-        -- Handle cycling through only available skills
-        if PlayerData.activeItem < activeSkills[1] then
-            PlayerData.activeItem = activeSkills[#activeSkills]
-        end
-        if PlayerData.activeItem > activeSkills[#activeSkills] then
-            PlayerData.activeItem = activeSkills[1]
-        end
-    end
-
-    -- This should ALWAYS happen if isEquiping is true
     if menuSprite then
         menuSprite:add()
-    end
-    
-    -- Show active skill icons
-    if PlayerData.items.hasLamp == true then
-        lampItem:show(320, 64)
-    end
-    if PlayerData.items.hasBoots == true then
-        bootItem:show(288, 128)
-    end
-    if PlayerData.items.hasPlunger == true then
-        plungerItem:show(256, 128) -- Positioned next to boot
-    end
-    
-    -- Show equipped item info panel (only when an item is active)
-    if PlayerData.activeItem and PlayerData.activeItem > 0 then
-        equippedInfoPanel:show(220, 180)
     end
   end
 end

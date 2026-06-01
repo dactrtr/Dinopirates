@@ -16,6 +16,14 @@
 			"dir": "w"
 		},
 		{
+			"levelIid": "a82c8680-48b0-11f1-9f4d-49a4be703c65",
+			"dir": "nw"
+		},
+		{
+			"levelIid": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+			"dir": "n"
+		},
+		{
 			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
 			"dir": "e"
 		},
@@ -48,17 +56,152 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
+		"TKNotes": [
+			{
+				"id": "TKNotes",
+				"iid": "9cf74490-21a0-11f1-b443-cb698825c644",
+				"layer": "Notes",
+				"x": 188,
+				"y": 44,
+				"width": 120,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"String": "Elementos de cocina"
+				}
+			},
+			{
+				"id": "TKNotes",
+				"iid": "b13c7a10-21a0-11f1-b443-431cf9e7ab86",
+				"layer": "Notes",
+				"x": 292,
+				"y": 100,
+				"width": 56,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"String": "Pasada solo en tiny"
+				}
+			}
+		],
+		"Triggers": [
+			{
+				"id": "Triggers",
+				"iid": "c9660040-ac70-11f0-ae64-094e17987f94",
+				"layer": "Triggers",
+				"x": 92,
+				"y": 60,
+				"width": 56,
+				"height": 32,
+				"color": 16711748,
+				"customFields": {
+					"script": "microwaveBurn",
+					"usedTrigger": false,
+					"type": "Search",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "f2317670-ac70-11f0-ae64-133829c2c353",
+				"layer": "Triggers",
+				"x": 252,
+				"y": 108,
+				"width": 32,
+				"height": 32,
+				"color": 16711748,
+				"customFields": {
+					"script": "kitchenWeapons",
+					"usedTrigger": false,
+					"type": "Search",
+					"mapPercent": 0,
+					"conditionalScripts": [
+						"isTiny:tinyKnife"
+					]
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "3a47bf50-ac70-11f0-ae64-474c236a6fd7",
+				"layer": "Triggers",
+				"x": 340,
+				"y": 108,
+				"width": 56,
+				"height": 48,
+				"color": 16711748,
+				"customFields": {
+					"script": "inneficientCutting",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "a059dac0-ac70-11f0-ae64-f1ee9dff56d1",
+				"layer": "Triggers",
+				"x": 44,
+				"y": 196,
+				"width": 48,
+				"height": 40,
+				"color": 16711748,
+				"customFields": {
+					"script": "justBoxes",
+					"usedTrigger": false,
+					"type": "Search",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "26163fe0-ac70-11f0-8398-53067febe16c",
+				"layer": "Triggers",
+				"x": 204,
+				"y": 204,
+				"width": 64,
+				"height": 40,
+				"color": 16711748,
+				"customFields": {
+					"script": "notnormalBrocoli",
+					"usedTrigger": false,
+					"type": "Search",
+					"mapPercent": 0,
+					"conditionalScripts": []
+				}
+			}
+		],
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "5ff38f00-21a0-11f1-8318-7fc02d4297e0",
+				"layer": "Items_and_Props",
+				"x": 44,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",
 				"iid": "bb73a870-ac70-11f0-8539-03f7dfb4cdc8",
 				"layer": "Doors",
-				"x": 8,
+				"x": 4,
 				"y": 120,
-				"width": 16,
+				"width": 8,
 				"height": 48,
 				"color": 7552569,
 				"customFields": {
@@ -72,9 +215,9 @@
 				"iid": "bf724d50-ac70-11f0-8539-137cb38eca29",
 				"layer": "Doors",
 				"x": 200,
-				"y": 232,
+				"y": 236,
 				"width": 48,
-				"height": 16,
+				"height": 8,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
@@ -113,459 +256,26 @@
 				}
 			}
 		],
-		"Triggers": [
+		"PortalDoors": [
 			{
-				"id": "Triggers",
-				"iid": "c9660040-ac70-11f0-ae64-094e17987f94",
-				"layer": "Triggers",
-				"x": 100,
-				"y": 60,
-				"width": 56,
-				"height": 32,
-				"color": 16711748,
+				"id": "PortalDoors",
+				"iid": "25b7b320-48b0-11f1-b2c1-f3c6cc9fc228",
+				"layer": "Doors",
+				"x": 152,
+				"y": 56,
+				"width": 16,
+				"height": 16,
+				"color": 7552569,
 				"customFields": {
-					"script": "microwaveBurn",
-					"usedTrigger": false,
-					"type": "Search",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			},
-			{
-				"id": "Triggers",
-				"iid": "f2317670-ac70-11f0-ae64-133829c2c353",
-				"layer": "Triggers",
-				"x": 244,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 16711748,
-				"customFields": {
-					"script": "kitchenWeapons",
-					"usedTrigger": false,
-					"type": "Search",
-					"mapPercent": 0,
-					"conditionalScripts": [
-						"isTiny:tinyKnife"
-					]
-				}
-			},
-			{
-				"id": "Triggers",
-				"iid": "3a47bf50-ac70-11f0-ae64-474c236a6fd7",
-				"layer": "Triggers",
-				"x": 332,
-				"y": 100,
-				"width": 56,
-				"height": 48,
-				"color": 16711748,
-				"customFields": {
-					"script": "inneficientCutting",
-					"usedTrigger": false,
-					"type": "Story",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			},
-			{
-				"id": "Triggers",
-				"iid": "a059dac0-ac70-11f0-ae64-f1ee9dff56d1",
-				"layer": "Triggers",
-				"x": 44,
-				"y": 196,
-				"width": 48,
-				"height": 40,
-				"color": 16711748,
-				"customFields": {
-					"script": "justBoxes",
-					"usedTrigger": false,
-					"type": "Search",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			},
-			{
-				"id": "Triggers",
-				"iid": "26163fe0-ac70-11f0-8398-53067febe16c",
-				"layer": "Triggers",
-				"x": 196,
-				"y": 204,
-				"width": 96,
-				"height": 40,
-				"color": 16711748,
-				"customFields": {
-					"script": "notnormalBrocoli",
-					"usedTrigger": false,
-					"type": "Search",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			}
-		],
-		"FellTable": [
-			{
-				"id": "FellTable",
-				"iid": "bf46c0e0-ac70-11f0-ae64-597ec6fe672b",
-				"layer": "Props",
-				"x": 36,
-				"y": 60,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "FellTable",
-				"iid": "ffc9fb50-d380-11f0-a276-0f85237af89c",
-				"layer": "Props",
-				"x": 276,
-				"y": 164,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fellTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Blood": [
-			{
-				"id": "Blood",
-				"iid": "c2442260-ac70-11f0-ae64-a5f7b1f853f5",
-				"layer": "Props",
-				"x": 68,
-				"y": 60,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood",
-				"iid": "01ef6b90-ac70-11f0-ae64-292bbea86898",
-				"layer": "Props",
-				"x": 324,
-				"y": 132,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood",
-				"iid": "0601e690-ac70-11f0-ae64-8778a1292c62",
-				"layer": "Props",
-				"x": 348,
-				"y": 60,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood",
-				"iid": "0e256780-ac70-11f0-8398-fb5fdad9133f",
-				"layer": "Props",
-				"x": 196,
-				"y": 212,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood",
-					"nocollider": true,
-					"destroyed": false
-				}
-			}
-		],
-		"Microwave": [
-			{
-				"id": "Microwave",
-				"iid": "c7345330-ac70-11f0-ae64-3f2b938fe6d4",
-				"layer": "Props",
-				"x": 100,
-				"y": 60,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "microwave",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"DeadRat": [
-			{
-				"id": "DeadRat",
-				"iid": "f4bef490-ac70-11f0-ae64-d96e07439f33",
-				"layer": "Props",
-				"x": 332,
-				"y": 100,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "deadrat",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"KnifeKettle": [
-			{
-				"id": "KnifeKettle",
-				"iid": "ed4c9040-ac70-11f0-ae64-57af9b96ac8a",
-				"layer": "Props",
-				"x": 244,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "knifeKettle",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Box": [
-			{
-				"id": "Box",
-				"iid": "9d998240-ac70-11f0-ae64-fffc401f9f95",
-				"layer": "Props",
-				"x": 44,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"nocollider": false,
-					"destroyed": false,
-					"type": "box"
-				}
-			}
-		],
-		"Fridge2": [
-			{
-				"id": "Fridge2",
-				"iid": "35301230-ac70-11f0-8398-8fcdc90b8969",
-				"layer": "Props",
-				"x": 188,
-				"y": 68,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fridge2",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Fridge1": [
-			{
-				"id": "Fridge1",
-				"iid": "368c94f0-ac70-11f0-8398-27c802cf0097",
-				"layer": "Props",
-				"x": 188,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "fridge1",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Smalltable": [
-			{
-				"id": "Smalltable",
-				"iid": "39a100e0-ac70-11f0-8398-058ecccabc84",
-				"layer": "Props",
-				"x": 156,
-				"y": 60,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Smalltable",
-				"iid": "d0f28ea0-d380-11f0-a276-170abcc70553",
-				"layer": "Props",
-				"x": 276,
-				"y": 188,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Smalltable",
-				"iid": "d4288c50-d380-11f0-a276-9bdf43235b7f",
-				"layer": "Props",
-				"x": 276,
-				"y": 124,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Smalltable",
-				"iid": "d53679e0-d380-11f0-a276-8f2b37a9f3ee",
-				"layer": "Props",
-				"x": 284,
-				"y": 212,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Smalltable",
-				"iid": "d78991a0-d380-11f0-a276-f7b032b235ae",
-				"layer": "Props",
-				"x": 268,
-				"y": 52,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "smallTable",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"KitchenStorage": [
-			{
-				"id": "KitchenStorage",
-				"iid": "3d5fb690-ac70-11f0-8398-89d1822135c2",
-				"layer": "Props",
-				"x": 220,
-				"y": 60,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "kitchenStorage",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "KitchenStorage",
-				"iid": "421f6180-ac70-11f0-8398-3187f4a538f2",
-				"layer": "Props",
-				"x": 308,
-				"y": 52,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "kitchenStorage",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "KitchenStorage",
-				"iid": "f90bc140-d380-11f0-a276-d3e851faf0a1",
-				"layer": "Props",
-				"x": 276,
-				"y": 100,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "kitchenStorage",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
-		"Blood2": [
-			{
-				"id": "Blood2",
-				"iid": "12214d40-ac70-11f0-8398-31a430f47a22",
-				"layer": "Props",
-				"x": 228,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood2",
-				"iid": "1975acd0-ac70-11f0-8398-9b842ef570b6",
-				"layer": "Props",
-				"x": 164,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Blood2",
-				"iid": "1f4d3060-ac70-11f0-8398-2ff5d145c0a9",
-				"layer": "Props",
-				"x": 204,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "blood2",
-					"nocollider": true,
-					"destroyed": false
+					"PortalID": 1,
+					"DestLevel": 4,
+					"DestRoom": 81,
+					"SpawnX": 200,
+					"SpawnY": 184,
+					"Conditions": [
+						"isTiny:true"
+					],
+					"BlockedDialog": "cabinetHole"
 				}
 			}
 		]

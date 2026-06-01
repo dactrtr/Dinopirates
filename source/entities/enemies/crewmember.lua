@@ -365,9 +365,14 @@ function CrewMember:taken()
 	end
 
 	self:remove()
+end
+
+function CrewMember:remove()
 	if self.hat then
 		self.hat:remove()
+		self.hat = nil
 	end
+	CrewMember.super.remove(self)
 end
 
 function CrewMember:stunInfinite()
@@ -442,6 +447,7 @@ function CrewMember:escape(player)
 end
 
 function CrewMember:update()
+	self:setZIndex(self.y)
 	-- Performance: Only update AI every 3 frames
 	self.updateFrameCounter = (self.updateFrameCounter + 1) % 2
 	

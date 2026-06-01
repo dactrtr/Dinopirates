@@ -2,12 +2,6 @@
 -- Activates when lamp is equipped and affects entities within light cone
 
 function Player:lightBurst()
-    -- Validate that lamp is equipped (activeItem == 1)
-    if PlayerData.activeItem ~= 1 then
-        printDebug("Light burst requires lamp to be equipped!")
-        return
-    end
-    
     -- Check if light burst is on cooldown
     if self.lightBurstCooldown and playdate.getCurrentTimeMilliseconds() < self.lightBurstCooldown then
         printDebug("Light burst on cooldown!")
@@ -25,30 +19,41 @@ function Player:lightBurst()
         return
     end
     
-    -- Check if there's enough battery
-    local batteryCost = Config.LightBurst.batteryCost
-    if PlayerData.battery < batteryCost then
-        printDebug("⚠️ Not enough battery! Need " .. batteryCost .. " battery (current: " .. PlayerData.battery .. ")")
+    -- Light burst is directional, like the plungerang: do nothing while idle.
+    -- Checked before consuming battery so a held-while-idle B can charge instead.
+    local direction = PlayerData.direction
+    if direction == 'idle' or direction == nil then
         return
     end
-    
+
+    -- Check if battery meets minimum threshold
+    if PlayerData.battery < Config.LightBurst.minBattery then
+        printDebug("⚠️ Not enough battery! Need " .. Config.LightBurst.minBattery .. "% (current: " .. PlayerData.battery .. ")")
+        return
+    end
+
+    -- Block the flash if its self-damage would leave the player without life.
+    -- The cost ignores invincibility, so it is always real; refuse to fire when lethal.
+    local selfDamage = Config.LightBurst.selfDamage or 0
+    if selfDamage > 0 and (PlayerData.healthPoints - selfDamage) < (PlayerData.danceThresholdHP or 5) then
+        printDebug("🚫 Flash blocked: not enough HP (self-damage would leave the player without life)")
+        return
+    end
+
     printDebug("💡 Light burst activated!")
-    
+
     -- Consume battery
+    local batteryCost = Config.LightBurst.batteryCost
     PlayerData.battery = PlayerData.battery - batteryCost
     printDebug("🔋 Battery consumed: -" .. batteryCost .. " (remaining: " .. PlayerData.battery .. ")")
-    
+
     -- Show the light cone
     PlayerData.showLightCone = true
-    
-    -- Get the current direction
-    local direction = PlayerData.direction
-    
+
     -- Create light cone polygon
     local lightPolygon = self:createLightCone(direction)
-    
+
     if not lightPolygon then
-        printDebug("Cannot create light cone in idle state")
         PlayerData.showLightCone = false
         return
     end
@@ -64,12 +69,20 @@ function Player:lightBurst()
     if #affectedEntities == 0 then
         printDebug("No entities affected by light burst")
     end
-    
+
+    -- The flash burns the player: it always costs HP and ignores invincibility.
+    -- The lethal case was already rejected in the validations above, so this can
+    -- never drop the player below the dance threshold.
+    if selfDamage > 0 then
+        PlayerData.healthPoints -= selfDamage
+        printDebug("🔥 Flash self-damage: -" .. selfDamage .. " HP (now " .. PlayerData.healthPoints .. ")")
+    end
+
     self.lightBurstCooldown = playdate.getCurrentTimeMilliseconds() + Config.LightBurst.cooldown
     self.lightConeHideTime = playdate.getCurrentTimeMilliseconds() + Config.LightBurst.displayTime
     
-    -- Distribute motion tokens to enemies/crew
-    self:distributeMovementTokens(1) -- 1 Token = ~1 second of movement
+    -- Distribute motion tokens to enemies/crew (only happens because the flash actually fired)
+    self:distributeMovementTokens(Config.Player.movementTokensPerAction)
     
     printDebug("✅ Light burst completed!")
 end

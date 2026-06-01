@@ -84,7 +84,13 @@ function Projectile:update()
                     self.returning = true
                     break
                 elseif other:isa(PropItem) or other:isa(Box) then
-                    printDebug("🧱 Projectile hit prop/wall! Returning.")
+                    -- Smash breakable boxes on contact
+                    if other:isa(PropItem) and other.type == 'box' and not other.isDestroyed then
+                        printDebug("📦 Projectile smashed a box! Returning.")
+                        other:smash()
+                    else
+                        printDebug("🧱 Projectile hit prop/wall! Returning.")
+                    end
                     self.returning = true
                     break
                 end

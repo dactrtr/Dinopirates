@@ -1,50 +1,82 @@
--- Ability system for player
--- Executes different abilities based on the active item selected in the ingame menu
-
 function Player:useAbility()
-    -- Check if player is in valid state
     if not self.isAlive or PlayerData.isGaming ~= true then
         return
     end
-    
-    -- Check if player has items
-    if not PlayerData.items or table.getSize(PlayerData.items) == 0 then
-        printDebug("No items available!")
-        return
-    end
-    
-    -- Get the currently selected item
-    local activeItem = PlayerData.activeItem
-    
-    -- Execute ability based on active item
-    if activeItem == 1 then
-        -- Lamp ability
+    if self:isOnHole() then return end  -- on a hole the player may only walk
+    if PlayerData.isInDarkness then
         self:useLampAbility()
-    elseif activeItem == 2 then
-        -- Boot ability (Dash)
-        self:useBootAbility()
-    elseif activeItem == 3 then
-        -- Plunger ability (Plunge)
-        self:usePlungeAbility()
     else
-        printDebug("Unknown item selected: " .. tostring(activeItem))
+        self:usePlungeAbility()
     end
 end
 
--- Lamp ability - Light Burst
 function Player:useLampAbility()
-    -- Call the light burst function
     self:lightBurst()
 end
 
--- Boot ability - Dash attack
-function Player:useBootAbility()
-    -- Call the existing dash function
-    self:dash()
+function Player:usePlungeAbility()
+    self:plunge()
 end
 
--- Plunger ability - Boomerang projectile
-function Player:usePlungeAbility()
-    -- Call the new plunge function
-    self:plunge()
+function Player:beginDarkCharge()
+    if not PlayerData.isInDarkness or not PlayerData.items.hasLamp then return end
+    if self:isOnHole() then return end  -- on a hole the player may only walk
+    if PlayerData.battery < Config.DarkReveal.minBattery then return end
+    if self.isDarkCharging then return end
+    self.isDarkCharging = true
+    self.darkCrankAccum = 0
+    self.uiHud.animation:setState('crankClock')
+    self.uiHud:setVisible(true)
+end
+
+function Player:addDarkCrankDelta(delta)
+    if not self.isDarkCharging then return end
+    if delta > 0 then self.darkCrankAccum += delta end
+end
+
+function Player:endDarkCharge()
+    if not self.isDarkCharging then return end
+    self.isDarkCharging = false
+    self.uiHud:setRotation(0)
+    self.uiHud:setVisible(false)
+    if self:isOnHole() then self.darkCrankAccum = 0; return end  -- walked onto a hole: cancel, no skill
+    if self.darkCrankAccum >= Config.DarkReveal.crankThreshold and PlayerData.battery >= Config.DarkReveal.minBattery then
+        self:activateDarkReveal()
+    else
+        self:useLampAbility()
+    end
+    self.darkCrankAccum = 0
+end
+
+function Player:activateDarkReveal()
+    -- Block the reveal if its self-damage would leave the player without life.
+    -- The cost ignores invincibility, so it is always real; refuse to fire when lethal.
+    local selfDamage = Config.DarkReveal.selfDamage or 0
+    if selfDamage > 0 and (PlayerData.healthPoints - selfDamage) < (PlayerData.danceThresholdHP or 5) then
+        printDebug("🚫 Dark reveal blocked: not enough HP (self-damage would leave the player without life)")
+        return
+    end
+
+    PlayerData.battery = 0
+    PlayerData.rechargeBlocked = true
+    PlayerData.showFullLight = true
+
+    -- The reveal burns the player: it always costs HP and ignores invincibility.
+    -- The lethal case was already rejected above, so this can never drop the
+    -- player below the dance threshold.
+    if selfDamage > 0 then
+        PlayerData.healthPoints -= selfDamage
+        printDebug("🔥 Dark reveal self-damage: -" .. selfDamage .. " HP (now " .. PlayerData.healthPoints .. ")")
+    end
+
+    -- Grant enemy/crew movement tokens now that the dark reveal actually activated
+    self:distributeMovementTokens(Config.Player.movementTokensPerAction)
+
+    playdate.timer.performAfterDelay(Config.DarkReveal.revealDuration, function()
+        PlayerData.showFullLight = false
+
+        playdate.timer.performAfterDelay(Config.DarkReveal.rechargeBlockDuration, function()
+            PlayerData.rechargeBlocked = false
+        end)
+    end)
 end

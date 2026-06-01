@@ -2,6 +2,7 @@ DanceScene = {}
 class("DanceScene").extends(NobleScene)
 local scene = DanceScene
 scene.backgroundColor = Graphics.kColorBlack
+DanceScene.debugMode = false
 
 import "entities/UI/battle/buttonPress"
 import "entities/UI/battle/hitZone"
@@ -16,12 +17,26 @@ import "entities/UI/battle/resultsScreen"
 local lifes = nil
 
 local screenCenterX = 200
+
+-- File-scoped sprite references (declared here to allow cleanup in exit)
+local hitzone = nil
+local playerDance = nil
+local enemyDance = nil
+local buttonCover = nil
+local winIndicator = nil
+local loseIndicator = nil
+local backgroundDance = nil
+local resultsScreen = nil
+local sequence = nil
 local barWidth = 8
 local barHeight = 10
 local barY = 56
 local condition = nil
 
-
+local battleMusicBasic = nil
+local currentBattleMusic = nil
+local kickSound = nil
+local snareSound = nil
 
 -- Enemy Pattern Profiles
 
@@ -108,6 +123,21 @@ function scene:init()
 
     -- defaults for button count (may change on enter)
     self.numberOfButtons = 4
+
+    battleMusicBasic = playdate.sound.fileplayer.new('assets/sounds/music/battle_music_test_ima')
+    if battleMusicBasic then
+        battleMusicBasic:setVolume(0.7)
+    end
+
+    kickSound = playdate.sound.sampleplayer.new('assets/sounds/music/drums/kick_test_ima')
+    if kickSound then
+        kickSound:setVolume(0.8)
+    end
+
+    snareSound = playdate.sound.sampleplayer.new('assets/sounds/music/drums/snare_test_ima')
+    if snareSound then
+        snareSound:setVolume(0.8)
+    end
 end
 
 -- Helper: calculate the probability (0-100) to upgrade difficulty
@@ -119,14 +149,13 @@ function scene:determineDifficultyUpgrade()
 
     -- Normalize each input into [0,1] using assumed maxima.
     -- Tweak these maxima to fit your game's real ranges for better results.
-    local sanityNorm = math.max(0, math.min(1, sanity / 100))   -- assumed max sanity 100
-    local powerNorm = math.max(0, math.min(1, power / 20))      -- assumed max powerLevel 20
-    local caloriesNorm = math.max(0, math.min(1, calories / 500)) -- assumed calories scale up to ~200
+    local sanityNorm   = math.max(0, math.min(1, sanity   / Config.Dance.sanityMax))
+    local powerNorm    = math.max(0, math.min(1, power    / Config.Dance.powerMax))
+    local caloriesNorm = math.max(0, math.min(1, calories / Config.Dance.caloriesMax))
 
-    -- Weights: favor power and sanity a bit more than calories
-    local weightSanity = 0.35
-    local weightPower = 0.45
-    local weightCalories = 0.20
+    local weightSanity   = Config.Dance.weightSanity
+    local weightPower    = Config.Dance.weightPower
+    local weightCalories = Config.Dance.weightCalories
 
     -- Combined normalized score
     local normalizedScore = (sanityNorm * weightSanity) + (powerNorm * weightPower) + (caloriesNorm * weightCalories)
@@ -144,42 +173,34 @@ function scene:enter()
     scene.super.enter(self)
     local startPoint = 400
     condition = nil
+    if sequence then sequence:stop() end
     sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
     sequence:start()
 
-    -- Decide whether to upgrade difficulty based on PlayerData
-    local chance = self:determineDifficultyUpgrade()
-    local roll = math.random(0, 100)
-    
-    if roll <= chance then
-        -- Roll succeeded: upgrade enemy according to powerLevel
-        self.enemyType = self:determineEnemyType()
-    
-        -- Adjust bpm / buttons by enemy type
-        if self.enemyType == "basic" then
-            self.bpm = 16
-            self.numberOfButtons = 4
-        elseif self.enemyType == "evolve" then
-            self.bpm = 24
-            self.numberOfButtons = 6
-        elseif self.enemyType == "badass" then
-            self.bpm = 28
-            self.numberOfButtons = 8
-        elseif self.enemyType == "boss" then
-            self.bpm = 32
-            self.numberOfButtons = 12
-        end
-        self.enemyEvolving = true
-        printDebug("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
-    
-    else
-        -- Roll failed: stay basic
+    if DanceScene.debugMode then
         self.enemyType = "basic"
+        self.bpm = Config.Dance.basic.bpm
+        self.numberOfButtons = Config.Dance.basic.buttons
         self.enemyEvolving = false
-        self.bpm = 16
-        self.numberOfButtons = 4
-    
-        printDebug("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
+    else
+        -- Decide whether to upgrade difficulty based on PlayerData
+        local chance = self:determineDifficultyUpgrade()
+        local roll = math.random(0, 100)
+
+        if roll <= chance then
+            self.enemyType = self:determineEnemyType()
+            local diffConfig = Config.Dance[self.enemyType] or Config.Dance.basic
+            self.bpm = diffConfig.bpm
+            self.numberOfButtons = diffConfig.buttons
+            self.enemyEvolving = true
+            printDebug("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
+        else
+            self.enemyType = "basic"
+            self.enemyEvolving = false
+            self.bpm = Config.Dance.basic.bpm
+            self.numberOfButtons = Config.Dance.basic.buttons
+            printDebug("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
+        end
     end
 
    -- Create ButtonPress instances using enemy pattern profile
@@ -196,26 +217,37 @@ function scene:enter()
        table.insert(self.buttons, b)
    end
 
-    -- Keep backwards compatibility with existing single-named globals used elsewhere
-    -- Convert to local variables to avoid global namespace pollution
-    local button = self.buttons[1]
-    local button2 = self.buttons[2]
-    local button3 = self.buttons[3]
-    local button4 = self.buttons[4]
-    local button5 = self.buttons[5]
-    local button6 = self.buttons[6]
-    local button7 = self.buttons[7]
-    local button8 = self.buttons[8]
-
-    -- Other entities (unchanged)
+    -- Other entities
     hitzone = HitZone(40,30, self.bpm)
-    playerDance = PlayerDance(self.bpm)
-    enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving)
+
+    local charPath = PlayerData.isTiny
+        and 'assets/images/ui/battle/playerDanceTiny'
+        or  'assets/images/ui/battle/playerDance'
+    playerDance = PlayerDance(self.bpm, charPath)
+
+    local enemyPath = (PlayerData.lastEnemyTouched and PlayerData.lastEnemyTouched.type == "bosscolli")
+        and 'assets/images/ui/battle/enemyBosscolliDance'
+        or  'assets/images/ui/battle/enemyDance'
+    enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving, enemyPath)
     buttonCover = ButtonCover()
     winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
     backgroundDance = BackgroundDance()
     resultsScreen = ResultsScreen()
+
+    if MazeScene.backgroundMusic and MazeScene.backgroundMusic:isPlaying() then
+        MazeScene.backgroundMusic:stop()
+    end
+
+    if currentBattleMusic then
+        currentBattleMusic:stop()
+        currentBattleMusic = nil
+    end
+
+    if self.enemyType == "basic" and battleMusicBasic then
+        currentBattleMusic = battleMusicBasic
+        currentBattleMusic:play(0)
+    end
 end
 
 function scene:start()
@@ -230,18 +262,14 @@ end
 
 function scene:drawBackground()
 	scene.super.drawBackground(self)
-    
-	background:draw(0, 0)
 end
 
 function scene:update()
 	scene.super.update(self)
-   if  PlayerData.isDancing == false and condition == nil then
-      resultsScreen:loadingScreen()
-        
-      return
+    if (PlayerData.isDancing == false and condition == nil) or not hitzone then
+        if resultsScreen and condition == nil then resultsScreen:loadingScreen() end
+        return
     end
-    
     local collisions = hitzone:overlappingSprites()
     if table.getsize(collisions) > 0 then
         if self.ButtonPressed == nil then
@@ -373,13 +401,39 @@ end
 
 function scene:exit()
 	scene.super.exit(self)
-    
+
+    -- Remove battle sprites
+    if hitzone then hitzone:remove() hitzone = nil end
+    if playerDance then playerDance:remove() playerDance = nil end
+    if enemyDance then enemyDance:remove() enemyDance = nil end
+    if buttonCover then buttonCover:remove() buttonCover = nil end
+    if winIndicator then winIndicator:remove() winIndicator = nil end
+    if loseIndicator then loseIndicator:remove() loseIndicator = nil end
+    if backgroundDance then backgroundDance:remove() backgroundDance = nil end
+    if resultsScreen then resultsScreen:remove() resultsScreen = nil end
+
+    if self.buttons then
+        for _, btn in ipairs(self.buttons) do
+            if btn then btn:remove() end
+        end
+        self.buttons = nil
+    end
+
+    DanceScene.debugMode = false
+
     -- Player reset
     PlayerData.healthPoints = 2
-    
+
 	Noble.Input.setCrankIndicatorStatus(false)
+    if sequence then sequence:stop() end
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
-	sequence:start();
+	sequence:start()
+
+    if currentBattleMusic then
+        currentBattleMusic:stop()
+        currentBattleMusic = nil
+    end
+
     SaveSystem.save()
 end
 
@@ -419,19 +473,24 @@ function scene:checkDanceResults()
    if condition == "win" then
       condition = nil
       self.totalAccuracy = 0
-            
+
+      if DanceScene.debugMode then
+          Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+          return
+      end
+
       -- Find an enemy and kill it
       findAndKillEnemyById(PlayerData.lastEnemyTouched.id)
       -- health regain
       
-      PlayerData.healthPoints += PlayerData.healedHP
+      PlayerData.healthPoints = math.min(PlayerData.healthPoints + PlayerData.healedHP, Config.Player.maxHealthPoints)
       -- captures player position and goes back to the original room
       PlayerData.playerSpawn.x = PlayerData.playerExit.x
       PlayerData.playerSpawn.y = PlayerData.playerExit.y
       
       -- Sets the power level of the enemies
       PlayerData.amountDances += 1
-      PlayerData.calories += 60
+      PlayerData.calories = math.min((PlayerData.calories or 0) + 60, Config.Dance.caloriesMax)
       
       -- transition to the original room
       self.returnRoom = RoomTranslate(PlayerData.saveLevel)
@@ -461,6 +520,9 @@ scene.inputHandler = {
         if  PlayerData.isDancing == false and condition == nil then
             scene:startBattle()
             return
+        end
+        if snareSound and PlayerData.isDancing then
+            snareSound:play(1)
         end
         scene:danceStep("aButton")
         scene:checkDanceResults()
@@ -496,6 +558,9 @@ scene.inputHandler = {
     --
     leftButtonDown = function()
         -- Your code here
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
         scene:danceStep("leftButton")
     end,
     leftButtonHold = function()
@@ -509,6 +574,9 @@ scene.inputHandler = {
     --
     rightButtonDown = function()
         -- Your code here
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
         scene:danceStep("rightButton")
     end,
     rightButtonHold = function()
@@ -522,6 +590,9 @@ scene.inputHandler = {
     --
     upButtonDown = function()
         -- Your code here
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
         scene:danceStep("upButton")
     end,
     upButtonHold = function()
@@ -535,6 +606,9 @@ scene.inputHandler = {
     --
     downButtonDown = function()
         -- Your code here
+        if kickSound and PlayerData.isDancing then
+            kickSound:play(1)
+        end
         scene:danceStep("downButton")
     end,
     downButtonHold = function()

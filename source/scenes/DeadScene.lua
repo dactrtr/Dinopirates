@@ -19,6 +19,7 @@ local scene = DeadScene
 
 local menu
 local crankTick = 0
+local bg = nil
 
 
 
@@ -43,10 +44,10 @@ DeadScene.inputHandler = {
 	end,
 	cranked = function(change, _)
 		crankTick = crankTick + change
-		if crankTick > 30 then
+		if crankTick > Config.Input.crankMenuThreshold then
 			crankTick = 0
 			menu:selectNext()
-		elseif crankTick < -30 then
+		elseif crankTick < -Config.Input.crankMenuThreshold then
 			crankTick = 0
 			menu:selectPrevious()
 		end
@@ -60,7 +61,7 @@ DeadScene.inputHandler = {
 -- first thing that happens when transitining away from another scene.
 function scene:init()
 	scene.super.init(self)
-	-- Your code here
+	bg = Graphics.image.new('assets/images/screens/dead-screen.png')
 	menu = Noble.Menu.new(
 		true,
 		Noble.Text.ALIGN_RIGHT,
@@ -97,8 +98,6 @@ end
 -- This runs once per frame.
 function scene:update()
 	scene.super.update(self)
-	-- Your code heree
-	local bg = Graphics.image.new('assets/images/screens/dead-screen.png')
 	Graphics.lockFocus(bg)
 		-- Graphics.setColor(Graphics.kColorBlack)
 		-- Graphics.fillRect(0, 0, 120,20)

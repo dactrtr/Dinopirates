@@ -4,9 +4,6 @@
 
 class('Box').extends(playdate.graphics.sprite)
 
-function Utilities.getZero()
-	return 0
-end
 
 -- mark: Draw collider boxes (walls)
 
@@ -34,7 +31,6 @@ function Utilities.iddqd()
 	PlayerData.battery = 100
 	
 	PlayerData.skills.canFlash = true
-	PlayerData.skills.canDash = true
 	PlayerData.skills.canPlungerang = true
 	
 	PlayerData.CrewMemberData.amountTaken = 21
@@ -129,22 +125,6 @@ function CheatCode:nextIs(key)
   return keys[key] == self._seq[self.progress]
 end
 
-function RandomScreen(axis)
-	if axis == "x" then
-		return math.random(Config.Screen.randomBoundsX.min, Config.Screen.randomBoundsX.max)
-	elseif axis == "y" then
-		return math.random(Config.Screen.randomBoundsY.min, Config.Screen.randomBoundsY.max)
-	end
-end
-
-function checkBool(bool)
-	local string
-	if bool == true then
-		print('true')
-	elseif (bool == false) then
-		print('false')
-	end
-end
 function printDebug(value)
 	if debug == true then
 		print(value)
@@ -364,6 +344,10 @@ end
 -- Finds and kills an enemy by its unique ID (LDtk version)
 function findAndKillEnemyById(enemyId)
 	local room = PlayerData.floor
+	if not levelsLDTK or not levelsLDTK[room] then
+		printDebug("⚠️ findAndKillEnemyById: invalid room:", room)
+		return
+	end
 	local entities = levelsLDTK[room].entities
 
 	if not entities then
@@ -415,6 +399,32 @@ function findAndDestroyPropById(propId)
 					end
 					return
 				end
+			end
+		end
+	end
+end
+
+-- Marks an item entity as collected by its iid (per-instance persistence, e.g. food)
+function findAndCollectItemById(itemId)
+	local room = PlayerData.floor
+	if not levelsLDTK or not levelsLDTK[room] then
+		printDebug("⚠️ findAndCollectItemById: invalid room:", room)
+		return
+	end
+	local entities = levelsLDTK[room].entities
+
+	if not entities then
+		printDebug("⚠️ No entities found in room:", room)
+		return
+	end
+
+	for entityType, entitiesList in pairs(entities) do
+		for _, item in ipairs(entitiesList) do
+			local cf = item.customFields or {}
+			if cf.isItem == true and item.iid == itemId then
+				cf.collected = true
+				printDebug("🍔 Item collected:", itemId, "in", entityType)
+				return
 			end
 		end
 	end
@@ -472,32 +482,42 @@ function renderTileMap(tileData, tilemap)
   end
 end
 
-local SECTION_TILE_IDS = {}
-for _, id in ipairs(Config.Tiles.walkable) do
-	SECTION_TILE_IDS[id] = true
-end
 local TILE_SIZE = Config.Tiles.size
 
---- Creates wall colliders from tilemap data with 2D clustering (horizontal and vertical merging)
+local WALKABLE_TILES = {
+	[Config.Tiles.IntGrid.slime]        = true,
+	[Config.Tiles.IntGrid.hole]         = true,
+	[Config.Tiles.IntGrid.floor]        = true,
+	[Config.Tiles.IntGrid.tinyHole]     = true,
+	[Config.Tiles.IntGrid.grapplePoint] = true,  -- walkable; no wall collider generated
+}
+
+--- Returns true if the given IntGrid tile value is walkable (not a wall).
+-- nil (out of bounds) and any value outside WALKABLE_TILES count as a wall.
+function IsTileWalkable(tileValue)
+	return WALKABLE_TILES[tileValue] == true
+end
+
+--- Creates colliders for all non-walkable tiles (everything except slime/hole/floor).
 -- @param tileData table The 2D matrix of tile IDs
 -- @return table List of created Box sprites
 function CreateTileColliders(tileData)
 	local colliders = {}
 	local height = #tileData
 	local width = #tileData[1]
-	
+
 	local allSegments = {}
 
 	-- Phase 1: Horizontal identification
-	-- We find all contiguous wall tiles (anything NOT in SECTION_TILE_IDS) in each row and store them as segments.
+	-- Find contiguous non-walkable tiles in each row and store as segments.
 	for y = 1, height do
 		allSegments[y] = {}
 		local x = 1
 		while x <= width do
 			local tileID = tileData[y][x]
-			if not SECTION_TILE_IDS[tileID] then
+			if not WALKABLE_TILES[tileID] then
 				local startX = x
-				while x <= width and tileData[y][x] and not SECTION_TILE_IDS[tileData[y][x]] do
+				while x <= width and not WALKABLE_TILES[tileData[y][x]] do
 					x = x + 1
 				end
 				local segmentWidth = x - startX
@@ -590,40 +610,6 @@ function Utilities.toggle(value)
 end
 
 
-function CurrentTile()
-	local floor = PlayerData.actualTilemap or 1
-	local x = tonumber(PlayerData.x) or 0
-	local y = tonumber(PlayerData.y) or 0
-
-	-- Convertir coordenadas de píxeles a coordenadas de tile
-	local tileX = math.floor(x / TILE_SIZE) + 1
-	local tileY = math.floor(y / TILE_SIZE) + 1
-
-	-- Obtener referencias seguras
-	local floorData = tileMapData[floor]
-	if not floorData then
-		printDebug("⚠️ Piso no encontrado:", floor)
-		return
-	end
-
-	local row = floorData[tileY]
-	if not row then
-		printDebug(string.format("⚠️ Fuera del rango vertical (tileY=%.2f)", tileY))
-		return
-	end
-
-	local tileNumber = row[tileX]
-	if not tileNumber then
-		printDebug(string.format("⚠️ Fuera del rango horizontal (tileX=%.2f)", tileX))
-		return
-	end
-
-	-- ✅ Usa %.2f para floats y %d solo para enteros seguros
-	printDebug(string.format(
-		"🧭 Piso %d | Player (%.1f, %.1f) | Tile (%d, %d) = %d",
-		floor, x, y, tileX, tileY, tileNumber
-	))
-end
 
 -- Returns the tile ID at a given pixel position (or player position by default)
 function GetTileUnderPlayer(px, py)
@@ -643,25 +629,65 @@ function GetTileUnderPlayer(px, py)
 	return row[tileX]
 end
 
-SLIME_TILE_IDS = {}
-for _, id in ipairs(Config.Tiles.slime) do
-	SLIME_TILE_IDS[id] = true
-end
-
--- Checks if the player is standing on a slime tile using a 16x16 area at their feet.
--- The player sprite is 48x48 with center at (px, py). The feet are at ~py+12.
--- Samples a 16x16 grid (5 points) to catch overlap with tile edges.
+-- Checks if the player is standing on a slime tile (IntGrid value 2).
+-- Samples a 3×3 grid of points at the player's feet to catch tile boundary overlaps.
 function IsPlayerOnSlime(px, py)
-	-- Feet center is at py + 12 (bottom of the collider rect)
 	local feetY = py + 12
-	-- Tiny mode collider is 10px wide (±5px), normal is 30px wide (±8px sample)
 	local halfW = PlayerData.isTiny and 5 or 8
 	local xOffsets = { -halfW, 0, halfW }
 	local yOffsets = { -4, 0, 4 }
 	for _, dx in ipairs(xOffsets) do
 		for _, dy in ipairs(yOffsets) do
-			local tileID = GetTileUnderPlayer(px + dx, feetY + dy)
-			if tileID and SLIME_TILE_IDS[tileID] then
+			if GetTileUnderPlayer(px + dx, feetY + dy) == Config.Tiles.IntGrid.slime then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- Checks if the player is standing on a hole tile (IntGrid value 3).
+-- Uses the same foot-sampling logic as IsPlayerOnSlime.
+function IsPlayerOnHole(px, py)
+	local feetY = py + 12
+	local halfW = PlayerData.isTiny and 5 or 8
+	local xOffsets = { -halfW, 0, halfW }
+	local yOffsets = { -4, 0, 4 }
+	for _, dx in ipairs(xOffsets) do
+		for _, dy in ipairs(yOffsets) do
+			if GetTileUnderPlayer(px + dx, feetY + dy) == Config.Tiles.IntGrid.hole then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- Checks if the player is standing on a tiny hole tile (IntGrid value 32).
+function IsPlayerOnTinyHole(px, py)
+	local feetY = py + 12
+	local halfW = 5
+	local xOffsets = { -halfW, 0, halfW }
+	local yOffsets = { -4, 0, 4 }
+	for _, dx in ipairs(xOffsets) do
+		for _, dy in ipairs(yOffsets) do
+			if GetTileUnderPlayer(px + dx, feetY + dy) == Config.Tiles.IntGrid.tinyHole then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- Generic hole check (IntGrid value 3) around a world point, sampling a 3×3 grid
+-- centered on the point. Used by enemies, which are always normal-size and so
+-- treat tinyHole (32) as floor — only real holes (3) block them.
+function IsHoleAt(px, py)
+	local r = 8
+	local offsets = { -r, 0, r }
+	for _, dx in ipairs(offsets) do
+		for _, dy in ipairs(offsets) do
+			if GetTileUnderPlayer(px + dx, py + dy) == Config.Tiles.IntGrid.hole then
 				return true
 			end
 		end
@@ -677,32 +703,4 @@ local function formatNumberK(n)
 	else
 		return tostring(n)
 	end
-end
-function drawStatusText(image)
-	local xPos = 160
-	local yPos = 128
-	Graphics.pushContext(image)
-	
-	-- Clear text areas
-	Graphics.setColor(Graphics.kColorWhite)
-	Graphics.fillRect(xPos, yPos, 100, 12)
-	Graphics.fillRect(xPos, yPos + 12, 100, 12)
-	Graphics.fillRect(xPos, yPos + 25, 100, 12)
-	Graphics.fillRect(xPos, yPos + 38, 100, 12)
-	
-	local smallFont = Graphics.font.new('assets/fonts/Mini Sans')
-	Graphics.setFont(smallFont)
-	
-	-- Apply formatting to steps
-	local sanityText = ": " .. tostring(PlayerData.sanity)
-	local caloriesText = ": " .. tostring(PlayerData.calories)
-	local stepsText = ": " .. formatNumberK(PlayerData.totalSteps)
-	local mapPercent = ": " .. MapDrawer.calculateMapPercent().."%"
-
-	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
-	Graphics.drawText(sanityText, xPos, yPos)
-	Graphics.drawText(caloriesText, xPos, yPos + 12)
-	Graphics.drawText(stepsText, xPos, yPos + 25)
-	Graphics.drawText(mapPercent, xPos, yPos + 38)
-	Graphics.popContext()
 end

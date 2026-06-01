@@ -63,31 +63,15 @@
 		"play": null
 	},
 	"layers": [
-		"BGTilemap.png"
+		"Gameplay.png",
+		"Foreground.png"
 	],
 	"entities": {
-		"Doors": [
-			{
-				"id": "Doors",
-				"iid": "bcc50700-fa90-11f0-9039-e356dc00e5f2",
-				"layer": "Doors",
-				"x": 336,
-				"y": 236,
-				"width": 32,
-				"height": 8,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			}
-		],
 		"PneumaticTube": [
 			{
 				"id": "PneumaticTube",
 				"iid": "b62df370-fa90-11f0-b30d-935794ec5f17",
-				"layer": "Props",
+				"layer": "Items_and_Props",
 				"x": 44,
 				"y": 204,
 				"width": 32,
@@ -104,7 +88,7 @@
 			{
 				"id": "Tube",
 				"iid": "b8aed1f0-fa90-11f0-b30d-9767e2593e69",
-				"layer": "Props",
+				"layer": "Items_and_Props",
 				"x": 44,
 				"y": 172,
 				"width": 32,
@@ -119,7 +103,7 @@
 			{
 				"id": "Tube",
 				"iid": "b97444d0-fa90-11f0-b30d-1516530fbe42",
-				"layer": "Props",
+				"layer": "Items_and_Props",
 				"x": 44,
 				"y": 140,
 				"width": 32,
@@ -134,7 +118,7 @@
 			{
 				"id": "Tube",
 				"iid": "ba446610-fa90-11f0-b30d-a5d542c284cf",
-				"layer": "Props",
+				"layer": "Items_and_Props",
 				"x": 44,
 				"y": 108,
 				"width": 32,
@@ -149,7 +133,7 @@
 			{
 				"id": "Tube",
 				"iid": "bddfb540-fa90-11f0-b30d-69e74fd1f321",
-				"layer": "Props",
+				"layer": "Items_and_Props",
 				"x": 44,
 				"y": 76,
 				"width": 32,
@@ -164,7 +148,7 @@
 			{
 				"id": "Tube",
 				"iid": "781419e0-fa90-11f0-9f0d-9b937fda017f",
-				"layer": "Props",
+				"layer": "Items_and_Props",
 				"x": 44,
 				"y": 44,
 				"width": 32,
@@ -179,7 +163,7 @@
 			{
 				"id": "Tube",
 				"iid": "8a1775b0-fa90-11f0-9f0d-e181ad477a53",
-				"layer": "Props",
+				"layer": "Items_and_Props",
 				"x": 44,
 				"y": 12,
 				"width": 32,
@@ -189,6 +173,38 @@
 					"type": "Tube",
 					"nocollider": false,
 					"destroyed": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "bcc50700-fa90-11f0-9039-e356dc00e5f2",
+				"layer": "Doors",
+				"x": 336,
+				"y": 236,
+				"width": 32,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "c9a6f920-48b0-11f1-b354-c9bfb305a719",
+				"layer": "Doors",
+				"x": 392,
+				"y": 136,
+				"width": 16,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
 				}
 			}
 		]

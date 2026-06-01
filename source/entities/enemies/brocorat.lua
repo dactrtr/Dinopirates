@@ -22,7 +22,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.id = ID
 	
 	self.powerLevel = PlayerData.EnemiesData.powerLevel + PlayerData.sanityCounter
-	self.stunProc = moveSpeed * 20 -- if speed is below 0.5 the enemy doesnt move
+	self.stunProc = moveSpeed * Config.Enemy.stunProcMultiplier -- enemy stops moving if moveSpeed falls below this threshold
 	self.player = player
 	self.Zindex = Zindex
 	if moveSpeed == nil then
@@ -31,7 +31,7 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 	self.damage = 1
 	self.moveSpeed = moveSpeed
 	self.initialSpeed = moveSpeed
-	self.sightRadius = PlayerData.EnemiesData.sightRadius + self.powerLevel * 3 -- this should be calculated according to the level or power of the enemy.
+	self.sightRadius = math.max(Config.Enemy.sightRadiusMin, PlayerData.EnemiesData.sightRadius + self.powerLevel * Config.Enemy.sightRadiusPerPowerLevel)
 	
 	-- Performance: Frame counter for throttling updates
 	self.updateFrameCounter = math.random(0, 2) -- Random offset to stagger enemy updates
@@ -73,6 +73,7 @@ function Brocorat:empty()
 end
 
 function Brocorat:update()
+	self:setZIndex(self.y)
 	-- Performance: Only update AI every 3 frames
 	self.updateFrameCounter = (self.updateFrameCounter + 1) % 3
 	
