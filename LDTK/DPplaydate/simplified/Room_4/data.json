@@ -1,27 +1,19 @@
 {
 	"identifier": "Room_4",
 	"uniqueIdentifer": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-	"x": 1200,
+	"x": 1600,
 	"y": 0,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "310fc980-ac70-11f0-998c-05b91a46387d",
+			"levelIid": "35082cd0-ac70-11f0-998c-d16d78429f5c",
 			"dir": "<"
 		},
 		{
 			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
 			"dir": "w"
-		},
-		{
-			"levelIid": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
-			"dir": "nw"
-		},
-		{
-			"levelIid": "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
-			"dir": "e"
 		},
 		{
 			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
@@ -30,10 +22,6 @@
 		{
 			"levelIid": "dab87dc0-ac70-11f0-997a-63497867517d",
 			"dir": "s"
-		},
-		{
-			"levelIid": "672c4d40-ac70-11f0-997a-7b0342bedabe",
-			"dir": "se"
 		}
 	],
 	"customFields": {

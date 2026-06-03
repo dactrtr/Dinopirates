@@ -1,24 +1,12 @@
 {
 	"identifier": "Room_5",
 	"uniqueIdentifer": "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
-	"x": 1600,
+	"x": 2400,
 	"y": 0,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
-		{
-			"levelIid": "35082cd0-ac70-11f0-998c-d16d78429f5c",
-			"dir": "<"
-		},
-		{
-			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-			"dir": "w"
-		},
-		{
-			"levelIid": "dab87dc0-ac70-11f0-997a-63497867517d",
-			"dir": "sw"
-		},
 		{
 			"levelIid": "672c4d40-ac70-11f0-997a-7b0342bedabe",
 			"dir": "s"

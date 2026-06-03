@@ -146,3 +146,8 @@
 "catnolamp-01" = "I have no lamp"
 "catwhat-01" = "What is this creature?"
 "cabinethole-01" = "Who made this hole to the kitchen sink"
+"nocm-01" = "No crewmembers"
+
+"nocm-02" = "only one CM"
+"onecm-01" = "just one"
+"twocm-01" = "two crewmembers"

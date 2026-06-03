@@ -1,49 +1,12 @@
 {
 	"identifier": "Room_7",
 	"uniqueIdentifer": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
-	"x": 400,
-	"y": 240,
+	"x": -400,
+	"y": 960,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "3b081ff0-ac70-11f0-998c-67e6b510262c",
-			"dir": "<"
-		},
-		{
-			"levelIid": "69eb2d80-ac70-11f0-989f-95306126bd74",
-			"dir": "nw"
-		},
-		{
-			"levelIid": "bab17c70-ac70-11f0-997a-85b3d3c5d229",
-			"dir": "n"
-		},
-		{
-			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
-			"dir": "ne"
-		},
-		{
-			"levelIid": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
-			"dir": "w"
-		},
-		{
-			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
-			"dir": "e"
-		},
-		{
-			"levelIid": "68b425c0-ac70-11f0-997a-7732cd72a5cc",
-			"dir": "sw"
-		},
-		{
-			"levelIid": "6cc9d510-ac70-11f0-997a-191299f9209c",
-			"dir": "s"
-		},
-		{
-			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
-			"dir": "se"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": false,
 		"light": 0,
@@ -58,7 +21,7 @@
 		],
 		"play": "Enter",
 		"procGen": true,
-		"roomRole": "Start"
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",

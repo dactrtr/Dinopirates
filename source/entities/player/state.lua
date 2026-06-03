@@ -65,12 +65,11 @@ function Player:fight()
   Noble.transition(DanceScene)
 end
 
-function Player:dead()
+function Player:dead(cause)
   self.isAlive = false
+  PlayerData.deathCause = cause or "hp"
   local function deathScreen()
-
     Noble.transition(DeadScene)
-
   end
   playdate.timer.performAfterDelay(1000, deathScreen)
 end

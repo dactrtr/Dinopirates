@@ -134,8 +134,49 @@ function MapGenerator.doorsForSide(template, side)
 	return out
 end
 
+-- A side's connection axis: top/down doors line up along X (width); left/right
+-- doors line up along Y (height). The position on the connection axis itself is
+-- ignored (one door sits at a room edge, its partner at the opposite edge).
+local function sideIsVertical(side)
+	return side == "top" or side == "down"
+end
+
+-- Per-template, per-side door "signature": a canonical string of "pos:size" slots
+-- sorted along the side's matching axis. Two opposite sides connect only when their
+-- signatures are identical, i.e. every door lines up in position AND size. Memoized
+-- because templates never change across runs.
+local sideSigCache = {}
+local function doorSlotsSig(template, side)
+	local byDir = sideSigCache[template]
+	if byDir and byDir[side] ~= nil then return byDir[side] end
+	if not byDir then byDir = {}; sideSigCache[template] = byDir end
+
+	local vertical = sideIsVertical(side)
+	local slots = {}
+	for _, de in ipairs(MapGenerator.doorsForSide(template, side)) do
+		local pos  = vertical and de.x or de.y
+		local size = vertical and de.width or de.height
+		slots[#slots + 1] = { pos = pos, size = size }
+	end
+	table.sort(slots, function(a, b)
+		if a.pos == b.pos then return a.size < b.size end
+		return a.pos < b.pos
+	end)
+	local parts = {}
+	for _, s in ipairs(slots) do parts[#parts + 1] = s.pos .. ":" .. s.size end
+
+	local sig = table.concat(parts, ",")
+	byDir[side] = sig
+	return sig
+end
+
+-- Two opposite sides connect only when their door signatures match exactly.
+local function sidesMatch(templA, dirA, templB)
+	return doorSlotsSig(templA, dirA) == doorSlotsSig(templB, OPPOSITE[dirA])
+end
+
 -- Create an empty node wrapping a template. doorCounts records how many doors each
--- side has; two sides connect only when their counts match (see generate).
+-- side has; two sides connect only when their door signatures match (see generate).
 local function makeNode(id, template)
 	local counts = doorCountsOf(template)
 	local free = {}
@@ -216,13 +257,11 @@ function MapGenerator.generate(progress, entryRole)
 		end
 		if not fromNode then break end  -- no free sides anywhere; stop early
 
-		local need = OPPOSITE[fromDir]
-		local needCount = fromNode.doorCounts[fromDir]
-		-- candidate must have the SAME number of doors on the matching side, so the
-		-- whole door set lines up (positions are aligned by authoring in LDtk).
+		-- candidate must match the from-side's door signature on its opposite side, so
+		-- every door lines up in count, position and size ("door to door").
 		local candidates = {}
 		for _, tmpl in ipairs(pool.normal) do
-			if doorCountsOf(tmpl)[need] == needCount then table.insert(candidates, tmpl) end
+			if sidesMatch(fromNode.poolRoom, fromDir, tmpl) then table.insert(candidates, tmpl) end
 		end
 		-- Prefer rooms not used yet this run, unless repeats are allowed or none are free.
 		if not allowRepeats then
@@ -259,16 +298,18 @@ function MapGenerator.generate(progress, entryRole)
 		end
 	end
 
-	-- 3) Loops: connect pairs of placed nodes with compatible free sides.
+	-- 3) Loops: connect EVERY pair of placed nodes with compatible free sides, so no
+	--    door is left dangling. Greedy and exhaustive: each free side links to the
+	--    first placed node whose opposite side is free and signature-compatible.
 	local placed = {}
 	for i = 1, #graph do placed[i] = graph[i] end
 	for _, a in ipairs(placed) do
 		for _, d in ipairs(DIRS) do
-			if a.freeSides[d] and math.random() < cfg.loopChance then
+			if a.freeSides[d] then
 				local opp = OPPOSITE[d]
 				for _, b in ipairs(placed) do
 					if b ~= a and b.freeSides[opp] and not a.edges[d]
-						and b.doorCounts[opp] == a.doorCounts[d] then
+						and sidesMatch(a.poolRoom, d, b.poolRoom) then
 						connect(a, b, d)
 						break
 					end
@@ -278,11 +319,12 @@ function MapGenerator.generate(progress, entryRole)
 	end
 
 	-- Post-pass guarantee: if the run still lacks a dark or hole room, swap a placed
-	-- normal node for one with the same door layout (keeps connectivity intact).
+	-- normal node for one with the same door layout (keeps connectivity intact). The
+	-- replacement must match every side's door signature, not just door counts.
 	local function sameDoorCounts(a, b)
-		local ca, cb = doorCountsOf(a), doorCountsOf(b)
-		for d, n in pairs(ca) do if cb[d] ~= n then return false end end
-		for d, n in pairs(cb) do if ca[d] ~= n then return false end end
+		for _, d in ipairs(DIRS) do
+			if doorSlotsSig(a, d) ~= doorSlotsSig(b, d) then return false end
+		end
 		return true
 	end
 	local swapped = {}

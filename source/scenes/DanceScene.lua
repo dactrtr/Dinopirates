@@ -501,8 +501,8 @@ function scene:checkDanceResults()
       
    elseif (condition == "lose") then
       condition = nil
-      
-      Noble.transition(TitleScene,0.3, Noble.Transition.MetroNexus) 
+      PlayerData.deathCause = "hp"
+      Noble.transition(DeadScene, 0.3, Noble.Transition.MetroNexus)
    end   
 end
 

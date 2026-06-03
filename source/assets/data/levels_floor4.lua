@@ -831,7 +831,7 @@ table.insert(levelsLDTK, {
     },
     play = "Enter",
     procGen = true,
-    roomRole = "Start",
+    roomRole = "Normal",
     hasForeground = true
   },
   entities = {
@@ -1013,7 +1013,7 @@ table.insert(levelsLDTK, {
     },
     play = "Cutscene",
     procGen = true,
-    roomRole = "Normal",
+    roomRole = "Start",
     hasForeground = true
   },
   entities = {
@@ -1076,11 +1076,15 @@ table.insert(levelsLDTK, {
         width = 24,
         height = 48,
         customFields = {
-          script = "reachComputer",
+          script = nil,
           usedTrigger = false,
           type = "Search",
           mapPercent = 0,
-          conditionalScripts = {}
+          conditionalScripts = {
+            "crew>=2:twoCM",
+            "crew>=1:oneCM",
+            "crew>=0:noCM"
+          }
         }
       }
     },

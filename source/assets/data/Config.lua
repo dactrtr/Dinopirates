@@ -72,7 +72,6 @@ Config.MapGen = {
     roomsBase         = 5,    -- minimum run size (rooms in the smallest run)
     crewPerExtraRoom  = 1,    -- recruit this many crew to grow the run by +1 room (lower = faster growth)
     roomsMax          = 18,   -- run size cap
-    loopChance        = 0.35, -- prob. of closing a loop between two compatible free door sides
     roomsPerCrewSpawn = 4,    -- spawn ~1 crew per this many rooms in a run (crew density)
     utilityChance     = 0.4,  -- prob. of populating a FeatureSlot with a microwave/minifier
     totalCrew         = 2,    -- TEMP: lowered from 12 to test the endgame; restore to 12

@@ -58,12 +58,18 @@ function Trigger:returnScript()
                 local path, op, valStr = conditionExpr:match("^([%w%.]+)%s*([<>!=]=?)%s*([%d%-%.]+)$")
                 
                 if path and op and valStr then
-                    -- Numerical/Comparison Logic
-                    local current = PlayerData
-                    for part in path:gmatch("[^%.]+") do
-                        if current then current = current[part] end
+                    -- Numerical/Comparison Logic. The alias "crew" maps to the total
+                    -- crew recruited (PlayerData.CrewMemberData.amountTaken) for story gating.
+                    local current
+                    if path == "crew" then
+                        current = (PlayerData.CrewMemberData and PlayerData.CrewMemberData.amountTaken) or 0
+                    else
+                        current = PlayerData
+                        for part in path:gmatch("[^%.]+") do
+                            if current then current = current[part] end
+                        end
                     end
-                    
+
                     local val = tonumber(valStr)
                     local currentVal = tonumber(current) or 0 -- Default to 0 if nil/not number
                     
