@@ -342,39 +342,19 @@ function drawVersionNumber(x, y, alignment)
 end 
 
 -- Finds and kills an enemy by its unique ID (LDtk version)
+-- Procedural runs: an enemy's id is its per-node key. Mark it cleared on the active
+-- node so it stays dead when the player revisits the room within the same run (the
+-- run graph is ephemeral, so this never leaks across runs or shared templates).
 function findAndKillEnemyById(enemyId)
-	local room = PlayerData.floor
-	if not levelsLDTK or not levelsLDTK[room] then
-		printDebug("⚠️ findAndKillEnemyById: invalid room:", room)
+	local node = RunState and RunState.currentNode()
+	if not node then
+		printDebug("⚠️ findAndKillEnemyById: no active node")
 		return
 	end
-	local entities = levelsLDTK[room].entities
-
-	if not entities then
-		printDebug("⚠️ No entities found in room:", room)
-		return
-	end
-
-	for entityType, entitiesList in pairs(entities) do
-		-- Buscar dentro de tipos de enemigos conocidos
-		if entityType == "Brocorat" or entityType == "Bosscolli" then
-			for _, enemy in ipairs(entitiesList) do
-				if enemy.iid == enemyId then
-					local cf = enemy.customFields or {}
-					if cf.dead == false or cf.dead == nil then
-						cf.dead = true
-						-- Actualizamos su posición a donde fue derrotado
-						if PlayerData.lastEnemyTouched then
-							enemy.x = PlayerData.lastEnemyTouched.x
-							enemy.y = PlayerData.lastEnemyTouched.y
-						end
-						printDebug("💀 Enemy killed:", enemyId, "in", entityType)
-					end
-					return
-				end
-			end
-		end
-	end
+	node.cleared.enemies = node.cleared.enemies or {}
+	local pos = PlayerData.lastEnemyTouched
+	node.cleared.enemies[enemyId] = { x = pos and pos.x, y = pos and pos.y }
+	printDebug("💀 Enemy cleared (node " .. tostring(node.id) .. "):", enemyId)
 end
 
 -- finds and destroys a prop

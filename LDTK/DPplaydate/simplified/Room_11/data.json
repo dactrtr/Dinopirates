@@ -25,8 +25,8 @@
 		}
 	],
 	"customFields": {
-		"shadow": false,
-		"light": 0,
+		"shadow": true,
+		"light": 0.2,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
@@ -37,11 +37,97 @@
 			"Top",
 			"Right"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
 		"Foreground.png"
 	],
-	"entities" : {}
+	"entities": {
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "282768a0-48b0-11f1-98a2-1d4cd08822d8",
+				"layer": "CM_and_enemies",
+				"x": 108,
+				"y": 36,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "29665140-48b0-11f1-98a2-790362c92a73",
+				"layer": "CM_and_enemies",
+				"x": 172,
+				"y": 132,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"Food": [
+			{
+				"id": "Food",
+				"iid": "2b2b32c0-48b0-11f1-98a2-b5ce0b3571f9",
+				"layer": "Items_and_Props",
+				"x": 292,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 16151930,
+				"customFields": {
+					"type": "food",
+					"grants": "hasitemname:bool",
+					"isItem": true
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "da4e0e90-48b0-11f1-98a2-fb3afdfe837c",
+				"layer": "Doors",
+				"x": 396,
+				"y": 72,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f772d780-48b0-11f1-98a2-759e83c74acb",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
 }

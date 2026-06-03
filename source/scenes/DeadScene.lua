@@ -73,9 +73,8 @@ function scene:init()
 		Noble.transition(TitleScene) 
 	end)
 	menu:addItem("Retry", function()
-		
-		Noble.transition(RoomTranslate(PlayerData.saveLevel))
-		--resetData()
+		RunState.startRun()
+		Noble.transition(MazeScene)
 	 end)
 	menu:select("Exit")
 	

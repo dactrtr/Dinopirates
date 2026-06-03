@@ -20,9 +20,9 @@ local function setRectValues(direction)
   return table.unpack(rectValues[direction])
 end
 
-function Door:init(direction, status, nextRoom, zIndex, keyNumber, x, y, width, height)
-  
-  self.nextRoom = RoomTranslate(nextRoom)
+function Door:init(direction, status, targetNodeId, zIndex, keyNumber, x, y, width, height)
+
+  self.targetNodeId = targetNodeId
   self.direction = direction
   self.status = status
   self.keyNumber = keyNumber  -- Store the required key number
@@ -60,17 +60,23 @@ function Door:init(direction, status, nextRoom, zIndex, keyNumber, x, y, width, 
   -- Use provided LDTK coordinates if available, otherwise fallback to hardcoded positions
   local finalX = x or position.x
   local finalY = y or position.y
-  
+
+  self.posX = finalX
+  self.posY = finalY
+
   self:add(finalX, finalY)
 end
 
 function Door:goTo()
-  Noble.transition(self.nextRoom, 1.5, Noble.Transition.Default)
-
-  -- Noble.transition(self.nextRoom, 1.5, Noble.Transition.Imagetable,
-  --   {imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/testTransition')
-  -- })
-    
+  -- Remember which door we used (cross-axis position) so the destination room can
+  -- spawn the player at the matching door. Top/down doors vary in x; left/right in y.
+  if self.direction == "top" or self.direction == "down" then
+    PlayerData.lastDoorCross = self.posX
+  else
+    PlayerData.lastDoorCross = self.posY
+  end
+  RunState.goTo(self.targetNodeId)
+  Noble.transition(MazeScene, 1.5, Noble.Transition.Default)
 end
 
 function Door:prevRoom(direction, playerX, playerY)
@@ -345,4 +351,46 @@ function CreateDoorsFromLDTK(currentRoom)
 	
 	printDebug("🚪 ===== END DOOR CREATION =====")
 	printDebug("")
+end
+
+-- Create door sprites from a run-graph node's edges. Each edge (dir -> destNodeId)
+-- becomes an open door at the cardinal screen position; crossing it transitions to
+-- that node. Keys are removed in procedural mode, so all doors are open.
+function CreateDoorsFromNode(node)
+	if not node then return end
+	local template = node.poolRoom
+	local positions = Config.Doors.positions
+	local t, s = Config.Doors.thickness, Config.Doors.span
+
+	-- Group the room's authored LDtk door entities by cardinal side. A side may have
+	-- several doors (a multi-door interface); all of them lead to the same neighbour.
+	local nameToDir = { top = "top", down = "down", left = "left", right = "right" }
+	local doorsByDir = { top = {}, down = {}, left = {}, right = {} }
+	local doorEntities = template.entities and template.entities.Doors
+	if doorEntities then
+		for _, de in ipairs(doorEntities) do
+			local connName = de.customFields and de.customFields.DoorsConnection
+			local dir = connName and nameToDir[connName:lower()]
+			if dir then table.insert(doorsByDir[dir], de) end
+		end
+	end
+
+	-- For each connected side, create a functional door for EVERY authored door on
+	-- that side (all pointing to the same neighbour node). Fall back to a single
+	-- generic thin door only if the template has no door entity for that side.
+	for dir, destNodeId in pairs(node.edges) do
+		local list = doorsByDir[dir]
+		if list and #list > 0 then
+			for _, de in ipairs(list) do
+				Door(dir, "open", destNodeId, ZIndex.props, nil, de.x, de.y, de.width, de.height)
+			end
+		else
+			local pos = positions[dir]
+			if pos then
+				local w, h
+				if dir == "left" or dir == "right" then w, h = t, s else w, h = s, t end
+				Door(dir, "open", destNodeId, ZIndex.props, nil, pos.x, pos.y, w, h)
+			end
+		end
+	end
 end

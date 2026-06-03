@@ -45,11 +45,46 @@
 			"Down",
 			"Top"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
 		"Foreground.png"
 	],
-	"entities" : {}
+	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "f6717570-48b0-11f1-98a2-df962a99b954",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "c50b2a70-48b0-11f1-98a2-7d36f693b69b",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
 }

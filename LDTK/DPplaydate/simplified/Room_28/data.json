@@ -46,9 +46,12 @@
 		"roomNumber": 28,
 		"tile": 28,
 		"DoorsConnection": [
-			"Top"
+			"Top",
+			"Right"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
@@ -60,10 +63,10 @@
 				"id": "Triggers",
 				"iid": "6d20e240-21a0-11f1-9039-c1a6c9bc4d54",
 				"layer": "Triggers",
-				"x": 364,
-				"y": 116,
+				"x": 356,
+				"y": 180,
 				"width": 40,
-				"height": 72,
+				"height": 16,
 				"color": 16711748,
 				"customFields": {
 					"script": "whereDoor",
@@ -119,6 +122,21 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "68641230-48b0-11f1-98a2-5d0e3e234060",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
 					"KeyNumber": null
 				}
 			}

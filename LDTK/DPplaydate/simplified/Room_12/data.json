@@ -46,7 +46,9 @@
 			"Right",
 			"Lower"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
@@ -73,23 +75,6 @@
 			},
 			{
 				"id": "Triggers",
-				"iid": "ff2dc230-21a0-11f1-9039-03e34eda3ccc",
-				"layer": "Triggers",
-				"x": 56,
-				"y": 100,
-				"width": 80,
-				"height": 8,
-				"color": 16711748,
-				"customFields": {
-					"script": "abigJump",
-					"usedTrigger": false,
-					"type": "Search",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			},
-			{
-				"id": "Triggers",
 				"iid": "e5975f10-21a0-11f1-9039-77e3f5c70270",
 				"layer": "Triggers",
 				"x": 340,
@@ -108,19 +93,20 @@
 				}
 			}
 		],
-		"Plunger": [
+		"CrewMember": [
 			{
-				"id": "Plunger",
-				"iid": "f84981f0-fa90-11f0-8164-312164d448cc",
-				"layer": "Items_and_Props",
-				"x": 84,
-				"y": 180,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
+				"id": "CrewMember",
+				"iid": "4aab4ea0-48b0-11f1-98a2-8fbefa5863ad",
+				"layer": "CM_and_enemies",
+				"x": 76,
+				"y": 164,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
 				"customFields": {
-					"type": "plunger",
-					"isItem": true
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
 				}
 			}
 		],
@@ -137,7 +123,8 @@
 				"customFields": {
 					"type": "minifier",
 					"nocollider": false,
-					"destroyed": false
+					"destroyed": false,
+					"forceSpawn": false
 				}
 			}
 		],
@@ -154,6 +141,21 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e1fe70d0-48b0-11f1-98a2-f11c7095cde6",
+				"layer": "Doors",
+				"x": 4,
+				"y": 72,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
 					"KeyNumber": null
 				}
 			}

@@ -58,9 +58,12 @@
 		"roomNumber": 23,
 		"tile": 23,
 		"DoorsConnection": [
+			"Right",
 			"Upper"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
@@ -196,9 +199,9 @@
 				"id": "Doors",
 				"iid": "c9a6f920-48b0-11f1-b354-c9bfb305a719",
 				"layer": "Doors",
-				"x": 392,
+				"x": 396,
 				"y": 136,
-				"width": 16,
+				"width": 8,
 				"height": 48,
 				"color": 7552569,
 				"customFields": {

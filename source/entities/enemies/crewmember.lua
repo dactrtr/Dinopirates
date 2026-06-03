@@ -305,66 +305,39 @@ function CrewMember:isPlayerOutOfVision()
 end
 
 function CrewMember:returnScript()
-    local roomData = levelsLDTK[self.room]
-    local fallbackScript = self.crewId and (self.crewId .. "_tiny") or "default_tiny"
-    
-    if not roomData or not roomData.entities or not roomData.entities.CrewMember then
-        printDebug("⚠️ No CrewMember data found for room:", self.room)
-        return fallbackScript
+    -- Marker is generic in procgen: the dialog is keyed by the assigned crewId.
+    -- Fall back to the first crew line if this crew's dialog isn't authored yet.
+    local name = self.crewId and (self.crewId .. "_tiny") or "CM001_tiny"
+    local exists = false
+    for _, s in ipairs(script) do
+        if s.name == name then exists = true break end
     end
-    
-    local crewData
-    for _, c in ipairs(roomData.entities.CrewMember) do
-        if c.iid == self.iid then
-            crewData = c
-            break
-        end
-    end
-
-    if not crewData then 
-        return fallbackScript
-    end
-
-    local cf = crewData.customFields or {}
-    
-    -- Prioritize tinyScript from LDtk, check script as fallback, then our constructed fallback
-    local scriptToReturn = cf.tinyScript or cf.script or fallbackScript
-    printDebug("🔍 CrewMember returnScript:", scriptToReturn)
-    
-    return scriptToReturn
+    if not exists then name = "CM001_tiny" end
+    return name
 end
 
 function CrewMember:taken()
-	local roomData = levelsLDTK[self.room]
-	if not roomData or not roomData.entities or not roomData.entities.CrewMember then
-		printDebug("⚠️ No CrewMember data found for room:", self.room)
-		return
-	end
+    if self.crewId then
+        PlayerData.CrewMemberData.idNumbers[self.crewId] = true
+    end
+    PlayerData.CrewMemberData.amountTaken += 1
 
-	for _, crewData in ipairs(roomData.entities.CrewMember) do
-		local cf = crewData.customFields or {}
-		local currentIID = crewData.iid
-	
-		-- Search for the corresponding CrewMember by its IID (unique LDtk identifier)
-		if currentIID == self.iid then
-			cf.isTaken = true
-			PlayerData.CrewMemberData.amountTaken += 1
-			-- Mark the specific crew member as captured in PlayerData using stored crewId
-			if self.crewId then
-				PlayerData.CrewMemberData.idNumbers[self.crewId] = true
-				printDebug("🟢 CrewMember marked as taken:", currentIID, "ID:", self.crewId)
-			else
-				printDebug("🟢 CrewMember marked as taken:", currentIID, "(no crewId)")
-			end
-			-- Restore player's projectile
-			if self.player then
-				self.player.hasProjectile = true
-			end
-			break
-		end
-	end
+    -- Mark this node so the crew doesn't respawn when revisiting it within the run.
+    local node = RunState and RunState.currentNode()
+    if node then node.cleared.crewTaken = true end
 
-	self:remove()
+    -- Restore player's projectile
+    if self.player then
+        self.player.hasProjectile = true
+    end
+
+    -- Win condition: full roster recruited → open the final room this run.
+    if PlayerData.CrewMemberData.amountTaken >= Config.MapGen.totalCrew then
+        RunState.revealFinalRoom()
+    end
+
+    printDebug("🟢 CrewMember recruited:", self.crewId, "total:", PlayerData.CrewMemberData.amountTaken)
+    self:remove()
 end
 
 function CrewMember:remove()

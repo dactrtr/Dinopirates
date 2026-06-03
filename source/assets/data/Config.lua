@@ -67,6 +67,20 @@ Config.Microwave = {
     crankPerFood    = 1,   -- crank ticks (getCrankTicks(4)) accumulated to cook 1 food (~90 deg)
 }
 
+-- Procedural map generation (roguelike run graph)
+Config.MapGen = {
+    roomsBase         = 5,    -- minimum run size (rooms in the smallest run)
+    crewPerExtraRoom  = 1,    -- recruit this many crew to grow the run by +1 room (lower = faster growth)
+    roomsMax          = 18,   -- run size cap
+    loopChance        = 0.35, -- prob. of closing a loop between two compatible free door sides
+    roomsPerCrewSpawn = 4,    -- spawn ~1 crew per this many rooms in a run (crew density)
+    utilityChance     = 0.4,  -- prob. of populating a FeatureSlot with a microwave/minifier
+    totalCrew         = 2,    -- TEMP: lowered from 12 to test the endgame; restore to 12
+    enemyChance       = 0.6,  -- prob. of populating an enemy marker
+    itemChance        = 0.5,  -- prob. of populating an item marker
+    darkBiasPerCrew   = 0.02, -- added probability that a room renders dark, per crew recruited (capped at 1)
+}
+
 -- Dark Reveal skill (hold B + crank in darkness)
 Config.DarkReveal = {
     minBattery            = 80,    -- minimum battery % required to start the crank charge
@@ -145,6 +159,9 @@ Config.Projectile = {
 
 -- Doors (screen positions and spawn offsets)
 Config.Doors = {
+    thickness = 8,   -- thin axis of a door's collide rect (px) — keeps doors from grabbing the player early
+    span      = 48,  -- long axis of a door's collide rect (px) — width of the doorway opening
+    spawnInset = 32, -- px the player spawns inward from the door it entered through (clears the door rect)
     positions = {
         right = {x=393, y=122},
         left  = {x=4,   y=122},

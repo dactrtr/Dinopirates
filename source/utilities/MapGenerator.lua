@@ -1,0 +1,410 @@
+-- MapGenerator: builds a per-run graph of room nodes from the pool of LDtk
+-- templates. Single pass, no retries: a guaranteed solution path is built first,
+-- then optional loop edges are added. Nodes reference templates by value (never
+-- deep-copied); per-run data lives in node.content / node.cleared.
+MapGenerator = {}
+
+-- Cardinal door directions and their opposites (a "right" door must meet a "left").
+local OPPOSITE = { right = "left", left = "right", top = "down", down = "top" }
+local DIRS = { "right", "left", "top", "down" }
+
+-- Normalize a DoorsConnection entry ("Top"/"Down"/"Left"/"Right") to a lowercase dir.
+local function normDir(name)
+	if type(name) ~= "string" then return nil end
+	local d = name:lower()
+	if OPPOSITE[d] then return d end
+	return nil
+end
+
+-- Returns the set of cardinal door sides a template actually has, read from its
+-- authored LDtk door entities (not the room-level DoorsConnection array). This makes
+-- a side connectable only when a real, reachable door exists there — "door to door".
+local function doorSidesOf(template)
+	local sides = {}
+	local entities = template.entities or {}
+	local doors = entities.Doors
+	if doors then
+		for _, de in ipairs(doors) do
+			local connName = de.customFields and de.customFields.DoorsConnection
+			local d = normDir(connName)
+			if d then sides[d] = true end
+		end
+	end
+	return sides
+end
+
+-- Returns how many doors each cardinal side has, as { [dir] = count }, from the
+-- authored LDtk door entities. Two sides connect only when their counts match.
+local function doorCountsOf(template)
+	local counts = {}
+	local entities = template.entities or {}
+	local doors = entities.Doors
+	if doors then
+		for _, de in ipairs(doors) do
+			local connName = de.customFields and de.customFields.DoorsConnection
+			local d = normDir(connName)
+			if d then counts[d] = (counts[d] or 0) + 1 end
+		end
+	end
+	return counts
+end
+
+-- Collect generic spawn markers of a given LDtk entity key from a template.
+-- Returns a list of { x=, y=, customFields= } (positions only; identity is assigned
+-- by the generator, not authored).
+local function markersOf(template, entityKey)
+	local out = {}
+	local entities = template.entities or {}
+	local list = entities[entityKey]
+	if list then
+		for _, e in ipairs(list) do
+			table.insert(out, { x = e.x, y = e.y, customFields = e.customFields or {} })
+		end
+	end
+	return out
+end
+
+-- Expose for content placement / scene spawning.
+MapGenerator.markersOf = markersOf
+
+-- Whether a template's room renders dark (shadow FX).
+local function isDarkTemplate(template)
+	return (template.customFields and template.customFields.shadow) == true
+end
+
+-- Whether a template's tilemap contains any hole tile (IntGrid hole value).
+local function hasHolesTemplate(template)
+	local tileIndex = template.customFields and template.customFields.tile
+	local map = tileIndex and tileMapData and tileMapData[tileIndex]
+	if not map then return false end
+	local holeValue = Config.Tiles.IntGrid.hole
+	for y = 1, #map do
+		local row = map[y]
+		for x = 1, #row do
+			if row[x] == holeValue then return true end
+		end
+	end
+	return false
+end
+
+-- Build the pool from levelsLDTK, grouped by role. Only procGen rooms qualify.
+-- Returns { start = {...}, normal = {...}, final = {...} }.
+function MapGenerator.buildPool()
+	local pool = { start = {}, normal = {}, final = {}, startdown = {}, startup = {} }
+	for _, tmpl in ipairs(levelsLDTK or {}) do
+		local cf = tmpl.customFields or {}
+		if cf.procGen == true then
+			local role = (cf.roomRole or "normal"):lower()  -- LDtk enum is capitalized
+			if pool[role] then
+				table.insert(pool[role], tmpl)
+			end
+		end
+	end
+	return pool
+end
+
+-- Opposite of a cardinal direction (exposed for scene spawn logic).
+function MapGenerator.opposite(dir)
+	return OPPOSITE[dir]
+end
+
+-- Find a template's authored door entity for a given cardinal side, or nil.
+function MapGenerator.doorEntityForSide(template, side)
+	local entities = template.entities or {}
+	local doors = entities.Doors
+	if not doors then return nil end
+	for _, de in ipairs(doors) do
+		local connName = de.customFields and de.customFields.DoorsConnection
+		if connName and connName:lower() == side then return de end
+	end
+	return nil
+end
+
+-- All authored door entities on a given cardinal side (a side may have several).
+function MapGenerator.doorsForSide(template, side)
+	local out = {}
+	local entities = template.entities or {}
+	local doors = entities.Doors
+	if doors then
+		for _, de in ipairs(doors) do
+			local connName = de.customFields and de.customFields.DoorsConnection
+			if connName and connName:lower() == side then table.insert(out, de) end
+		end
+	end
+	return out
+end
+
+-- Create an empty node wrapping a template. doorCounts records how many doors each
+-- side has; two sides connect only when their counts match (see generate).
+local function makeNode(id, template)
+	local counts = doorCountsOf(template)
+	local free = {}
+	for dir in pairs(counts) do free[dir] = true end
+	return {
+		id         = id,
+		poolRoom   = template,   -- reference, never copied
+		edges      = {},         -- dir -> destination node id (whole side -> one room)
+		doorCounts = counts,     -- dir -> number of doors on that side
+		freeSides  = free,       -- dir -> true while still unconnected
+		content    = { crewId = nil, enemies = {}, items = {}, utility = nil, isFinal = false },
+		cleared    = {},         -- runtime deltas on revisit
+	}
+end
+
+-- Pick a random element from a list (returns nil if empty).
+local function pickRandom(list)
+	if #list == 0 then return nil end
+	return list[math.random(1, #list)]
+end
+
+-- Connect a.dir <-> b.opposite(dir), consuming a free side on both.
+local function connect(a, b, dir)
+	local opp = OPPOSITE[dir]
+	a.edges[dir] = b.id
+	b.edges[opp] = a.id
+	a.freeSides[dir] = nil
+	b.freeSides[opp] = nil
+end
+
+-- Build the run graph for a given progress value.
+function MapGenerator.generate(progress, entryRole)
+	progress = progress or 0
+	local cfg = Config.MapGen
+	local N = math.min(cfg.roomsMax,
+	                   cfg.roomsBase + math.floor(progress / cfg.crewPerExtraRoom))
+
+	-- Rooms don't repeat while the player is sane; once they've gone mad at least once
+	-- (sanityCounter > 0) repeats are allowed (also helps when the pool is small).
+	local allowRepeats = ((PlayerData.sanityCounter or 0) > 0)
+
+	local pool = MapGenerator.buildPool()
+	local graph = {}
+	local used = {}  -- templates already placed (avoid repeats while sane)
+
+	-- 1) Start node. entryRole picks the entry room kind ("startdown" after a hole,
+	--    "startup" after a tube); defaults to the normal "start".
+	local startKind = (entryRole and entryRole:lower()) or "start"
+	local startTemplate = pickRandom(pool[startKind]) or pickRandom(pool.start) or pickRandom(pool.normal)
+	assert(startTemplate, "MapGenerator: pool has no start/normal rooms (need procGen rooms)")
+	local nextId = 1
+	local startNode = makeNode(nextId, startTemplate)
+	graph[nextId] = startNode
+	graph.startId = nextId
+	used[startTemplate] = true
+	nextId += 1
+
+	-- Per-run guarantee: include at least one dark room and one room with holes.
+	local isDark, hasHole = {}, {}
+	for _, t in ipairs(pool.normal) do
+		isDark[t]  = isDarkTemplate(t)
+		hasHole[t] = hasHolesTemplate(t)
+	end
+	local placedDark = isDarkTemplate(startTemplate)
+	local placedHole = hasHolesTemplate(startTemplate)
+
+	-- 2) Guaranteed solution path: extend from a node that still has a free side,
+	--    attaching a normal room whose opposite side is free.
+	local frontier = { startNode }
+	while #graph < N do
+		-- find a placed node with at least one free cardinal side
+		local fromNode, fromDir
+		for _, node in ipairs(frontier) do
+			for _, d in ipairs(DIRS) do
+				if node.freeSides[d] then fromNode = node; fromDir = d; break end
+			end
+			if fromNode then break end
+		end
+		if not fromNode then break end  -- no free sides anywhere; stop early
+
+		local need = OPPOSITE[fromDir]
+		local needCount = fromNode.doorCounts[fromDir]
+		-- candidate must have the SAME number of doors on the matching side, so the
+		-- whole door set lines up (positions are aligned by authoring in LDtk).
+		local candidates = {}
+		for _, tmpl in ipairs(pool.normal) do
+			if doorCountsOf(tmpl)[need] == needCount then table.insert(candidates, tmpl) end
+		end
+		-- Prefer rooms not used yet this run, unless repeats are allowed or none are free.
+		if not allowRepeats then
+			local fresh = {}
+			for _, tmpl in ipairs(candidates) do
+				if not used[tmpl] then table.insert(fresh, tmpl) end
+			end
+			if #fresh > 0 then candidates = fresh end
+		end
+		-- Bias toward a still-missing required feature (a dark room or a hole room).
+		local needFeature = (not placedDark and "dark") or (not placedHole and "hole") or nil
+		if needFeature then
+			local biased = {}
+			for _, tmpl in ipairs(candidates) do
+				if (needFeature == "dark" and isDark[tmpl]) or (needFeature == "hole" and hasHole[tmpl]) then
+					table.insert(biased, tmpl)
+				end
+			end
+			if #biased > 0 then candidates = biased end
+		end
+		local tmpl = pickRandom(candidates)
+		if not tmpl then
+			-- no template can satisfy this side; burn it so we don't loop forever
+			fromNode.freeSides[fromDir] = nil
+		else
+			local node = makeNode(nextId, tmpl)
+			graph[nextId] = node
+			connect(fromNode, node, fromDir)
+			table.insert(frontier, node)
+			used[tmpl] = true
+			if isDark[tmpl] then placedDark = true end
+			if hasHole[tmpl] then placedHole = true end
+			nextId += 1
+		end
+	end
+
+	-- 3) Loops: connect pairs of placed nodes with compatible free sides.
+	local placed = {}
+	for i = 1, #graph do placed[i] = graph[i] end
+	for _, a in ipairs(placed) do
+		for _, d in ipairs(DIRS) do
+			if a.freeSides[d] and math.random() < cfg.loopChance then
+				local opp = OPPOSITE[d]
+				for _, b in ipairs(placed) do
+					if b ~= a and b.freeSides[opp] and not a.edges[d]
+						and b.doorCounts[opp] == a.doorCounts[d] then
+						connect(a, b, d)
+						break
+					end
+				end
+			end
+		end
+	end
+
+	-- Post-pass guarantee: if the run still lacks a dark or hole room, swap a placed
+	-- normal node for one with the same door layout (keeps connectivity intact).
+	local function sameDoorCounts(a, b)
+		local ca, cb = doorCountsOf(a), doorCountsOf(b)
+		for d, n in pairs(ca) do if cb[d] ~= n then return false end end
+		for d, n in pairs(cb) do if ca[d] ~= n then return false end end
+		return true
+	end
+	local swapped = {}
+	local function ensureFeature(present, wanted, other)
+		if present then return end
+		for id = 1, #graph do
+			local node = graph[id]
+			if id ~= graph.startId and not swapped[id] and not other(node.poolRoom) then
+				for _, t in ipairs(pool.normal) do
+					if wanted(t) and sameDoorCounts(node.poolRoom, t) then
+						node.poolRoom = t
+						swapped[id] = true
+						return
+					end
+				end
+			end
+		end
+	end
+	ensureFeature(placedDark, function(t) return isDark[t] end, function(t) return hasHole[t] end)
+	ensureFeature(placedHole, function(t) return hasHole[t] end, function(t) return isDark[t] end)
+
+	-- 4) Per-node content: roll which enemies and utilities are active this run,
+	--    reusing the rooms' existing authored entities as spawn markers.
+	for id = 1, #graph do
+		local node = graph[id]
+		local ents = node.poolRoom.entities or {}
+		for _, kind in ipairs({ "Brocorat", "Bosscolli" }) do
+			for _, e in ipairs(ents[kind] or {}) do
+				local force = e.customFields and e.customFields.forceSpawn
+				if force or math.random() < cfg.enemyChance then
+					table.insert(node.content.enemies, {
+						x = e.x, y = e.y, kind = kind,
+						speed = e.customFields and e.customFields.speed,
+						key = id .. ":" .. (e.iid or ("e" .. #node.content.enemies)),
+					})
+				end
+			end
+		end
+		node.content.utilities = {}
+		-- A room with a "small door" (any door with a 16px side) needs the player tiny to
+		-- pass, so force its minifier(s) to appear regardless of the utility roll.
+		local hasSmallDoor = false
+		for _, de in ipairs(ents.Doors or {}) do
+			if de.width == 16 or de.height == 16 then hasSmallDoor = true; break end
+		end
+		for _, kind in ipairs({ "Microwave", "Minifier" }) do
+			for _, e in ipairs(ents[kind] or {}) do
+				local force = (kind == "Minifier" and hasSmallDoor) or (e.customFields and e.customFields.forceSpawn)
+				if e.iid and (force or math.random() < cfg.utilityChance) then
+					node.content.utilities[e.iid] = true
+				end
+			end
+		end
+	end
+
+	-- Crew: assign uncollected roster members (CMxxx) to eligible nodes. LDtk CrewMember
+	-- entities are generic spawn markers; the generator picks which identity appears.
+	local takenIds = (PlayerData.CrewMemberData and PlayerData.CrewMemberData.idNumbers) or {}
+	local uncollected = {}
+	for i = 1, cfg.totalCrew do
+		local crewId = string.format("CM%03d", i)
+		if not takenIds[crewId] then table.insert(uncollected, crewId) end
+	end
+	local eligible = {}
+	for id = 1, #graph do
+		local node = graph[id]
+		if id ~= graph.startId and #markersOf(node.poolRoom, "CrewMember") > 0 then
+			table.insert(eligible, node)
+		end
+	end
+	for i = #eligible, 2, -1 do
+		local j = math.random(1, i)
+		eligible[i], eligible[j] = eligible[j], eligible[i]
+	end
+	local nCrew = math.min(math.ceil(#graph / cfg.roomsPerCrewSpawn), #uncollected, #eligible)
+	for i = 1, nCrew do
+		local node = eligible[i]
+		local crewId = table.remove(uncollected, math.random(1, #uncollected))
+		local markers = markersOf(node.poolRoom, "CrewMember")
+		local mk = markers[math.random(1, #markers)]
+		node.content.crewId = crewId
+		node.content.crewSpawn = { x = mk.x, y = mk.y }
+	end
+
+	graph.finalReserved = nil  -- set when the final room is revealed (RunState.revealFinalRoom)
+	return graph
+end
+
+-- Debug invariant check: generates a graph at a given progress and asserts that
+-- every node is reachable from the start and every edge is bidirectional.
+-- Prints a summary via printDebug. Returns true on success.
+function MapGenerator.selfCheck(progress)
+	local graph = MapGenerator.generate(progress or 0)
+
+	-- bidirectional edge check
+	for id = 1, #graph do
+		local node = graph[id]
+		for dir, destId in pairs(node.edges) do
+			local opp = ({ right="left", left="right", top="down", down="top" })[dir]
+			local dest = graph[destId]
+			assert(dest, "edge to missing node " .. tostring(destId))
+			assert(dest.edges[opp] == id,
+			       "non-bidirectional edge " .. id .. "->" .. destId .. " dir " .. dir)
+		end
+	end
+
+	-- reachability (BFS from start)
+	local seen = { [graph.startId] = true }
+	local queue = { graph.startId }
+	while #queue > 0 do
+		local id = table.remove(queue, 1)
+		for _, destId in pairs(graph[id].edges) do
+			if not seen[destId] then seen[destId] = true; table.insert(queue, destId) end
+		end
+	end
+	local reached = 0
+	for _ in pairs(seen) do reached += 1 end
+	assert(reached == #graph,
+	       "unreachable nodes: reached " .. reached .. " of " .. #graph)
+
+	printDebug("✅ MapGenerator.selfCheck OK — nodes:" .. #graph .. " progress:" .. (progress or 0))
+	return true
+end
+
+return MapGenerator

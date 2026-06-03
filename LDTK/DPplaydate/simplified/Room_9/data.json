@@ -59,7 +59,9 @@
 			"Left",
 			"Lower"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
@@ -78,7 +80,8 @@
 				"color": 14984818,
 				"customFields": {
 					"isTaken": false,
-					"crewID": "CM001"
+					"crewID": "CM001",
+					"forceSpawn": false
 				}
 			}
 		],
@@ -94,7 +97,8 @@
 				"color": 14120515,
 				"customFields": {
 					"speed": 0.5,
-					"dead": false
+					"dead": false,
+					"forceSpawn": false
 				}
 			}
 		],
@@ -111,7 +115,8 @@
 				"customFields": {
 					"type": "minifier",
 					"nocollider": false,
-					"destroyed": false
+					"destroyed": false,
+					"forceSpawn": true
 				}
 			}
 		],
@@ -133,15 +138,16 @@
 						"true:catWhat"
 					],
 					"sourceFeed": 0,
-					"hasGranted": false
+					"hasGranted": false,
+					"forceSpawn": false
 				}
 			},
 			{
 				"id": "NPC",
 				"iid": "f9918570-48b0-11f1-b3b6-e7169d94681e",
 				"layer": "Items_and_Props",
-				"x": 364,
-				"y": 180,
+				"x": 292,
+				"y": 36,
 				"width": 32,
 				"height": 32,
 				"color": 16217634,
@@ -151,7 +157,8 @@
 						"true:catWhat"
 					],
 					"sourceFeed": 0,
-					"hasGranted": false
+					"hasGranted": false,
+					"forceSpawn": false
 				}
 			}
 		],
@@ -168,7 +175,8 @@
 				"customFields": {
 					"type": "microwave",
 					"nocollider": false,
-					"destroyed": false
+					"destroyed": false,
+					"forceSpawn": false
 				}
 			}
 		],
@@ -178,21 +186,6 @@
 				"iid": "01ab7460-48b0-11f1-b3b6-af7062196e83",
 				"layer": "Items_and_Props",
 				"x": 292,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 16151930,
-				"customFields": {
-					"type": "food",
-					"grants": "hasitemname:bool",
-					"isItem": true
-				}
-			},
-			{
-				"id": "Food",
-				"iid": "029f7150-48b0-11f1-b3b6-d79f21369ebc",
-				"layer": "Items_and_Props",
-				"x": 324,
 				"y": 204,
 				"width": 32,
 				"height": 32,
@@ -263,6 +256,21 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "d524fbd0-48b0-11f1-98a2-bdd7901b9007",
+				"layer": "Doors",
+				"x": 336,
+				"y": 4,
+				"width": 32,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
 					"KeyNumber": null
 				}
 			}

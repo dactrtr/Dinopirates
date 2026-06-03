@@ -33,8 +33,8 @@
 		}
 	],
 	"customFields": {
-		"shadow": false,
-		"light": 0,
+		"shadow": true,
+		"light": 0.2,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
@@ -43,15 +43,103 @@
 		"tile": 14,
 		"DoorsConnection": [
 			"Top",
-			"Right"
+			"Right",
+			"Left"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
 		"Foreground.png"
 	],
 	"entities": {
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "457e3be0-48b0-11f1-98a2-892d415ae591",
+				"layer": "CM_and_enemies",
+				"x": 356,
+				"y": 108,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
+					"forceSpawn": false
+				}
+			},
+			{
+				"id": "Brocorat",
+				"iid": "45c30d10-48b0-11f1-98a2-1f8cc54b7188",
+				"layer": "CM_and_enemies",
+				"x": 164,
+				"y": 164,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"Microwave": [
+			{
+				"id": "Microwave",
+				"iid": "9b3b20b0-48b0-11f1-98a2-21bdc9e81275",
+				"layer": "Items_and_Props",
+				"x": 44,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 16705377,
+				"customFields": {
+					"type": "microwave",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "9c841b70-48b0-11f1-98a2-8f86e11e989b",
+				"layer": "Items_and_Props",
+				"x": 324,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"TubeExit": [
+			{
+				"id": "TubeExit",
+				"iid": "4d9917c0-48b0-11f1-98a2-63106ac6403c",
+				"layer": "Items_and_Props",
+				"x": 364,
+				"y": 28,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "TubeExit",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",
@@ -80,6 +168,21 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "287e6aa0-48b0-11f1-98a2-3b888e751c9b",
+				"layer": "Doors",
+				"x": 394,
+				"y": 176,
+				"width": 8,
+				"height": 32,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
 					"KeyNumber": null
 				}
 			}

@@ -46,13 +46,69 @@
 		"roomNumber": 29,
 		"tile": 29,
 		"DoorsConnection": [
-			"Top"
+			"Top",
+			"Left",
+			"Upper"
 		],
-		"play": null
+		"play": null,
+		"procGen": false,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
 		"Foreground.png"
 	],
-	"entities" : {}
+	"entities": {
+		"PneumaticTube": [
+			{
+				"id": "PneumaticTube",
+				"iid": "54f05d80-48b0-11f1-98a2-9144d3325134",
+				"layer": "Items_and_Props",
+				"x": 356,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "pneumaticTube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Tube": [
+			{
+				"id": "Tube",
+				"iid": "56578ea0-48b0-11f1-98a2-eba865553314",
+				"layer": "Items_and_Props",
+				"x": 356,
+				"y": 12,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "70db46e0-48b0-11f1-98a2-dbe717498544",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
 }

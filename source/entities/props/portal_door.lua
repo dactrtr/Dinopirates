@@ -68,7 +68,9 @@ function PortalDoor:setSpawn()
 end
 
 function PortalDoor:goTo()
-    Noble.transition(RoomTranslate(self.destRoomId), 1.5, Noble.Transition.Default)
+    -- Portal doors are disabled in procedural mode (no fixed destinations). TODO: route via nodes.
+    local dest = RoomTranslate(self.destRoomId)
+    if dest then Noble.transition(dest, 1.5, Noble.Transition.Default) end
 end
 
 function PortalDoor:collisionResponse()

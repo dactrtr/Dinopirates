@@ -487,13 +487,15 @@ function scene:checkDanceResults()
       -- captures player position and goes back to the original room
       PlayerData.playerSpawn.x = PlayerData.playerExit.x
       PlayerData.playerSpawn.y = PlayerData.playerExit.y
+      PlayerData.returningInPlace = true  -- resume at the fight spot, not at a door
       
       -- Sets the power level of the enemies
       PlayerData.amountDances += 1
       PlayerData.calories = math.min((PlayerData.calories or 0) + 60, Config.Dance.caloriesMax)
       
       -- transition to the original room
-      self.returnRoom = RoomTranslate(PlayerData.saveLevel)
+      self.returnRoom = MazeScene
+      RunState.goTo(RunState.currentNodeId)  -- re-enter the room we left for the fight
       
       Noble.transition(self.returnRoom, 0.3, Noble.Transition.Default)  
       

@@ -253,7 +253,8 @@ function scene:enter()
 			action = function()
 				SaveSystem.reset()
 				PlayerData.fromTitle = true
-				Noble.transition(Floor407, 1, Noble.Transition.Spotlight, {
+				RunState.startRun()
+				Noble.transition(MazeScene, 1, Noble.Transition.Spotlight, {
 					x = 200, y = 120,
 					xExit = PlayerData.playerSpawn.x,
 					yExit = PlayerData.playerSpawn.y,

@@ -58,7 +58,9 @@
 			"Down",
 			"Right"
 		],
-		"play": "Cutscene"
+		"play": "Cutscene",
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
@@ -159,38 +161,6 @@
 				}
 			}
 		],
-		"Box": [
-			{
-				"id": "Box",
-				"iid": "5aecde10-21a0-11f1-8318-4d2837a3ba17",
-				"layer": "Items_and_Props",
-				"x": 276,
-				"y": 188,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "box",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Box",
-				"iid": "5bf59b80-21a0-11f1-8318-8b3a92c6c2ea",
-				"layer": "Items_and_Props",
-				"x": 276,
-				"y": 212,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "box",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
 		"Notes": [
 			{
 				"id": "Notes",
@@ -221,6 +191,42 @@
 				"customFields": {
 					"type": "radio",
 					"isItem": true
+				}
+			}
+		],
+		"Microwave": [
+			{
+				"id": "Microwave",
+				"iid": "51a224e0-48b0-11f1-98a2-291ad2ba4d9e",
+				"layer": "Items_and_Props",
+				"x": 308,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 16705377,
+				"customFields": {
+					"type": "microwave",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "a8596f40-48b0-11f1-98a2-3f686639278d",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
 				}
 			}
 		],

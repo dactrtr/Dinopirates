@@ -30,6 +30,13 @@ function Hats:init(x, y, type, zIndex)
   self.animation:addState('CM019', 19, 19)
   self.animation:addState('CM020', 20, 20)
   self.animation:addState('CM021', 21, 21)
+  -- Resolve the hat: accept a number (1..21) or a "CMxxx" string; fall back to CM001
+  -- if nil or unknown (e.g. a crew spawn marker without a valid crewID).
+  local known = {}
+  for i = 1, 21 do known[string.format('CM%03d', i)] = true end
+  local n = tonumber(type)
+  if n then type = string.format('CM%03d', n) end
+  if not (type and known[type]) then type = 'CM001' end
   self.animation:setState(type)
   -- position and z-index
   self:setSize(20, 16)

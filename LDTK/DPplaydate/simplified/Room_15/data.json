@@ -37,11 +37,78 @@
 			"Top",
 			"Left"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
 		"Foreground.png"
 	],
-	"entities" : {}
+	"entities": {
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "4c2b6120-48b0-11f1-98a2-238f40a01dc4",
+				"layer": "CM_and_enemies",
+				"x": 300,
+				"y": 124,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			},
+			{
+				"id": "CrewMember",
+				"iid": "4d17e400-48b0-11f1-98a2-b5f956bd4853",
+				"layer": "CM_and_enemies",
+				"x": 44,
+				"y": 92,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "0a2f2b70-48b0-11f1-98a2-a1a6cf64a455",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "13eb8a50-48b0-11f1-98a2-8bd76a8dbe19",
+				"layer": "Doors",
+				"x": 4,
+				"y": 176,
+				"width": 8,
+				"height": 32,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
 }

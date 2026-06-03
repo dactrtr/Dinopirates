@@ -8,6 +8,8 @@ import 'assets/data/Config'
 import 'utilities/Utilities'
 -- import 'utilities/PauseMenu'
 import 'utilities/SaveSystem'
+import 'utilities/MapGenerator'
+import 'utilities/RunState'
 
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
@@ -87,10 +89,16 @@ local menuItem, error = menu:addMenuItem("debug", function()
 	if debug == true then
 		if Noble.showFPS == false then
 			Noble.showFPS = true
-		else 
+		else
 			Noble.showFPS = false
 		end
 	end
+end)
+local genItem, genErr = menu:addMenuItem("gen-test", function()
+	debug = true
+	MapGenerator.selfCheck(0)
+	MapGenerator.selfCheck(4)
+	MapGenerator.selfCheck(40)  -- exercises the roomsMax cap
 end)
 
 playdate.display.setRefreshRate(50)

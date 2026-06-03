@@ -56,7 +56,9 @@
 		"DoorsConnection": [
 			"Top"
 		],
-		"play": "Enter"
+		"play": "Enter",
+		"procGen": true,
+		"roomRole": "Start"
 	},
 	"layers": [
 		"Gameplay.png",
@@ -158,6 +160,36 @@
 				"x": 200,
 				"y": 4,
 				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "5d2b7f20-48b0-11f1-98a2-150987991932",
+				"layer": "Doors",
+				"x": 376,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "60540f50-48b0-11f1-98a2-ad97249578aa",
+				"layer": "Doors",
+				"x": 72,
+				"y": 4,
+				"width": 16,
 				"height": 8,
 				"color": 7552569,
 				"customFields": {

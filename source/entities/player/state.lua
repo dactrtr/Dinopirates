@@ -1,59 +1,21 @@
 function Player:fallBelow()
-  printDebug("💀 Player falling...")
-
-  local currentRoomIndex = PlayerData.floor
-  
-  local lowerRoomNumber, lowerRoomData = GetLowerRoom(currentRoomIndex)
-
-  if not lowerRoomNumber then
-    printDebug("⚠️  Cannot fall from this room")
-    return
-  end
-
-  local nextScene = RoomTranslate(lowerRoomNumber)
-
-  if nextScene then
-    PlayerData.playerSpawn.x = self.x
-    PlayerData.playerSpawn.y = self.y
-
-    printDebug("✅ Transitioning to room:", lowerRoomNumber)
-
-    Noble.transition(nextScene, 1.5, Noble.Transition.Imagetable, {
-      imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
-      imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
-    })
-  else
-    printDebug("❌ Scene Floor" .. lowerRoomNumber .. " not found")
-    printDebug("💀 Transitioning to DeadScene (fell into void)")
-    Noble.transition(DeadScene, 1.5, Noble.Transition.Default)
-  end
+  -- Falling through a hole starts a NEW run (regenerating the graph), entering at a
+  -- "startDown" room instead of softlocking. Meta (items/skills/crew/sanity) persists.
+  printDebug("🕳️ Fell through a hole — new run (startDown)")
+  PlayerData.returningInPlace = false
+  RunState.startRun("startdown")
+  Noble.transition(MazeScene, 1.5, Noble.Transition.Imagetable, {
+    imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
+    imagetableExit = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallOut'),
+  })
 end
 
 function Player:riseAbove()
-  printDebug("🚀 Player climbing...")
-
-  local currentRoomIndex = PlayerData.floor
-  
-  local upperRoomNumber, upperRoomData = GetUpperRoom(currentRoomIndex)
-
-  if not upperRoomNumber then
-    printDebug("⚠️  Cannot climb from this room")
-    return
-  end
-
-  local nextScene = RoomTranslate(upperRoomNumber)
-
-  if nextScene then
-    PlayerData.playerSpawn.x = self.x
-    PlayerData.playerSpawn.y = self.y
-
-    printDebug("✅ Transitioning to room:", upperRoomNumber)
-
-    Noble.transition(nextScene, 1.5, Noble.Transition.Default)
-  else
-    printDebug("❌ Scene Floor" .. upperRoomNumber .. " not found")
-    printDebug("⚠️  Cannot climb higher (no upper room)")
-  end
+  -- Rising through a tube starts a NEW run, entering at a "startUp" room. Meta persists.
+  printDebug("🛗 Rose through a tube — new run (startUp)")
+  PlayerData.returningInPlace = false
+  RunState.startRun("startup")
+  Noble.transition(MazeScene, 1.5, Noble.Transition.Default)
 end
 
 function Player:displayDialog()

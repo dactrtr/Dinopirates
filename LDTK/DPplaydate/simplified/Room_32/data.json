@@ -44,7 +44,9 @@
 		"DoorsConnection": [
 			"Top"
 		],
-		"play": null
+		"play": null,
+		"procGen": false,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",

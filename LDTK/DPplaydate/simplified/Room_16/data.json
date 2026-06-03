@@ -38,7 +38,9 @@
 		"roomNumber": 16,
 		"tile": 16,
 		"DoorsConnection": [],
-		"play": null
+		"play": null,
+		"procGen": false,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",

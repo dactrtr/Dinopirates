@@ -46,11 +46,63 @@
 			"Down",
 			"Lower"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Final"
 	},
 	"layers": [
 		"Gameplay.png",
 		"Foreground.png"
 	],
-	"entities" : {}
+	"entities": {
+		"Food": [
+			{
+				"id": "Food",
+				"iid": "2c912b60-48b0-11f1-98a2-237b406adb30",
+				"layer": "Items_and_Props",
+				"x": 148,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 16151930,
+				"customFields": {
+					"type": "food",
+					"grants": "hasitemname:bool",
+					"isItem": true
+				}
+			},
+			{
+				"id": "Food",
+				"iid": "2cc90440-48b0-11f1-98a2-7135a5e7f2fa",
+				"layer": "Items_and_Props",
+				"x": 340,
+				"y": 116,
+				"width": 32,
+				"height": 32,
+				"color": 16151930,
+				"customFields": {
+					"type": "food",
+					"grants": "hasitemname:bool",
+					"isItem": true
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "1a8bacb0-48b0-11f1-98a2-2561eede9954",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
 }

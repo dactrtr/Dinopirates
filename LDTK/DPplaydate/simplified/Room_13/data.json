@@ -47,7 +47,9 @@
 			"Right",
 			"Lower"
 		],
-		"play": null
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",
@@ -90,6 +92,23 @@
 				}
 			}
 		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "4880f490-48b0-11f1-98a2-573ffd87a6d6",
+				"layer": "CM_and_enemies",
+				"x": 68,
+				"y": 164,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
 		"Lamp": [
 			{
 				"id": "Lamp",
@@ -103,6 +122,24 @@
 				"customFields": {
 					"type": "lamp",
 					"isItem": true
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "a3e6f9f0-48b0-11f1-98a2-35cfb5791afd",
+				"layer": "Items_and_Props",
+				"x": 164,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
 				}
 			}
 		],
