@@ -68,38 +68,43 @@ function PortalDoor:setSpawn()
 end
 
 function PortalDoor:goTo()
-    -- Portal doors are disabled in procedural mode (no fixed destinations). TODO: route via nodes.
-    local dest = RoomTranslate(self.destRoomId)
-    if dest then Noble.transition(dest, 1.5, Noble.Transition.Default) end
+    -- Procedural mode: a portal routes to its paired secret-room node (resolved by the
+    -- generator via PortalID). setSpawn() already placed the player at this portal's
+    -- authored SpawnX/SpawnY, so flag returningInPlace to keep it (skip door-spawn).
+    if not self.targetNodeId then
+        printDebug("⚠️ PortalDoor has no target node (secret room not in this run)")
+        return
+    end
+    PlayerData.returningInPlace = true
+    RunState.goTo(self.targetNodeId)
+    Noble.transition(MazeScene, 1.5, Noble.Transition.Default)
 end
 
 function PortalDoor:collisionResponse()
     return "slide"
 end
 
--- Iterates currentRoom.entities.PortalDoors and instantiates each one.
-function CreatePortalDoorsFromLDTK(currentRoom)
-    if not currentRoom then return end
-    local portalEntities = currentRoom.entities and currentRoom.entities.PortalDoors
+-- Instantiates the PortalDoors authored in a node's room template, wiring each one to
+-- the secret-room node the generator paired it with (node.portals[PortalID]). Portals
+-- whose secret room isn't in this run (no pairing) get no target and stay inert.
+function CreatePortalsFromNode(node)
+    if not node or not node.poolRoom then return end
+    local portalEntities = node.poolRoom.entities and node.poolRoom.entities.PortalDoors
     if not portalEntities or not next(portalEntities) then return end
+    local portals = node.portals or {}
 
     for _, entity in ipairs(portalEntities) do
         local cf = entity.customFields or {}
-        local destLevel    = cf.DestLevel    or 1
-        local destRoom     = cf.DestRoom     or 0
-        local spawnX       = cf.SpawnX       or 196
-        local spawnY       = cf.SpawnY       or 116
-        local conditions   = cf.Conditions   or {}
-        local blockedDialog = cf.BlockedDialog or "nokeys"
-        local portalId     = cf.PortalID     or 0
+        local portalId = cf.PortalID or 0
 
-        PortalDoor(
-            portalId, destLevel, destRoom,
-            spawnX, spawnY,
-            conditions, blockedDialog,
+        local p = PortalDoor(
+            portalId, cf.DestLevel or 1, cf.DestRoom or 0,
+            cf.SpawnX or 196, cf.SpawnY or 116,
+            cf.Conditions or {}, cf.BlockedDialog or "nokeys",
             entity.x, entity.y,
             entity.width, entity.height
         )
-        printDebug("🌀 PortalDoor created — ID:", portalId, "→ room", destLevel * 100 + destRoom)
+        p.targetNodeId = portals[portalId]
+        printDebug("🌀 PortalDoor created — ID:", portalId, "→ node", tostring(p.targetNodeId))
     end
 end

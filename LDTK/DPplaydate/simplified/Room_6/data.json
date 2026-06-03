@@ -36,7 +36,8 @@
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Final"
+		"roomRole": "Final",
+		"requiredItems": []
 	},
 	"layers": [
 		"Gameplay.png",

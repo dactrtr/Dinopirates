@@ -353,6 +353,78 @@ function CreateDoorsFromLDTK(currentRoom)
 	printDebug("")
 end
 
+-- WallPlug: covers an unconnected door opening with wall brick (stamped from the
+-- tilesheet) and a wall collider, so closed doors look solid and can't be walked through.
+local plugTilesheet = nil
+local function plugBrickImage(tileIndex)
+	if not plugTilesheet then
+		plugTilesheet = Graphics.imagetable.new(Config.Doors.plug.tilesheet)
+	end
+	return plugTilesheet and plugTilesheet:getImage(tileIndex or 1)
+end
+
+class('WallPlug').extends(playdate.graphics.sprite)
+
+function WallPlug:init(x, y, w, h, tileIndex)
+	local tile = Config.Tiles.size
+	local img  = Graphics.image.new(w, h)
+	local brick = plugBrickImage(tileIndex)
+	if brick then
+		Graphics.pushContext(img)
+			for ty = 0, h - 1, tile do
+				for tx = 0, w - 1, tile do
+					brick:draw(tx, ty)
+				end
+			end
+		Graphics.popContext()
+	end
+	self:setImage(img)
+	self:setCenter(0, 0)
+	self:moveTo(x, y)
+	self:setZIndex(ZIndex.props)
+	self:setCollideRect(0, 0, w, h)
+	self:setGroups(CollideGroups.wall)
+	self:addSprite()
+end
+
+-- For each authored door on a side the graph left UNCONNECTED, stamp a wall plug over
+-- its opening. Span axis = door size + trim (1 tile up for side doors, 1 each side for
+-- top/down); perpendicular axis = wall depth from the screen edge. Authored door x/y is
+-- the entity centre.
+function CreateWallPlugsFromNode(node)
+	if not node or not node.poolRoom then return end
+	local doors = node.poolRoom.entities and node.poolRoom.entities.Doors
+	if not doors then return end
+
+	local tile  = Config.Tiles.size
+	local cfg   = Config.Doors.plug
+	local trim  = (cfg.trimTiles  or 1) * tile
+	local depth = (cfg.depthTiles or 1) * tile
+
+	for _, de in ipairs(doors) do
+		local conn = de.customFields and de.customFields.DoorsConnection
+		local dir  = conn and conn:lower()
+		if dir and not node.edges[dir] then
+			local hw, hh = (de.width or 0) / 2, (de.height or 0) / 2
+			local x, y, w, h
+			if dir == "top" then
+				x, w = de.x - hw - trim, de.width + 2 * trim
+				y, h = 0, depth
+			elseif dir == "down" then
+				x, w = de.x - hw - trim, de.width + 2 * trim
+				y, h = 240 - depth, depth
+			elseif dir == "left" then
+				x, w = 0, depth
+				y, h = de.y - hh - trim, de.height + trim
+			elseif dir == "right" then
+				x, w = 400 - depth, depth
+				y, h = de.y - hh - trim, de.height + trim
+			end
+			if x then WallPlug(x, y, w, h, cfg.tiles and cfg.tiles[dir]) end
+		end
+	end
+end
+
 -- Create door sprites from a run-graph node's edges. Each edge (dir -> destNodeId)
 -- becomes an open door at the cardinal screen position; crossing it transitions to
 -- that node. Keys are removed in procedural mode, so all doors are open.

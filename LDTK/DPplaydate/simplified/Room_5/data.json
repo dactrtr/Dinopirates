@@ -27,7 +27,8 @@
 		],
 		"play": null,
 		"procGen": false,
-		"roomRole": "Normal"
+		"roomRole": "Normal",
+		"requiredItems": []
 	},
 	"layers": [
 		"Gameplay.png",

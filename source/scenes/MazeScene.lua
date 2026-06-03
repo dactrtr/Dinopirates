@@ -254,6 +254,8 @@ function scene:enter()
 		end
 		
 		CreateDoorsFromNode(node)
+		CreateWallPlugsFromNode(node)
+		CreatePortalsFromNode(node)
 	else
 		printDebug("❌ ERROR: room is", room, "or levelsLDTK[room] is nil")
 	end
@@ -551,7 +553,9 @@ function scene:exit()
 end
 
 -- Capture the player's live position so Continue resumes exactly where the run was
--- left (used together with returningInPlace in TitleScene's Continue action).
+-- left (used together with returningInPlace in TitleScene's Continue action). Only on
+-- pause (menu/sleep) — NOT on finish(): finish() runs mid-transition and would clobber
+-- the spawn a door/portal/DanceScene just set for the destination room.
 local function captureResumePosition()
 	if player then
 		PlayerData.playerSpawn.x = player.x
@@ -564,7 +568,6 @@ function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
 	PlayerData.isGaming = false
-	captureResumePosition()
 	SaveSystem.save()
 end
 

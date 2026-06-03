@@ -98,6 +98,8 @@ function RunState.serialize()
 			freeSides  = n.freeSides,
 			content    = n.content,
 			cleared    = n.cleared,
+			portals    = n.portals,   -- PortalID -> node id (secret-room links, A<->A)
+			isSecret   = n.isSecret,
 		}
 	end
 	return {
@@ -135,6 +137,8 @@ function RunState.deserialize(data)
 			freeSides  = sn.freeSides or {},
 			content    = sn.content or {},
 			cleared    = sn.cleared or {},
+			portals    = sn.portals or {},
+			isSecret   = sn.isSecret,
 		}
 	end
 	graph.startId       = data.startId

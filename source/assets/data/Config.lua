@@ -173,6 +173,20 @@ Config.Doors = {
         right = {x=32,  y=116},
         left  = {x=364, y=116},
     },
+    -- Wall plug: when the graph leaves a door side unconnected, its opening is covered
+    -- with wall brick stamped from the tilesheet, plus a collider so the player can't
+    -- walk into the void. Tune these to your wall art.
+    plug = {
+        tilesheet  = 'assets/images/tile/tile-table-16-16',
+        depthTiles = 1,    -- 16px tiles of cover depth from the screen edge (wall thickness)
+        trimTiles  = 1,    -- extra tiles beyond the door span: up for side doors, each side for top/down
+        tiles = {          -- tilesheet frame used as the wall fill, per side
+            top   = 44,
+            down  = 38,
+            left  = 42,
+            right = 40,
+        },
+    },
 }
 
 -- Portal Doors

@@ -26,7 +26,8 @@
 		],
 		"play": "Enter",
 		"procGen": true,
-		"roomRole": "Start"
+		"roomRole": "Start",
+		"requiredItems": []
 	},
 	"layers": [
 		"Gameplay.png",

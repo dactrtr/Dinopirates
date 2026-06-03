@@ -1,0 +1,622 @@
+{
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/achievements/achievements.lua": {
+    "mtime": 1761445914.185253,
+    "ast_hash": "a24c48fa0948de138129cd382632c83a",
+    "semantic_hash": "a24c48fa0948de138129cd382632c83a"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/achievements/all.lua": {
+    "mtime": 1746928586.253477,
+    "ast_hash": "15370f20ffca8c251be315316a58619c",
+    "semantic_hash": "15370f20ffca8c251be315316a58619c"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/achievements/crossgame.lua": {
+    "mtime": 1746928586.2630813,
+    "ast_hash": "eb92b483dbbfc65b3fa85e491cd1adf2",
+    "semantic_hash": "eb92b483dbbfc65b3fa85e491cd1adf2"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/achievements/toasts.lua": {
+    "mtime": 1761445917.7960286,
+    "ast_hash": "b34ff4c85e4cd0bc76efe8e2dc833bac",
+    "semantic_hash": "b34ff4c85e4cd0bc76efe8e2dc833bac"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/achievements/viewer.lua": {
+    "mtime": 1761445921.568925,
+    "ast_hash": "4b962e831e1216aa9c281a79f77c0c08",
+    "semantic_hash": "4b962e831e1216aa9c281a79f77c0c08"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/comics/comicsData.lua": {
+    "mtime": 1747578971.000986,
+    "ast_hash": "3d96fef1ad644455ec8d610079ba98f2",
+    "semantic_hash": "3d96fef1ad644455ec8d610079ba98f2"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/comics/intro.lua": {
+    "mtime": 1747486450.4250345,
+    "ast_hash": "517150da7519d4430bb566f651c54f40",
+    "semantic_hash": "517150da7519d4430bb566f651c54f40"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/comics/pick-the-device.lua": {
+    "mtime": 1748522096.2574406,
+    "ast_hash": "49dcb5c7aabe514c0cb6b19cb0a77626",
+    "semantic_hash": "49dcb5c7aabe514c0cb6b19cb0a77626"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/Config.lua": {
+    "mtime": 1780470545.6097982,
+    "ast_hash": "a4930dfb3c28c0dc72c6a97c297f944e",
+    "semantic_hash": "a4930dfb3c28c0dc72c6a97c297f944e"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/PlayerDataTables.lua": {
+    "mtime": 1780470498.474326,
+    "ast_hash": "982a7ed5902378f5b4d7831676a30797",
+    "semantic_hash": "982a7ed5902378f5b4d7831676a30797"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/achievements.lua": {
+    "mtime": 1774397849.556227,
+    "ast_hash": "5715f3bbdc4be6501ad4e148b12ea90c",
+    "semantic_hash": "5715f3bbdc4be6501ad4e148b12ea90c"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/levels.lua": {
+    "mtime": 1780431050.0,
+    "ast_hash": "d9d01effcf9f2f3a949b2db416e62dfc",
+    "semantic_hash": "d9d01effcf9f2f3a949b2db416e62dfc"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/levels_floor3.lua": {
+    "mtime": 1780431050.0,
+    "ast_hash": "cf61924fbaceccae48ad6e7834cdccf9",
+    "semantic_hash": "cf61924fbaceccae48ad6e7834cdccf9"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/levels_floor4.lua": {
+    "mtime": 1780463927.9593372,
+    "ast_hash": "71cdbefba074d0e078d3df0cbbbcf0be",
+    "semantic_hash": "71cdbefba074d0e078d3df0cbbbcf0be"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/script.lua": {
+    "mtime": 1780463585.235319,
+    "ast_hash": "91776bbd5e5efc9d88539a3865a41765",
+    "semantic_hash": "91776bbd5e5efc9d88539a3865a41765"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/tilemap.lua": {
+    "mtime": 1780431050.0,
+    "ast_hash": "e500eab7d1ede596c40f567d1a79abf6",
+    "semantic_hash": "e500eab7d1ede596c40f567d1a79abf6"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/data/toastConfig.lua": {
+    "mtime": 1774397873.905733,
+    "ast_hash": "0f1b36bfe819566bf0f36e509630dd9f",
+    "semantic_hash": "0f1b36bfe819566bf0f36e509630dd9f"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/FX/FXshadow.lua": {
+    "mtime": 1780096937.87813,
+    "ast_hash": "aaad5841d110b0d8f03c69b6ff8f64e6",
+    "semantic_hash": "aaad5841d110b0d8f03c69b6ff8f64e6"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/FX/FXsonar.lua": {
+    "mtime": 1731920246.212481,
+    "ast_hash": "10d98bd9ca3699e3bdbc117e6da2e539",
+    "semantic_hash": "10d98bd9ca3699e3bdbc117e6da2e539"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/UIHud.lua": {
+    "mtime": 1773391791.0143278,
+    "ast_hash": "22e0ea4554e7615a3fe98124226b4946",
+    "semantic_hash": "22e0ea4554e7615a3fe98124226b4946"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battery.lua": {
+    "mtime": 1773391791.0144377,
+    "ast_hash": "5396ecc369b81be5ada04279f7dff3c4",
+    "semantic_hash": "5396ecc369b81be5ada04279f7dff3c4"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/backgroundDance.lua": {
+    "mtime": 1744963116.4575934,
+    "ast_hash": "1cd08bcd962f6d2de6fbed044dbb2ea2",
+    "semantic_hash": "1cd08bcd962f6d2de6fbed044dbb2ea2"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/buttonCover.lua": {
+    "mtime": 1747446281.5502055,
+    "ast_hash": "8120b4e74d0ab4910dfbe235da364c34",
+    "semantic_hash": "8120b4e74d0ab4910dfbe235da364c34"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/buttonPress.lua": {
+    "mtime": 1773391791.014589,
+    "ast_hash": "c02d618f9d3ffc51e7a7baf5ba0035df",
+    "semantic_hash": "c02d618f9d3ffc51e7a7baf5ba0035df"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/enemyRatDance.lua": {
+    "mtime": 1778638327.5642009,
+    "ast_hash": "4fe622d8a28bd7fb79266f1893d340df",
+    "semantic_hash": "4fe622d8a28bd7fb79266f1893d340df"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/hitZone.lua": {
+    "mtime": 1745202617.1852233,
+    "ast_hash": "d08156b0a3ff1ddbd9aa1d0f32b726f2",
+    "semantic_hash": "d08156b0a3ff1ddbd9aa1d0f32b726f2"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/loseIndicator.lua": {
+    "mtime": 1747465598.1040204,
+    "ast_hash": "17b0876f5d0f7c56cd50af796b127927",
+    "semantic_hash": "17b0876f5d0f7c56cd50af796b127927"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/playerDance.lua": {
+    "mtime": 1778638327.0450876,
+    "ast_hash": "30600b283a2fac76748b45a9b15e5929",
+    "semantic_hash": "30600b283a2fac76748b45a9b15e5929"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/resultsScreen.lua": {
+    "mtime": 1773391791.0148644,
+    "ast_hash": "d90a49deeb888ec761c634e1739fa747",
+    "semantic_hash": "d90a49deeb888ec761c634e1739fa747"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/battle/winIndicator.lua": {
+    "mtime": 1747465626.3826199,
+    "ast_hash": "6efc2db4b804b0c2694b6d035f23b018",
+    "semantic_hash": "6efc2db4b804b0c2694b6d035f23b018"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/cockpit/CockpitBars.lua": {
+    "mtime": 1777688277.329375,
+    "ast_hash": "93a27d43f617b85117a867165f510563",
+    "semantic_hash": "93a27d43f617b85117a867165f510563"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/cockpit/CockpitButton.lua": {
+    "mtime": 1777641696.8838923,
+    "ast_hash": "f3cd35e5474b20f452a98e89fc256efc",
+    "semantic_hash": "f3cd35e5474b20f452a98e89fc256efc"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/cockpit/CockpitIndicators.lua": {
+    "mtime": 1778946588.84955,
+    "ast_hash": "fec528cc38fdb473de5704e527a1cc8c",
+    "semantic_hash": "fec528cc38fdb473de5704e527a1cc8c"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/cockpit/CockpitPointer.lua": {
+    "mtime": 1777648443.781256,
+    "ast_hash": "e38a3a7a5f93b711e60b70ebdac3bc65",
+    "semantic_hash": "e38a3a7a5f93b711e60b70ebdac3bc65"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/cockpit/CockpitRadar.lua": {
+    "mtime": 1777653515.0890315,
+    "ast_hash": "2df2076b475a2ded79a23f9cbbbcd4a3",
+    "semantic_hash": "2df2076b475a2ded79a23f9cbbbcd4a3"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/dialog/dialogScreen.lua": {
+    "mtime": 1776564555.0241082,
+    "ast_hash": "17d15e2af6c501c6bd72541a70fd4e9e",
+    "semantic_hash": "17d15e2af6c501c6bd72541a70fd4e9e"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/dialog/videoFeed.lua": {
+    "mtime": 1773391791.0151567,
+    "ast_hash": "c9eab52cfdcde6b579fe194d247b8581",
+    "semantic_hash": "c9eab52cfdcde6b579fe194d247b8581"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/healthIndicator.lua": {
+    "mtime": 1773391791.0152416,
+    "ast_hash": "c4a787309e7eb1d966c48db050d2024e",
+    "semantic_hash": "c4a787309e7eb1d966c48db050d2024e"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/inGameMenu.lua": {
+    "mtime": 1780152167.779902,
+    "ast_hash": "f1845c23cf3b2f91e159cbf2ff4d8e7d",
+    "semantic_hash": "f1845c23cf3b2f91e159cbf2ff4d8e7d"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/keyHud.lua": {
+    "mtime": 1773645227.3557308,
+    "ast_hash": "f6290f35a6140219fe5b67ef9b660037",
+    "semantic_hash": "f6290f35a6140219fe5b67ef9b660037"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/menuTitle.lua": {
+    "mtime": 1776576926.252268,
+    "ast_hash": "e0f3f68fe2317085b06cbf945abe7b6c",
+    "semantic_hash": "e0f3f68fe2317085b06cbf945abe7b6c"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/playerHud.lua": {
+    "mtime": 1780113485.4447649,
+    "ast_hash": "d9b963cba5da4b1a85e69e5ab771ecb9",
+    "semantic_hash": "d9b963cba5da4b1a85e69e5ab771ecb9"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/sanityHud.lua": {
+    "mtime": 1731920246.2131624,
+    "ast_hash": "22aee5ead992987ef2a9014de88d837f",
+    "semantic_hash": "22aee5ead992987ef2a9014de88d837f"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/UI/titleBackground.lua": {
+    "mtime": 1773391791.0160146,
+    "ast_hash": "b4070b1216827906becc9457a449fc82",
+    "semantic_hash": "b4070b1216827906becc9457a449fc82"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/enemies/brocorat.lua": {
+    "mtime": 1779624565.0287127,
+    "ast_hash": "313bdb3a305c416657b0ab021d439de6",
+    "semantic_hash": "313bdb3a305c416657b0ab021d439de6"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/enemies/crewmember.lua": {
+    "mtime": 1780412848.460465,
+    "ast_hash": "97b3abce8785422dd170f80ca1b83c14",
+    "semantic_hash": "97b3abce8785422dd170f80ca1b83c14"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/enemies/enemy.lua": {
+    "mtime": 1780266371.1160188,
+    "ast_hash": "28c3a67bdfa96b40d96f241cd5d513ff",
+    "semantic_hash": "28c3a67bdfa96b40d96f241cd5d513ff"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/items/Items.lua": {
+    "mtime": 1780236529.477215,
+    "ast_hash": "8bf4226ad08e6371120288b9c3b73b70",
+    "semantic_hash": "8bf4226ad08e6371120288b9c3b73b70"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/abilities.lua": {
+    "mtime": 1780333504.5188327,
+    "ast_hash": "ad14fef01cdce6444284b28a5e888d0e",
+    "semantic_hash": "ad14fef01cdce6444284b28a5e888d0e"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/animations.lua": {
+    "mtime": 1780150707.8833106,
+    "ast_hash": "58bab268439570c4acc96a0e34bb2f8f",
+    "semantic_hash": "58bab268439570c4acc96a0e34bb2f8f"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/collisions.lua": {
+    "mtime": 1780205913.3954415,
+    "ast_hash": "e51fcb38c88920701947b3b61b1e5e30",
+    "semantic_hash": "e51fcb38c88920701947b3b61b1e5e30"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/grapple.lua": {
+    "mtime": 1780138814.3778229,
+    "ast_hash": "56e7caecdd68ffd0bd88dd63ca8f65e7",
+    "semantic_hash": "56e7caecdd68ffd0bd88dd63ca8f65e7"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/hole.lua": {
+    "mtime": 1780150685.6583784,
+    "ast_hash": "bd80c5f9fd658535e8af462488c8ad2a",
+    "semantic_hash": "bd80c5f9fd658535e8af462488c8ad2a"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/init.lua": {
+    "mtime": 1780198047.226725,
+    "ast_hash": "72be27d0662925a56f2ff465f55c6345",
+    "semantic_hash": "72be27d0662925a56f2ff465f55c6345"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/items.lua": {
+    "mtime": 1780198083.6936302,
+    "ast_hash": "ed3ee13a65f4661194d070641b39eb51",
+    "semantic_hash": "ed3ee13a65f4661194d070641b39eb51"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/lightburst.lua": {
+    "mtime": 1780160255.535812,
+    "ast_hash": "d42e16efee690c2cc2d9aca818c3064d",
+    "semantic_hash": "d42e16efee690c2cc2d9aca818c3064d"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/movement.lua": {
+    "mtime": 1780150697.4217594,
+    "ast_hash": "fd9e4ef5e90e9ac79c445e228db6c884",
+    "semantic_hash": "fd9e4ef5e90e9ac79c445e228db6c884"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/plunge.lua": {
+    "mtime": 1780133949.9055264,
+    "ast_hash": "55ed40bb011ee2d4dd950b82684c3a25",
+    "semantic_hash": "55ed40bb011ee2d4dd950b82684c3a25"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/projectile.lua": {
+    "mtime": 1780150742.3141499,
+    "ast_hash": "5395a6efa63e3f7c137729eb3b78e977",
+    "semantic_hash": "5395a6efa63e3f7c137729eb3b78e977"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/sanity.lua": {
+    "mtime": 1780448063.9447079,
+    "ast_hash": "552ea26cd6d411c6cd88f4bf2ec032bb",
+    "semantic_hash": "552ea26cd6d411c6cd88f4bf2ec032bb"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/sliding.lua": {
+    "mtime": 1780150680.4690397,
+    "ast_hash": "58ef034cc77af98ed4195a58ea0f9baa",
+    "semantic_hash": "58ef034cc77af98ed4195a58ea0f9baa"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/player/state.lua": {
+    "mtime": 1780446995.3054497,
+    "ast_hash": "dd517595b0ffc6eab932532dc39815d5",
+    "semantic_hash": "dd517595b0ffc6eab932532dc39815d5"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/props/door.lua": {
+    "mtime": 1780404150.2931454,
+    "ast_hash": "769dbc7c976332d06d2e13ef3d319d4c",
+    "semantic_hash": "769dbc7c976332d06d2e13ef3d319d4c"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/props/hats.lua": {
+    "mtime": 1780408752.4964848,
+    "ast_hash": "93f83b05e258d0b507aa8bb82de93a24",
+    "semantic_hash": "93f83b05e258d0b507aa8bb82de93a24"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/props/npc.lua": {
+    "mtime": 1780454916.2976909,
+    "ast_hash": "0eb4269c2ba1a98f3722b5e7e93ac5fe",
+    "semantic_hash": "0eb4269c2ba1a98f3722b5e7e93ac5fe"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/props/portal_door.lua": {
+    "mtime": 1780395510.6127708,
+    "ast_hash": "fdf428fb63ca947965b3d517f01b964c",
+    "semantic_hash": "fdf428fb63ca947965b3d517f01b964c"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/props/propItem.lua": {
+    "mtime": 1780411564.6950154,
+    "ast_hash": "0e79caadd1f792785a31fa5abe77f160",
+    "semantic_hash": "0e79caadd1f792785a31fa5abe77f160"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/props/trigger.lua": {
+    "mtime": 1780459365.8250327,
+    "ast_hash": "376dc9d5984c45a3f384b69379be1243",
+    "semantic_hash": "376dc9d5984c45a3f384b69379be1243"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/Crosshair.lua": {
+    "mtime": 1778333065.3802054,
+    "ast_hash": "306a5b74f4c61ac31c8581c8fe26e5ee",
+    "semantic_hash": "306a5b74f4c61ac31c8581c8fe26e5ee"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/DangerBar.lua": {
+    "mtime": 1778340722.5182745,
+    "ast_hash": "7d4a82ecdc59a8628a94d465fc9bd146",
+    "semantic_hash": "7d4a82ecdc59a8628a94d465fc9bd146"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/EnergyCanister.lua": {
+    "mtime": 1778323289.878043,
+    "ast_hash": "556ce58efa617ae53a2a297963c2b721",
+    "semantic_hash": "556ce58efa617ae53a2a297963c2b721"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/EnergyMeter.lua": {
+    "mtime": 1778330674.8642516,
+    "ast_hash": "400f6f01d054443e73a6a0c67305b7e0",
+    "semantic_hash": "400f6f01d054443e73a6a0c67305b7e0"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/FXspeed.lua": {
+    "mtime": 1778323281.0242453,
+    "ast_hash": "72aae551da366c619925dee68fe2430d",
+    "semantic_hash": "72aae551da366c619925dee68fe2430d"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/HealthDisplay.lua": {
+    "mtime": 1778377388.3089423,
+    "ast_hash": "8e2b8afaa75329a806c0af0c85716f3c",
+    "semantic_hash": "8e2b8afaa75329a806c0af0c85716f3c"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/Laser.lua": {
+    "mtime": 1778333176.0459623,
+    "ast_hash": "af8a548c0b3dd892b88d2bda1613ea09",
+    "semantic_hash": "af8a548c0b3dd892b88d2bda1613ea09"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/Meteorite.lua": {
+    "mtime": 1778374976.7644475,
+    "ast_hash": "d43a7db8b6790c4476ad09c94ac10fb8",
+    "semantic_hash": "d43a7db8b6790c4476ad09c94ac10fb8"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/entities/space/Ship.lua": {
+    "mtime": 1778378635.554114,
+    "ast_hash": "f4e7199c57609df87af40f6eae947906",
+    "semantic_hash": "f4e7199c57609df87af40f6eae947906"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/main.lua": {
+    "mtime": 1780415134.6807828,
+    "ast_hash": "58c2f384753e5c12ef72cb2db1c01cb2",
+    "semantic_hash": "58c2f384753e5c12ef72cb2db1c01cb2"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/CockpitScene.lua": {
+    "mtime": 1779624565.0288734,
+    "ast_hash": "c2eb461479c736fedf261de5e42804d1",
+    "semantic_hash": "c2eb461479c736fedf261de5e42804d1"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/CreditsScene.lua": {
+    "mtime": 1779722170.1369615,
+    "ast_hash": "ee105f018155fe6a63fe5df510864313",
+    "semantic_hash": "ee105f018155fe6a63fe5df510864313"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/DanceScene.lua": {
+    "mtime": 1780447007.3596013,
+    "ast_hash": "3f1a894191c74ae261157025df337c98",
+    "semantic_hash": "3f1a894191c74ae261157025df337c98"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/DeadScene.lua": {
+    "mtime": 1780448456.978365,
+    "ast_hash": "47f5b0c54042f7e1846b75cbf6d14253",
+    "semantic_hash": "47f5b0c54042f7e1846b75cbf6d14253"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/Floors.lua": {
+    "mtime": 1779258076.2463667,
+    "ast_hash": "ec10368efe3363d621fda245e6f95f69",
+    "semantic_hash": "ec10368efe3363d621fda245e6f95f69"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/MazeScene.lua": {
+    "mtime": 1780470507.3853624,
+    "ast_hash": "e21a57613410112bba5ea78c6ffd01f1",
+    "semantic_hash": "e21a57613410112bba5ea78c6ffd01f1"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/SpaceScene.lua": {
+    "mtime": 1779624565.0290523,
+    "ast_hash": "7260de7a67043742fbfad5d7cce25329",
+    "semantic_hash": "7260de7a67043742fbfad5d7cce25329"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/TestScene.lua": {
+    "mtime": 1744338701.1221356,
+    "ast_hash": "dc6e4cd3f7df7207abc0eda8a1406cb5",
+    "semantic_hash": "dc6e4cd3f7df7207abc0eda8a1406cb5"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/scenes/TitleScene.lua": {
+    "mtime": 1780467257.6924803,
+    "ast_hash": "894acde0722e545a00179657aff51021",
+    "semantic_hash": "894acde0722e545a00179657aff51021"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/utilities/MapDrawer.lua": {
+    "mtime": 1773391791.0228229,
+    "ast_hash": "73dc0d6bc1bdba7e2d217998da8501e9",
+    "semantic_hash": "73dc0d6bc1bdba7e2d217998da8501e9"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/utilities/MapGenerator.lua": {
+    "mtime": 1780473836.9845276,
+    "ast_hash": "ae00df2b31b2c5e03f003bb2e26e4f1e",
+    "semantic_hash": "ae00df2b31b2c5e03f003bb2e26e4f1e"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/utilities/PauseMenu.lua": {
+    "mtime": 1773391791.022985,
+    "ast_hash": "6d93d3216dc4a7f5df47d4876fbec4d3",
+    "semantic_hash": "6d93d3216dc4a7f5df47d4876fbec4d3"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/utilities/RunState.lua": {
+    "mtime": 1780467229.671311,
+    "ast_hash": "091b1788b631f419f3872d85f63838ad",
+    "semantic_hash": "091b1788b631f419f3872d85f63838ad"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/utilities/SaveSystem.lua": {
+    "mtime": 1780467246.7411635,
+    "ast_hash": "4cec80801f81dbedac5100098a1c9900",
+    "semantic_hash": "4cec80801f81dbedac5100098a1c9900"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/utilities/Utilities.lua": {
+    "mtime": 1780408777.2395856,
+    "ast_hash": "33cb1808be3eb82cb9223a395526f418",
+    "semantic_hash": "33cb1808be3eb82cb9223a395526f418"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/ARCHITECTURE.md": {
+    "mtime": 1779748852.1575418,
+    "ast_hash": "f5817e25f5762304772ca752a3bfb491",
+    "semantic_hash": "f5817e25f5762304772ca752a3bfb491"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/COCKPIT_SCENE.md": {
+    "mtime": 1779748512.6844127,
+    "ast_hash": "4dd51417520a49ff0877ac0c7dd8ad8e",
+    "semantic_hash": "4dd51417520a49ff0877ac0c7dd8ad8e"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/CONFIG_REFERENCE.md": {
+    "mtime": 1780201823.4665246,
+    "ast_hash": "42759486092b8a3c654eb5a1183356c8",
+    "semantic_hash": "42759486092b8a3c654eb5a1183356c8"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/CREDITS_SCENE.md": {
+    "mtime": 1779748729.589415,
+    "ast_hash": "1f586c1eaf6af6132096f07206a9950c",
+    "semantic_hash": "1f586c1eaf6af6132096f07206a9950c"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/CREWMEMBER_AND_COLLISIONS.md": {
+    "mtime": 1779748657.682403,
+    "ast_hash": "0b24dd28233c6de9e746dd2d40dc2433",
+    "semantic_hash": "0b24dd28233c6de9e746dd2d40dc2433"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/CUTSCENE_SYSTEM.md": {
+    "mtime": 1776564555.0073433,
+    "ast_hash": "f2a3d74b4529da814282d9cc90c3f0ce",
+    "semantic_hash": "f2a3d74b4529da814282d9cc90c3f0ce"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/DANCE_SCENE.md": {
+    "mtime": 1779748607.9609115,
+    "ast_hash": "7917a499cc57263040a732722cd86d98",
+    "semantic_hash": "7917a499cc57263040a732722cd86d98"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/DATA_FLOW.md": {
+    "mtime": 1780201957.5285552,
+    "ast_hash": "5f316c7a1b81decd36385afa37b4f9f7",
+    "semantic_hash": "5f316c7a1b81decd36385afa37b4f9f7"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/DIALOG_SYSTEM.md": {
+    "mtime": 1779748578.9935558,
+    "ast_hash": "2be55d12d6b80d262f4d9f086495d46b",
+    "semantic_hash": "2be55d12d6b80d262f4d9f086495d46b"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/DOORS_AND_KEYS.md": {
+    "mtime": 1779748508.7534544,
+    "ast_hash": "0a89234161f5fb8a7c5b355353f617e0",
+    "semantic_hash": "0a89234161f5fb8a7c5b355353f617e0"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/ENEMIES_AND_COMBAT.md": {
+    "mtime": 1779748550.5704005,
+    "ast_hash": "08b8f276e4734fe9497f76e2e99596a2",
+    "semantic_hash": "08b8f276e4734fe9497f76e2e99596a2"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/GRAPPLING_HOOK.md": {
+    "mtime": 1780150909.186989,
+    "ast_hash": "1c959ba45d197b50f27b8426545c4929",
+    "semantic_hash": "1c959ba45d197b50f27b8426545c4929"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/HUD_SYSTEM.md": {
+    "mtime": 1779748622.62598,
+    "ast_hash": "b1c598cbeaf05e46056f5cd6473ee967",
+    "semantic_hash": "b1c598cbeaf05e46056f5cd6473ee967"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/INGAME_MENU.md": {
+    "mtime": 1780152222.3319361,
+    "ast_hash": "e8d0067e361feef7862bc5f9d12c6e14",
+    "semantic_hash": "e8d0067e361feef7862bc5f9d12c6e14"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/INPUT_SYSTEM.md": {
+    "mtime": 1780205950.3822002,
+    "ast_hash": "d49366efbb39e0568152a8c58576ca88",
+    "semantic_hash": "d49366efbb39e0568152a8c58576ca88"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/LEVEL_LOADING.md": {
+    "mtime": 1779748584.7168317,
+    "ast_hash": "17c288e0085df1567e24ff10ccf429fa",
+    "semantic_hash": "17c288e0085df1567e24ff10ccf429fa"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/LOVE2D_PORT.md": {
+    "mtime": 1780150954.028365,
+    "ast_hash": "cc8b75abd4e859f36e37d8d84e2eaf34",
+    "semantic_hash": "cc8b75abd4e859f36e37d8d84e2eaf34"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/MICROWAVE_AND_FOOD.md": {
+    "mtime": 1780205946.0456579,
+    "ast_hash": "84d9f1f1170a0e00146422d66d6d2f26",
+    "semantic_hash": "84d9f1f1170a0e00146422d66d6d2f26"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/NPC_SYSTEM.md": {
+    "mtime": 1779748663.842009,
+    "ast_hash": "a4ba253878cce7c65f30f46d2e10d4c3",
+    "semantic_hash": "a4ba253878cce7c65f30f46d2e10d4c3"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/PLAYERDATA_REFERENCE.md": {
+    "mtime": 1780201843.770621,
+    "ast_hash": "735eff29c46fc83d16ed7811b86dc9f4",
+    "semantic_hash": "735eff29c46fc83d16ed7811b86dc9f4"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/PLAYER_SYSTEMS.md": {
+    "mtime": 1780205948.9091213,
+    "ast_hash": "e4dd90e4125b9864d49eaa007217bdcd",
+    "semantic_hash": "e4dd90e4125b9864d49eaa007217bdcd"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/PLUNGERANG.md": {
+    "mtime": 1780152272.2370925,
+    "ast_hash": "5b08be03fce22236e2bc8795b4058622",
+    "semantic_hash": "5b08be03fce22236e2bc8795b4058622"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/PROPS_AND_ITEMS.md": {
+    "mtime": 1780201906.6637225,
+    "ast_hash": "fdf50ec4addc775040d6c4bf25d2cea9",
+    "semantic_hash": "fdf50ec4addc775040d6c4bf25d2cea9"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/SAVE_SYSTEM.md": {
+    "mtime": 1779748656.3056378,
+    "ast_hash": "705ae18eca70f77d8403513963b2eb68",
+    "semantic_hash": "705ae18eca70f77d8403513963b2eb68"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/SCRIPTS_TRIGGERS_NPC_SCHEMA.md": {
+    "mtime": 1779748785.9777656,
+    "ast_hash": "9bbd07f95fb37de9e757097e875da2c5",
+    "semantic_hash": "9bbd07f95fb37de9e757097e875da2c5"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/SPACE_SCENE.md": {
+    "mtime": 1779748612.3379612,
+    "ast_hash": "0529423cd5882eba308e274a44f43607",
+    "semantic_hash": "0529423cd5882eba308e274a44f43607"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/TILE_LOADING.md": {
+    "mtime": 1779748576.6567373,
+    "ast_hash": "2fa0937b82fdc8216f23e75d6b97f25d",
+    "semantic_hash": "2fa0937b82fdc8216f23e75d6b97f25d"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/TITLE_SCENE.md": {
+    "mtime": 1779748680.7337093,
+    "ast_hash": "5172a79da1041a9ae2019c617ea8b578",
+    "semantic_hash": "5172a79da1041a9ae2019c617ea8b578"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/DOCS/TRIGGER_SYSTEM.md": {
+    "mtime": 1779748521.1682177,
+    "ast_hash": "e8ef71e84c14bf52c9603005b1d3bd58",
+    "semantic_hash": "e8ef71e84c14bf52c9603005b1d3bd58"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/launcher/card-highlighted/animation.txt": {
+    "mtime": 1747486450.4530725,
+    "ast_hash": "b4ac51cc2e48796175cd994014c09a75",
+    "semantic_hash": "b4ac51cc2e48796175cd994014c09a75"
+  },
+  "/Users/dactrtr-mini/Documents/GitHub/Dinopirates/source/assets/launcher/launchImages/animation.txt": {
+    "mtime": 1747486450.4571855,
+    "ast_hash": "deff7e3b8ee24e48230202ea2388c210",
+    "semantic_hash": "deff7e3b8ee24e48230202ea2388c210"
+  }
+}

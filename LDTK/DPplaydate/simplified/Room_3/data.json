@@ -43,7 +43,8 @@
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Normal"
+		"roomRole": "Normal",
+		"requiredItems": []
 	},
 	"layers": [
 		"Gameplay.png",
@@ -181,6 +182,22 @@
 					"type": "box",
 					"nocollider": false,
 					"destroyed": false
+				}
+			}
+		],
+		"Lamp": [
+			{
+				"id": "Lamp",
+				"iid": "fc476460-48b0-11f1-98a2-97cc8e699cc2",
+				"layer": "Items_and_Props",
+				"x": 156,
+				"y": 124,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "lamp",
+					"isItem": true
 				}
 			}
 		],

@@ -49,6 +49,18 @@ local function doorCountsOf(template)
 	return counts
 end
 
+-- Resolve a room template by its RoomID (level*100 + roomNumber). Used to pull in the
+-- destination of a PortalDoor; secret rooms are procGen=false so they aren't in the pool.
+local function templateByRoomId(roomId)
+	for _, tmpl in ipairs(levelsLDTK or {}) do
+		local cf = tmpl.customFields
+		if cf and ((cf.level or 0) * 100 + (cf.roomNumber or 0)) == roomId then
+			return tmpl
+		end
+	end
+	return nil
+end
+
 -- Collect generic spawn markers of a given LDtk entity key from a template.
 -- Returns a list of { x=, y=, customFields= } (positions only; identity is assigned
 -- by the generator, not authored).
@@ -87,13 +99,36 @@ local function hasHolesTemplate(template)
 	return false
 end
 
--- Build the pool from levelsLDTK, grouped by role. Only procGen rooms qualify.
--- Returns { start = {...}, normal = {...}, final = {...} }.
+-- True when the player owns every item a template requires. The LDtk field (named
+-- RequiredItems / requiredItems) is an array of PlayerData.items keys needed to traverse
+-- the room. Matching is case-insensitive on both the field name and the values, since
+-- LDtk enums are PascalCase ("HasLamp") while PlayerData.items is camelCase ("hasLamp").
+-- Rooms whose requirements aren't met are excluded from the pool, so the player never
+-- enters a room they can't get through. No requirements → always eligible.
+local function meetsItemRequirements(template)
+	local cf = template.customFields
+	local req = cf and (cf.requiredItems or cf.RequiredItems)
+	if not req then return true end
+	local items = PlayerData.items or {}
+	for _, raw in ipairs(req) do
+		local want = tostring(raw):lower()
+		local owned = false
+		for key, val in pairs(items) do
+			if val == true and key:lower() == want then owned = true; break end
+		end
+		if not owned then return false end
+	end
+	return true
+end
+
+-- Build the pool from levelsLDTK, grouped by role. A room qualifies only when it is a
+-- procGen room AND the player meets its item requirements.
+-- Returns { start = {...}, normal = {...}, final = {...}, startdown = {...}, startup = {...} }.
 function MapGenerator.buildPool()
 	local pool = { start = {}, normal = {}, final = {}, startdown = {}, startup = {} }
 	for _, tmpl in ipairs(levelsLDTK or {}) do
 		local cf = tmpl.customFields or {}
-		if cf.procGen == true then
+		if cf.procGen == true and meetsItemRequirements(tmpl) then
 			local role = (cf.roomRole or "normal"):lower()  -- LDtk enum is capitalized
 			if pool[role] then
 				table.insert(pool[role], tmpl)
@@ -346,6 +381,40 @@ function MapGenerator.generate(progress, entryRole)
 	ensureFeature(placedDark, function(t) return isDark[t] end, function(t) return hasHole[t] end)
 	ensureFeature(placedHole, function(t) return hasHole[t] end, function(t) return isDark[t] end)
 
+	-- 3.5) Secret rooms via PortalDoors. Portals are NOT part of side-connectivity: each
+	-- portal in a placed room pulls in its destination room as a separate node, linked by
+	-- PortalID in both directions (A<->A). Gating (e.g. isTiny) stays in the portal's
+	-- Conditions and is enforced at touch time. Snapshot the count first so we only scan
+	-- the connectivity nodes, not the secret nodes we're adding.
+	local secretByRoomId = {}  -- RoomID -> nodeId (a secret room is one shared node)
+	local mainCount = #graph
+	for hid = 1, mainCount do
+		local host = graph[hid]
+		host.portals = host.portals or {}
+		local portals = host.poolRoom.entities and host.poolRoom.entities.PortalDoors
+		if portals then
+			for _, pd in ipairs(portals) do
+				local cf = pd.customFields or {}
+				local pid = cf.PortalID
+				local destId = (cf.DestLevel or 0) * 100 + (cf.DestRoom or 0)
+				local destTmpl = templateByRoomId(destId)
+				if pid and destTmpl then
+					local secretId = secretByRoomId[destId]
+					if not secretId then
+						secretId = #graph + 1
+						local snode = makeNode(secretId, destTmpl)
+						snode.isSecret = true
+						snode.portals  = {}
+						graph[secretId] = snode
+						secretByRoomId[destId] = secretId
+					end
+					host.portals[pid] = secretId
+					graph[secretId].portals[pid] = hid
+				end
+			end
+		end
+	end
+
 	-- 4) Per-node content: roll which enemies and utilities are active this run,
 	--    reusing the rooms' existing authored entities as spawn markers.
 	for id = 1, #graph do
@@ -391,7 +460,7 @@ function MapGenerator.generate(progress, entryRole)
 	local eligible = {}
 	for id = 1, #graph do
 		local node = graph[id]
-		if id ~= graph.startId and #markersOf(node.poolRoom, "CrewMember") > 0 then
+		if id ~= graph.startId and not node.isSecret and #markersOf(node.poolRoom, "CrewMember") > 0 then
 			table.insert(eligible, node)
 		end
 	end
