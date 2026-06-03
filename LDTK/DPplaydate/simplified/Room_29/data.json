@@ -47,7 +47,7 @@
 			"Upper"
 		],
 		"play": null,
-		"procGen": false,
+		"procGen": true,
 		"roomRole": "Normal"
 	},
 	"layers": [

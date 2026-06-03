@@ -362,19 +362,22 @@ function scene:enter()
 		PlayerData.isInDarkness = false
 	end
 	
+	-- Story cutscenes play once ever, tracked persistently by comic_name in PlayerData
+	-- (rooms are reused templates across runs, so a per-room flag can't persist this).
+	PlayerData.seenComics = PlayerData.seenComics or {}
 	local cf = levelsLDTK[room].customFields
 	if cf.comic_name then
 		local comicData = comics[cf.comic_name]
-		if comicData then
-			if cf.play == "Enter" and cf.comic_wasPlayed == false then
+		if comicData and not PlayerData.seenComics[cf.comic_name] then
+			if cf.play == "Enter" then
 				PlayerData.isCutscene = true
 				PlayerData.isGaming = false
 			end
-			
+
 			Panels.startCutscene(comicData, function()
 				PlayerData.isGaming = true
 				PlayerData.isCutscene = false
-				levelsLDTK[room].customFields.comic_wasPlayed = true
+				PlayerData.seenComics[cf.comic_name] = true
 				Utilities.checkStoryAchievement(cf.comic_name)
 			end)
 		end
@@ -547,16 +550,27 @@ function scene:exit()
 	
 end
 
+-- Capture the player's live position so Continue resumes exactly where the run was
+-- left (used together with returningInPlace in TitleScene's Continue action).
+local function captureResumePosition()
+	if player then
+		PlayerData.playerSpawn.x = player.x
+		PlayerData.playerSpawn.y = player.y
+	end
+end
+
 -- This runs once a transition to another scene completes.
 function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
 	PlayerData.isGaming = false
+	captureResumePosition()
 	SaveSystem.save()
 end
 
 function scene:pause()
 	scene.super.pause(self)
+	captureResumePosition()
 	SaveSystem.save()
 end
 

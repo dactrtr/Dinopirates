@@ -1,219 +1,34 @@
--- Create a new module for save management
+-- SaveSystem: persistence for the procedural roguelike (version "3.0-PROCGEN").
+--
+-- Two things are saved:
+--   * player — the whole PlayerData blob (meta that persists across runs: items,
+--     skills, CrewMemberData, sanityCounter, ...; plus the run-local player state so
+--     Continue resumes exactly where you left off).
+--   * run    — the active run graph (see RunState.serialize): nodes reference their
+--     room template by uniqueIdentifer, with per-run content/cleared deltas.
+--
+-- The old per-iid levelState model is gone: entity state now lives per-run inside the
+-- graph nodes, so there is nothing to write back onto levelsLDTK.
 SaveSystem = {}
 
--------------------------------------------------------------
--- Extract necessary level data
--------------------------------------------------------------
---- Extrae el estado actual de todos los niveles para guardado
--- @return table Estado serializable de todos los niveles
-function SaveSystem.getLevelState()
-    local levelState = {}
-
-    for i, level in ipairs(levelsLDTK) do
-        levelState[i] = {
-            identifier = level.identifier,
-            uniqueIdentifer = level.uniqueIdentifer,
-
-            visited = level.customFields.visited or false,
-            comic_wasPlayed = level.customFields.comic_wasPlayed or false,
-
-            entities = {}
-        }
-
-        if level.entities then
-            for entityType, entitiesList in pairs(level.entities) do
-                levelState[i].entities[entityType] = {}
-
-                for _, entity in ipairs(entitiesList) do
-                    local entityState = {
-                        iid = entity.iid
-                    }
-
-                    if entity.customFields then
-                        -- Enemies
-                        if entityType == "Brocorat" or entityType == "Bosscolli" then
-                            entityState.dead = entity.customFields.dead or false
-                            entityState.speed = entity.customFields.speed
-                            entityState.x = entity.x
-                            entityState.y = entity.y
-                        end
-
-                        -- Props
-                        if entity.customFields.destroyed ~= nil then
-                            entityState.destroyed = entity.customFields.destroyed
-                        end
-
-                        -- CrewMembers
-                        if entityType == "CrewMember" then
-                            entityState.isTaken = entity.customFields.isTaken or false
-                            entityState.crewID = entity.customFields.crewID
-                        end
-
-                        -- Items
-                        if entity.customFields.isItem == true then
-                            entityState.collected = entity.customFields.collected or false
-                        end
-
-                        -- Triggers
-                        if entityType == "Triggers" then
-                            entityState.type = entity.customFields.type
-                            entityState.script = entity.customFields.script
-                            entityState.usedTrigger = entity.customFields.usedTrigger or false
-                        end
-
-                        -- NPCs
-                        if entityType == "NPC" then
-                            entityState.hasGranted = entity.customFields.hasGranted or false
-                        end
-                    end
-
-                    table.insert(levelState[i].entities[entityType], entityState)
-                end
-            end
-        end
-    end
-
-    return levelState
-end
-
+local SAVE_VERSION = "3.0-PROCGEN"
 
 -------------------------------------------------------------
--- Restore level state (Corregido)
+-- Save
 -------------------------------------------------------------
---- Restaura el estado de los niveles desde datos guardados
--- @param levelState table Estado de niveles previamente guardado
-function SaveSystem.restoreLevelState(levelState)
-    if not levelState then return end
-
-    for i, state in ipairs(levelState) do
-        if levelsLDTK[i] then
-
-            -- Check uniqueIdentifer in case order changed
-            if levelsLDTK[i].uniqueIdentifer ~= state.uniqueIdentifer then
-                
-                for j, level in ipairs(levelsLDTK) do
-                    if level.uniqueIdentifer == state.uniqueIdentifer then
-                        
-                        i = j
-                        break
-                    end
-                end
-            end
-
-            -- Restore simple fields
-            if levelsLDTK[i].customFields then
-                levelsLDTK[i].customFields.visited = state.visited
-                levelsLDTK[i].customFields.comic_wasPlayed = state.comic_wasPlayed
-            end
-
-            if not (state.entities and levelsLDTK[i].entities) then
-                goto continue
-            end
-
-            -------------------------------------------------
-            -- ENTITY RESTORATION (with Trigger fallback)
-            -------------------------------------------------
-            for entityType, savedEntities in pairs(state.entities) do
-                local targetList = levelsLDTK[i].entities[entityType]
-
-                if targetList then
-                    for _, savedEntity in ipairs(savedEntities) do
-                        for _, currentEntity in ipairs(targetList) do
-                            if currentEntity.iid == savedEntity.iid then
-                                
-                                if currentEntity.customFields then
-                                    -- Enemies
-                                    if savedEntity.dead ~= nil then
-                                        currentEntity.customFields.dead = savedEntity.dead
-                                    end
-                                    if savedEntity.speed then
-                                        currentEntity.customFields.speed = savedEntity.speed
-                                    end
-                                    if savedEntity.x and savedEntity.y then
-                                        currentEntity.x = savedEntity.x
-                                        currentEntity.y = savedEntity.y
-                                    end
-
-                                    -- Props
-                                    if savedEntity.destroyed ~= nil then
-                                        currentEntity.customFields.destroyed = savedEntity.destroyed
-                                    end
-
-                                    -- CrewMembers
-                                    if savedEntity.isTaken ~= nil then
-                                        currentEntity.customFields.isTaken = savedEntity.isTaken
-                                    end
-
-                                    -- Triggers (fix)
-                                    if savedEntity.usedTrigger ~= nil then
-                                        currentEntity.customFields.usedTrigger = savedEntity.usedTrigger
-                                    end
-                                    if savedEntity.type then
-                                        currentEntity.customFields.type = savedEntity.type
-                                    end
-                                    if savedEntity.script then
-                                        currentEntity.customFields.script = savedEntity.script
-                                    end
-                                    
-                                    -- Items
-                                    if savedEntity.collected ~= nil then
-                                        currentEntity.customFields.collected = savedEntity.collected
-                                    end
-
-                                    -- NPCs
-                                    if savedEntity.hasGranted ~= nil then
-                                        currentEntity.customFields.hasGranted = savedEntity.hasGranted
-                                    end
-                                end
-                                break
-                            end
-                        end
-                    end
-                end
-            end
-            ::continue::
-        end
-    end
-end
-
-
--------------------------------------------------------------
--- Save (Fixed: using datastore correctly)
--------------------------------------------------------------
---- Guarda el estado completo del juego en datastore
--- @return boolean true si el guardado fue exitoso, false en caso contrario
+--- Saves PlayerData + the active run graph to the datastore.
+-- @return boolean true on success.
 function SaveSystem.save()
     local saveData = {
-        player = PlayerData,
-        levelState = SaveSystem.getLevelState(),
+        player    = PlayerData,
+        run       = RunState.serialize(),
         timestamp = playdate.getTime(),
-        version = "2.0-LDTK"
+        version   = SAVE_VERSION,
     }
 
-    -- Debug: Count triggers being saved
-    local triggerCount = 0
-    local usedTriggerCount = 0
-    for _, level in ipairs(saveData.levelState) do
-        if level.entities then
-            for entityType, entities in pairs(level.entities) do
-                for _, entity in ipairs(entities) do
-                    if entity.usedTrigger ~= nil or entity.type or entity.script then
-                        triggerCount = triggerCount + 1
-                        if entity.usedTrigger then
-                            usedTriggerCount = usedTriggerCount + 1
-                        end
-                    end
-                end
-            end
-        end
-    end
-    
-
-    -- Write to datastore (no .json extension needed)
     local success = playdate.datastore.write(saveData, 'gameState', true)
-    
     if success ~= false then
-        printDebug("💾 Game saved successfully")
+        printDebug("💾 Game saved (" .. SAVE_VERSION .. ")")
         return true
     else
         printDebug("❌ Failed to save game")
@@ -223,55 +38,40 @@ end
 
 
 -------------------------------------------------------------
--- Load (Fixed: proper error handling)
+-- Load
 -------------------------------------------------------------
---- Carga el estado del juego desde datastore
--- @return boolean, number|nil true si se cargó exitosamente, número de nivel guardado
+--- Loads PlayerData and rebuilds the active run graph.
+-- @return boolean true if a compatible save was loaded and the run restored.
 function SaveSystem.load()
     local saveData = playdate.datastore.read('gameState')
-    
-    if saveData then
-        if saveData.version == "2.0-LDTK" then
-            PlayerData = saveData.player
-            
-            -- Debug: Count triggers being loaded
-            local triggerCount = 0
-            local usedTriggerCount = 0
-            for _, level in ipairs(saveData.levelState) do
-                if level.entities then
-                    for entityType, entities in pairs(level.entities) do
-                        for _, entity in ipairs(entities) do
-                            if entity.usedTrigger ~= nil or entity.type or entity.script then
-                                triggerCount = triggerCount + 1
-                                if entity.usedTrigger then
-                                    usedTriggerCount = usedTriggerCount + 1
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-            
-            
-            SaveSystem.restoreLevelState(saveData.levelState)
-            
-            return true, saveData.player.saveLevel
-        else
-            printDebug("⚠️ Old save format detected, migration needed")
-            return false, nil
-        end
+    if not saveData then
+        printDebug("🔭 No save file found")
+        return false
     end
 
-    printDebug("🔭 No save file found")
-    return false, nil
+    if saveData.version ~= SAVE_VERSION then
+        printDebug("⚠️ Incompatible save version: " .. tostring(saveData.version))
+        return false
+    end
+
+    PlayerData = saveData.player
+
+    if not RunState.deserialize(saveData.run) then
+        printDebug("❌ Failed to restore run graph from save")
+        return false
+    end
+
+    printDebug("💾 Game loaded (" .. SAVE_VERSION .. ")")
+    return true
 end
 
 
 -------------------------------------------------------------
--- Reset (Resets to original state without deleting file)
+-- Reset (in-memory reset without deleting the save file)
 -------------------------------------------------------------
 function SaveSystem.reset()
     ResetPlayerData()
+    RunState.clear()
     if levelsLDTKOriginal then
         levelsLDTK = table.deepcopy(levelsLDTKOriginal)
     end
@@ -280,21 +80,18 @@ end
 
 
 -------------------------------------------------------------
--- Delete save (Fixed: using correct datastore delete)
+-- Delete (wipes everything: save file + meta + active run)
 -------------------------------------------------------------
 function SaveSystem.delete()
-    -- Use datastore.delete instead of file.delete
     local success = playdate.datastore.delete('gameState')
-    
     if success ~= false then
         printDebug("🗑️ Save deleted successfully")
     else
         printDebug("⚠️ Could not delete save file (may not exist)")
     end
-    
-    -- Reset to original state
-    ResetPlayerData()
 
+    ResetPlayerData()
+    RunState.clear()
     if levelsLDTKOriginal then
         levelsLDTK = table.deepcopy(levelsLDTKOriginal)
     end
@@ -302,7 +99,7 @@ end
 
 
 -------------------------------------------------------------
--- Backup original level data
+-- Backup original level data (deep copy of the immutable templates)
 -------------------------------------------------------------
 function SaveSystem.createOriginalBackup()
     if not levelsLDTKOriginal then

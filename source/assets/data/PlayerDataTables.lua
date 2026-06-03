@@ -44,6 +44,7 @@ local DefaultPlayerData = {
 	isActive = false, -- makes npc moves while charges the battery
 	isTalking = false,
 	isCutscene = false,
+	seenComics = {},  -- story cutscenes already watched, keyed by comic_name (persists across runs; wiped on delete)
 	isFocused = false,
 	isCharging = false,
 	isEquiping = false,

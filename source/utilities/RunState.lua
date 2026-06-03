@@ -74,4 +74,76 @@ function RunState.revealFinalRoom()
 	printDebug("⚠️ revealFinalRoom: no free door side to attach the final room")
 end
 
+-- Clear the active run (used on delete / reset).
+function RunState.clear()
+	RunState.graph = nil
+	RunState.currentNodeId = nil
+	RunState.pendingNodeId = nil
+end
+
+-- Serialize the active run into a plain, datastore-safe table. Nodes store their
+-- template by uniqueIdentifer (not the template table itself), since templates are
+-- immutable and live in levelsLDTK. content/cleared/edges are plain data already.
+function RunState.serialize()
+	local g = RunState.graph
+	if not g then return nil end
+	local nodes = {}
+	for i = 1, #g do
+		local n = g[i]
+		nodes[i] = {
+			id         = n.id,
+			roomUid    = n.poolRoom and n.poolRoom.uniqueIdentifer,
+			edges      = n.edges,
+			doorCounts = n.doorCounts,
+			freeSides  = n.freeSides,
+			content    = n.content,
+			cleared    = n.cleared,
+		}
+	end
+	return {
+		currentNodeId = RunState.currentNodeId,
+		startId       = g.startId,
+		finalReserved = g.finalReserved,
+		nodes         = nodes,
+	}
+end
+
+-- Rebuild the active run from serialized data. Re-links each node's poolRoom from its
+-- uniqueIdentifer against the live levelsLDTK templates, and stages currentNodeId as
+-- pending so the next MazeScene:enter lands on it. Returns true on success.
+function RunState.deserialize(data)
+	if not data or not data.nodes then return false end
+
+	local byUid = {}
+	for _, tmpl in ipairs(levelsLDTK or {}) do
+		if tmpl.uniqueIdentifer then byUid[tmpl.uniqueIdentifer] = tmpl end
+	end
+
+	local graph = {}
+	for i = 1, #data.nodes do
+		local sn = data.nodes[i]
+		local template = sn.roomUid and byUid[sn.roomUid]
+		if not template then
+			printDebug("⚠️ RunState.deserialize: no template for uid " .. tostring(sn.roomUid))
+			return false
+		end
+		graph[i] = {
+			id         = sn.id or i,
+			poolRoom   = template,
+			edges      = sn.edges or {},
+			doorCounts = sn.doorCounts or {},
+			freeSides  = sn.freeSides or {},
+			content    = sn.content or {},
+			cleared    = sn.cleared or {},
+		}
+	end
+	graph.startId       = data.startId
+	graph.finalReserved = data.finalReserved
+
+	RunState.graph         = graph
+	RunState.currentNodeId = nil
+	RunState.pendingNodeId = data.currentNodeId or data.startId
+	return true
+end
+
 return RunState

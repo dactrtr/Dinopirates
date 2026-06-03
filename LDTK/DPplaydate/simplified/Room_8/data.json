@@ -12,10 +12,6 @@
 			"dir": "<"
 		},
 		{
-			"levelIid": "bab17c70-ac70-11f0-997a-85b3d3c5d229",
-			"dir": "nw"
-		},
-		{
 			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
 			"dir": "n"
 		},
@@ -52,7 +48,7 @@
 		],
 		"play": "Cutscene",
 		"procGen": true,
-		"roomRole": "Start"
+		"roomRole": "Normal"
 	},
 	"layers": [
 		"Gameplay.png",

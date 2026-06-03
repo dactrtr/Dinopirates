@@ -204,22 +204,18 @@ function scene:enter()
 				selectedState = 'selContinue',
 				backgroundState = 'continue',
 				action = function()
-					local success, savedLevel = SaveSystem.load()
-					if success and savedLevel then
-						printDebug("📍 Cargando nivel guardado:", savedLevel)
-						local nextScene = RoomTranslate(savedLevel)
-						if nextScene then
-							PlayerData.fromTitle = true
-							Noble.transition(nextScene, 1, Noble.Transition.Spotlight, {
-								x = 200, y = 120,
-								xExit = PlayerData.playerSpawn.x,
-								yExit = PlayerData.playerSpawn.y,
-								holdTime = 0.25, ease = Ease.outInQuad
-							})
-						else
-							printDebug("❌ ERROR: No se encontró la escena Floor" .. savedLevel)
-							Noble.transition(Floor120, 1, Noble.Transition.Default)
-						end
+					-- Continue restores the active procedural run and resumes inside the
+					-- saved node at the saved player position (returningInPlace skips the
+					-- door-spawn so MazeScene keeps PlayerData.playerSpawn as-is).
+					if SaveSystem.load() and RunState.graph then
+						PlayerData.fromTitle = true
+						PlayerData.returningInPlace = true
+						Noble.transition(MazeScene, 1, Noble.Transition.Spotlight, {
+							x = 200, y = 120,
+							xExit = PlayerData.playerSpawn.x,
+							yExit = PlayerData.playerSpawn.y,
+							holdTime = 0.25, ease = Ease.outInQuad
+						})
 					else
 						printDebug("❌ Error cargando el save")
 					end
