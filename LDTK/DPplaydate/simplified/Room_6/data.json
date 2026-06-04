@@ -20,10 +20,6 @@
 			"dir": "<"
 		},
 		{
-			"levelIid": "ae5a31c0-ac70-11f0-9560-a1abd660ccf1",
-			"dir": "<"
-		},
-		{
 			"levelIid": "69eb2d80-ac70-11f0-989f-95306126bd74",
 			"dir": "n"
 		}
@@ -53,38 +49,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"Food": [
-			{
-				"id": "Food",
-				"iid": "2c912b60-48b0-11f1-98a2-237b406adb30",
-				"layer": "Items_and_Props",
-				"x": 148,
-				"y": 44,
-				"width": 32,
-				"height": 32,
-				"color": 16151930,
-				"customFields": {
-					"type": "food",
-					"grants": "hasitemname:bool",
-					"isItem": true
-				}
-			},
-			{
-				"id": "Food",
-				"iid": "2cc90440-48b0-11f1-98a2-7135a5e7f2fa",
-				"layer": "Items_and_Props",
-				"x": 340,
-				"y": 116,
-				"width": 32,
-				"height": 32,
-				"color": 16151930,
-				"customFields": {
-					"type": "food",
-					"grants": "hasitemname:bool",
-					"isItem": true
-				}
-			}
-		],
 		"Doors": [
 			{
 				"id": "Doors",

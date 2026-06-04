@@ -1,12 +1,21 @@
 {
 	"identifier": "Room_81",
 	"uniqueIdentifer": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
-	"x": 800,
-	"y": -240,
+	"x": -640,
+	"y": 272,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [],
+	"neighbourLevels": [
+		{
+			"levelIid": "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
+			"dir": "s"
+		}
+	],
 	"customFields": {
 		"shadow": false,
 		"light": 0,

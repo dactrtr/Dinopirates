@@ -1,27 +1,19 @@
 {
 	"identifier": "Room_9",
 	"uniqueIdentifer": "dab87dc0-ac70-11f0-997a-63497867517d",
-	"x": 1600,
-	"y": 240,
+	"x": -240,
+	"y": 752,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "43980cc0-ac70-11f0-998c-a70f320b4eb0",
-			"dir": "<"
-		},
-		{
-			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-			"dir": "n"
+			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
+			"dir": "nw"
 		},
 		{
 			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
 			"dir": "w"
-		},
-		{
-			"levelIid": "6de95960-ac70-11f0-998c-e3108c5f25c9",
-			"dir": "sw"
 		}
 	],
 	"customFields": {
@@ -228,21 +220,6 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "104fb470-fa90-11f0-9039-f5ad4ff8081c",
-				"layer": "Doors",
-				"x": 4,
-				"y": 128,
-				"width": 8,
-				"height": 32,
-				"color": 7552569,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Left",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
 				"iid": "d524fbd0-48b0-11f1-98a2-bdd7901b9007",
 				"layer": "Doors",
 				"x": 336,
@@ -253,6 +230,21 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "d7770400-48b0-11f1-89a8-99487610e8bd",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
 					"KeyNumber": null
 				}
 			}

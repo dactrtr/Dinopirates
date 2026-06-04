@@ -1,29 +1,12 @@
 {
 	"identifier": "Room_13",
 	"uniqueIdentifer": "715b4410-ac70-11f0-997a-156adb22b715",
-	"x": 800,
-	"y": 480,
+	"x": -640,
+	"y": 1104,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "4cf534a4-ac70-11f0-998c-6712312c62dc",
-			"dir": "<"
-		},
-		{
-			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
-			"dir": "ne"
-		},
-		{
-			"levelIid": "6cc9d510-ac70-11f0-997a-191299f9209c",
-			"dir": "w"
-		},
-		{
-			"levelIid": "6de95960-ac70-11f0-998c-e3108c5f25c9",
-			"dir": "e"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": true,
 		"light": 0.7,
@@ -52,60 +35,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"Triggers": [
-			{
-				"id": "Triggers",
-				"iid": "f5c64900-fa90-11f0-bb17-3998f48db633",
-				"layer": "Triggers",
-				"x": 268,
-				"y": 36,
-				"width": 24,
-				"height": 56,
-				"color": 16711748,
-				"customFields": {
-					"script": "secondCall",
-					"usedTrigger": false,
-					"type": "Story",
-					"mapPercent": 0,
-					"conditionalScripts": []
-				}
-			}
-		],
-		"CrewMember": [
-			{
-				"id": "CrewMember",
-				"iid": "4880f490-48b0-11f1-98a2-573ffd87a6d6",
-				"layer": "CM_and_enemies",
-				"x": 68,
-				"y": 164,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
-				"customFields": {
-					"isTaken": false,
-					"crewID": "100",
-					"forceSpawn": false
-				}
-			}
-		],
-		"Minifier": [
-			{
-				"id": "Minifier",
-				"iid": "a3e6f9f0-48b0-11f1-98a2-35cfb5791afd",
-				"layer": "Items_and_Props",
-				"x": 164,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 2943221,
-				"customFields": {
-					"type": "minifier",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": false
-				}
-			}
-		],
 		"Doors": [
 			{
 				"id": "Doors",

@@ -1,12 +1,21 @@
 {
 	"identifier": "Room_11",
 	"uniqueIdentifer": "68b425c0-ac70-11f0-997a-7732cd72a5cc",
-	"x": 416,
-	"y": 960,
+	"x": 128,
+	"y": 480,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [],
+	"neighbourLevels": [
+		{
+			"levelIid": "46b2e150-ac70-11f0-998c-232538b976f9",
+			"dir": "<"
+		},
+		{
+			"levelIid": "4a0bd050-ac70-11f0-998c-b14d359446e6",
+			"dir": "<"
+		}
+	],
 	"customFields": {
 		"shadow": true,
 		"light": 0.2,

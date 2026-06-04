@@ -1,8 +1,8 @@
 {
 	"identifier": "Room_2",
 	"uniqueIdentifer": "bab17c70-ac70-11f0-997a-85b3d3c5d229",
-	"x": -400,
-	"y": 720,
+	"x": -1040,
+	"y": 512,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
@@ -12,8 +12,16 @@
 			"dir": "e"
 		},
 		{
+			"levelIid": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+			"dir": "ne"
+		},
+		{
 			"levelIid": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
 			"dir": "s"
+		},
+		{
+			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
+			"dir": "se"
 		}
 	],
 	"customFields": {
@@ -31,7 +39,7 @@
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Start",
+		"roomRole": "Normal",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -225,6 +233,24 @@
 					"type": "box",
 					"nocollider": false,
 					"destroyed": false
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "a6eb3090-48b0-11f1-89a8-87e2ffc3bcd6",
+				"layer": "Items_and_Props",
+				"x": 44,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
 				}
 			}
 		],

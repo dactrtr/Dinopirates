@@ -1,29 +1,12 @@
 {
 	"identifier": "Room_14",
 	"uniqueIdentifer": "6de95960-ac70-11f0-998c-e3108c5f25c9",
-	"x": 1200,
-	"y": 480,
+	"x": -192,
+	"y": 1104,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "50a125a0-ac70-11f0-998c-f3b70b95a9ac",
-			"dir": "<"
-		},
-		{
-			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
-			"dir": "n"
-		},
-		{
-			"levelIid": "dab87dc0-ac70-11f0-997a-63497867517d",
-			"dir": "ne"
-		},
-		{
-			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
-			"dir": "w"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": true,
 		"light": 0.2,
@@ -79,6 +62,36 @@
 					"dead": false,
 					"forceSpawn": false
 				}
+			},
+			{
+				"id": "Brocorat",
+				"iid": "13612f10-48b0-11f1-89a8-a96cd1fd0c52",
+				"layer": "CM_and_enemies",
+				"x": 260,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
+					"forceSpawn": false
+				}
+			},
+			{
+				"id": "Brocorat",
+				"iid": "1453a560-48b0-11f1-89a8-9ffcad6aca86",
+				"layer": "CM_and_enemies",
+				"x": 132,
+				"y": 84,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
+					"forceSpawn": false
+				}
 			}
 		],
 		"Microwave": [
@@ -99,24 +112,6 @@
 				}
 			}
 		],
-		"Minifier": [
-			{
-				"id": "Minifier",
-				"iid": "9c841b70-48b0-11f1-98a2-8f86e11e989b",
-				"layer": "Items_and_Props",
-				"x": 324,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 2943221,
-				"customFields": {
-					"type": "minifier",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": false
-				}
-			}
-		],
 		"TubeExit": [
 			{
 				"id": "TubeExit",
@@ -131,6 +126,23 @@
 					"type": "TubeExit",
 					"nocollider": false,
 					"destroyed": false
+				}
+			}
+		],
+		"Food": [
+			{
+				"id": "Food",
+				"iid": "0fde22d0-48b0-11f1-89a8-f9bfd4710570",
+				"layer": "Items_and_Props",
+				"x": 44,
+				"y": 76,
+				"width": 32,
+				"height": 32,
+				"color": 16151930,
+				"customFields": {
+					"type": "food",
+					"grants": "hasitemname:bool",
+					"isItem": true
 				}
 			}
 		],

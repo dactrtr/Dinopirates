@@ -1,8 +1,8 @@
 {
 	"identifier": "Room_7",
 	"uniqueIdentifer": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
-	"x": -400,
-	"y": 960,
+	"x": -1040,
+	"y": 752,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
@@ -14,6 +14,10 @@
 		{
 			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
 			"dir": "ne"
+		},
+		{
+			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
+			"dir": "e"
 		}
 	],
 	"customFields": {
@@ -30,7 +34,7 @@
 		],
 		"play": "Enter",
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "Start",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
