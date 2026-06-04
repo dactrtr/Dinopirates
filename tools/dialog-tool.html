@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DinoPirates · Dialog Tool</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, system-ui, sans-serif; margin: 0; background: #1c1c1c; color: #e8e8e8; font-size: 14px; }
+  header { background: #111; padding: 8px 16px; display: flex; gap: 4px; align-items: center; border-bottom: 1px solid #333; flex-wrap: wrap; }
+  header h1 { font-size: 15px; margin: 0 16px 0 0; color: #8fd; }
+  .tab { background: #2a2a2a; border: 1px solid #3a3a3a; color: #ccc; padding: 6px 14px; cursor: pointer; border-radius: 5px; }
+  .tab.active { background: #3a5; color: #fff; border-color: #3a5; }
+  main { padding: 16px; }
+  button { cursor: pointer; background: #2f6f4f; color: #fff; border: none; padding: 6px 12px; border-radius: 5px; font-size: 13px; }
+  button:hover { background: #3a8a62; }
+  button.sec { background: #444; }
+  button.sec:hover { background: #555; }
+  button.danger { background: #8a3a3a; }
+  button.danger:hover { background: #a04444; }
+  button.tiny { padding: 2px 7px; font-size: 12px; }
+  input, select, textarea { background: #2a2a2a; color: #eee; border: 1px solid #444; border-radius: 4px; padding: 5px 7px; font-size: 13px; font-family: inherit; }
+  textarea { width: 100%; resize: vertical; }
+  label { display: block; font-size: 11px; color: #999; margin: 8px 0 2px; text-transform: uppercase; letter-spacing: .5px; }
+  .row { display: flex; gap: 16px; align-items: flex-start; }
+  .sidebar { width: 230px; flex-shrink: 0; border-right: 1px solid #333; padding-right: 16px; max-height: 80vh; overflow-y: auto; }
+  .sidebar .item { padding: 6px 8px; border-radius: 4px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .sidebar .item:hover { background: #2a2a2a; }
+  .sidebar .item.active { background: #2f6f4f; }
+  .sidebar .item small { color: #888; }
+  .editor { flex: 1; min-width: 0; }
+  .line { background: #242424; border: 1px solid #383838; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
+  .line-head { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+  .line-head .idx { color: #777; font-size: 12px; width: 22px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #383838; padding: 4px 6px; text-align: left; }
+  th { background: #2a2a2a; font-size: 12px; }
+  td input { width: 100%; border: none; background: transparent; }
+  .out { width: 100%; height: 320px; font-family: ui-monospace, Menlo, monospace; font-size: 12px; white-space: pre; }
+  .muted { color: #888; font-size: 12px; }
+  .toolbar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+  .pill { background: #333; border-radius: 10px; padding: 1px 8px; font-size: 11px; color: #aaa; }
+  .warn { color: #e8a; }
+  .ok { color: #8e8; }
+  code { background: #333; padding: 1px 5px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🦖 Dialog Tool</h1>
+  <button class="tab active" data-tab="dialogs">Diálogos</button>
+  <button class="tab" data-tab="strings">Strings</button>
+  <button class="tab" data-tab="cond">Condicionales</button>
+  <button class="tab" data-tab="data">Importar / Exportar</button>
+  <span class="pill" id="savedPill" style="margin-left:auto">guardado automático</span>
+</header>
+<main id="main"></main>
+
+<script>
+// ---------- Constants ----------
+const VIDEO_STATES = ['player','playerWorry','playerSurprise','playerHappy','playerAngry','playerSleepy','playerScared','playerCry','radioHand','radioPocket','radioRing','notesHand'];
+const BOOL_PATHS = ['isTiny','items.hasLamp','items.hasBoots','items.hasRadio','items.hasBag','items.hasPlunger','items.hasDWatch','keys[1]','keys[2]','keys[3]'];
+const NUM_PATHS = ['mapPercent','battery','healthPoints','storyCounter'];
+const OPS = ['>','<','>=','<=','==','!='];
+const LS_KEY = 'dinopirates-dialog-tool-v1';
+
+// ---------- State ----------
+let state = {
+  scripts: [],          // [{name, lines:[{video,text,screen}]}]
+  strings: { en:{}, jp:{} },  // {key: text}
+  cond: [],             // builder rows
+  selected: 0,
+};
+let activeTab = 'dialogs';
+
+function load() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) state = Object.assign(state, JSON.parse(raw));
+  } catch(e) { console.warn('load failed', e); }
+}
+function save() {
+  localStorage.setItem(LS_KEY, JSON.stringify(state));
+  const p = document.getElementById('savedPill');
+  if (p) { p.textContent = 'guardado ✓'; p.classList.add('ok'); clearTimeout(save._t); save._t = setTimeout(()=>{ p.textContent='guardado automático'; p.classList.remove('ok'); }, 1200); }
+}
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ---------- Tabs ----------
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  activeTab = t.dataset.tab;
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x===t));
+  render();
+}));
+
+function render() {
+  const m = document.getElementById('main');
+  if (activeTab==='dialogs') renderDialogs(m);
+  else if (activeTab==='strings') renderStrings(m);
+  else if (activeTab==='cond') renderCond(m);
+  else renderData(m);
+}
+
+// ================= DIALOGS =================
+function renderDialogs(m) {
+  if (state.selected >= state.scripts.length) state.selected = Math.max(0, state.scripts.length-1);
+  const s = state.scripts[state.selected];
+
+  let side = `<div class="toolbar"><button onclick="addScript()">+ Nuevo</button></div>`;
+  side += state.scripts.map((sc,i)=>`
+    <div class="item ${i===state.selected?'active':''}" onclick="selectScript(${i})">
+      <span>${esc(sc.name)||'<i>sin nombre</i>'}</span><small>${sc.lines.length}</small>
+    </div>`).join('') || '<p class="muted">No hay diálogos. Importa o crea uno.</p>';
+
+  let ed = '';
+  if (s) {
+    ed = `<div class="toolbar">
+      <input style="font-size:15px;width:280px" value="${esc(s.name)}" placeholder="name del script" oninput="setName(this.value)">
+      <button class="sec" onclick="dupScript()">Duplicar</button>
+      <button class="danger" onclick="delScript()">Borrar script</button>
+      <span class="muted">referencia este name desde Triggers / NPCs</span>
+    </div>`;
+    ed += s.lines.map((ln,i)=>lineHTML(ln,i,s.lines.length)).join('');
+    ed += `<button onclick="addLine()">+ Añadir línea</button>`;
+  } else {
+    ed = '<p class="muted">Selecciona o crea un diálogo.</p>';
+  }
+
+  m.innerHTML = `<div class="row"><div class="sidebar">${side}</div><div class="editor">${ed}</div></div>`;
+}
+
+function lineHTML(ln, i, total) {
+  const opts = VIDEO_STATES.map(v=>`<option ${v===ln.video?'selected':''}>${v}</option>`).join('');
+  const en = state.strings.en[ln.text] ?? '';
+  const jp = state.strings.jp[ln.text] ?? '';
+  return `<div class="line">
+    <div class="line-head">
+      <span class="idx">#${i+1}</span>
+      <select onchange="setLine(${i},'video',this.value)" style="width:150px">${opts}</select>
+      <input value="${esc(ln.text)}" placeholder="text key (ej: mygift-01)" style="width:200px"
+             oninput="setKey(${i},this.value)">
+      <span style="margin-left:auto"></span>
+      <button class="tiny sec" onclick="moveLine(${i},-1)" ${i===0?'disabled':''}>↑</button>
+      <button class="tiny sec" onclick="moveLine(${i},1)" ${i===total-1?'disabled':''}>↓</button>
+      <button class="tiny danger" onclick="delLine(${i})">✕</button>
+    </div>
+    <div class="grid2">
+      <div><label>Texto EN</label><textarea rows="2" oninput="setString('en','${esc(ln.text)}',this.value)" ${ln.text?'':'disabled'}>${esc(en)}</textarea></div>
+      <div><label>Texto JP</label><textarea rows="2" oninput="setString('jp','${esc(ln.text)}',this.value)" ${ln.text?'':'disabled'}>${esc(jp)}</textarea></div>
+    </div>
+    <label>screen (ruta imagen, opcional)</label>
+    <input style="width:100%" value="${esc(ln.screen||'')}" placeholder="assets/images/ui/dialog/img/file.png"
+           oninput="setLine(${i},'screen',this.value)">
+  </div>`;
+}
+
+window.selectScript = i => { state.selected=i; save(); render(); };
+window.addScript = () => { state.scripts.push({name:'newScript',lines:[{video:'player',text:'',screen:''}]}); state.selected=state.scripts.length-1; save(); render(); };
+window.dupScript = () => { const s=JSON.parse(JSON.stringify(state.scripts[state.selected])); s.name+='_copy'; state.scripts.splice(state.selected+1,0,s); state.selected++; save(); render(); };
+window.delScript = () => { if(confirm('¿Borrar este script?')){ state.scripts.splice(state.selected,1); save(); render(); } };
+window.setName = v => { state.scripts[state.selected].name=v; save(); document.querySelectorAll('.sidebar .item')[state.selected].firstElementChild.textContent=v||'sin nombre'; };
+window.addLine = () => { state.scripts[state.selected].lines.push({video:'player',text:'',screen:''}); save(); render(); };
+window.delLine = i => { state.scripts[state.selected].lines.splice(i,1); save(); render(); };
+window.moveLine = (i,d) => { const a=state.scripts[state.selected].lines; const j=i+d; if(j<0||j>=a.length)return; [a[i],a[j]]=[a[j],a[i]]; save(); render(); };
+window.setLine = (i,k,v) => { state.scripts[state.selected].lines[i][k]=v; save(); };
+window.setKey = (i,v) => { state.scripts[state.selected].lines[i].text=v; if(v && !(v in state.strings.en)) state.strings.en[v]=''; save(); render(); };
+window.setString = (lang,key,v) => { if(key) state.strings[lang][key]=v; save(); };
+
+// ================= STRINGS =================
+function renderStrings(m) {
+  const keys = Object.keys(state.strings.en);
+  // include jp-only keys too
+  Object.keys(state.strings.jp).forEach(k=>{ if(!keys.includes(k)) keys.push(k); });
+  const used = new Set();
+  state.scripts.forEach(s=>s.lines.forEach(l=>used.add(l.text)));
+
+  let rows = keys.map(k=>`<tr>
+    <td style="width:30px;text-align:center">${used.has(k)?'<span class="ok" title="usado en un diálogo">●</span>':'<span class="muted" title="no usado">○</span>'}</td>
+    <td style="width:200px"><input value="${esc(k)}" onchange="renameKey('${esc(k)}',this.value)"></td>
+    <td><input value="${esc(state.strings.en[k]??'')}" oninput="setStr('en','${esc(k)}',this.value)"></td>
+    <td><input value="${esc(state.strings.jp[k]??'')}" oninput="setStr('jp','${esc(k)}',this.value)"></td>
+    <td style="width:30px"><button class="tiny danger" onclick="delKey('${esc(k)}')">✕</button></td>
+  </tr>`).join('');
+
+  m.innerHTML = `<div class="toolbar">
+      <button onclick="addKey()">+ Nueva key</button>
+      <span class="muted">${keys.length} keys · <span class="ok">●</span> usada en diálogo · <span class="muted">○</span> huérfana</span>
+    </div>
+    <table><thead><tr><th></th><th>Key</th><th>EN</th><th>JP</th><th></th></tr></thead>
+    <tbody>${rows||'<tr><td colspan=5 class="muted">Sin strings.</td></tr>'}</tbody></table>`;
+}
+window.setStr = (lang,k,v) => { state.strings[lang][k]=v; save(); };
+window.addKey = () => { let n='newKey', i=1; while(n in state.strings.en){ n='newKey'+(i++); } state.strings.en[n]=''; save(); render(); };
+window.delKey = k => { if(confirm('¿Borrar key "'+k+'"?')){ delete state.strings.en[k]; delete state.strings.jp[k]; save(); render(); } };
+window.renameKey = (oldK,newK) => {
+  if(!newK || newK===oldK) return;
+  ['en','jp'].forEach(l=>{ if(oldK in state.strings[l]){ state.strings[l][newK]=state.strings[l][oldK]; delete state.strings[l][oldK]; } });
+  state.scripts.forEach(s=>s.lines.forEach(l=>{ if(l.text===oldK) l.text=newK; }));
+  save(); render();
+};
+
+// ================= CONDICIONALES =================
+function renderCond(m) {
+  const scriptOpts = ['<option value="">— script —</option>'].concat(state.scripts.map(s=>`<option>${esc(s.name)}</option>`)).join('');
+  let rows = state.cond.map((c,i)=>condRowHTML(c,i,scriptOpts)).join('');
+  m.innerHTML = `<p class="muted">Construye entradas de <code>conditionalScripts</code>. Se evalúan de arriba a abajo; la primera que aplica gana. Copia el array y pégalo en el Trigger/NPC en LDtk.</p>
+    <div class="toolbar"><button onclick="addCond()">+ Añadir condición</button></div>
+    ${rows||'<p class="muted">Sin condiciones aún.</p>'}
+    <label>Resultado (array para LDtk)</label>
+    <textarea class="out" style="height:160px" readonly>${esc(buildCondOutput())}</textarea>
+    <div class="toolbar"><button onclick="copyText(buildCondOutput())">Copiar array</button></div>`;
+}
+function condRowHTML(c,i,scriptOpts) {
+  const typeOpts = ['bool','neg','num','true'].map(t=>`<option value="${t}" ${c.type===t?'selected':''}>${({bool:'Booleano',neg:'Negado (!)',num:'Numérico',true:'true (catch-all)'})[t]}</option>`).join('');
+  let mid = '';
+  if (c.type==='bool'||c.type==='neg') {
+    const o = BOOL_PATHS.map(p=>`<option ${p===c.path?'selected':''}>${p}</option>`).join('');
+    mid = `<select onchange="setCond(${i},'path',this.value)"><option value="">— path —</option>${o}</select>
+           <input placeholder="o path custom" value="${esc(c.custom||'')}" oninput="setCond(${i},'custom',this.value)" style="width:140px">`;
+  } else if (c.type==='num') {
+    const o = NUM_PATHS.map(p=>`<option ${p===c.path?'selected':''}>${p}</option>`).join('');
+    const op = OPS.map(p=>`<option ${p===c.op?'selected':''}>${p}</option>`).join('');
+    mid = `<select onchange="setCond(${i},'path',this.value)"><option value="">— path —</option>${o}</select>
+           <input placeholder="custom" value="${esc(c.custom||'')}" oninput="setCond(${i},'custom',this.value)" style="width:90px">
+           <select onchange="setCond(${i},'op',this.value)">${op}</select>
+           <input type="number" value="${esc(c.num??'')}" oninput="setCond(${i},'num',this.value)" style="width:70px" placeholder="n">`;
+  }
+  const sfOpts = [['','(ninguno)'],['!','! consume trigger'],['grant','grant NPC']].map(([v,l])=>`<option value="${v}" ${c.suffix===v?'selected':''}>${l}</option>`).join('');
+  let grant = '';
+  if (c.suffix==='grant') grant = `<input placeholder="grantKey (ej: hasBoots o key)" value="${esc(c.grantKey||'')}" oninput="setCond(${i},'grantKey',this.value)" style="width:160px">
+    <input placeholder="grantVal (true o N)" value="${esc(c.grantVal||'')}" oninput="setCond(${i},'grantVal',this.value)" style="width:120px">`;
+  return `<div class="line">
+    <div class="line-head">
+      <span class="idx">#${i+1}</span>
+      <select onchange="setCond(${i},'type',this.value)">${typeOpts}</select>
+      ${mid}
+      <span class="muted">→</span>
+      <select onchange="setCond(${i},'script',this.value)">${scriptOpts.replace(`>${esc(c.script)}<`, ` selected>${esc(c.script)}<`)}</select>
+      <span style="margin-left:auto"></span>
+      <button class="tiny sec" onclick="moveCond(${i},-1)">↑</button>
+      <button class="tiny sec" onclick="moveCond(${i},1)">↓</button>
+      <button class="tiny danger" onclick="delCond(${i})">✕</button>
+    </div>
+    <div class="line-head">
+      <label style="margin:0">sufijo</label>
+      <select onchange="setCond(${i},'suffix',this.value)">${sfOpts}</select>
+      ${grant}
+    </div>
+    <code>${esc(buildCondLine(c))}</code>
+  </div>`;
+}
+function buildCondLine(c) {
+  let cond = '';
+  const path = c.custom || c.path || '';
+  if (c.type==='true') cond = 'true';
+  else if (c.type==='bool') cond = path;
+  else if (c.type==='neg') cond = '!'+path;
+  else if (c.type==='num') cond = path + (c.op||'>') + (c.num??'');
+  let line = cond + ':' + (c.script||'');
+  if (c.suffix==='!') line += '!';
+  else if (c.suffix==='grant') line += ':' + (c.grantKey||'') + ':' + (c.grantVal||'');
+  return line;
+}
+function buildCondOutput() {
+  const lines = state.cond.map(c=>'    "'+buildCondLine(c)+'"').join(',\n');
+  return 'conditionalScripts = {\n'+lines+'\n}';
+}
+window.addCond = () => { state.cond.push({type:'bool',path:'',op:'>',num:'',script:'',suffix:''}); save(); render(); };
+window.delCond = i => { state.cond.splice(i,1); save(); render(); };
+window.moveCond = (i,d) => { const j=i+d; if(j<0||j>=state.cond.length)return; [state.cond[i],state.cond[j]]=[state.cond[j],state.cond[i]]; save(); render(); };
+window.setCond = (i,k,v) => { state.cond[i][k]=v; save(); render(); };
+
+// ================= IMPORT / EXPORT =================
+function renderData(m) {
+  m.innerHTML = `
+  <h3>Importar (pega y parsea)</h3>
+  <div class="grid2">
+    <div>
+      <label>script.lua</label>
+      <textarea id="imp_script" class="out" placeholder="pega aquí tu script.lua"></textarea>
+      <button onclick="importScript()">Parsear script.lua</button>
+    </div>
+    <div>
+      <label>en.strings</label>
+      <textarea id="imp_en" class="out" placeholder="pega aquí tu en.strings"></textarea>
+      <button onclick="importStrings('en')">Parsear en.strings</button>
+      <label>jp.strings</label>
+      <textarea id="imp_jp" class="out" style="height:140px" placeholder="pega aquí tu jp.strings"></textarea>
+      <button onclick="importStrings('jp')">Parsear jp.strings</button>
+    </div>
+  </div>
+  <p class="muted warn">Importar reemplaza los datos actuales de esa sección.</p>
+  <hr style="border-color:#333;margin:20px 0">
+  <h3>Exportar (copia y pega en tu IDE)</h3>
+  <div class="grid2">
+    <div>
+      <label>script.lua</label>
+      <textarea class="out" readonly>${esc(exportScript())}</textarea>
+      <div class="toolbar"><button onclick="copyText(exportScript())">Copiar script.lua</button><button class="sec" onclick="download('script.lua',exportScript())">Descargar</button></div>
+    </div>
+    <div>
+      <label>en.strings</label>
+      <textarea class="out" style="height:140px" readonly>${esc(exportStrings('en'))}</textarea>
+      <div class="toolbar"><button onclick="copyText(exportStrings('en'))">Copiar en.strings</button><button class="sec" onclick="download('en.strings',exportStrings('en'))">Descargar</button></div>
+      <label>jp.strings</label>
+      <textarea class="out" style="height:140px" readonly>${esc(exportStrings('jp'))}</textarea>
+      <div class="toolbar"><button onclick="copyText(exportStrings('jp'))">Copiar jp.strings</button><button class="sec" onclick="download('jp.strings',exportStrings('jp'))">Descargar</button></div>
+    </div>
+  </div>
+  <hr style="border-color:#333;margin:20px 0">
+  <button class="danger" onclick="if(confirm('¿Borrar TODO el estado guardado?')){localStorage.removeItem(LS_KEY);location.reload();}">Resetear herramienta</button>`;
+}
+
+// ----- Parsers -----
+function importScript() {
+  const txt = document.getElementById('imp_script').value;
+  const scripts = [];
+  // split into entries by name
+  const nameRe = /name\s*=\s*["']([^"']+)["']/g;
+  const names = [];
+  let mm;
+  while ((mm = nameRe.exec(txt))) names.push({name:mm[1], start:mm.index});
+  for (let i=0;i<names.length;i++) {
+    const seg = txt.slice(names[i].start, i+1<names.length ? names[i+1].start : txt.length);
+    const lines = [];
+    const lineRe = /video\s*=\s*['"]([^'"]+)['"]\s*,\s*text\s*=\s*["']([^"']+)["']\s*(?:,\s*screen\s*=\s*Graphics\.image\.new\(\s*['"]([^'"]+)['"]\s*\))?/g;
+    let lm;
+    while ((lm = lineRe.exec(seg))) lines.push({video:lm[1], text:lm[2], screen:lm[3]||''});
+    scripts.push({name:names[i].name, lines});
+  }
+  if (!scripts.length) { alert('No se encontraron entradas. ¿El formato es correcto?'); return; }
+  state.scripts = scripts; state.selected = 0; save();
+  alert('Importados '+scripts.length+' scripts.');
+  activeTab='dialogs'; document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab==='dialogs')); render();
+}
+function importStrings(lang) {
+  const txt = document.getElementById('imp_'+lang).value;
+  const re = /^\s*"([^"]+)"\s*=\s*"((?:[^"\\]|\\.)*)"/gm;
+  const out = {}; let mm, n=0;
+  while ((mm = re.exec(txt))) { out[mm[1]] = mm[2]; n++; }
+  if (!n) { alert('No se encontraron strings.'); return; }
+  state.strings[lang] = out; save();
+  alert('Importadas '+n+' strings ('+lang+').');
+}
+
+// ----- Generators -----
+function exportScript() {
+  if (!state.scripts.length) return 'script = {\n}';
+  const body = state.scripts.map(s=>{
+    const lines = s.lines.map(l=>{
+      let t = `            {\n                video = '${l.video}',\n                text = "${l.text}",`;
+      if (l.screen) t += `\n                screen = Graphics.image.new('${l.screen}')`;
+      t += `\n            }`;
+      return t;
+    }).join(',\n');
+    return `    {\n        name = "${s.name}",\n        dialog = {\n${lines}\n        }\n    }`;
+  }).join(',\n');
+  return `script = {\n${body}\n}`;
+}
+function exportStrings(lang) {
+  const obj = state.strings[lang];
+  const keys = Object.keys(obj);
+  if (!keys.length) return '';
+  return keys.map(k=>`"${k}" = "${(obj[k]||'').replace(/"/g,'\\"')}"`).join('\n');
+}
+
+// ----- Helpers -----
+window.importScript = importScript;
+window.importStrings = importStrings;
+window.exportScript = exportScript;
+window.exportStrings = exportStrings;
+window.buildCondOutput = buildCondOutput;
+window.copyText = (t) => navigator.clipboard.writeText(t).then(()=>{ const p=document.getElementById('savedPill'); p.textContent='copiado ✓'; p.classList.add('ok'); setTimeout(()=>{p.textContent='guardado automático';p.classList.remove('ok');},1200); });
+window.download = (name, txt) => { const b=new Blob([txt],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); };
+window.LS_KEY = LS_KEY;
+
+// ---------- Boot ----------
+load();
+render();
+</script>
+</body>
+</html>
