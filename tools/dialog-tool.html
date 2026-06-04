@@ -43,6 +43,10 @@
   .pill { background: #333; border-radius: 10px; padding: 1px 8px; font-size: 11px; color: #aaa; }
   .warn { color: #e8a; }
   .ok { color: #8e8; }
+  .cnt { font-size: 11px; float: right; color: #777; }
+  .cnt.near { color: #e8a; }
+  .cnt.over { color: #f66; font-weight: bold; }
+  .keyfield { background: #1e1e1e; color: #8fd; border-color: #333; font-family: ui-monospace, Menlo, monospace; }
   code { background: #333; padding: 1px 5px; border-radius: 3px; }
 </style>
 </head>
@@ -86,6 +90,20 @@ function save() {
   if (p) { p.textContent = 'guardado ✓'; p.classList.add('ok'); clearTimeout(save._t); save._t = setTimeout(()=>{ p.textContent='guardado automático'; p.classList.remove('ok'); }, 1200); }
 }
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+const MAXLEN = 140;
+function slugify(n){ return (n||'').toLowerCase().replace(/[^a-z0-9]/g,''); }
+function cntClass(len){ return len>=MAXLEN ? 'over' : len>=MAXLEN-20 ? 'near' : ''; }
+function keyUsedAnywhere(k){ return state.scripts.some(s=>s.lines.some(l=>l.text===k)); }
+// Recompute canonical keys (slug-NN) for a script's lines; migrate EN/JP text with each line.
+function reKeyScript(si){
+  const s = state.scripts[si]; if(!s) return;
+  const slug = slugify(s.name) || 'script';
+  const cap = s.lines.map(l=>({ old:l.text, en: l.text?(state.strings.en[l.text]??''):'', jp: l.text?(state.strings.jp[l.text]??''):'' }));
+  const olds = [...new Set(cap.map(c=>c.old).filter(Boolean))];
+  s.lines.forEach((l,i)=>{ const k = slug+'-'+String(i+1).padStart(2,'0'); l.text=k; state.strings.en[k]=cap[i].en; state.strings.jp[k]=cap[i].jp; });
+  // drop old keys only if no line (any script) still references them — keeps shared/extra strings safe
+  olds.forEach(k=>{ if(!keyUsedAnywhere(k)){ delete state.strings.en[k]; delete state.strings.jp[k]; } });
+}
 
 // ---------- Tabs ----------
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
@@ -116,7 +134,7 @@ function renderDialogs(m) {
   let ed = '';
   if (s) {
     ed = `<div class="toolbar">
-      <input style="font-size:15px;width:280px" value="${esc(s.name)}" placeholder="name del script" oninput="setName(this.value)">
+      <input style="font-size:15px;width:280px" value="${esc(s.name)}" placeholder="name del script" oninput="setName(this.value)" onchange="reKeyName()" title="al salir del campo se renombran las keys automáticamente">
       <button class="sec" onclick="dupScript()">Duplicar</button>
       <button class="danger" onclick="delScript()">Borrar script</button>
       <span class="muted">referencia este name desde Triggers / NPCs</span>
@@ -138,16 +156,17 @@ function lineHTML(ln, i, total) {
     <div class="line-head">
       <span class="idx">#${i+1}</span>
       <select onchange="setLine(${i},'video',this.value)" style="width:150px">${opts}</select>
-      <input value="${esc(ln.text)}" placeholder="text key (ej: mygift-01)" style="width:200px"
-             oninput="setKey(${i},this.value)">
+      <input class="keyfield" value="${esc(ln.text)}" style="width:200px" readonly title="key automática (derivada del nombre del diálogo)">
       <span style="margin-left:auto"></span>
       <button class="tiny sec" onclick="moveLine(${i},-1)" ${i===0?'disabled':''}>↑</button>
       <button class="tiny sec" onclick="moveLine(${i},1)" ${i===total-1?'disabled':''}>↓</button>
       <button class="tiny danger" onclick="delLine(${i})">✕</button>
     </div>
     <div class="grid2">
-      <div><label>Texto EN</label><textarea rows="2" oninput="setString('en','${esc(ln.text)}',this.value)" ${ln.text?'':'disabled'}>${esc(en)}</textarea></div>
-      <div><label>Texto JP</label><textarea rows="2" oninput="setString('jp','${esc(ln.text)}',this.value)" ${ln.text?'':'disabled'}>${esc(jp)}</textarea></div>
+      <div><label>Texto EN <span class="cnt ${cntClass(en.length)}" id="cnt_en_${i}">${en.length}/${MAXLEN}</span></label>
+        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'en',this.value)">${esc(en)}</textarea></div>
+      <div><label>Texto JP <span class="cnt ${cntClass(jp.length)}" id="cnt_jp_${i}">${jp.length}/${MAXLEN}</span></label>
+        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'jp',this.value)">${esc(jp)}</textarea></div>
     </div>
     <label>screen (ruta imagen, opcional)</label>
     <input style="width:100%" value="${esc(ln.screen||'')}" placeholder="assets/images/ui/dialog/img/file.png"
@@ -156,16 +175,22 @@ function lineHTML(ln, i, total) {
 }
 
 window.selectScript = i => { state.selected=i; save(); render(); };
-window.addScript = () => { state.scripts.push({name:'newScript',lines:[{video:'player',text:'',screen:''}]}); state.selected=state.scripts.length-1; save(); render(); };
-window.dupScript = () => { const s=JSON.parse(JSON.stringify(state.scripts[state.selected])); s.name+='_copy'; state.scripts.splice(state.selected+1,0,s); state.selected++; save(); render(); };
+window.addScript = () => { state.scripts.push({name:'newScript',lines:[{video:'player',text:'',screen:''}]}); state.selected=state.scripts.length-1; reKeyScript(state.selected); save(); render(); };
+window.dupScript = () => { const s=JSON.parse(JSON.stringify(state.scripts[state.selected])); s.name+='_copy'; state.scripts.splice(state.selected+1,0,s); state.selected++; reKeyScript(state.selected); save(); render(); };
 window.delScript = () => { if(confirm('¿Borrar este script?')){ state.scripts.splice(state.selected,1); save(); render(); } };
-window.setName = v => { state.scripts[state.selected].name=v; save(); document.querySelectorAll('.sidebar .item')[state.selected].firstElementChild.textContent=v||'sin nombre'; };
-window.addLine = () => { state.scripts[state.selected].lines.push({video:'player',text:'',screen:''}); save(); render(); };
-window.delLine = i => { state.scripts[state.selected].lines.splice(i,1); save(); render(); };
-window.moveLine = (i,d) => { const a=state.scripts[state.selected].lines; const j=i+d; if(j<0||j>=a.length)return; [a[i],a[j]]=[a[j],a[i]]; save(); render(); };
+window.setName = v => { state.scripts[state.selected].name=v; document.querySelectorAll('.sidebar .item')[state.selected].firstElementChild.textContent=v||'sin nombre'; };
+window.reKeyName = () => { reKeyScript(state.selected); save(); render(); };
+window.addLine = () => { state.scripts[state.selected].lines.push({video:'player',text:'',screen:''}); reKeyScript(state.selected); save(); render(); };
+window.delLine = i => { state.scripts[state.selected].lines.splice(i,1); reKeyScript(state.selected); save(); render(); };
+window.moveLine = (i,d) => { const a=state.scripts[state.selected].lines; const j=i+d; if(j<0||j>=a.length)return; [a[i],a[j]]=[a[j],a[i]]; reKeyScript(state.selected); save(); render(); };
 window.setLine = (i,k,v) => { state.scripts[state.selected].lines[i][k]=v; save(); };
-window.setKey = (i,v) => { state.scripts[state.selected].lines[i].text=v; if(v && !(v in state.strings.en)) state.strings.en[v]=''; save(); render(); };
-window.setString = (lang,key,v) => { if(key) state.strings[lang][key]=v; save(); };
+window.onText = (i,lang,v) => {
+  const key = state.scripts[state.selected].lines[i].text;
+  if(key) state.strings[lang][key]=v;
+  const c = document.getElementById('cnt_'+lang+'_'+i);
+  if(c){ c.textContent=v.length+'/'+MAXLEN; c.className='cnt '+cntClass(v.length); }
+  save();
+};
 
 // ================= STRINGS =================
 function renderStrings(m) {
@@ -175,17 +200,23 @@ function renderStrings(m) {
   const used = new Set();
   state.scripts.forEach(s=>s.lines.forEach(l=>used.add(l.text)));
 
-  let rows = keys.map(k=>`<tr>
-    <td style="width:30px;text-align:center">${used.has(k)?'<span class="ok" title="usado en un diálogo">●</span>':'<span class="muted" title="no usado">○</span>'}</td>
-    <td style="width:200px"><input value="${esc(k)}" onchange="renameKey('${esc(k)}',this.value)"></td>
-    <td><input value="${esc(state.strings.en[k]??'')}" oninput="setStr('en','${esc(k)}',this.value)"></td>
-    <td><input value="${esc(state.strings.jp[k]??'')}" oninput="setStr('jp','${esc(k)}',this.value)"></td>
-    <td style="width:30px"><button class="tiny danger" onclick="delKey('${esc(k)}')">✕</button></td>
-  </tr>`).join('');
+  let rows = keys.map(k=>{
+    const isDialog = used.has(k);
+    const en=state.strings.en[k]??'', jp=state.strings.jp[k]??'';
+    const keyCell = isDialog
+      ? `<td style="width:200px"><span class="keyfield" style="display:block;padding:4px 6px;border-radius:4px" title="key automática del diálogo">${esc(k)}</span></td>`
+      : `<td style="width:200px"><input value="${esc(k)}" onchange="renameKey('${esc(k)}',this.value)"></td>`;
+    return `<tr>
+    <td style="width:30px;text-align:center">${isDialog?'<span class="ok" title="usado en un diálogo (key automática)">●</span>':'<span class="muted" title="string suelta (no usada en diálogos)">○</span>'}</td>
+    ${keyCell}
+    <td><input maxlength="${MAXLEN}" value="${esc(en)}" oninput="setStr('en','${esc(k)}',this.value)"></td>
+    <td><input maxlength="${MAXLEN}" value="${esc(jp)}" oninput="setStr('jp','${esc(k)}',this.value)"></td>
+    <td style="width:30px">${isDialog?'':`<button class="tiny danger" onclick="delKey('${esc(k)}')">✕</button>`}</td>
+  </tr>`;}).join('');
 
   m.innerHTML = `<div class="toolbar">
-      <button onclick="addKey()">+ Nueva key</button>
-      <span class="muted">${keys.length} keys · <span class="ok">●</span> usada en diálogo · <span class="muted">○</span> huérfana</span>
+      <button onclick="addKey()">+ Nueva key suelta</button>
+      <span class="muted">${keys.length} keys · <span class="ok">●</span> diálogo (key automática, solo lectura) · <span class="muted">○</span> suelta (editable). Límite ${MAXLEN} car.</span>
     </div>
     <table><thead><tr><th></th><th>Key</th><th>EN</th><th>JP</th><th></th></tr></thead>
     <tbody>${rows||'<tr><td colspan=5 class="muted">Sin strings.</td></tr>'}</tbody></table>`;
