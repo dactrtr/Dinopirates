@@ -8,10 +8,6 @@ table.insert(levelsLDTK, {
       dir = "<"
     },
     {
-      levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
-      dir = ">"
-    },
-    {
       levelIid = "abdd36b0-ac70-11f0-998c-673887a050e6",
       dir = "nw"
     },
@@ -60,6 +56,7 @@ table.insert(levelsLDTK, {
     play = nil,
     procGen = true,
     roomRole = "Normal",
+    requiredItems = {},
     hasForeground = true
   },
   entities = {
@@ -198,7 +195,7 @@ table.insert(levelsLDTK, {
       dir = "<"
     },
     {
-      levelIid = "dab87dc0-ac70-11f0-997a-63497867517d",
+      levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
       dir = ">"
     },
     {
@@ -249,6 +246,7 @@ table.insert(levelsLDTK, {
     play = nil,
     procGen = true,
     roomRole = "Normal",
+    requiredItems = {},
     hasForeground = true
   },
   entities = {
@@ -318,6 +316,7 @@ table.insert(levelsLDTK, {
     play = nil,
     procGen = true,
     roomRole = "Normal",
+    requiredItems = {},
     hasForeground = true
   },
   entities = {
@@ -388,6 +387,7 @@ table.insert(levelsLDTK, {
     play = nil,
     procGen = true,
     roomRole = "Normal",
+    requiredItems = {},
     hasForeground = true
   },
   entities = {
@@ -476,10 +476,6 @@ table.insert(levelsLDTK, {
       dir = "<"
     },
     {
-      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
-      dir = ">"
-    },
-    {
       levelIid = "3d752854-ac70-11f0-998c-5dddbfac239d",
       dir = "nw"
     },
@@ -515,8 +511,9 @@ table.insert(levelsLDTK, {
       "Upper"
     },
     play = nil,
-    procGen = false,
+    procGen = true,
     roomRole = "Normal",
+    requiredItems = {},
     hasForeground = true
   },
   entities = {

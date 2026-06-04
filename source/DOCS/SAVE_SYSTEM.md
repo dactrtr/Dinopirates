@@ -1,229 +1,106 @@
 # Save System
 
-This document describes in full technical detail the persistence layer of the game, implemented in `source/utilities/SaveSystem.lua`.
+The persistence layer, implemented in `source/utilities/SaveSystem.lua`. Version **`3.0-PROCGEN`**.
+
+> The game is a procedural roguelike: there is no fixed map to patch. The save stores the player's meta-progression plus the **active run graph**. See [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md) for the run model and [RunState](PROCEDURAL_GENERATION.md#13-runstate-active-run--navigation) serialization.
+>
+> **History:** versions `2.0-LDTK` and earlier saved a per-`iid` `levelState` patched onto a fixed `levelsLDTK`. That model (and `getLevelState`/`restoreLevelState`) was removed when the game became procedural. Old saves are rejected by `load()`.
 
 ---
 
-## 1. Complete structure of the save file
+## 1. Structure of the save file
 
-The save is stored in the Playdate datastore under the key `'gameState'`. The Lua table that is serialized has the following form:
+Stored in the Playdate datastore under the key `'gameState'`:
 
 ```lua
 {
-  version   = "2.0-LDTK",           -- string: save format version
-  timestamp = playdate.getTime(),    -- table: {year, month, day, hour, minute, second, millisecond}
-  player    = PlayerData,            -- table: complete snapshot of the player state
+  version   = "3.0-PROCGEN",
+  timestamp = playdate.getTime(),
+  player    = PlayerData,            -- full meta snapshot (see below)
+  run       = RunState.serialize(),  -- the active run graph (see below)
+}
+```
 
-  levelState = {                     -- indexed array, one entry per room in levelsLDTK
-    [1] = {
-      identifier      = "Room_2",    -- string: room name in LDtk
-      uniqueIdentifer = "bab17c70-ac70-11f0-997a-85b3d3c5d229",  -- string: LDtk UUID
-      visited         = false,       -- boolean: room visited by the player
-      comic_wasPlayed = false,       -- boolean: entry cutscene already played
+### `player` — meta-progression (persists across runs, wiped on delete)
 
-      entities = {                   -- table: entities grouped by type
-        Brocorat = {
-          { iid = "...", dead = false, speed = 1, x = 100, y = 120 },
-          -- ...
-        },
-        Bosscolli = {
-          { iid = "...", dead = false, speed = 1, x = 200, y = 150 },
-        },
-        -- Entities with a 'destroyed' field (props):
-        Box = {
-          { iid = "...", destroyed = false },
-        },
-        CrewMember = {
-          { iid = "...", isTaken = false, crewID = "CM001" },
-        },
-        Triggers = {
-          { iid = "...", usedTrigger = false, type = "Search", script = "myScript" },
-        },
-        -- Any entity with isItem = true:
-        ItemGift = {
-          { iid = "...", collected = false },
-        },
-        NPC = {
-          { iid = "...", hasGranted = false },
-        },
-      },
-    },
-    [2] = { -- next room
-      -- same structure
+The whole `PlayerData` blob, including the cross-run meta:
+
+- `items`, `skills`, `keys`
+- `CrewMemberData` (`amountTaken`, `idNumbers`)
+- `sanityCounter` (madness count — drives difficulty and the room-repeat rule)
+- `runCount` (runs started; NewGame=1, +1 per death)
+- `seenComics` (story cutscenes already watched, keyed by `comic_name`)
+- run-local player state (battery, sanity, health, position) so **Continue** resumes exactly where you left off
+
+### `run` — the active run graph (`RunState.serialize()`)
+
+```lua
+{
+  currentNodeId, startId, finalReserved,
+  nodes = {
+    [i] = {
+      id,
+      roomUid    = <template uniqueIdentifer>,  -- not the template itself
+      edges      = { dir -> nodeId },
+      doorCounts = { dir -> n },
+      freeSides  = { dir -> true },
+      content    = { ... },   -- per-run enemies/utilities/crew (plain data)
+      cleared    = { ... },   -- runtime deltas (killed enemies, crew taken)
+      portals    = { PortalID -> nodeId },  -- secret-room links
+      isSecret   = bool,
     },
     -- ...
   },
 }
 ```
 
-### Fields saved per entity type
-
-| Type | Saved fields |
-|------|-----------------|
-| `Brocorat`, `Bosscolli` | `iid`, `dead`, `speed`, `x`, `y` |
-| Props with `destroyed ~= nil` (Box, etc.) | `iid`, `destroyed` |
-| `CrewMember` | `iid`, `isTaken`, `crewID` |
-| Items with `isItem == true` | `iid`, `collected` |
-| `Triggers` | `iid`, `usedTrigger`, `type`, `script` |
-| `NPC` | `iid`, `hasGranted` |
-
-Only the fields relevant to the entity type are saved. If an entity does not belong to any of the above categories (e.g. decorative entities with no mutable state), only its `iid` is saved.
+Nodes reference their room **template by `uniqueIdentifer`**, re-linked against the live `levelsLDTK` on load. `content`/`cleared`/`edges`/`portals` are plain data and serialize directly.
 
 ---
 
-## 2. `save()` — complete algorithm
+## 2. `save()`
 
 ```lua
 function SaveSystem.save()
   local saveData = {
-    player     = PlayerData,
-    levelState = SaveSystem.getLevelState(),
-    timestamp  = playdate.getTime(),
-    version    = "2.0-LDTK"
+    player    = PlayerData,
+    run       = RunState.serialize(),
+    timestamp = playdate.getTime(),
+    version   = "3.0-PROCGEN",
   }
-
-  local success = playdate.datastore.write(saveData, 'gameState', true)
-
-  if success ~= false then
-    return true
-  else
-    return false
-  end
+  return playdate.datastore.write(saveData, 'gameState', true) ~= false
 end
 ```
 
-### `getLevelState()` — extracting level state
-
-Iterates the full `levelsLDTK` array (in-memory array, not from disk):
-
-```lua
-function SaveSystem.getLevelState()
-  local levelState = {}
-
-  for i, level in ipairs(levelsLDTK) do
-    levelState[i] = {
-      identifier      = level.identifier,
-      uniqueIdentifer = level.uniqueIdentifer,
-      visited         = level.customFields.visited        or false,
-      comic_wasPlayed = level.customFields.comic_wasPlayed or false,
-      entities        = {}
-    }
-
-    if level.entities then
-      for entityType, entitiesList in pairs(level.entities) do
-        levelState[i].entities[entityType] = {}
-
-        for _, entity in ipairs(entitiesList) do
-          local entityState = { iid = entity.iid }
-
-          if entity.customFields then
-            -- Enemies
-            if entityType == "Brocorat" or entityType == "Bosscolli" then
-              entityState.dead  = entity.customFields.dead or false
-              entityState.speed = entity.customFields.speed
-              entityState.x     = entity.x
-              entityState.y     = entity.y
-            end
-
-            -- Props
-            if entity.customFields.destroyed ~= nil then
-              entityState.destroyed = entity.customFields.destroyed
-            end
-
-            -- CrewMembers
-            if entityType == "CrewMember" then
-              entityState.isTaken = entity.customFields.isTaken or false
-              entityState.crewID  = entity.customFields.crewID
-            end
-
-            -- Items
-            if entity.customFields.isItem == true then
-              entityState.collected = entity.customFields.collected or false
-            end
-
-            -- Triggers
-            if entityType == "Triggers" then
-              entityState.type        = entity.customFields.type
-              entityState.script      = entity.customFields.script
-              entityState.usedTrigger = entity.customFields.usedTrigger or false
-            end
-
-            -- NPCs
-            if entityType == "NPC" then
-              entityState.hasGranted = entity.customFields.hasGranted or false
-            end
-          end
-
-          table.insert(levelState[i].entities[entityType], entityState)
-        end
-      end
-    end
-  end
-
-  return levelState
-end
-```
-
-**When `save()` is called**:
-- `MazeScene:finish()` — when the transition to another room completes
-- `MazeScene:pause()` — when the system menu is opened (e.g. device goes to sleep)
+**Called from:**
+- `MazeScene:finish()` — when a room transition completes.
+- `MazeScene:pause()` — system menu / sleep. **Also captures the player's live `x/y` into `playerSpawn` first**, so Continue resumes at the exact spot. (`finish()` does **not** capture position — it runs mid-transition and would clobber the spawn a door/portal/DanceScene just set.)
+- `DanceScene` — on combat resolution.
 
 ---
 
-## 3. `load()` — how it restores state
+## 3. `load()`
 
 ```lua
 function SaveSystem.load()
   local saveData = playdate.datastore.read('gameState')
+  if not saveData then return false end
+  if saveData.version ~= "3.0-PROCGEN" then return false end   -- reject old saves
 
-  if saveData then
-    if saveData.version == "2.0-LDTK" then
-      PlayerData = saveData.player                        -- fully replaces PlayerData
-      SaveSystem.restoreLevelState(saveData.levelState)   -- patches levelsLDTK in memory
-      return true, saveData.player.saveLevel              -- second value = RoomID to resume from
-    else
-      printDebug("Old save format detected, migration needed")
-      return false, nil
-    end
-  end
-
-  printDebug("No save file found")
-  return false, nil
+  PlayerData = saveData.player
+  if not RunState.deserialize(saveData.run) then return false end
+  return true
 end
 ```
 
-### `restoreLevelState()` — patching algorithm over `levelsLDTK`
+- Returns a single boolean (the old `(bool, saveLevel)` signature is gone).
+- `RunState.deserialize` rebuilds the graph, re-links each node's `poolRoom` from `roomUid`, and stages `currentNodeId` as pending so the next `MazeScene:enter` lands on it. Fails (returns false) if a template `uniqueIdentifer` can't be found.
 
-Walks through the `levelState` array from the save file and iterates `levelsLDTK` in parallel. For each saved level:
-
-1. **Compares `uniqueIdentifer`**: If entry `i` from the save does not match entry `i` in `levelsLDTK` (the array order may change when rooms are added in LDtk), performs a linear search to find the correct entry by `uniqueIdentifer`.
-
-2. **Restores room fields**:
-   ```lua
-   levelsLDTK[i].customFields.visited         = state.visited
-   levelsLDTK[i].customFields.comic_wasPlayed = state.comic_wasPlayed
-   ```
-
-3. **Restores entities by `iid`**: For each entity type and each saved entity, searches for the corresponding entity in `levelsLDTK[i].entities[entityType]` by comparing `iid`. When found, writes the saved fields back into `currentEntity.customFields`:
-
-   - `dead`, `speed`, `x`, `y` (enemies)
-   - `destroyed` (props)
-   - `isTaken` (CrewMember)
-   - `usedTrigger`, `type`, `script` (Triggers)
-   - `collected` (Items)
-   - `hasGranted` (NPC)
-
-**What it does NOT touch**: `restoreLevelState` never modifies `levelsLDTKOriginal`. The original backup remains intact after loading.
-
-**Return value of `load()`**: The function returns two values:
-- `true` + `saveData.player.saveLevel` (RoomID number) if loading was successful
-- `false, nil` if there is no file or the version does not match
-
-The caller uses `saveLevel` to call `Noble.transition(RoomTranslate(saveLevel))`.
+**Continue flow** (TitleScene): `SaveSystem.load()` → set `PlayerData.returningInPlace = true` → `Noble.transition(MazeScene, ...)`. The player resumes inside the saved node at the saved position. `hasSave` is still `playdate.file.exists('gameState.json')`.
 
 ---
 
-## 4. `createOriginalBackup()` — why it exists and when it is called
+## 4. `createOriginalBackup()`
 
 ```lua
 function SaveSystem.createOriginalBackup()
@@ -233,198 +110,90 @@ function SaveSystem.createOriginalBackup()
 end
 ```
 
-**Why it exists**: `levelsLDTK` is mutated at runtime (enemies marked as `dead`, props as `destroyed`, etc.). If the player wants to start a "New Game" or the game needs to reset, it cannot simply re-import the Lua files (Playdate does not allow reloading modules). The only way to recover the original state is to have a deep copy stored in memory before any mutations occur.
-
-**When it is called**: Once only, in `main.lua`, before loading the existing save and before entering any room:
-
-```lua
--- source/main.lua
-SaveSystem.createOriginalBackup()   -- first: copies the pristine state
--- ...
--- (later) SaveSystem.load() can mutate levelsLDTK with saved data
-```
-
-The `if not levelsLDTKOriginal` guard ensures the backup is only created once. If it were called again after mutating `levelsLDTK`, the backup would contain corrupted data.
+`levelsLDTK` is the **template** source. Although the procedural model keeps run state on nodes (not on templates), a pristine deep copy is still kept so `reset()`/`delete()` can restore a clean template table (Playdate cannot re-import Lua modules). Called once in `main.lua` before `load()`.
 
 ---
 
 ## 5. `reset()` vs `delete()`
 
-### `reset()`
-
 ```lua
 function SaveSystem.reset()
   ResetPlayerData()
-  if levelsLDTKOriginal then
-    levelsLDTK = table.deepcopy(levelsLDTKOriginal)
-  end
+  RunState.clear()
+  if levelsLDTKOriginal then levelsLDTK = table.deepcopy(levelsLDTKOriginal) end
 end
-```
 
-- Calls `ResetPlayerData()` to restore `PlayerData` to its default values.
-- Restores `levelsLDTK` to its pristine state by copying `levelsLDTKOriginal`.
-- **Does NOT delete the save file on disk**. If the game restarts after a `reset()` without saving again, `load()` will recover the previous progress from the file on disk.
-
-### `delete()`
-
-```lua
 function SaveSystem.delete()
-  local success = playdate.datastore.delete('gameState')
+  playdate.datastore.delete('gameState')
   ResetPlayerData()
-  if levelsLDTKOriginal then
-    levelsLDTK = table.deepcopy(levelsLDTKOriginal)
-  end
+  RunState.clear()
+  if levelsLDTKOriginal then levelsLDTK = table.deepcopy(levelsLDTKOriginal) end
 end
 ```
 
-- Calls `playdate.datastore.delete('gameState')` to remove the file from disk. If the file does not exist, no error is thrown (returns `false` silently).
-- Then performs exactly the same operations as `reset()`.
-- This is the equivalent of "Delete data / New Game" from the menu.
-
-### Key difference
+Both reset `PlayerData` (wiping meta: items/skills/crew/`sanityCounter`/`runCount`/`seenComics`), clear the active run, and restore the template table. `delete()` additionally removes the file from disk.
 
 | | `reset()` | `delete()` |
 |--|-----------|------------|
-| Restores `PlayerData` | Yes | Yes |
-| Restores `levelsLDTK` | Yes | Yes |
-| Deletes file on disk | No | Yes |
-| Use case | Temporary reset in current session | Permanently delete player progress |
+| Reset `PlayerData` (meta) | Yes | Yes |
+| Clear `RunState` | Yes | Yes |
+| Restore `levelsLDTK` templates | Yes | Yes |
+| Delete file on disk | No | Yes |
+| Use case | New Game start (then `startRun`) | Permanently wipe progress |
 
 ---
 
-## 6. Version `"2.0-LDTK"` and compatibility
+## 6. Version `"3.0-PROCGEN"`
 
-The save version is verified in `load()`:
+`load()` rejects any save whose `version` is not `"3.0-PROCGEN"` (returns `false`, leaving `PlayerData`/`levelsLDTK` at startup defaults). The old file is **not** auto-deleted, so the Continue button may still appear (from `file.exists`) but do nothing — the player should use Delete once when migrating from an older build.
 
-```lua
-if saveData.version == "2.0-LDTK" then
-  -- normal load
-else
-  printDebug("Old save format detected, migration needed")
-  return false, nil
-end
-```
-
-**What happens with an incorrect version**:
-- The function returns `false, nil`.
-- `PlayerData` and `levelsLDTK` are **not modified** (they keep their startup values).
-- The debug message appears in the console.
-- The game continues with the default state (no progress loaded).
-- The old file remains on disk; it is not deleted automatically.
-
-**Why the version is `"2.0-LDTK"`**: The `-LDTK` suffix indicates that the format uses the LDtk-exported structure (with entity `iid`s and room `uniqueIdentifer`s) instead of the older format based on simple array indices. If the save structure changes in the future (e.g. adding new fields or reorganizing `levelState`), the version number must be incremented to invalidate incompatible saves.
+Bump this version string whenever the serialized shape of `PlayerData` or the run graph changes.
 
 ---
 
 ## 7. Notes for porting to Love2D
 
-### 7.1 `playdate.datastore` -> `love.filesystem`
-
-Playdate serializes Lua tables automatically. Love2D requires a JSON library:
+### 7.1 `playdate.datastore` → `love.filesystem` + JSON
 
 ```lua
--- Using dkjson
 local json = require("dkjson")
 
--- Equivalent of playdate.datastore.write(saveData, 'gameState', true)
 local function saveToFile(data)
-  local str     = json.encode(data, { indent = true })
-  local success = love.filesystem.write("gameState.json", str)
-  return success
+  return love.filesystem.write("gameState.json", json.encode(data, { indent = true }))
 end
 
--- Equivalent of playdate.datastore.read('gameState')
 local function readFromFile()
   if love.filesystem.getInfo("gameState.json") then
-    local str = love.filesystem.read("gameState.json")
-    return json.decode(str)
+    return json.decode(love.filesystem.read("gameState.json"))
   end
-  return nil
 end
 
--- Equivalent of playdate.datastore.delete('gameState')
 local function deleteFile()
   return love.filesystem.remove("gameState.json")
 end
 ```
 
-Add to `conf.lua`:
 ```lua
-function love.conf(t)
-  t.identity = "DinoPirates"  -- user data folder (like the Playdate sandbox)
-end
+-- conf.lua
+function love.conf(t) t.identity = "DinoPirates" end
 ```
 
-### 7.2 Multiple save slots
+### 7.2 Serialize the run graph, not a per-iid levelState
 
-To support multiple profiles, use numbered filenames:
-```lua
-local function getSavePath(slot)
-  return "gameState_" .. (slot or 1) .. ".json"
-end
-```
+The JSON model is exactly the `RunState.serialize()` node table from §1: each node stores `roomUid` (template `uniqueIdentifer`), `edges`, `content`, `cleared`, `portals`, `isSecret`. On load, build a `uniqueIdentifer → template` lookup over `levelsLDTK` and re-link each node's `poolRoom`. **Do not** try to port the old `getLevelState`/`restoreLevelState` — they no longer exist.
 
-### 7.3 `timestamp` — `playdate.getTime()` -> `os.date`
+### 7.3 `table.deepcopy`
 
-`playdate.getTime()` returns `{year, month, day, hour, minute, second, millisecond}`. In Love2D use:
+Playdate provides it; in Love2D implement a recursive deepcopy for `createOriginalBackup()` and `reset()`/`delete()`.
 
-```lua
-local timestamp = os.date("*t")
--- returns: {year, month, day, hour, min, sec, wday, yday, isdst}
--- note: the field is "min" instead of "minute"
-```
+### 7.4 `timestamp`
 
-### 7.4 `table.deepcopy` — manual implementation
+`playdate.getTime()` → `os.date("*t")` (note `min`/`sec`, not `minute`/`second`).
 
-Playdate CoreLibs provides `table.deepcopy`. In Love2D it must be implemented manually:
+### 7.5 Preserve `iid` / `uniqueIdentifer` in the LDtk parser
 
-```lua
-local function deepcopy(orig)
-  local orig_type = type(orig)
-  local copy
-  if orig_type == "table" then
-    copy = {}
-    for k, v in pairs(orig) do
-      copy[deepcopy(k)] = deepcopy(v)
-    end
-    setmetatable(copy, deepcopy(getmetatable(orig)))
-  else
-    copy = orig
-  end
-  return copy
-end
-```
+Node↔template re-linking depends on room `uniqueIdentifer`s, and per-run cleared state keys on entity `iid`s. If you use a Love2D LDtk loader, verify it preserves both; some parsers discard them when simplifying.
 
-Use this function in the equivalent of `createOriginalBackup()` and in `reset()`/`delete()`.
+### 7.6 Auto-save points
 
-### 7.5 Auto-save on room exit
-
-Hook into the scene transition logic. In Love2D with `hump.gamestate` or a custom manager:
-
-```lua
-function RoomState:leave()
-  SaveSystem.save()
-end
-```
-
-Or directly in the transition function:
-```lua
-function goToRoom(roomNumber)
-  SaveSystem.save()
-  SceneManager:transition("Floor" .. roomNumber)
-end
-```
-
-### 7.6 Version checking and migration
-
-Keep the same pattern:
-```lua
-if saveData.version ~= "2.0-LDTK" then
-  -- show "incompatible save" message or run migration
-  return false, nil
-end
-```
-
-### 7.7 Preserving `iid` fields in the LDtk parser
-
-The entire entity restoration system depends on the `iid` (instance) and `uniqueIdentifer` (room) fields being present in the loaded data. If a Love2D LDtk parser is used (such as `ldtk.lua` or a custom loader), verify that it **preserves entity `iid`s** — some parsers discard them when simplifying the structure. If necessary, post-process the loaded JSON to extract and retain these fields.
+Mirror the Playdate hooks: save on room-transition complete and on focus loss (`love.focus(false)`). Capture the player's live position before the focus-loss save (not on every transition) so Continue resumes in place — see §2.

@@ -45,6 +45,7 @@ local DefaultPlayerData = {
 	isTalking = false,
 	isCutscene = false,
 	seenComics = {},  -- story cutscenes already watched, keyed by comic_name (persists across runs; wiped on delete)
+	runCount = 0,     -- runs started (incremented on NewGame and on death/Retry, not on hole/tube); used by spawnConditions
 	isFocused = false,
 	isCharging = false,
 	isEquiping = false,

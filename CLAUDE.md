@@ -147,6 +147,7 @@ Rooms connect vertically via `neighbourLevels` (with `dir = "<"` for lower, `dir
 
 Detailed system documentation lives in `source/DOCS/`:
 - `LEVEL_LOADING.md` — full room loading + vertical navigation
+- `PROCEDURAL_GENERATION.md` — roguelike run graph: pool/nodes, door-signature matching, loops, secret rooms (portals), wall plugs, requiredItems, runCount/spawnConditions, vertical=new run, save 3.0, LDtk authoring + Love2D port
 - `PLAYER_SYSTEMS.md` — battery, sanity, inventory, skills
 - `ENEMIES_AND_COMBAT.md` — AI and DanceScene rhythm system overview
 - `DANCE_SCENE.md` — full DanceScene: lifecycle, difficulty, hit detection, balance bar, animations, outcomes

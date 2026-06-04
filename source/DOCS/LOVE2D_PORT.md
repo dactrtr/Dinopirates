@@ -2,6 +2,8 @@
 
 This document describes how to port DinoPirates from the Playdate SDK + Noble Engine to Love2D with bump.lua. It is based on the actual game source code, not on generic assumptions.
 
+> ⚠️ **Procedural model supersedes parts of this guide.** The game is now a procedural roguelike: levels are generated into a run graph instead of using fixed rooms. For **level flow, navigation, doors, secret rooms, wall plugs, and persistence**, follow [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md) (it has its own Love2D port section). The sections below on **RoomTranslate / Floors.lua (§10, §12)** and the **`2.0-LDTK` save with per-iid `levelState` (§8)** describe the *old* fixed-map model — use them only for engine-level mapping context. Everything else here (bump.lua collisions, Scene Manager, input, FX/lighting, DanceScene, anim8) still applies.
+
 ---
 
 ## 1. Original Stack Summary
@@ -788,6 +790,8 @@ For a port that does not require an exact 1-bit look, the canvas with gradual al
 ---
 
 ## 8. Save System
+
+> ⚠️ **Outdated below.** This section describes the old `2.0-LDTK` save with a per-iid `levelState`. The current game uses `3.0-PROCGEN`: it serializes `PlayerData` + the **run graph** (`RunState.serialize()`), not a per-iid level patch. For the current model and its Love2D mapping, see [SAVE_SYSTEM.md](SAVE_SYSTEM.md) and [PROCEDURAL_GENERATION.md §14](PROCEDURAL_GENERATION.md#14-persistence-30-procgen). The `love.filesystem` + json.lua plumbing below still applies; only the data shape changed.
 
 ### The original system
 

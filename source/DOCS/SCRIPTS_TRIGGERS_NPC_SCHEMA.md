@@ -57,10 +57,13 @@ Each entry in `levelsLDTK` has these level-wide fields:
 | `light` | Number | Yes | Light level in dark rooms. `0` = maximum darkness. Passed to `FXshadow`. |
 | `visited` | Bool | Yes | `false` by default. Set to `true` when the room is loaded. Used by the map. |
 | `comic_name` | String or nil | No | Name of the Panels cutscene played when entering the room. `nil` if none. |
-| `comic_wasPlayed` | Bool | Yes | `false` by default. Set to `true` after the cutscene plays. Prevents repetition. |
+| `comic_wasPlayed` | Bool | Yes (legacy) | **No longer used for persistence.** Cutscene "already seen" state now lives in `PlayerData.seenComics[comic_name]` (rooms are reused templates in procedural mode). See [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md). |
 | `DoorsConnection` | Array\<String\> | Yes | List of allowed door directions. Values: `"Top"`, `"Down"`, `"Left"`, `"Right"`. |
 | `play` | String or nil | No | When to play the cutscene. `"Enter"` = on room entry. `nil` = never automatically. |
 | `hasForeground` | Bool | Yes | `true` if a foreground sprite exists at `assets/images/rooms/floor{level}/foreground_{roomNumber}`. |
+| `procGen` | Bool | Yes (procedural) | `true` → the room is eligible for random placement in the run graph. Secret rooms set `false`. See [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md). |
+| `roomRole` | Enum String | Yes (procedural) | `Start` / `Normal` / `Final` / `StartDown` / `StartUp` (case-insensitive). Buckets the template in the pool. |
+| `requiredItems` / `RequiredItems` | Array\<String\> | No | Items needed to traverse the room (case-insensitive, e.g. `{"HasLamp"}`). If the player lacks any, the room is excluded from the pool. |
 
 ### `neighbourLevels` (neighbor array)
 
@@ -92,7 +95,8 @@ Each neighbor has:
 |-------|------|----------|-------------|
 | `type` | String or nil | No | Trigger type. See type table below. |
 | `script` | String | No | Fallback script. Used when `conditionalScripts` is empty or no condition applies. |
-| `conditionalScripts` | Array\<String\> | Yes (can be `{}`) | List of conditions evaluated top-to-bottom. Format: `"condition:script"` or `"condition:script!"`. |
+| `conditionalScripts` | Array\<String\> | Yes (can be `{}`) | List of conditions evaluated top-to-bottom. Format: `"condition:script"` or `"condition:script!"`. Chooses which dialog runs **on interaction**. |
+| `spawnConditions` | Array\<String\> | No | Render gate evaluated **before** the trigger is created (see [Spawn Conditions](#spawn-conditions-render-gate)). If present and not all met, the trigger is not spawned. Independent of `conditionalScripts`. |
 | `usedTrigger` | Bool | Yes | `false` by default. Set to `true` when the trigger is consumed. **Do not modify manually**. |
 | `mapPercent` | Number | Yes | Legacy field present in the data. Currently has no functional use in the evaluator. |
 
@@ -284,6 +288,7 @@ Entity in LDtk representing a collectible item. Processed by the Items block in 
 | `customFields.isItem` | Bool | Yes | Must be `true` for MazeScene to generate the item. |
 | `customFields.grants` | String | No | For `"itemGift"`: what it grants when collected. Format: `"fieldName:true"` (e.g., `"hasDWatch:true"`). Multiple grants separated by comma. |
 | `customFields.KeyNumber` | Number | No | For `"keycard"`: key number (1, 2, 3...). |
+| `customFields.spawnConditions` | Array\<String\> | No | Render gate evaluated before the item is created (see [Spawn Conditions](#spawn-conditions-render-gate)). Applied **in addition** to the ownership check below. |
 
 ### Spawn Condition in MazeScene
 
@@ -292,6 +297,8 @@ MazeScene checks whether the item has already been collected before instantiatin
 - `keycard`: not generated if `PlayerData.keys[keyNumber]` is already `true`.
 - `grants`: not generated if any item in the grants string is already in `PlayerData.items` or `PlayerData.skills`.
 - Other types (`lamp`, `radio`, etc.): not generated if the corresponding field in `PlayerData.items` is already `true`.
+
+On top of the above, if `spawnConditions` is present it must pass too (see next section).
 
 ---
 
@@ -315,11 +322,15 @@ MazeScene checks whether the item has already been collected before instantiatin
 - `NeedsKey == true` and player has the key: same as above.
 - `NeedsKey == true` and player **does not** have the key: `dialogUI:addScreen("nokeys")` + `'freeze'`.
 
+### Procedural behavior
+
+In procedural mode (keys are removed), `CreateDoorsFromNode` creates a functional door only on sides the graph **connected** (`node.edges`), matching facing sides by **door signature** (count + position + size). All doors on a side lead to the same neighbour. A side the graph left **unconnected** is covered by a **wall plug** (`CreateWallPlugsFromNode`): wall brick stamped from the tilesheet + a wall collider, so the opening looks solid and can't be walked through. See [PROCEDURAL_GENERATION.md §4 & §11](PROCEDURAL_GENERATION.md#4-door-connection-signature-matching).
+
 ---
 
 ## Schema: PortalDoor
 
-`PortalDoors` entity in LDtk. Class: `entities/props/portal_door.lua`. Allows teleportation to another room with conditions.
+`PortalDoors` entity in LDtk. Class: `entities/props/portal_door.lua`. In procedural mode, portals are **entrances to secret rooms**, paired A↔A by `PortalID`.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -327,18 +338,24 @@ MazeScene checks whether the item has already been collected before instantiatin
 | `iid` | String | Yes | Unique UUID. |
 | `x`, `y` | Number | Yes | Portal position in the room. |
 | `width`, `height` | Number | Yes | Dimensions of the collider (`24×24` per `Config.Portals.collideRect`). |
-| `customFields.PortalID` | Number | Yes | Portal identifier (used to pair portals). |
-| `customFields.DestLevel` | Number | Yes | Destination floor number. |
-| `customFields.DestRoom` | Number | Yes | Destination room number. |
-| `customFields.SpawnX` | Number | Yes | Spawn X coordinate in the destination room. |
-| `customFields.SpawnY` | Number | Yes | Spawn Y coordinate in the destination room. |
-| `customFields.Conditions` | Array\<String\> | No | List of conditions that must be met to use the portal. Same format as `conditionalScripts`. |
-| `customFields.BlockedDialog` | String | No | Name of the dialog script shown when the player cannot use the portal. |
+| `customFields.PortalID` | Number | Yes | Pairing id. The portal in the destination room with the **same** `PortalID` is the return portal. |
+| `customFields.DestLevel` | Number | Yes | Destination floor. Resolves the secret room by `DestLevel*100 + DestRoom`. |
+| `customFields.DestRoom` | Number | Yes | Destination room number (the secret room is authored `procGen = false`). |
+| `customFields.SpawnX` | Number | Yes | Spawn X in the destination room. |
+| `customFields.SpawnY` | Number | Yes | Spawn Y in the destination room. |
+| `customFields.Conditions` | Array\<String\> | No | Conditions to use the portal (e.g. `{"isTiny:true"}`). Same syntax as `conditionalScripts` conditions. |
+| `customFields.BlockedDialog` | String | No | Dialog script shown when conditions aren't met. |
+
+### Procedural behavior
+
+During generation, each placed room's portals pull their destination template in as an `isSecret` graph node, linking `host.portals[PortalID] ↔ secret.portals[PortalID]`. Secret rooms are **not** part of side-connectivity. See [PROCEDURAL_GENERATION.md §7](PROCEDURAL_GENERATION.md#7-secret-rooms-via-portaldoors).
 
 ### Collision Behavior
 
-- If conditions are met: `other:setSpawn()` + `other:goTo()` (teleportation).
-- If not met: `dialogUI:addScreen(other.blockedDialog or "nokeys")` + `'freeze'`.
+- If `canEnter()` (all `Conditions`) passes: `other:setSpawn()` (spawn at `SpawnX/SpawnY`) + `other:goTo()` → `RunState.goTo(targetNodeId)` + transition.
+- If not: `dialogUI:addScreen(other.blockedDialog or "nokeys")` + `'freeze'`.
+
+> Authoring: a secret-room pair is two `PortalDoors` sharing a `PortalID`, each pointing at the other's room (`DestLevel`/`DestRoom`). The secret room must be `procGen = false` so it's reachable only via the portal.
 
 ---
 
@@ -448,6 +465,56 @@ Conditions are evaluated **top-to-bottom**. The first one that applies wins; the
 
 ---
 
+## Spawn Conditions (render gate)
+
+`spawnConditions` is an **optional render gate** on `Triggers` and item entities, evaluated by `MazeScene:enter()` **before** the entity is created. If present and not satisfied, the entity is never spawned. It is completely separate from `conditionalScripts` (which only chooses *which dialog* runs once you interact with an already-spawned trigger).
+
+- **Field name:** `spawnConditions` (LDtk PascalCase `SpawnConditions` is also accepted).
+- **Type:** `Array<String>`.
+- **Evaluator:** `utilities/Conditions.lua` (`Conditions.met`). Shared, but independent from the `conditionalScripts` logic in `trigger.lua` / `npc.lua`.
+
+### Logic: AND across entries, OR within an entry
+
+- Every entry in the array must pass (**AND**).
+- Inside one entry, `|`-separated sub-conditions are **OR** (the entry passes if any sub passes).
+- `nil` / empty array = no gate (always spawns).
+
+### Condition syntax
+
+| Form | Example | Meaning |
+|------|---------|---------|
+| Numeric | `"run>=4"`, `"crew==2"`, `"healthPoints<3"` | `<path> <op> <number>`, ops `> < >= <= == !=` |
+| Boolean path | `"items.hasLamp"` | `PlayerData.items.hasLamp == true` |
+| Negated | `"!isTiny"` | `PlayerData.isTiny ~= true` |
+| Literal | `"true"` | always passes |
+
+Aliases: `run` → `PlayerData.runCount`, `crew` → `PlayerData.CrewMemberData.amountTaken`. Numeric values and aliases are case-stable; boolean **paths are case-sensitive** (write `items.hasLamp`, not `HasLamp`).
+
+### Examples
+
+| Goal | `spawnConditions` |
+|------|-------------------|
+| Only on run 4 | `{"run==4"}` |
+| On run 4 **or** 8 | `{"run==4\|run==8"}` |
+| Run 4 onward | `{"run>=4"}` |
+| (Run 4 or 8) **and** has lamp | `{"run==4\|run==8", "items.hasLamp"}` |
+| Run 4/8/12 and tiny | `{"run==4\|run==8\|run==12", "isTiny"}` |
+
+```lua
+-- A trigger that only appears from the 4th run onward, and only if the player has the lamp.
+customFields = {
+    type               = "Story",
+    script             = "lateGameHint",
+    usedTrigger        = false,
+    conditionalScripts = {},                       -- dialog selection (unchanged)
+    spawnConditions    = { "run>=4", "items.hasLamp" }, -- render gate (new)
+}
+```
+
+> `runCount` is incremented on NewGame and on each death/Retry (not on hole/tube), and persists in the save. See `PLAYERDATA_REFERENCE.md`.
+
+---
+
 ## Complete Interaction Flow
 
 ```
@@ -510,16 +577,16 @@ dialogUI:nextDialog()
 
 ---
 
-## Persistence — Fields by Entity
+## Persistence (procedural model)
 
-| Field | Entity | When modified | Who modifies it |
-|-------|---------|---------------|-----------------|
-| `usedTrigger` | Trigger | `returnScript()` decides to consume it | `returnScript()` in trigger.lua |
-| `hasGranted` | NPC | First interaction with a successful grant | `NPC:markGranted()` in npc.lua |
-| `dead` | Brocorat / Bosscolli | Enemy is defeated in DanceScene | Combat system |
-| `isTaken` | CrewMember | Player rescues the ally | `CrewMember:taken()` |
-| `destroyed` | PropItem / Box | Prop is destroyed | PropItem logic |
-| `visited` | Room | When the room is loaded | `MazeScene:enter()` |
-| `comic_wasPlayed` | Room | After a cutscene completes | Panels callback |
+> **Updated for `3.0-PROCGEN`.** The game no longer patches a fixed `levelsLDTK` with per-`iid` `levelState`. Templates are immutable; per-run entity state lives on graph **nodes** (`node.content` / `node.cleared`) and is serialized as part of `RunState`. See [SAVE_SYSTEM.md](SAVE_SYSTEM.md) and [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md).
 
-The SaveSystem serializes only modified fields (by `iid`) on top of a clean copy of `levelsLDTK`. No manual persistence management is needed — saving occurs in `MazeScene:finish()` and `MazeScene:pause()`.
+| State | Where it lives now | When modified |
+|-------|--------------------|---------------|
+| Enemy killed | `node.cleared.enemies[key] = {x,y}` | Defeated in DanceScene (`findAndKillEnemyById`) |
+| Crew taken | `node.cleared.crewTaken` + `PlayerData.CrewMemberData.idNumbers` | `CrewMember:taken()` |
+| Active enemies / utilities / crew for the run | `node.content` | Rolled in `MapGenerator.generate` |
+| Cutscene seen | `PlayerData.seenComics[comic_name]` | Panels completion callback |
+| `usedTrigger` / `hasGranted` | template `customFields` (run-local) | `returnScript()` / `NPC:markGranted()` |
+
+`SaveSystem.save()` writes `{ player = PlayerData, run = RunState.serialize() }`; saving occurs in `MazeScene:finish()`, `MazeScene:pause()`, and `DanceScene`.

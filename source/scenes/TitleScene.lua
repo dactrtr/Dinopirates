@@ -248,6 +248,7 @@ function scene:enter()
 			backgroundState = 'newGame',
 			action = function()
 				SaveSystem.reset()
+				PlayerData.runCount = 1  -- first run of a brand-new game
 				PlayerData.fromTitle = true
 				RunState.startRun()
 				Noble.transition(MazeScene, 1, Noble.Transition.Spotlight, {

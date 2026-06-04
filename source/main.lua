@@ -6,6 +6,7 @@ import 'achievements/all'
 import 'assets/data/Config'
 
 import 'utilities/Utilities'
+import 'utilities/Conditions'
 -- import 'utilities/PauseMenu'
 import 'utilities/SaveSystem'
 import 'utilities/MapGenerator'

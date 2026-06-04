@@ -73,6 +73,7 @@ function scene:init()
 		Noble.transition(TitleScene) 
 	end)
 	menu:addItem("Retry", function()
+		PlayerData.runCount = (PlayerData.runCount or 0) + 1  -- a death starts a new run
 		RunState.startRun()
 		Noble.transition(MazeScene)
 	 end)

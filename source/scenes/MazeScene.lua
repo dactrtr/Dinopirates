@@ -302,7 +302,10 @@ function scene:enter()
 			for _, item in ipairs(entitiesList) do
 				local cf = item.customFields or {}
 
-				if cf.isItem == true then
+				-- spawnConditions: an optional render gate (e.g. {"run>=4","items.hasLamp"}).
+				-- If present and not all met, the item is not spawned. Separate from the
+				-- ownership/collected checks below.
+				if cf.isItem == true and Conditions.met(cf.spawnConditions or cf.SpawnConditions) then
 					local x, y = item.x, item.y
 					local itemType = (cf.type or ""):lower()
 					local keyNumber = cf.KeyNumber or cf.keyNumber
@@ -426,8 +429,11 @@ function scene:enter()
 		for i, triggerData in ipairs(entities.Triggers) do
 			local cf = triggerData.customFields or {}
 			local used = cf.usedTrigger or false
-			
-			if not used then
+
+			-- spawnConditions: optional render gate (e.g. {"run>=4"}). The trigger is only
+			-- created when all conditions pass; its conditionalScripts (which dialog to show)
+			-- are still evaluated later, on interaction.
+			if not used and Conditions.met(cf.spawnConditions or cf.SpawnConditions) then
 				local x = triggerData.x
 				local y = triggerData.y
 				local width = triggerData.width

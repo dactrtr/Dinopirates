@@ -27,7 +27,7 @@
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "Start",
 		"requiredItems": []
 	},
 	"layers": [
@@ -169,7 +169,10 @@
 				"customFields": {
 					"type": "itemGift",
 					"grants": "hasDWatch:true",
-					"isItem": true
+					"isItem": true,
+					"SpawnConditions": [
+						"run==4|run==8"
+					]
 				}
 			}
 		],
