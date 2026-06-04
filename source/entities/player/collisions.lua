@@ -1,26 +1,30 @@
 function Player:collisionResponse(other)
 
   if other:isa(Enemy) then
-    if other:isa(Brocorat) then -- validate candance also
+    if other:isa(Brocorat) then
       PlayerData.lastEnemyTouched.type = "Brocorat"
       PlayerData.lastEnemyTouched.id = other.id
       PlayerData.lastEnemyTouched.x = other.x
       PlayerData.lastEnemyTouched.y = other.y
-      
+
       -- Add damage logic
       if not self.isInvincible then
         PlayerData.healthPoints -= (other.damage or 1)
         printDebug("💥 Player hit by Brocorat! HP:", PlayerData.healthPoints)
-        
-        -- Trigger dance only if HP < threshold
-        if PlayerData.healthPoints < (PlayerData.danceThresholdHP or 5) then
+
+        if PlayerData.skills.canDance and PlayerData.healthPoints < (PlayerData.danceThresholdHP or 1) then
+          -- Near death and able to dance: enter the rhythm battle instead of dying.
           self:fight()
+        elseif PlayerData.healthPoints <= 0 then
+          -- No dance skill (or it didn't trigger): enemies drain HP to death → DeadScene.
+          PlayerData.healthPoints = 0
+          self:dead("hp")
         else
           self:startInvincibility(Config.Invincibility.duration)
           self:applyKnockback(other.x, other.y)
         end
       end
-      
+
       return 'overlap'
 
     end

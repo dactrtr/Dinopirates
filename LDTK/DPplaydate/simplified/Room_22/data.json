@@ -8,6 +8,10 @@
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
+			"levelIid": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
+			"dir": ">"
+		},
+		{
 			"levelIid": "23b93777-ac70-11f0-998c-8fe9cae02b21",
 			"dir": "<"
 		},
@@ -59,7 +63,8 @@
 		"play": null,
 		"procGen": false,
 		"roomRole": "Normal",
-		"requiredItems": []
+		"requiredItems": [],
+		"requiredSkills": []
 	},
 	"layers": [
 		"Gameplay.png",

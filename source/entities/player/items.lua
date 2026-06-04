@@ -45,8 +45,12 @@ function Player:processGrants(grants, targetTable)
       elseif value == "false" then val = false
       elseif tonumber(value) then val = tonumber(value)
       end
-      
-      targetTable[key] = val
+
+      -- Route known skill keys (canDance/canFlash/canPlungerang) to PlayerData.skills
+      -- regardless of the caller's target, so an itemGift granting a skill lands correctly.
+      local target = targetTable
+      if PlayerData.skills[key] ~= nil then target = PlayerData.skills end
+      target[key] = val
       printDebug("🎁 Granted:", key, "=", val)
     end
   end

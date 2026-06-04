@@ -12,10 +12,6 @@
 			"dir": "<"
 		},
 		{
-			"levelIid": "6de95960-ac70-11f0-998c-e3108c5f25c9",
-			"dir": ">"
-		},
-		{
 			"levelIid": "40386700-ac70-11f0-998c-e53e1b32800c",
 			"dir": "nw"
 		},
@@ -43,7 +39,8 @@
 		"play": null,
 		"procGen": false,
 		"roomRole": "Normal",
-		"requiredItems": []
+		"requiredItems": [],
+		"requiredSkills": []
 	},
 	"layers": [
 		"Gameplay.png",

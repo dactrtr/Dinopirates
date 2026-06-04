@@ -32,7 +32,7 @@ local DefaultPlayerData = {
 	deathCause = "hp",   -- "hp" | "sanity" | "void"; set on death, read by DeadScene
 	mapPercent = 0, -- Percentage of map explored (0-100)
 	keys = {}, -- Table to store collected keys by number: {[1] = true, [2] = true, ...}
-	canDance = false,
+	
 	readyToShrink = false,
 	readyToCook = false,
 	isTiny = false,
@@ -88,6 +88,7 @@ local DefaultPlayerData = {
 		hasPlunger = false,
 	},
 	skills ={
+		canDance = true,
 		canFlash = false,
 		canPlungerang = false,
 	},

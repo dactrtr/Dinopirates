@@ -64,6 +64,7 @@ Each entry in `levelsLDTK` has these level-wide fields:
 | `procGen` | Bool | Yes (procedural) | `true` → the room is eligible for random placement in the run graph. Secret rooms set `false`. See [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md). |
 | `roomRole` | Enum String | Yes (procedural) | `Start` / `Normal` / `Final` / `StartDown` / `StartUp` (case-insensitive). Buckets the template in the pool. |
 | `requiredItems` / `RequiredItems` | Array\<String\> | No | Items needed to traverse the room (case-insensitive, e.g. `{"HasLamp"}`). If the player lacks any, the room is excluded from the pool. |
+| `requiredSkills` / `RequiredSkills` | Array\<String\> | No | Skills needed for the room to enter the pool, checked against `PlayerData.skills` (e.g. `{"canDance"}`). Both this and `requiredItems` must be satisfied. |
 
 ### `neighbourLevels` (neighbor array)
 

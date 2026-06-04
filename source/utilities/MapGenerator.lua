@@ -99,26 +99,35 @@ local function hasHolesTemplate(template)
 	return false
 end
 
--- True when the player owns every item a template requires. The LDtk field (named
--- RequiredItems / requiredItems) is an array of PlayerData.items keys needed to traverse
--- the room. Matching is case-insensitive on both the field name and the values, since
--- LDtk enums are PascalCase ("HasLamp") while PlayerData.items is camelCase ("hasLamp").
--- Rooms whose requirements aren't met are excluded from the pool, so the player never
--- enters a room they can't get through. No requirements → always eligible.
-local function meetsItemRequirements(template)
-	local cf = template.customFields
-	local req = cf and (cf.requiredItems or cf.RequiredItems)
+-- True when the player owns every entry in `req` (an LDtk array of names) inside the
+-- given PlayerData sub-table. Matching is case-insensitive on both sides, since LDtk
+-- enums are PascalCase ("HasLamp") while PlayerData keys are camelCase ("hasLamp").
+-- nil/empty req → true.
+local function ownsAll(req, ownedTable)
 	if not req then return true end
-	local items = PlayerData.items or {}
+	local owned = ownedTable or {}
 	for _, raw in ipairs(req) do
 		local want = tostring(raw):lower()
-		local owned = false
-		for key, val in pairs(items) do
-			if val == true and key:lower() == want then owned = true; break end
+		local has = false
+		for key, val in pairs(owned) do
+			if val == true and key:lower() == want then has = true; break end
 		end
-		if not owned then return false end
+		if not has then return false end
 	end
 	return true
+end
+
+-- A room qualifies only when the player meets BOTH its item and skill requirements.
+-- LDtk fields (each an Array of names, case-insensitive, also accept PascalCase):
+--   requiredItems  → PlayerData.items  (e.g. {"HasLamp"})
+--   requiredSkills → PlayerData.skills (e.g. {"canDance"})
+-- Rooms whose requirements aren't met are excluded from the pool, so the player never
+-- enters a room they can't get through.
+local function meetsRequirements(template)
+	local cf = template.customFields
+	if not cf then return true end
+	return ownsAll(cf.requiredItems  or cf.RequiredItems,  PlayerData.items)
+	   and ownsAll(cf.requiredSkills or cf.RequiredSkills, PlayerData.skills)
 end
 
 -- Build the pool from levelsLDTK, grouped by role. A room qualifies only when it is a
@@ -128,7 +137,7 @@ function MapGenerator.buildPool()
 	local pool = { start = {}, normal = {}, final = {}, startdown = {}, startup = {} }
 	for _, tmpl in ipairs(levelsLDTK or {}) do
 		local cf = tmpl.customFields or {}
-		if cf.procGen == true and meetsItemRequirements(tmpl) then
+		if cf.procGen == true and meetsRequirements(tmpl) then
 			local role = (cf.roomRole or "normal"):lower()  -- LDtk enum is capitalized
 			if pool[role] then
 				table.insert(pool[role], tmpl)

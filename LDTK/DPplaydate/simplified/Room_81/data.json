@@ -6,16 +6,7 @@
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "a82c8680-48b0-11f1-9f4d-49a4be703c65",
-			"dir": "w"
-		},
-		{
-			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
-			"dir": "se"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": false,
 		"light": 0,
@@ -31,7 +22,8 @@
 		"play": null,
 		"procGen": false,
 		"roomRole": "Normal",
-		"requiredItems": []
+		"requiredItems": [],
+		"requiredSkills": []
 	},
 	"layers": [
 		"Gameplay.png",

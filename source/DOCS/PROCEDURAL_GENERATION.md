@@ -44,6 +44,7 @@ A template qualifies for the pool only when it is a procGen room **and** the pla
 | `procGen` | Bool | `true` → eligible for random placement. Secret rooms set this `false` (reached only by portal). |
 | `roomRole` | Enum (string, case-insensitive) | `Start`, `Normal`, `Final`, `StartDown`, `StartUp`. Buckets the template in the pool. |
 | `requiredItems` / `RequiredItems` | Array\<String\> | Items needed to traverse the room (case-insensitive, e.g. `{"HasLamp"}` → `PlayerData.items.hasLamp`). If the player lacks any, the room is excluded from the pool — you never enter a room you can't pass. Don't put this on Start/StartDown/StartUp/Final. |
+| `requiredSkills` / `RequiredSkills` | Array\<String\> | Same as `requiredItems` but checked against `PlayerData.skills` (e.g. `{"canDance"}` → `PlayerData.skills.canDance`). Both lists must be satisfied for the room to enter the pool. |
 
 `roomRole` buckets:
 
@@ -137,7 +138,7 @@ Each crew member has its own hat (`Hats(crewId)`) and dialog (`<crewId>_tiny`, f
 
 Two independent gates layered on top of the pool:
 
-- **Room-level** `requiredItems` (§2): excludes whole rooms from the pool.
+- **Room-level** `requiredItems` / `requiredSkills` (§2): excludes whole rooms from the pool (checked against `PlayerData.items` / `PlayerData.skills`).
 - **Entity-level** `spawnConditions` on Items and Triggers: a render gate evaluated before the entity is created. See [SCRIPTS_TRIGGERS_NPC_SCHEMA.md](SCRIPTS_TRIGGERS_NPC_SCHEMA.md#spawn-conditions-render-gate). Uses `utilities/Conditions.lua` (`run`/`crew` aliases, AND across the array, OR with `|` inside an entry).
 
 `PlayerData.runCount` (alias `run`) increments on NewGame (set to 1) and on each death/Retry — not on hole/tube.
