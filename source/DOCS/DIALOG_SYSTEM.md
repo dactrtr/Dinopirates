@@ -155,10 +155,17 @@ Dialog advances line by line with the A button.
 -- MazeScene.inputHandler.AButtonDown
 if PlayerData.isTalking == true then
     player:displayDialog()
+    -- If displayDialog just closed the last line (isTalking → false) and the
+    -- triggering NPC queued a scene, launch it now. See NPC_SYSTEM.md §9.
+    if PlayerData.isTalking == false and pendingSceneOnDialogEnd then
+        local sceneGetter = pendingSceneOnDialogEnd
+        pendingSceneOnDialogEnd = nil
+        Noble.transition(sceneGetter(), 0.3, Noble.Transition.MetroNexus)
+    end
 end
 ```
 
-`player:displayDialog()` calls `player.dialogUI:nextDialog()`.
+`player:displayDialog()` calls `player.dialogUI:nextDialog()`. The post-call check lets an NPC with `triggerScene` (e.g. the final-room cockpit terminal) hand off to another scene the instant its dialog finishes.
 
 ### `nextDialog()` — Internal Logic
 

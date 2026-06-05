@@ -183,6 +183,7 @@ Without `!`, the trigger remains active (repeatable).
 | `conditionalScripts` | Array\<String\> | Yes (can be `{}`) | List of conditions. Format: `"condition:script"` or `"condition:script:grantKey:grantVal"`. |
 | `sourceFeed` | Number | No | Index of the dialog portrait feed. Default: `0`. |
 | `hasGranted` | Bool | Yes | `false` by default. `true` when the grant has already been applied. **Do not modify manually**. |
+| `triggerScene` | String | No | Scene to launch once this NPC's dialog ends. Must match a key in MazeScene's `TRIGGER_SCENES` (currently `"Cockpit"`). Omit for ordinary NPCs. See [NPC_SYSTEM.md §9](NPC_SYSTEM.md#9-scene-on-dialog-end-triggerscene). |
 
 ### `conditionalScripts` Format (NPC)
 
@@ -221,6 +222,29 @@ An NPC can give **one grant per entry**. For multiple grants, use separate entri
     }
 }
 ```
+
+### Example — NPC that launches a scene (`triggerScene`)
+
+The **final room** NPC (room 6, floor 4): plays `finalTerminal`, then transitions to `CockpitScene`.
+
+```lua
+{
+    id     = "NPC",
+    iid    = "32432300-48b0-11f1-8344-ebd86adccf0e",
+    x      = 60,
+    y      = 108,
+    width  = 32,
+    height = 32,
+    customFields = {
+        type = "cat",
+        conditionalScripts = { "true:finalTerminal" },
+        sourceFeed = 0,
+        triggerScene = "Cockpit"     -- launches CockpitScene after the dialog
+    }
+}
+```
+
+> `triggerScene` must be added as a String field on the NPC entity definition in the LDtk editor to survive level re-exports.
 
 ---
 

@@ -3,7 +3,7 @@
 **File**: `scenes/CockpitScene.lua`
 **Entities**: `entities/UI/cockpit/`
 
-An interactive puzzle scene reached from TitleScene (or directly from the debug menu). The player moves a pointer using the accelerometer or D-pad, positions it over physical buttons, and presses them in the correct order. Completing a sequence triggers a scene transition; too many incorrect presses return the player to TitleScene.
+An interactive puzzle scene reached from TitleScene, from the debug menu, or from the **final room** — talking to the room 6 (floor 4) NPC, which carries `triggerScene = "Cockpit"`, transitions here once its dialog ends (see [NPC_SYSTEM.md §9](NPC_SYSTEM.md#9-scene-on-dialog-end-triggerscene)). The player moves a pointer using the accelerometer or D-pad, positions it over physical buttons, and presses them in the correct order. Completing a sequence triggers a scene transition; too many incorrect presses return the player to TitleScene.
 
 ---
 
