@@ -542,7 +542,20 @@ script = {
         video = 'playerCry',
         text = "twocm-01",
     }
-    
+
+        }
+    },
+    {
+        name = "finalTerminal",
+        dialog = {
+            {
+                video = 'playerSurprise',
+                text = "finalterminal-01",
+            },
+            {
+                video = 'player',
+                text = "finalterminal-02",
+            }
         }
     },
 }

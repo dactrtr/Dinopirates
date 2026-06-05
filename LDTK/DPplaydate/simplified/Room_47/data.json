@@ -9,7 +9,15 @@
 	"neighbourLevels": [
 		{
 			"levelIid": "4a0bd050-ac70-11f0-998c-b14d359446e6",
-			"dir": ">"
+			"dir": "o"
+		},
+		{
+			"levelIid": "46b2e150-ac70-11f0-998c-232538b976f9",
+			"dir": "w"
+		},
+		{
+			"levelIid": "4cf534a4-ac70-11f0-998c-6712312c62dc",
+			"dir": "e"
 		},
 		{
 			"levelIid": "2139b880-ac70-11f0-998c-f5d424530b7f",

@@ -113,7 +113,8 @@
 					],
 					"sourceFeed": 0,
 					"hasGranted": false,
-					"forceSpawn": false
+					"forceSpawn": false,
+					"triggerScene": null
 				}
 			},
 			{
@@ -132,7 +133,8 @@
 					],
 					"sourceFeed": 0,
 					"hasGranted": false,
-					"forceSpawn": false
+					"forceSpawn": false,
+					"triggerScene": null
 				}
 			}
 		],

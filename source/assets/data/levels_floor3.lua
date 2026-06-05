@@ -57,6 +57,7 @@ table.insert(levelsLDTK, {
     procGen = true,
     roomRole = "Normal",
     requiredItems = {},
+    requiredSkills = {},
     hasForeground = true
   },
   entities = {
@@ -195,10 +196,6 @@ table.insert(levelsLDTK, {
       dir = "<"
     },
     {
-      levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
-      dir = ">"
-    },
-    {
       levelIid = "2dc4bd30-ac70-11f0-998c-2ba6c3750080",
       dir = "nw"
     },
@@ -217,14 +214,6 @@ table.insert(levelsLDTK, {
     {
       levelIid = "43980cc0-ac70-11f0-998c-a70f320b4eb0",
       dir = "e"
-    },
-    {
-      levelIid = "4cf534a4-ac70-11f0-998c-6712312c62dc",
-      dir = "sw"
-    },
-    {
-      levelIid = "50a125a0-ac70-11f0-998c-f3b70b95a9ac",
-      dir = "s"
     },
     {
       levelIid = "53674a87-ac70-11f0-998c-83aa3940da82",
@@ -247,6 +236,7 @@ table.insert(levelsLDTK, {
     procGen = true,
     roomRole = "Normal",
     requiredItems = {},
+    requiredSkills = {},
     hasForeground = true
   },
   entities = {
@@ -277,7 +267,7 @@ table.insert(levelsLDTK, {
       dir = "<"
     },
     {
-      levelIid = "6cc9d510-ac70-11f0-997a-191299f9209c",
+      levelIid = "68b425c0-ac70-11f0-997a-7732cd72a5cc",
       dir = ">"
     },
     {
@@ -317,6 +307,7 @@ table.insert(levelsLDTK, {
     procGen = true,
     roomRole = "Normal",
     requiredItems = {},
+    requiredSkills = {},
     hasForeground = true
   },
   entities = {
@@ -347,7 +338,7 @@ table.insert(levelsLDTK, {
       dir = "<"
     },
     {
-      levelIid = "715b4410-ac70-11f0-997a-156adb22b715",
+      levelIid = "6cc9d510-ac70-11f0-997a-191299f9209c",
       dir = ">"
     },
     {
@@ -388,6 +379,7 @@ table.insert(levelsLDTK, {
     procGen = true,
     roomRole = "Normal",
     requiredItems = {},
+    requiredSkills = {},
     hasForeground = true
   },
   entities = {
@@ -514,6 +506,7 @@ table.insert(levelsLDTK, {
     procGen = true,
     roomRole = "Normal",
     requiredItems = {},
+    requiredSkills = {},
     hasForeground = true
   },
   entities = {

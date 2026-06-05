@@ -13,13 +13,16 @@ end
 NPC = {}
 class('NPC').extends(NobleSprite)
 
-function NPC:init(x, y, npcType, iid, room, sourceFeed)
+function NPC:init(x, y, npcType, iid, room, sourceFeed, triggerScene)
     NPC.super.init(self, 'assets/images/props/npc', true)
 
-    self.npcType    = npcType
-    self.iid        = iid
-    self.room       = room
-    self.sourceFeed = sourceFeed or 0
+    self.npcType      = npcType
+    self.iid          = iid
+    self.room         = room
+    self.sourceFeed   = sourceFeed or 0
+    -- Optional: scene to transition to once this NPC's dialog ends (e.g. "Cockpit").
+    -- nil = ordinary NPC. Consumed by MazeScene's AButtonDown handler.
+    self.triggerScene = triggerScene
     self.script     = nil  -- Required: MazeScene calls grantAchievementIfNeeded(trigger.script)
     self.type       = nil  -- Required: state.lua checks self.currentTrigger.type; nil → setPressA() HUD
 

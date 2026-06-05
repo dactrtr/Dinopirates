@@ -6,12 +6,7 @@
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "4cf534a4-ac70-11f0-998c-6712312c62dc",
-			"dir": "<"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": false,
 		"light": 0,

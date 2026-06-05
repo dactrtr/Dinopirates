@@ -8,10 +8,6 @@
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
-			"dir": ">"
-		},
-		{
 			"levelIid": "23b93777-ac70-11f0-998c-8fe9cae02b21",
 			"dir": "<"
 		},
@@ -30,18 +26,6 @@
 		{
 			"levelIid": "3d752854-ac70-11f0-998c-5dddbfac239d",
 			"dir": "e"
-		},
-		{
-			"levelIid": "46b2e150-ac70-11f0-998c-232538b976f9",
-			"dir": "sw"
-		},
-		{
-			"levelIid": "4a0bd050-ac70-11f0-998c-b14d359446e6",
-			"dir": "s"
-		},
-		{
-			"levelIid": "4cf534a4-ac70-11f0-998c-6712312c62dc",
-			"dir": "se"
 		},
 		{
 			"levelIid": "ae5a31c0-ac70-11f0-9560-a1abd660ccf1",

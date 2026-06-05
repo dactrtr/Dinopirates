@@ -1,29 +1,12 @@
 {
 	"identifier": "Room_6",
 	"uniqueIdentifer": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
-	"x": 128,
-	"y": 80,
+	"x": 0,
+	"y": -240,
 	"width": 400,
 	"height": 240,
-	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "abdd36b0-ac70-11f0-998c-673887a050e6",
-			"dir": "<"
-		},
-		{
-			"levelIid": "37dad4d0-ac70-11f0-998c-e3c63970ecdd",
-			"dir": "<"
-		},
-		{
-			"levelIid": "3b081ff0-ac70-11f0-998c-67e6b510262c",
-			"dir": "<"
-		},
-		{
-			"levelIid": "69eb2d80-ac70-11f0-989f-95306126bd74",
-			"dir": "n"
-		}
-	],
+	"bgColor": "#FFA90E",
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": false,
 		"light": 0,
@@ -40,7 +23,7 @@
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Final",
+		"roomRole": "Start",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -49,6 +32,26 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"NPC": [
+			{
+				"id": "NPC",
+				"iid": "32432300-48b0-11f1-8344-ebd86adccf0e",
+				"layer": "Items_and_Props",
+				"x": 60,
+				"y": 108,
+				"width": 32,
+				"height": 32,
+				"color": 16217634,
+				"customFields": {
+					"type": "cat",
+					"conditionalScripts": [],
+					"sourceFeed": 0,
+					"hasGranted": false,
+					"forceSpawn": true,
+					"triggerScene": null
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",

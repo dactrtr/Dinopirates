@@ -418,7 +418,7 @@ function scene:enter()
 	if npcEntities and npcEntities.NPC then
 		for _, npcData in ipairs(npcEntities.NPC) do
 			local cf = npcData.customFields or {}
-			NPC(npcData.x, npcData.y, cf.type or "computer", npcData.iid, room, cf.sourceFeed or 0)
+			NPC(npcData.x, npcData.y, cf.type or "computer", npcData.iid, room, cf.sourceFeed or 0, cf.triggerScene)
 		end
 	end
 
@@ -602,6 +602,15 @@ end
 
 -- Define the inputHander for this scene here, or use a previously defined inputHandler.
 
+-- Maps a triggerScene name (set on an NPC/Trigger customField) to its scene class.
+-- Add entries here to let other entities launch other scenes when their dialog ends.
+local TRIGGER_SCENES = {
+	Cockpit = function() return CockpitScene end,
+}
+
+-- Scene queued by an entity with a triggerScene; fired once its dialog finishes closing.
+local pendingSceneOnDialogEnd = nil
+
 -- scene.inputHandler = someOtherInputHandler
 -- OR
 scene.inputHandler = {
@@ -612,10 +621,18 @@ scene.inputHandler = {
 		if player and player.isSleeping then return end
 		if PlayerData.isTalking == true then
 			player:displayDialog()
+			-- Dialog just closed (isTalking flipped to false in removeAll): run any queued scene.
+			if PlayerData.isTalking == false and pendingSceneOnDialogEnd then
+				local sceneGetter = pendingSceneOnDialogEnd
+				pendingSceneOnDialogEnd = nil
+				Noble.transition(sceneGetter(), 0.3, Noble.Transition.MetroNexus)
+			end
 		elseif player.currentTrigger and PlayerData.isGaming == true then
 			local trigger = player.currentTrigger
 			PlayerData.isGaming = false
 			PlayerData.isTalking = true
+			-- Queue a scene transition if this entity declares a triggerScene (e.g. "Cockpit").
+			pendingSceneOnDialogEnd = trigger.triggerScene and TRIGGER_SCENES[trigger.triggerScene] or nil
 			player.dialogUI:addScreen(trigger:returnScript(), trigger.sourceFeed)
 			Utilities.grantAchievementIfNeeded(trigger.script)
 		end

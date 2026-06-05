@@ -9,27 +9,43 @@
 	"neighbourLevels": [
 		{
 			"levelIid": "c60e1220-ac70-11f0-998c-cbe47e589876",
-			"dir": "<"
-		},
-		{
-			"levelIid": "3d752854-ac70-11f0-998c-5dddbfac239d",
-			"dir": "nw"
-		},
-		{
-			"levelIid": "40386700-ac70-11f0-998c-e53e1b32800c",
-			"dir": "n"
-		},
-		{
-			"levelIid": "43980cc0-ac70-11f0-998c-a70f320b4eb0",
-			"dir": "ne"
+			"dir": "o"
 		},
 		{
 			"levelIid": "4cf534a4-ac70-11f0-998c-6712312c62dc",
 			"dir": "w"
 		},
 		{
-			"levelIid": "53674a87-ac70-11f0-998c-83aa3940da82",
+			"levelIid": "271dbf30-ac70-11f0-998c-eff03b419e1f",
+			"dir": "nw"
+		},
+		{
+			"levelIid": "2a300840-ac70-11f0-998c-8f209da81536",
+			"dir": "n"
+		},
+		{
+			"levelIid": "2ccecf00-ac70-11f0-998c-cf1ba2f9a183",
+			"dir": "ne"
+		},
+		{
+			"levelIid": "c37083e0-ac70-11f0-998c-41014ccafb8f",
+			"dir": "w"
+		},
+		{
+			"levelIid": "d138f520-ac70-11f0-998c-e18e7b9af98b",
 			"dir": "e"
+		},
+		{
+			"levelIid": "f01ab050-ac70-11f0-998c-25b128f234d3",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "f40f9130-ac70-11f0-998c-ff914bfa046a",
+			"dir": "s"
+		},
+		{
+			"levelIid": "f62f15d0-ac70-11f0-998c-272ed2400e64",
+			"dir": "se"
 		}
 	],
 	"customFields": {

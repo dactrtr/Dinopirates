@@ -12,6 +12,18 @@
 			"dir": ">"
 		},
 		{
+			"levelIid": "46b2e150-ac70-11f0-998c-232538b976f9",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "4a0bd050-ac70-11f0-998c-b14d359446e6",
+			"dir": "s"
+		},
+		{
+			"levelIid": "4cf534a4-ac70-11f0-998c-6712312c62dc",
+			"dir": "se"
+		},
+		{
 			"levelIid": "0c0281e0-ac70-11f0-998c-95fd1ad330a3",
 			"dir": "nw"
 		},
