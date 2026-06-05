@@ -114,7 +114,7 @@
 					"sourceFeed": 0,
 					"hasGranted": false,
 					"forceSpawn": false,
-					"triggerScene": null
+					"triggerScene": "Cockpit"
 				}
 			},
 			{
@@ -134,7 +134,7 @@
 					"sourceFeed": 0,
 					"hasGranted": false,
 					"forceSpawn": false,
-					"triggerScene": null
+					"triggerScene": "Cockpit"
 				}
 			}
 		],
