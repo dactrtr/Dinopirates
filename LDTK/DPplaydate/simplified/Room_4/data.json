@@ -36,6 +36,57 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "2925e110-48b0-11f1-8344-6fb57014178b",
+				"layer": "Items_and_Props",
+				"x": 332,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": true
+				}
+			},
+			{
+				"id": "Minifier",
+				"iid": "324d52f0-48b0-11f1-8344-29cd947bea73",
+				"layer": "Items_and_Props",
+				"x": 348,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": true
+				}
+			}
+		],
+		"Food": [
+			{
+				"id": "Food",
+				"iid": "2eaba5b0-48b0-11f1-8344-1b3639a78649",
+				"layer": "Items_and_Props",
+				"x": 284,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 16151930,
+				"customFields": {
+					"type": "food",
+					"grants": "hasitemname:bool",
+					"isItem": true
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",

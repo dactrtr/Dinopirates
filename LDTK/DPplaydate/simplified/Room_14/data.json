@@ -32,86 +32,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"Brocorat": [
-			{
-				"id": "Brocorat",
-				"iid": "457e3be0-48b0-11f1-98a2-892d415ae591",
-				"layer": "CM_and_enemies",
-				"x": 356,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false,
-					"forceSpawn": false
-				}
-			},
-			{
-				"id": "Brocorat",
-				"iid": "45c30d10-48b0-11f1-98a2-1f8cc54b7188",
-				"layer": "CM_and_enemies",
-				"x": 164,
-				"y": 164,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false,
-					"forceSpawn": false
-				}
-			},
-			{
-				"id": "Brocorat",
-				"iid": "13612f10-48b0-11f1-89a8-a96cd1fd0c52",
-				"layer": "CM_and_enemies",
-				"x": 260,
-				"y": 44,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false,
-					"forceSpawn": false
-				}
-			},
-			{
-				"id": "Brocorat",
-				"iid": "1453a560-48b0-11f1-89a8-9ffcad6aca86",
-				"layer": "CM_and_enemies",
-				"x": 132,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false,
-					"forceSpawn": false
-				}
-			}
-		],
-		"Microwave": [
-			{
-				"id": "Microwave",
-				"iid": "9b3b20b0-48b0-11f1-98a2-21bdc9e81275",
-				"layer": "Items_and_Props",
-				"x": 44,
-				"y": 44,
-				"width": 32,
-				"height": 32,
-				"color": 16705377,
-				"customFields": {
-					"type": "microwave",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": false
-				}
-			}
-		],
 		"TubeExit": [
 			{
 				"id": "TubeExit",
@@ -126,23 +46,6 @@
 					"type": "TubeExit",
 					"nocollider": false,
 					"destroyed": false
-				}
-			}
-		],
-		"Food": [
-			{
-				"id": "Food",
-				"iid": "0fde22d0-48b0-11f1-89a8-f9bfd4710570",
-				"layer": "Items_and_Props",
-				"x": 44,
-				"y": 76,
-				"width": 32,
-				"height": 32,
-				"color": 16151930,
-				"customFields": {
-					"type": "food",
-					"grants": "hasitemname:bool",
-					"isItem": true
 				}
 			}
 		],

@@ -101,7 +101,23 @@
 					"type": "minifier",
 					"nocollider": false,
 					"destroyed": false,
-					"forceSpawn": false
+					"forceSpawn": true
+				}
+			},
+			{
+				"id": "Minifier",
+				"iid": "71aef380-48b0-11f1-8344-bbb0d3bb79bd",
+				"layer": "Items_and_Props",
+				"x": 44,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": true
 				}
 			}
 		],

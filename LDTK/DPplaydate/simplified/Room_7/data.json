@@ -34,7 +34,7 @@
 		],
 		"play": "Enter",
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "Start",
 		"requiredItems": [],
 		"requiredSkills": []
 	},

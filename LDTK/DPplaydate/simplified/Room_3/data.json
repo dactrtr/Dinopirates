@@ -250,6 +250,21 @@
 					"DoorsConnection": "Down",
 					"KeyNumber": null
 				}
+			},
+			{
+				"id": "Doors",
+				"iid": "49b942b0-48b0-11f1-8344-c3ad89410636",
+				"layer": "Doors",
+				"x": 4,
+				"y": 216,
+				"width": 8,
+				"height": 16,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
 			}
 		],
 		"PortalDoors": [

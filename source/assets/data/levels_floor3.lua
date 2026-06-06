@@ -26,18 +26,6 @@ table.insert(levelsLDTK, {
     {
       levelIid = "40386700-ac70-11f0-998c-e53e1b32800c",
       dir = "e"
-    },
-    {
-      levelIid = "4a0bd050-ac70-11f0-998c-b14d359446e6",
-      dir = "sw"
-    },
-    {
-      levelIid = "4cf534a4-ac70-11f0-998c-6712312c62dc",
-      dir = "s"
-    },
-    {
-      levelIid = "50a125a0-ac70-11f0-998c-f3b70b95a9ac",
-      dir = "se"
     }
   },
   customFields = {
@@ -264,23 +252,7 @@ table.insert(levelsLDTK, {
   neighbourLevels = {
     {
       levelIid = "c0dc4470-ac70-11f0-998c-497612e0536f",
-      dir = "<"
-    },
-    {
-      levelIid = "68b425c0-ac70-11f0-997a-7732cd72a5cc",
-      dir = ">"
-    },
-    {
-      levelIid = "37dad4d0-ac70-11f0-998c-e3c63970ecdd",
-      dir = "nw"
-    },
-    {
-      levelIid = "3b081ff0-ac70-11f0-998c-67e6b510262c",
-      dir = "n"
-    },
-    {
-      levelIid = "3d752854-ac70-11f0-998c-5dddbfac239d",
-      dir = "ne"
+      dir = "o"
     },
     {
       levelIid = "46b2e150-ac70-11f0-998c-232538b976f9",
@@ -289,6 +261,38 @@ table.insert(levelsLDTK, {
     {
       levelIid = "4cf534a4-ac70-11f0-998c-6712312c62dc",
       dir = "e"
+    },
+    {
+      levelIid = "2139b880-ac70-11f0-998c-f5d424530b7f",
+      dir = "nw"
+    },
+    {
+      levelIid = "23b93777-ac70-11f0-998c-8fe9cae02b21",
+      dir = "n"
+    },
+    {
+      levelIid = "271dbf30-ac70-11f0-998c-eff03b419e1f",
+      dir = "ne"
+    },
+    {
+      levelIid = "be6fd850-ac70-11f0-998c-4f44b96a410c",
+      dir = "w"
+    },
+    {
+      levelIid = "c37083e0-ac70-11f0-998c-41014ccafb8f",
+      dir = "e"
+    },
+    {
+      levelIid = "ec2496f7-ac70-11f0-998c-2311e49654db",
+      dir = "sw"
+    },
+    {
+      levelIid = "ee21ed90-ac70-11f0-998c-db8d4aa4e275",
+      dir = "s"
+    },
+    {
+      levelIid = "f01ab050-ac70-11f0-998c-25b128f234d3",
+      dir = "se"
     }
   },
   customFields = {
@@ -335,23 +339,7 @@ table.insert(levelsLDTK, {
   neighbourLevels = {
     {
       levelIid = "c37083e0-ac70-11f0-998c-41014ccafb8f",
-      dir = "<"
-    },
-    {
-      levelIid = "6cc9d510-ac70-11f0-997a-191299f9209c",
-      dir = ">"
-    },
-    {
-      levelIid = "3b081ff0-ac70-11f0-998c-67e6b510262c",
-      dir = "nw"
-    },
-    {
-      levelIid = "3d752854-ac70-11f0-998c-5dddbfac239d",
-      dir = "n"
-    },
-    {
-      levelIid = "40386700-ac70-11f0-998c-e53e1b32800c",
-      dir = "ne"
+      dir = "o"
     },
     {
       levelIid = "4a0bd050-ac70-11f0-998c-b14d359446e6",
@@ -360,6 +348,38 @@ table.insert(levelsLDTK, {
     {
       levelIid = "50a125a0-ac70-11f0-998c-f3b70b95a9ac",
       dir = "e"
+    },
+    {
+      levelIid = "23b93777-ac70-11f0-998c-8fe9cae02b21",
+      dir = "nw"
+    },
+    {
+      levelIid = "271dbf30-ac70-11f0-998c-eff03b419e1f",
+      dir = "n"
+    },
+    {
+      levelIid = "2a300840-ac70-11f0-998c-8f209da81536",
+      dir = "ne"
+    },
+    {
+      levelIid = "c0dc4470-ac70-11f0-998c-497612e0536f",
+      dir = "w"
+    },
+    {
+      levelIid = "c60e1220-ac70-11f0-998c-cbe47e589876",
+      dir = "e"
+    },
+    {
+      levelIid = "ee21ed90-ac70-11f0-998c-db8d4aa4e275",
+      dir = "sw"
+    },
+    {
+      levelIid = "f01ab050-ac70-11f0-998c-25b128f234d3",
+      dir = "s"
+    },
+    {
+      levelIid = "f40f9130-ac70-11f0-998c-ff914bfa046a",
+      dir = "se"
     }
   },
   customFields = {
@@ -465,27 +485,43 @@ table.insert(levelsLDTK, {
   neighbourLevels = {
     {
       levelIid = "c60e1220-ac70-11f0-998c-cbe47e589876",
-      dir = "<"
-    },
-    {
-      levelIid = "3d752854-ac70-11f0-998c-5dddbfac239d",
-      dir = "nw"
-    },
-    {
-      levelIid = "40386700-ac70-11f0-998c-e53e1b32800c",
-      dir = "n"
-    },
-    {
-      levelIid = "43980cc0-ac70-11f0-998c-a70f320b4eb0",
-      dir = "ne"
+      dir = "o"
     },
     {
       levelIid = "4cf534a4-ac70-11f0-998c-6712312c62dc",
       dir = "w"
     },
     {
-      levelIid = "53674a87-ac70-11f0-998c-83aa3940da82",
+      levelIid = "271dbf30-ac70-11f0-998c-eff03b419e1f",
+      dir = "nw"
+    },
+    {
+      levelIid = "2a300840-ac70-11f0-998c-8f209da81536",
+      dir = "n"
+    },
+    {
+      levelIid = "2ccecf00-ac70-11f0-998c-cf1ba2f9a183",
+      dir = "ne"
+    },
+    {
+      levelIid = "c37083e0-ac70-11f0-998c-41014ccafb8f",
+      dir = "w"
+    },
+    {
+      levelIid = "d138f520-ac70-11f0-998c-e18e7b9af98b",
       dir = "e"
+    },
+    {
+      levelIid = "f01ab050-ac70-11f0-998c-25b128f234d3",
+      dir = "sw"
+    },
+    {
+      levelIid = "f40f9130-ac70-11f0-998c-ff914bfa046a",
+      dir = "s"
+    },
+    {
+      levelIid = "f62f15d0-ac70-11f0-998c-272ed2400e64",
+      dir = "se"
     }
   },
   customFields = {

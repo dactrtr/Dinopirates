@@ -23,7 +23,7 @@
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Start",
+		"roomRole": "Normal",
 		"requiredItems": [],
 		"requiredSkills": []
 	},

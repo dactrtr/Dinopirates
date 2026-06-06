@@ -672,7 +672,7 @@ table.insert(levelsLDTK, {
     },
     play = nil,
     procGen = true,
-    roomRole = "Start",
+    roomRole = "Normal",
     requiredItems = {},
     requiredSkills = {},
     hasForeground = true
@@ -688,7 +688,7 @@ table.insert(levelsLDTK, {
         height = 32,
         customFields = {
           type = "cat",
-          conditionalScripts = {"true:justBoxes"},
+          conditionalScripts = {},
           sourceFeed = 0,
           hasGranted = false,
           forceSpawn = true,
@@ -745,7 +745,7 @@ table.insert(levelsLDTK, {
     },
     play = "Enter",
     procGen = true,
-    roomRole = "Normal",
+    roomRole = "Start",
     requiredItems = {},
     requiredSkills = {},
     hasForeground = true
@@ -1231,7 +1231,8 @@ table.insert(levelsLDTK, {
           },
           sourceFeed = 0,
           hasGranted = false,
-          forceSpawn = false
+          forceSpawn = false,
+          triggerScene = "Cockpit"
         }
       },
       {
@@ -1248,7 +1249,8 @@ table.insert(levelsLDTK, {
           },
           sourceFeed = 0,
           hasGranted = false,
-          forceSpawn = false
+          forceSpawn = false,
+          triggerScene = "Cockpit"
         }
       }
     },
