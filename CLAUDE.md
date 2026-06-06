@@ -70,7 +70,7 @@ Scenes extend `NobleScene`. Lifecycle: `init → enter → update → exit`.
 1. `setFloor(level, room)` — finds the index into `levelsLDTK` matching level+room, stores as `room`.
 2. `enter()` — reads metadata into `PlayerData` (`actualLevel`, `actualRoom`, `actualTilemap`, `isInDarkness`), marks room `visited = true`, loads background PNG from `assets/images/rooms/floor{level}/{identifier}`.
 3. `CreateTileColliders` — auto-generates wall colliders from `tileMapData[actualTilemap]`.
-4. `CreateDoorsFromLDTK` — creates door sprites from `neighbourLevels` + `DoorsConnection` fields.
+4. `CreateDoorsFromNode(node)` + `CreateWallPlugsFromNode(node)` + `CreatePortalsFromNode(node)` — build doors only on the sides the **procedural run graph** connected (`node.edges`, matched by door signature); cover unconnected sides with wall plugs; place secret/vertical exits as portals. (The old `CreateDoorsFromLDTK`, which read `neighbourLevels` + `DoorsConnection`, has been removed — see legacy note in `entities/props/door.lua`.)
 5. Entity spawning — in order: `PropItem` (skip if `destroyed`), `Items` (skip if already owned), `Player` + HUD, `FXshadow` (if dark), cutscene (if `play=="Enter"` and not played), `Brocorat`/`Bosscolli` (skip if `dead`), `CrewMember` (skip if `isTaken`), `NPC`, `Trigger` (skip if `usedTrigger`).
 6. `start()` — enables diagonal movement, sets `PlayerData.isGaming = true`.
 7. `finish()` and `pause()` — both call `SaveSystem.save()`.
@@ -126,7 +126,9 @@ Only changed fields are saved (e.g., `dead`, `destroyed`, `isTaken`, `collected`
 
 ## Vertical Navigation
 
-Rooms connect vertically via `neighbourLevels` (with `dir = "<"` for lower, `dir = ">"` for upper) plus a `DoorsConnection` permission list in `customFields`. `GetLowerRoom()` / `GetUpperRoom()` in `utilities/Utilities.lua` validate both before allowing `fallBelow()` / `riseAbove()`.
+Falling through a hole or rising through a tube does **not** go to a fixed neighbour room — it starts a **new procedural run**. `Player:fallBelow()` / `riseAbove()` (`entities/player/state.lua`) call `RunState.startRun("startdown")` / `RunState.startRun("startup")`, which regenerates the whole graph via `MapGenerator` and enters at a random room whose `customFields.roomRole` matches `"Startdown"` / `"Startup"` (falling back to `"Start"` → `"normal"`). Player meta (items, skills, crew, sanity) persists across the run. To control where the player lands, author rooms with the matching `roomRole` and `procGen = true`; it is **not** deterministic (random among eligible rooms).
+
+> **Legacy (removed):** the old fixed-grid path used `neighbourLevels` + `DoorsConnection` with `GetLowerRoom()` / `GetUpperRoom()` in `utilities/Utilities.lua`. Those functions were removed; a before/now note remains in `Utilities.lua` for the Love2D port.
 
 ---
 

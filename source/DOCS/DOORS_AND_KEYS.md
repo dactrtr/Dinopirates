@@ -151,9 +151,11 @@ end
 
 ---
 
-## `CreateDoorsFromLDTK(currentRoom)` — Step by Step
+## `CreateDoorsFromLDTK(currentRoom)` — Step by Step  *(LEGACY — removed)*
 
-Global function defined in `entities/props/door.lua`, called from `MazeScene:enter()`.
+> ⚠️ **This function and its helpers (`ConvertLDTKDirection`, `CalculateLeadsTo`, `FindRoomByIid`) were removed.** The live game builds doors from the **procedural run graph** via `CreateDoorsFromNode(node)` — a door is created only on sides the graph connected (`node.edges`), matched by **door signature** (count + position + size); unconnected sides get wall plugs, secret/vertical exits get portals. See [PROCEDURAL_GENERATION.md §4 & §11](PROCEDURAL_GENERATION.md#4-door-connection-signature-matching) and [LEVEL_LOADING.md §5.7](LEVEL_LOADING.md#57-horizontal-doors-procedural). The sections below are kept as the **Love2D-port reference** for classic fixed-grid doors; a before/now note also lives in `entities/props/door.lua`.
+
+Was a global function in `entities/props/door.lua`, called from `MazeScene:enter()`.
 
 **Step 1 — Initial Validation**
 - If `currentRoom` is nil → return.
@@ -191,7 +193,7 @@ For cardinal directions (`n`, `s`, `e`, `w`):
 - `open = needsKey and "closed" or "open"`.
 - Instantiate `Door(direction, open, leadsTo, ZIndex.props, keyNumber, doorEntity.x, doorEntity.y, doorEntity.width, doorEntity.height)`.
 
-**Note on stairs (`>` and `<`):** The `Door` sprite creation is commented out in the code. Stairs are navigated exclusively by `fallBelow()` / `riseAbove()` on the player, which call `GetLowerRoom()` / `GetUpperRoom()`. No Door sprite exists for stairs.
+**Note on stairs (`>` and `<`):** no `Door` sprite was ever created for stairs. In the current game, vertical movement is handled by `fallBelow()` / `riseAbove()` on the player, which now start a **new procedural run** (`RunState.startRun("startdown"/"startup")`) rather than calling the removed `GetLowerRoom()` / `GetUpperRoom()`. See [LEVEL_LOADING.md §11](LEVEL_LOADING.md#11-vertical-navigation).
 
 ---
 

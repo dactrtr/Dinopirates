@@ -328,21 +328,17 @@ tileColliders = CreateTileColliders(tileMapData[PlayerData.actualTilemap])
 
 Generates `Box` sprites (wall colliders) from the IntGrid matrix. See section 10.
 
-### 5.7 Horizontal doors
+### 5.7 Horizontal doors (procedural)
 
 ```lua
-CreateDoorsFromLDTK(currentRoom)
+CreateDoorsFromNode(node)        -- doors only on graph-connected sides (node.edges)
+CreateWallPlugsFromNode(node)    -- cover unconnected door openings with wall brick
+CreatePortalsFromNode(node)      -- secret / vertical exits
 ```
 
-Creates `Door` sprites for each `Doors` entity in the room. See section 6.
+Doors come from the **procedural run graph**, not from `neighbourLevels`. `CreateDoorsFromNode` builds a `Door` only on the sides the graph connected, matching facing sides by **door signature** (count + position + size). See [PROCEDURAL_GENERATION.md §4 & §11](PROCEDURAL_GENERATION.md#4-door-connection-signature-matching) and [SCRIPTS_TRIGGERS_NPC_SCHEMA.md](SCRIPTS_TRIGGERS_NPC_SCHEMA.md).
 
-### 5.8 Portal doors
-
-```lua
-CreatePortalDoorsFromLDTK(currentRoom)
-```
-
-Similar to `CreateDoorsFromLDTK` but for special portal doors.
+> **Legacy (removed):** the old `CreateDoorsFromLDTK` / `CreatePortalDoorsFromLDTK` path read each `Doors` entity and resolved its destination from `neighbourLevels`. It and its helpers (`FindRoomByIid`, `ConvertLDTKDirection`, `CalculateLeadsTo`) were removed; a before/now reference note remains in `entities/props/door.lua`. Sections 6–8 below document that removed path, kept as the Love2D-port reference.
 
 ### 5.9 Prop spawning
 
@@ -437,9 +433,11 @@ Iterates `Triggers` entities:
 
 ---
 
-## 6. `CreateDoorsFromLDTK` — reading doors
+## 6. `CreateDoorsFromLDTK` — reading doors  *(LEGACY — removed)*
 
-Defined in `source/entities/props/door.lua`.
+> ⚠️ **This system was removed from the codebase.** Sections 6, 7 and 8 describe the old fixed-grid door path that resolved each door's destination from `neighbourLevels`. The live game builds doors from the procedural run graph via `CreateDoorsFromNode` (see [§5.7](#57-horizontal-doors-procedural) and [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md)). These sections are retained as the **Love2D-port reference** for anyone wanting classic fixed-floor doors; a matching before/now note lives in `entities/props/door.lua`.
+
+Was defined in `source/entities/props/door.lua`.
 
 ### Complete algorithm
 
@@ -604,9 +602,9 @@ function FindRoomByIid(iid)
 end
 ```
 
-`roomsByIid` is used in:
-- `CreateDoorsFromLDTK`: to resolve the destination room for each cardinal door
-- `GetLowerRoom` / `GetUpperRoom`: to find the vertical neighbor room by iid
+`roomsByIid` is still built in `main.lua` and used for room lookups by `iid` (e.g. entity-state restore in the save system). The legacy door/vertical callers below were removed:
+- ~~`CreateDoorsFromLDTK`: to resolve the destination room for each cardinal door~~ *(removed — doors now come from the run graph)*
+- ~~`GetLowerRoom` / `GetUpperRoom`: to find the vertical neighbor room by iid~~ *(removed — vertical movement starts a new run)*
 
 ---
 
@@ -665,9 +663,22 @@ tileColliders = {}
 
 ## 11. Vertical navigation
 
-### Connection architecture
+**Current behaviour:** falling through a hole or rising through a tube does **not** move to a fixed neighbour room — it starts a **new procedural run**. `Player:fallBelow()` / `Player:riseAbove()` (`entities/player/state.lua`) call:
 
-Each room has two fields that control vertical navigation:
+```lua
+RunState.startRun("startdown")   -- hole → fall;  "startup" for a tube
+Noble.transition(MazeScene, ...)
+```
+
+`RunState.startRun(entryRole)` regenerates the whole graph via `MapGenerator.generate(progress, entryRole)` and enters at a **random** room whose `customFields.roomRole` matches the entry kind — `"Startdown"` for a fall, `"Startup"` for a climb — falling back to `"Start"` then `"normal"` if no such room exists in the pool. Player meta (items, skills, crew, sanity) persists. To steer where the player lands, author room(s) with `procGen = true` and the matching `roomRole`; the choice is **not deterministic** (random among eligible rooms — leave a single one if you want a fixed landing). See [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md).
+
+---
+
+> ⚠️ **LEGACY (removed) — fixed-grid vertical navigation.** Everything below describes the old system, where falling went to a specific neighbour room declared in `neighbourLevels`. `GetLowerRoom` / `GetUpperRoom` / `CanMoveVertically` / `FindNeighborByDirection` were removed from `utilities/Utilities.lua` (a before/now note remains there). Kept here as the **Love2D-port reference** for classic fixed-floor descent.
+
+### Connection architecture *(legacy)*
+
+Each room had two fields that controlled vertical navigation:
 
 **`neighbourLevels`**: Defines which rooms are adjacent and in which direction. For vertical navigation:
 - `dir = "<"` -> lower room (player falls)
@@ -785,4 +796,6 @@ Playdate uses imagetable transitions for fall/climb animations. In Love2D, imple
 
 ### Vertical navigation
 
-The functions `GetLowerRoom`, `GetUpperRoom`, `CanMoveVertically`, `FindNeighborByDirection`, and `FindRoomByIid` are fully portable without modification: they use no Playdate APIs.
+The live game starts a **new procedural run** on a fall/climb (`RunState.startRun("startdown"/"startup")`), so a Love2D port should reproduce the run-graph regeneration (`MapGenerator`) plus entry-room selection by `roomRole`, not a fixed neighbour lookup. See [§11](#11-vertical-navigation).
+
+If a port instead wants **classic fixed-floor descent**, the removed functions (`GetLowerRoom`, `GetUpperRoom`, `CanMoveVertically`, `FindNeighborByDirection`, `FindRoomByIid`) used no Playdate APIs and are fully portable — restore them from the before/now note in `utilities/Utilities.lua` and the §11 legacy reference.

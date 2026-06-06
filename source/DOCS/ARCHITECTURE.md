@@ -186,13 +186,13 @@ main.lua
 ├── Utilities.lua  ←─────────── uses Config.Tiles, Config.Doors
 │     ├── Box class
 │     ├── CheatCode class
-│     ├── CreateTileColliders()
-│     ├── FindRoomByIid()  ←── uses roomsByIid (from main.lua)
-│     └── GetLowerRoom/GetUpperRoom
+│     └── CreateTileColliders()
+│     (legacy GetLowerRoom/GetUpperRoom/FindRoomByIid removed — see file note)
+├── RunState.lua / MapGenerator.lua  ← procedural run graph (nodes, door signatures)
 ├── SaveSystem.lua  ←────────── uses PlayerData, levelsLDTK
 ├── Scenes (all)
 │     └── MazeScene  ←──────── uses Config, PlayerData, levelsLDTK, tileMapData
-│           ├── CreateDoorsFromLDTK()  ← in door.lua
+│           ├── CreateDoorsFromNode() / CreateWallPlugsFromNode() / CreatePortalsFromNode()  ← in door.lua
 │           ├── CreateTileColliders()  ← in Utilities.lua
 │           └── FXshadow, Player, HUD, Enemies...
 ├── PlayerDataTables.lua  → PlayerData global
@@ -251,9 +251,10 @@ When a `FloorXXX` scene transitions, `MazeScene:enter()` executes in this order:
 5.  CreateTileColliders(tileMapData[PlayerData.actualTilemap])
       Wall=1, Slime=2, Hole=3, Floor=4, TinyHole=32
 
-6.  CreateDoorsFromLDTK(currentRoom)
-      Only cardinal doors (n/s/e/w) create Door sprites
-      Stairs (>/< ) do NOT create sprites
+6.  CreateDoorsFromNode(node) + CreateWallPlugsFromNode + CreatePortalsFromNode
+      Doors built only on graph-connected sides (matched by door signature)
+      Unconnected sides → wall plugs; secret/vertical exits → portals
+      (legacy CreateDoorsFromLDTK, neighbourLevels-based, removed)
 
 7.  Spawn Props:
       destroyed==false → PropItem(x, y, cf.type, ...)
