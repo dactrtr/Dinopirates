@@ -8,6 +8,49 @@ The game generates a fresh room graph every run instead of using a fixed LDtk ma
 
 ---
 
+## 0. Game progression (start → finish)
+
+**There are no fixed "levels" and no per-level crew quota to advance.** The game is a roguelike: you play **runs**, and the only win condition is recruiting the **entire crew roster**.
+
+### How a playthrough flows
+
+1. **New Game** — `amountTaken = 0`, a fresh graph is generated, you enter through a `Start` room.
+2. **You explore the run** — recruit crew, fight, collect items. Each rescue does `PlayerData.CrewMemberData.amountTaken += 1` (`crewmember.lua`). **The graph does not grow or rebuild while you play a run** — recruiting crew mid-run does not add rooms live (the one exception is step 4).
+3. **The run ends and a new graph is generated** — this is the *only* moment run size and the room pool are re-evaluated. It happens on four events, all routed through `RunState.startRun(...)`:
+
+   | Event | Call |
+   |-------|------|
+   | New Game | `startRun()` |
+   | Death → Retry | `startRun()` |
+   | Fall through a hole (`Player:fallBelow`) | `startRun("startdown")` |
+   | Rise through a tube (`Player:riseAbove`) | `startRun("startup")` |
+
+4. **Roster complete = victory** — when `amountTaken >= Config.MapGen.totalCrew` (currently **12**), recruiting that last crew calls `RunState.revealFinalRoom()`, which **attaches a `Final` room to the current graph** (it does not regenerate). Entering it ends the game → CreditsScene.
+
+### Why later runs are bigger
+
+`amountTaken` is **meta-progression**: it persists across deaths, holes, and tubes (wiped only by deleting the save). When a new graph is generated, `RunState.startRun` reads:
+
+```lua
+local progress = PlayerData.CrewMemberData.amountTaken
+RunState.graph = MapGenerator.generate(progress, entryRole)
+```
+
+So `progress` (total crew recruited so far) feeds the generator and:
+
+- **scales run size** — `roomsBase (8) + progress`, capped at `roomsMax (20)` (§3, §16);
+- **re-filters the pool** — rooms are re-checked against your current `requiredItems` / `requiredSkills` (§2, §10).
+
+Because `progress` only ever rises, each successive run tends to be larger and may unlock rooms you couldn't enter before. The "next level" is really "the next, larger run" — there is no discrete level step.
+
+### The short answer to "how much crew to advance?"
+
+- To **advance**: nothing — there is no level gate. Crew count never sends you to a "next level."
+- To **win**: the whole roster (12). Recruiting the 12th opens the Final room in the current run.
+- Run size / room pool **re-evaluate only when a new graph is generated** (New Game, death/Retry, hole, tube) — never mid-run.
+
+---
+
 ## 1. Core concepts
 
 | Term | Meaning |

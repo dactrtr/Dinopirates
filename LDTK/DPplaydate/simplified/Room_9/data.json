@@ -33,7 +33,7 @@
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "Start",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -201,6 +201,38 @@
 				"customFields": {
 					"type": "plunger",
 					"isItem": true
+				}
+			}
+		],
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "521eb5f0-48b0-11f1-9b23-63dda7aa23ba",
+				"layer": "Items_and_Props",
+				"x": 44,
+				"y": 164,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "54cf5700-48b0-11f1-9b23-8f3535d0631e",
+				"layer": "Items_and_Props",
+				"x": 292,
+				"y": 92,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		],

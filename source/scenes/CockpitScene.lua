@@ -89,7 +89,15 @@ scene.inputHandler = {
         for _, btn in ipairs(buttons) do
             if btn:isHovered(pointerX, pointerY) then
                 if btn.label == "ESC" then
-                    Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+                    if PlayerData.returnToMazeFromScene then
+                        -- Came from an in-game NPC: return to the room at the player's last
+                        -- position (returningInPlace makes MazeScene spawn at playerSpawn,
+                        -- skipping the door-spawn). The run node was never changed.
+                        PlayerData.returningInPlace = true
+                        Noble.transition(MazeScene, 0.3, Noble.Transition.MetroNexus)
+                    else
+                        Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+                    end
                 else
                     pressButton(btn.label)
                 end
@@ -237,6 +245,10 @@ end
 
 function scene:exit()
     scene.super.exit(self)
+
+    -- Consume the "came from gameplay" intent so a later debug entry (TitleScene → COCKPIT)
+    -- exits to the title screen, not into a stale maze room.
+    PlayerData.returnToMazeFromScene = false
 
     playdate.stopAccelerometer()
     bgImage = nil

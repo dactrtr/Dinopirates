@@ -625,6 +625,14 @@ scene.inputHandler = {
 			if PlayerData.isTalking == false and pendingSceneOnDialogEnd then
 				local sceneGetter = pendingSceneOnDialogEnd
 				pendingSceneOnDialogEnd = nil
+				-- Remember the player's exact spot (and current run node, untouched) so the
+				-- launched scene (e.g. Cockpit) can drop them back here on exit instead of
+				-- dumping them at the title screen.
+				if player then
+					PlayerData.playerSpawn.x = player.x
+					PlayerData.playerSpawn.y = player.y
+				end
+				PlayerData.returnToMazeFromScene = true
 				Noble.transition(sceneGetter(), 0.3, Noble.Transition.MetroNexus)
 			end
 		elseif player.currentTrigger and PlayerData.isGaming == true then

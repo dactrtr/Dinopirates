@@ -16,6 +16,7 @@ function PropItem:init(x, y, type, zIndex, nocollide, isDestroyed, id)
   self.animation:addState('TubeExit', 4, 4)
   self.animation:addState('microwave', 7, 7)
   self.animation:addState('blood2', 8, 8)
+  self.animation:addState('debris', 8, 8) -- smashed-box rubble (shared frame with blood2)
   self.animation.microwave.frameDuration = 12
   self.animation:setState(type)
   
@@ -84,7 +85,7 @@ function PropItem:destroyProp(id)
   findAndDestroyPropById(id) 
   self:clearCollideRect()
   self:setZIndex(ZIndex.props)
-  self.animation:setState('debris') -- add a new animation for debris
+  self.animation:setState('debris')
 end
 
 function PropItem:smash()
