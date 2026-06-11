@@ -326,9 +326,10 @@ function CrewMember:taken()
     local node = RunState and RunState.currentNode()
     if node then node.cleared.crewTaken = true end
 
-    -- Restore player's projectile
+    -- Restore player's projectile (the plungerang is back in hand) and drop the shoot pose.
     if self.player then
         self.player.hasProjectile = true
+        self.player:idle()
     end
 
     -- Win condition: full roster recruited → open the final room this run.

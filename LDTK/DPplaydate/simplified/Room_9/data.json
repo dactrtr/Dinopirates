@@ -32,8 +32,8 @@
 			"Lower"
 		],
 		"play": null,
-		"procGen": true,
-		"roomRole": "Start",
+		"procGen": false,
+		"roomRole": "Normal",
 		"requiredItems": [],
 		"requiredSkills": []
 	},

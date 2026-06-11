@@ -17,8 +17,10 @@ function Player:checkSlimeTile()
         return
     end
 
-    -- Player has plunger = immune to slime
-    if PlayerData.items.hasPlunger == true then
+    -- canCrossSlime skill = immune to slime (late-run "outgrow" flag, granted by a
+    -- run-gated pickup). The plunger no longer grants slime immunity, so slime stays a
+    -- physics puzzle until the player earns this skill.
+    if PlayerData.skills.canCrossSlime == true then
         return
     end
     -- Start sliding in current direction

@@ -99,7 +99,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -118,7 +119,8 @@
 					"mapPercent": 0,
 					"conditionalScripts": [
 						"isTiny:tinyKnife"
-					]
+					],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -135,7 +137,8 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -152,7 +155,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -169,7 +173,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			}
 		],

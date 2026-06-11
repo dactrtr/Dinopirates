@@ -81,16 +81,17 @@ local DefaultPlayerData = {
 	},
 	items={
 		hasLamp = false,
-		hasRadio = true,
+		hasRadio = false,
 		hasDWatch = false,
-		hasNotes = true,
+		hasNotes = false,
 		hasBoots = false,
 		hasPlunger = false,
 	},
 	skills ={
-		canDance = true,
+		canDance = false,
 		canFlash = false,
 		canPlungerang = false,
+		canCrossSlime = false,  -- late-run "outgrow" flag: walk over slime without sliding
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20

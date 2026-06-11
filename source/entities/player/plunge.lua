@@ -48,12 +48,17 @@ function Player:plunge()
     -- Grant enemy/crew movement tokens now that the plungerang actually fired
     self:distributeMovementTokens(Config.Player.movementTokensPerAction)
 
-    -- Set animation state to idle while plunging (locked)
-    self:idle()
+    -- Hold the shoot pose while the plungerang is out. It persists (whether the player
+    -- holds or releases a direction) until the boomerang is back in hand, then Player:idle()
+    -- snaps to idle. Only left/right have shoot art, so a vertical throw uses the right pose.
+    self.shootDir = (direction == 'left') and 'left' or 'right'
+    self.animation:setState(self.shootDir == 'left' and 'shootLeft' or 'shootRight')
 end
 
 function Player:onProjectileCaught()
     self.isPlunging = false
     self.projectile = nil
+    -- Drop the throw pose once the plungerang is back in hand.
+    self:idle()
     printDebug("✅ Plunge skill completed!")
 end

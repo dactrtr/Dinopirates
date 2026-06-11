@@ -105,7 +105,8 @@
 					"usedTrigger": false,
 					"type": "Cutscene",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -126,7 +127,8 @@
 						"crew>2:twoCM",
 						"crew>1:oneCM",
 						"crew>=0:noCM"
-					]
+					],
+					"SpawnConditions": []
 				}
 			}
 		],
@@ -160,7 +162,8 @@
 				"customFields": {
 					"type": "notes",
 					"grants": "canDance:true",
-					"isItem": true
+					"isItem": true,
+					"SpawnConditions": []
 				}
 			}
 		],

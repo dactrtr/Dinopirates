@@ -85,6 +85,7 @@ function Player:init(x, y, speed, Zindex)
     self.isDarkCharging  = false
     self.darkCrankAccum  = 0
     self.hasProjectile = true
+    self.shootDir = 'right'  -- facing of the shoot pose held while the plungerang is out
 
     -- Grappling hook state variables
     self.isGrappleCharging = false

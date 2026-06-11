@@ -1,17 +1,12 @@
 {
 	"identifier": "Room_4",
 	"uniqueIdentifer": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-	"x": 1600,
-	"y": 0,
+	"x": 240,
+	"y": 768,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "35082cd0-ac70-11f0-998c-d16d78429f5c",
-			"dir": "<"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": false,
 		"light": 0,

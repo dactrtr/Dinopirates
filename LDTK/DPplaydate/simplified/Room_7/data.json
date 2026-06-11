@@ -34,7 +34,7 @@
 		],
 		"play": "Enter",
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "Start",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -60,7 +60,8 @@
 					"mapPercent": 0,
 					"conditionalScripts": [
 						null
-					]
+					],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -77,7 +78,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -94,7 +96,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			}
 		],

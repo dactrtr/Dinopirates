@@ -82,7 +82,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -99,7 +100,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -116,7 +118,8 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -133,7 +136,10 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": [
+						"run>=1"
+					]
 				}
 			},
 			{
@@ -152,7 +158,8 @@
 					"mapPercent": 0,
 					"conditionalScripts": [
 						"isTiny:hugeXmas"
-					]
+					],
+					"SpawnConditions": []
 				}
 			},
 			{
@@ -169,7 +176,8 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"conditionalScripts": []
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			}
 		],
@@ -188,7 +196,7 @@
 					"grants": "hasDWatch:true",
 					"isItem": true,
 					"SpawnConditions": [
-						"run==4|run==8"
+						"run>=1"
 					]
 				}
 			}

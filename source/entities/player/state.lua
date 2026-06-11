@@ -46,6 +46,17 @@ end
 
 function Player:idle()
   if self.isAlive == true then
+    -- While the plungerang is away from the player (in flight or lost to a crew), hold the
+    -- noLeg pose instead of idling; we only fall through to a real idle once it's back. If
+    -- the one-shot shoot animation is still playing, leave it — it auto-advances to noLeg.
+    if (self.isPlunging or self.hasProjectile == false) and PlayerData.isTiny == false then
+      local cn = self.animation.currentName
+      if cn ~= 'shootLeft' and cn ~= 'shootRight' then
+        self.animation:setState(self.shootDir == 'left' and 'noLegLeft' or 'noLegRight')
+      end
+      PlayerData.direction = 'idle'
+      return
+    end
     if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true then
       self.animation:setState('lampIdle')
     else

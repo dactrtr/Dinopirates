@@ -19,7 +19,7 @@
 		"DoorsConnection": [
 			"Top",
 			"Down",
-			"Lower"
+			"Right"
 		],
 		"play": null,
 		"procGen": true,
@@ -65,6 +65,36 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f581b2c0-48b0-11f1-9b23-75e99064c294",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "ff2b4cf0-48b0-11f1-9b23-4b2aea2d7b16",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
 					"KeyNumber": null
 				}
 			}
