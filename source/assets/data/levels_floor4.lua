@@ -4,8 +4,8 @@ table.insert(levelsLDTK, {
   uniqueIdentifer = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
   neighbourLevels = {
     {
-      levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
-      dir = "n"
+      levelIid = "69eb2d80-ac70-11f0-989f-95306126bd74",
+      dir = "w"
     },
     {
       levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
@@ -16,11 +16,15 @@ table.insert(levelsLDTK, {
       dir = "ne"
     },
     {
-      levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
+      levelIid = "68b425c0-ac70-11f0-997a-7732cd72a5cc",
+      dir = "sw"
+    },
+    {
+      levelIid = "6cc9d510-ac70-11f0-997a-191299f9209c",
       dir = "s"
     },
     {
-      levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
+      levelIid = "715b4410-ac70-11f0-997a-156adb22b715",
       dir = "se"
     }
   },
@@ -45,19 +49,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    TKNotes = {
-      {
-        id = "TKNotes",
-        iid = "6f1ed150-21a0-11f1-b443-37273b02d9b7",
-        x = 196,
-        y = 76,
-        width = 64,
-        height = 32,
-        customFields = {
-          String = "Arbol de navidad y regalos"
-        }
-      }
-    },
     Triggers = {
       {
         id = "Triggers",
@@ -314,23 +305,23 @@ table.insert(levelsLDTK, {
       dir = "w"
     },
     {
-      levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
-      dir = "nw"
-    },
-    {
       levelIid = "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
       dir = "n"
     },
     {
-      levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
+      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+      dir = "e"
+    },
+    {
+      levelIid = "6cc9d510-ac70-11f0-997a-191299f9209c",
       dir = "sw"
     },
     {
-      levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
+      levelIid = "715b4410-ac70-11f0-997a-156adb22b715",
       dir = "s"
     },
     {
-      levelIid = "dab87dc0-ac70-11f0-997a-63497867517d",
+      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
       dir = "se"
     }
   },
@@ -555,14 +546,13 @@ table.insert(levelsLDTK, {
         height = 16,
         customFields = {
           PortalID = 1,
-          DestLevel = 4,
-          DestRoom = 81,
           SpawnX = 200,
           SpawnY = 184,
           Conditions = {
             "isTiny:true"
           },
-          BlockedDialog = "cabinetHole"
+          BlockedDialog = "cabinetHole",
+          DestRoom = "Room_81"
         }
       }
     }
@@ -572,7 +562,32 @@ table.insert(levelsLDTK, {
 table.insert(levelsLDTK, {
   identifier = "Room_4",
   uniqueIdentifer = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-  neighbourLevels = {},
+  neighbourLevels = {
+    {
+      levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
+      dir = "w"
+    },
+    {
+      levelIid = "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+      dir = "nw"
+    },
+    {
+      levelIid = "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
+      dir = "e"
+    },
+    {
+      levelIid = "715b4410-ac70-11f0-997a-156adb22b715",
+      dir = "sw"
+    },
+    {
+      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
+      dir = "s"
+    },
+    {
+      levelIid = "708f7320-ac70-11f0-998c-737ddc0c343a",
+      dir = "se"
+    }
+  },
   customFields = {
     shadow = false,
     light = 0,
@@ -675,7 +690,19 @@ table.insert(levelsLDTK, {
   uniqueIdentifer = "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
   neighbourLevels = {
     {
-      levelIid = "672c4d40-ac70-11f0-997a-7b0342bedabe",
+      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+      dir = "w"
+    },
+    {
+      levelIid = "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
+      dir = "e"
+    },
+    {
+      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
+      dir = "sw"
+    },
+    {
+      levelIid = "708f7320-ac70-11f0-998c-737ddc0c343a",
       dir = "s"
     }
   },
@@ -734,7 +761,20 @@ table.insert(levelsLDTK, {
 table.insert(levelsLDTK, {
   identifier = "Room_6",
   uniqueIdentifer = "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
-  neighbourLevels = {},
+  neighbourLevels = {
+    {
+      levelIid = "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
+      dir = "w"
+    },
+    {
+      levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
+      dir = "e"
+    },
+    {
+      levelIid = "708f7320-ac70-11f0-998c-737ddc0c343a",
+      dir = "sw"
+    }
+  },
   customFields = {
     shadow = false,
     light = 0,
@@ -824,12 +864,8 @@ table.insert(levelsLDTK, {
   uniqueIdentifer = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
   neighbourLevels = {
     {
-      levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
-      dir = "n"
-    },
-    {
-      levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
-      dir = "ne"
+      levelIid = "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
+      dir = "w"
     },
     {
       levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
@@ -984,14 +1020,6 @@ table.insert(levelsLDTK, {
   identifier = "Room_8",
   uniqueIdentifer = "d8b90440-ac70-11f0-997a-77d867841568",
   neighbourLevels = {
-    {
-      levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
-      dir = "nw"
-    },
-    {
-      levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
-      dir = "n"
-    },
     {
       levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
       dir = "w"
@@ -1248,10 +1276,6 @@ table.insert(levelsLDTK, {
   uniqueIdentifer = "dab87dc0-ac70-11f0-997a-63497867517d",
   neighbourLevels = {
     {
-      levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
-      dir = "nw"
-    },
-    {
       levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
       dir = "w"
     }
@@ -1309,148 +1333,6 @@ table.insert(levelsLDTK, {
         }
       }
     },
-    Minifier = {
-      {
-        id = "Minifier",
-        iid = "21887b30-fa90-11f0-9a41-eb80f350135c",
-        x = 100,
-        y = 36,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "minifier",
-          nocollider = false,
-          destroyed = false,
-          forceSpawn = true
-        }
-      }
-    },
-    NPC = {
-      {
-        id = "NPC",
-        iid = "0ea7c260-21a0-11f1-ba67-7b68c287fc9b",
-        x = 364,
-        y = 132,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "cat",
-          conditionalScripts = {
-            "!items.hasLamp:catNoLamp",
-            "!items.hasBoots:catNoBoots",
-            "true:catWhat"
-          },
-          sourceFeed = 0,
-          hasGranted = false,
-          forceSpawn = false,
-          triggerScene = "Cockpit"
-        }
-      },
-      {
-        id = "NPC",
-        iid = "f9918570-48b0-11f1-b3b6-e7169d94681e",
-        x = 292,
-        y = 36,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "computer",
-          conditionalScripts = {
-            "true:catWhat"
-          },
-          sourceFeed = 0,
-          hasGranted = false,
-          forceSpawn = false,
-          triggerScene = "Cockpit"
-        }
-      }
-    },
-    Microwave = {
-      {
-        id = "Microwave",
-        iid = "f4f92e10-48b0-11f1-b3b6-6f4db105fcd8",
-        x = 356,
-        y = 84,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "microwave",
-          nocollider = false,
-          destroyed = false,
-          forceSpawn = false
-        }
-      }
-    },
-    Food = {
-      {
-        id = "Food",
-        iid = "01ab7460-48b0-11f1-b3b6-af7062196e83",
-        x = 292,
-        y = 204,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "food",
-          grants = "hasitemname:bool",
-          isItem = true
-        }
-      },
-      {
-        id = "Food",
-        iid = "03bf1220-48b0-11f1-b3b6-e7ea6e59f7b0",
-        x = 292,
-        y = 172,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "food",
-          grants = "hasitemname:bool",
-          isItem = true
-        }
-      }
-    },
-    Plunger = {
-      {
-        id = "Plunger",
-        iid = "8c9a4ee0-48b0-11f1-98a2-5d3443b1ee75",
-        x = 68,
-        y = 76,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "plunger",
-          isItem = true
-        }
-      }
-    },
-    Box = {
-      {
-        id = "Box",
-        iid = "521eb5f0-48b0-11f1-9b23-63dda7aa23ba",
-        x = 44,
-        y = 164,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "box",
-          nocollider = false,
-          destroyed = false
-        }
-      },
-      {
-        id = "Box",
-        iid = "54cf5700-48b0-11f1-9b23-8f3535d0631e",
-        x = 292,
-        y = 92,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "box",
-          nocollider = false,
-          destroyed = false
-        }
-      }
-    },
     Doors = {
       {
         id = "Doors",
@@ -1494,76 +1376,24 @@ table.insert(levelsLDTK, {
     }
   }
 })
-	--10
-table.insert(levelsLDTK, {
-  identifier = "Room_10",
-  uniqueIdentifer = "672c4d40-ac70-11f0-997a-7b0342bedabe",
-  neighbourLevels = {
-    {
-      levelIid = "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
-      dir = "n"
-    },
-    {
-      levelIid = "708f7320-ac70-11f0-998c-737ddc0c343a",
-      dir = "s"
-    }
-  },
-  customFields = {
-    shadow = false,
-    light = 0,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 10,
-    tile = 10,
-    DoorsConnection = {
-      "Down",
-      "Top"
-    },
-    play = nil,
-    procGen = true,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "f6717570-48b0-11f1-98a2-df962a99b954",
-        x = 200,
-        y = 236,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "c50b2a70-48b0-11f1-98a2-7d36f693b69b",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
 	--11
 table.insert(levelsLDTK, {
   identifier = "Room_11",
   uniqueIdentifer = "68b425c0-ac70-11f0-997a-7732cd72a5cc",
-  neighbourLevels = {},
+  neighbourLevels = {
+    {
+      levelIid = "69eb2d80-ac70-11f0-989f-95306126bd74",
+      dir = "n"
+    },
+    {
+      levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+      dir = "ne"
+    },
+    {
+      levelIid = "6cc9d510-ac70-11f0-997a-191299f9209c",
+      dir = "e"
+    }
+  },
   customFields = {
     shadow = true,
     light = 0.2,
@@ -1664,7 +1494,28 @@ table.insert(levelsLDTK, {
 table.insert(levelsLDTK, {
   identifier = "Room_12",
   uniqueIdentifer = "6cc9d510-ac70-11f0-997a-191299f9209c",
-  neighbourLevels = {},
+  neighbourLevels = {
+    {
+      levelIid = "69eb2d80-ac70-11f0-989f-95306126bd74",
+      dir = "nw"
+    },
+    {
+      levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+      dir = "n"
+    },
+    {
+      levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
+      dir = "ne"
+    },
+    {
+      levelIid = "68b425c0-ac70-11f0-997a-7732cd72a5cc",
+      dir = "w"
+    },
+    {
+      levelIid = "715b4410-ac70-11f0-997a-156adb22b715",
+      dir = "e"
+    }
+  },
   customFields = {
     shadow = false,
     light = 0,
@@ -1802,7 +1653,28 @@ table.insert(levelsLDTK, {
 table.insert(levelsLDTK, {
   identifier = "Room_13",
   uniqueIdentifer = "715b4410-ac70-11f0-997a-156adb22b715",
-  neighbourLevels = {},
+  neighbourLevels = {
+    {
+      levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+      dir = "nw"
+    },
+    {
+      levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
+      dir = "n"
+    },
+    {
+      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+      dir = "ne"
+    },
+    {
+      levelIid = "6cc9d510-ac70-11f0-997a-191299f9209c",
+      dir = "w"
+    },
+    {
+      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
+      dir = "e"
+    }
+  },
   customFields = {
     shadow = true,
     light = 0.7,
@@ -1875,7 +1747,28 @@ table.insert(levelsLDTK, {
 table.insert(levelsLDTK, {
   identifier = "Room_14",
   uniqueIdentifer = "6de95960-ac70-11f0-998c-e3108c5f25c9",
-  neighbourLevels = {},
+  neighbourLevels = {
+    {
+      levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
+      dir = "nw"
+    },
+    {
+      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+      dir = "n"
+    },
+    {
+      levelIid = "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
+      dir = "ne"
+    },
+    {
+      levelIid = "715b4410-ac70-11f0-997a-156adb22b715",
+      dir = "w"
+    },
+    {
+      levelIid = "708f7320-ac70-11f0-998c-737ddc0c343a",
+      dir = "e"
+    }
+  },
   customFields = {
     shadow = true,
     light = 0.1,
@@ -1962,8 +1855,20 @@ table.insert(levelsLDTK, {
   uniqueIdentifer = "708f7320-ac70-11f0-998c-737ddc0c343a",
   neighbourLevels = {
     {
-      levelIid = "672c4d40-ac70-11f0-997a-7b0342bedabe",
+      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+      dir = "nw"
+    },
+    {
+      levelIid = "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
       dir = "n"
+    },
+    {
+      levelIid = "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
+      dir = "ne"
+    },
+    {
+      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
+      dir = "w"
     }
   },
   customFields = {
@@ -2055,12 +1960,12 @@ table.insert(levelsLDTK, {
       dir = "sw"
     },
     {
-      levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
-      dir = "w"
-    },
-    {
       levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
       dir = "s"
+    },
+    {
+      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+      dir = "se"
     }
   },
   customFields = {
@@ -2093,12 +1998,11 @@ table.insert(levelsLDTK, {
         height = 16,
         customFields = {
           PortalID = 1,
-          DestLevel = 4,
-          DestRoom = 3,
           SpawnX = 161,
           SpawnY = 128,
           Conditions = {},
-          BlockedDialog = nil
+          BlockedDialog = nil,
+          DestRoom = "Room_3"
         }
       }
     }

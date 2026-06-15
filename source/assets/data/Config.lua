@@ -56,6 +56,12 @@ Config.Player = {
     movementTokensPerAction = 5,   -- movement tokens granted to enemies/crew when a B-ability actually fires
     knockbackDistance       = 2,   -- px pushed on enemy hit
     maxHealthPoints         = 10,  -- hard cap on healthPoints (HUD draws up to 10 dots)
+    enemyContactDamage      = 1,   -- fallback HP lost on enemy contact when the enemy has no .damage
+    danceThresholdHP        = 1,   -- fallback for PlayerData.danceThresholdHP (HP at/below which a hit triggers DanceScene)
+    deathScreenDelay        = 1000,-- ms before the death screen transition fires
+    wakeupPressesRequired   = 2,   -- A-button presses needed to wake the player
+    hudEdgeTop              = 60,  -- px from top; below this the floating HUD flips under the player
+    hudEdgeRight            = 350, -- px from left; past this the floating HUD flips to the player's left
 }
 
 -- Microwave + Food healing
@@ -88,6 +94,7 @@ Config.DarkReveal = {
     revealDuration        = 3000,  -- ms the full light lasts after activation
     rechargeBlockDuration = 3000,  -- ms recharge is blocked after reveal ends
     selfDamage            = 1,     -- HP the player loses each time the reveal fires (0 = no self-damage)
+    shockDuration         = 1000,  -- ms the 'shock' animation plays on activation before reverting to idle
 }
 
 -- Grappling Hook (charged plungerang in lit rooms)
@@ -115,7 +122,10 @@ Config.Invincibility = {
 
 -- Battery
 Config.Battery = {
+    max               = 100,   -- full charge cap (and HUD ceiling)
+    chargePerCrankTick = 3,    -- battery gained per crank tick while charging in the maze
     drainMovementDark = 0.5,   -- per frame moving in darkness
+    drainDWatchWalk   = 0.5,   -- per frame walking while carrying the DWatch (gated by movement.DRAIN_BATTERY_ON_WALK)
     drainHoleNormal   = 0.5,   -- per frame crossing a hole (normal size)
     drainHoleTiny     = 0.2,   -- per frame crossing a hole (tiny)
 
@@ -127,6 +137,8 @@ Config.Battery = {
 
 -- Sanity
 Config.Sanity = {
+    max                  = 100,   -- sanity cap (floor is always 0)
+    baseLoss             = 1,     -- base multiplier applied to every gain/loss tick (player.sanityLoss)
     tickInterval         = 2000,  -- ms between checks
     lossLowBattery       = 2,     -- multiplier per tick when battery < batteryThresholdLow
     lossMidBattery       = 1,     -- multiplier per tick when battery < batteryThresholdMid
@@ -135,6 +147,22 @@ Config.Sanity = {
     batteryThresholdMid  = 40,
     batteryThresholdHigh = 50,
     focusCost            = 20,    -- sanity consumed by focus ability
+
+    -- HUD face animation (sanityHud, 4 states) — switch when sanity drops below each value
+    hudFace = {
+        insane   = 30,   -- sanity < 30
+        mediocre = 50,   -- sanity < 50
+        normal   = 80,   -- sanity < 80
+        good     = 100,  -- sanity < 100
+    },
+    -- HUD portrait animation (playerHud, 6 states) — switch when sanity is above each value
+    hudPortrait = {
+        s100 = 80,   -- sanity > 80
+        s80  = 60,   -- sanity > 60
+        s60  = 40,   -- sanity > 40
+        s40  = 20,   -- sanity > 20
+        s20  = 0,    -- sanity > 0 (else sanity0)
+    },
 }
 
 -- Light Burst (lamp ability)
@@ -224,6 +252,7 @@ Config.Pedometer = {
     stepsPerMovement = 0.5,
     stepsToTrigger   = 200,
     caloriesPerBurn  = 10,
+    crankCalorieBurn = 1,   -- calories burned per crank tick while charging the battery
 }
 
 -- Input

@@ -23,7 +23,7 @@ function Player:move(direction)
 
       -- Drain battery with DWatch while walking
       if DRAIN_BATTERY_ON_WALK and PlayerData.items.hasDWatch == true then
-        self:drainBattery(0.5)
+        self:drainBattery(Config.Battery.drainDWatchWalk)
       end
       if (direction == "left") then
         if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false then

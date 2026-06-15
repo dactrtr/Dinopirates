@@ -605,7 +605,7 @@ Persistence marking (`collected = true` in `levelsLDTK`) is performed from `play
 ### 4.1 Initialization
 
 ```lua
-PortalDoor:init(portalId, destLevel, destRoom, spawnX, spawnY, conditions, blockedDialog, x, y, width, height)
+PortalDoor:init(portalId, spawnX, spawnY, conditions, blockedDialog, x, y, width, height)
 ```
 
 Parameters:
@@ -613,8 +613,6 @@ Parameters:
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `portalId` | number | Unique portal identifier (from LDtk `cf.PortalID`) |
-| `destLevel` | number | Destination level (from `cf.DestLevel`, default 1) |
-| `destRoom` | number | Destination room (from `cf.DestRoom`, default 0) |
 | `spawnX` | number | Player spawn X in destination (from `cf.SpawnX`, default 196) |
 | `spawnY` | number | Player spawn Y in destination (from `cf.SpawnY`, default 116) |
 | `conditions` | table | Array of condition strings (from `cf.Conditions`, default `{}`) |
@@ -622,7 +620,7 @@ Parameters:
 | `x, y` | number | Portal position in the room (from `entity.x`, `entity.y`) |
 | `width, height` | number | Size (from `entity.width`, `entity.height`; if nil, uses `Config.Portals.collideRect`) |
 
-The destination is calculated as: `destRoomId = destLevel * 100 + destRoom`.
+The destination room is resolved by the generator (not the entity): the LDtk `cf.DestRoom` holds the **destination room's `identifier`** (e.g. `"Room_3"`), which `MapGenerator` matches against each template's `identifier`. The entity itself only needs `targetNodeId`, which the generator wires via `PortalID`.
 
 Default collideRect (if width/height are not specified): `Config.Portals.collideRect = {x=0, y=0, w=24, h=24}`.
 

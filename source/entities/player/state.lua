@@ -82,7 +82,7 @@ function Player:dead(cause)
   local function deathScreen()
     Noble.transition(DeadScene)
   end
-  playdate.timer.performAfterDelay(1000, deathScreen)
+  playdate.timer.performAfterDelay(Config.Player.deathScreenDelay, deathScreen)
 end
 
 function Player:focus()
@@ -171,6 +171,8 @@ function Player:finishCooking()
     self.triggerEnteredOnce = false
     self.uiHud:setVisible(false)
     self.cookProgress = 0
+    -- Leave the eating animation and return to the context-appropriate idle.
+    self:idle()
 end
 
 function Player:checkMicrowave()
@@ -217,12 +219,12 @@ function Player:showUIHUD()
   local hudY = self.y + hudYOffset -- normal default above player
 
   -- Adjust for top of screen
-  if self.y < 60 then
+  if self.y < Config.Player.hudEdgeTop then
     hudY = self.y + self.playerUIY / 2 -- move down instead of above
   end
 
   -- Adjust for right edge
-  if self.x > 350 then
+  if self.x > Config.Player.hudEdgeRight then
       hudX = self.x - self.playerUIX -- move to left of player
   end
 
@@ -338,8 +340,8 @@ function Player:update()
   PlayerData.y = self.y
   if PlayerData.battery < 0 then
     PlayerData.battery = 0
-  elseif PlayerData.battery >= 100 then
-    PlayerData.battery = 100
+  elseif PlayerData.battery >= Config.Battery.max then
+    PlayerData.battery = Config.Battery.max
   end
   if PlayerData.healthPoints > Config.Player.maxHealthPoints then
     PlayerData.healthPoints = Config.Player.maxHealthPoints
@@ -403,7 +405,7 @@ end
 
 function Player:onWakePress()
     self.wakeupPresses += 1
-    if self.wakeupPresses >= 2 then
+    if self.wakeupPresses >= Config.Player.wakeupPressesRequired then
         self:wake()
     end
 end

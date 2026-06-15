@@ -1,8 +1,8 @@
 {
 	"identifier": "Room_81",
 	"uniqueIdentifer": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
-	"x": -640,
-	"y": 272,
+	"x": 400,
+	"y": -480,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
@@ -12,12 +12,12 @@
 			"dir": "sw"
 		},
 		{
-			"levelIid": "a82c8680-48b0-11f1-9f4d-49a4be703c65",
-			"dir": "w"
-		},
-		{
 			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
 			"dir": "s"
+		},
+		{
+			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+			"dir": "se"
 		}
 	],
 	"customFields": {
@@ -55,12 +55,11 @@
 				"color": 7552569,
 				"customFields": {
 					"PortalID": 1,
-					"DestLevel": 4,
-					"DestRoom": 3,
 					"SpawnX": 161,
 					"SpawnY": 128,
 					"Conditions": [],
-					"BlockedDialog": null
+					"BlockedDialog": null,
+					"DestRoom": "Room_3"
 				}
 			}
 		]

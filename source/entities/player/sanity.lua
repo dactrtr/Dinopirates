@@ -31,8 +31,8 @@ function Player:sanityCheck()
       PlayerData.sanity += Config.Sanity.gainHighBattery * self.sanityLoss
     end
 
-    if PlayerData.sanity >= 100 then
-      PlayerData.sanity = 100
+    if PlayerData.sanity >= Config.Sanity.max then
+      PlayerData.sanity = Config.Sanity.max
     end
     
     if PlayerData.sanity <= 0 then
@@ -53,9 +53,9 @@ end
 function Player:chargeBattery(amount)
   if PlayerData.rechargeBlocked then return end
   if self:isOnHole() then return end  -- can't recharge while crossing a hole
-  if PlayerData.battery < 100 then
+  if PlayerData.battery < Config.Battery.max then
     self.animation:setState('charge')
-  elseif PlayerData.battery >= 100 then
+  elseif PlayerData.battery >= Config.Battery.max then
     self:idle()
   end
   PlayerData.battery += amount
@@ -63,5 +63,5 @@ function Player:chargeBattery(amount)
 end
 
 function Player:fillBattery()
-    PlayerData.battery = 100
+    PlayerData.battery = Config.Battery.max
 end

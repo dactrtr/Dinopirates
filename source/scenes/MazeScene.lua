@@ -831,13 +831,13 @@ scene.inputHandler = {
 		-- only calorie effect, otherwise this per-tick burn cancels it out.
 		local isCooking = (PlayerData.isGaming == false and PlayerData.readyToCook == true)
 		if ticksValue > 0 and not isCooking then
-			player:burnCalories(1)
+			player:burnCalories(Config.Pedometer.crankCalorieBurn)
 		end
 		
 		if PlayerData.isGaming == true then
 			if ticksValue > 0 then
-				if PlayerData.battery < 100 and PlayerData.readyToShrink == false and PlayerData.isTiny == false then
-					player:chargeBattery(3)
+				if PlayerData.battery < Config.Battery.max and PlayerData.readyToShrink == false and PlayerData.isTiny == false then
+					player:chargeBattery(Config.Battery.chargePerCrankTick)
 					if shadow then
 						shadow:refresh()
 					end
@@ -847,7 +847,9 @@ scene.inputHandler = {
 			-- Handle microwave cooking when locked on a microwave
 			if PlayerData.readyToCook == true then
 				if ticksValue ~= 0 then
-					player.cookProgress = (player.cookProgress or 0) + math.abs(ticksValue)
+					-- Play the eating animation while actively cranking to cook/heal.
+						player.animation:setState('eating')
+						player.cookProgress = (player.cookProgress or 0) + math.abs(ticksValue)
 					while player.cookProgress >= Config.Microwave.crankPerFood
 							and (PlayerData.food or 0) > 0
 							and PlayerData.healthPoints < Config.Player.maxHealthPoints do

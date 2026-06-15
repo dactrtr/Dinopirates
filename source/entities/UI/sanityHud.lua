@@ -25,13 +25,14 @@ end
 function sanityHud:update()
 	local sanity = PlayerData.sanity
 	
-	if sanity < 30 then
+	local t = Config.Sanity.hudFace
+	if sanity < t.insane then
 		self.animation:setState('insane')
-	elseif sanity < 50 then
+	elseif sanity < t.mediocre then
 		self.animation:setState('mediocre')
-	elseif sanity < 80 then
+	elseif sanity < t.normal then
 		self.animation:setState('normal')
-	elseif sanity < 100 then
+	elseif sanity < t.good then
 		self.animation:setState('good')
 	end
 end

@@ -95,15 +95,16 @@ function playerHud:update()
 			self.animation:setState('flash')
 		else
 			local sanity = PlayerData.sanity
-			if sanity > 80 then
+			local t = Config.Sanity.hudPortrait
+			if sanity > t.s100 then
 				self.animation:setState('sanity100')
-			elseif sanity > 60 then
+			elseif sanity > t.s80 then
 				self.animation:setState('sanity80')
-			elseif sanity > 40 then
+			elseif sanity > t.s60 then
 				self.animation:setState('sanity60')
-			elseif sanity > 20 then
+			elseif sanity > t.s40 then
 				self.animation:setState('sanity40')
-			elseif sanity > 0 then
+			elseif sanity > t.s20 then
 				self.animation:setState('sanity20')
 			else
 				self.animation:setState('sanity0')

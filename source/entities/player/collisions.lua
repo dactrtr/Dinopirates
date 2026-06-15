@@ -9,10 +9,10 @@ function Player:collisionResponse(other)
 
       -- Add damage logic
       if not self.isInvincible then
-        PlayerData.healthPoints -= (other.damage or 1)
+        PlayerData.healthPoints -= (other.damage or Config.Player.enemyContactDamage)
         printDebug("💥 Player hit by Brocorat! HP:", PlayerData.healthPoints)
 
-        if PlayerData.skills.canDance and PlayerData.healthPoints < (PlayerData.danceThresholdHP or 1) then
+        if PlayerData.skills.canDance and PlayerData.healthPoints < (PlayerData.danceThresholdHP or Config.Player.danceThresholdHP) then
           -- Near death and able to dance: enter the rhythm battle instead of dying.
           self:fight()
         elseif PlayerData.healthPoints <= 0 then

@@ -1,16 +1,12 @@
 {
 	"identifier": "Room_9",
 	"uniqueIdentifer": "dab87dc0-ac70-11f0-997a-63497867517d",
-	"x": -240,
-	"y": 752,
+	"x": 2800,
+	"y": -240,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
-		{
-			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
-			"dir": "nw"
-		},
 		{
 			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
 			"dir": "w"
@@ -73,166 +69,6 @@
 					"speed": 0.5,
 					"dead": false,
 					"forceSpawn": false
-				}
-			}
-		],
-		"Minifier": [
-			{
-				"id": "Minifier",
-				"iid": "21887b30-fa90-11f0-9a41-eb80f350135c",
-				"layer": "Items_and_Props",
-				"x": 100,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 2943221,
-				"customFields": {
-					"type": "minifier",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": true
-				}
-			}
-		],
-		"NPC": [
-			{
-				"id": "NPC",
-				"iid": "0ea7c260-21a0-11f1-ba67-7b68c287fc9b",
-				"layer": "Items_and_Props",
-				"x": 364,
-				"y": 132,
-				"width": 32,
-				"height": 32,
-				"color": 16217634,
-				"customFields": {
-					"type": "cat",
-					"conditionalScripts": [
-						"!items.hasLamp:catNoLamp",
-						"!items.hasBoots:catNoBoots",
-						"true:catWhat"
-					],
-					"sourceFeed": 0,
-					"hasGranted": false,
-					"forceSpawn": false,
-					"triggerScene": "Cockpit"
-				}
-			},
-			{
-				"id": "NPC",
-				"iid": "f9918570-48b0-11f1-b3b6-e7169d94681e",
-				"layer": "Items_and_Props",
-				"x": 292,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 16217634,
-				"customFields": {
-					"type": "computer",
-					"conditionalScripts": [
-						"true:catWhat"
-					],
-					"sourceFeed": 0,
-					"hasGranted": false,
-					"forceSpawn": false,
-					"triggerScene": "Cockpit"
-				}
-			}
-		],
-		"Microwave": [
-			{
-				"id": "Microwave",
-				"iid": "f4f92e10-48b0-11f1-b3b6-6f4db105fcd8",
-				"layer": "Items_and_Props",
-				"x": 356,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 16705377,
-				"customFields": {
-					"type": "microwave",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": false
-				}
-			}
-		],
-		"Food": [
-			{
-				"id": "Food",
-				"iid": "01ab7460-48b0-11f1-b3b6-af7062196e83",
-				"layer": "Items_and_Props",
-				"x": 292,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 16151930,
-				"customFields": {
-					"type": "food",
-					"grants": "hasitemname:bool",
-					"isItem": true
-				}
-			},
-			{
-				"id": "Food",
-				"iid": "03bf1220-48b0-11f1-b3b6-e7ea6e59f7b0",
-				"layer": "Items_and_Props",
-				"x": 292,
-				"y": 172,
-				"width": 32,
-				"height": 32,
-				"color": 16151930,
-				"customFields": {
-					"type": "food",
-					"grants": "hasitemname:bool",
-					"isItem": true
-				}
-			}
-		],
-		"Plunger": [
-			{
-				"id": "Plunger",
-				"iid": "8c9a4ee0-48b0-11f1-98a2-5d3443b1ee75",
-				"layer": "Items_and_Props",
-				"x": 68,
-				"y": 76,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "plunger",
-					"isItem": true
-				}
-			}
-		],
-		"Box": [
-			{
-				"id": "Box",
-				"iid": "521eb5f0-48b0-11f1-9b23-63dda7aa23ba",
-				"layer": "Items_and_Props",
-				"x": 44,
-				"y": 164,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "box",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Box",
-				"iid": "54cf5700-48b0-11f1-9b23-8f3535d0631e",
-				"layer": "Items_and_Props",
-				"x": 292,
-				"y": 92,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "box",
-					"nocollider": false,
-					"destroyed": false
 				}
 			}
 		],

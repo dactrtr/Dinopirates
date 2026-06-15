@@ -35,7 +35,7 @@ function Player:lightBurst()
     -- Block the flash if its self-damage would leave the player without life.
     -- The cost ignores invincibility, so it is always real; refuse to fire when lethal.
     local selfDamage = Config.LightBurst.selfDamage or 0
-    if selfDamage > 0 and (PlayerData.healthPoints - selfDamage) < (PlayerData.danceThresholdHP or 5) then
+    if selfDamage > 0 and (PlayerData.healthPoints - selfDamage) < (PlayerData.danceThresholdHP or Config.Player.danceThresholdHP) then
         printDebug("🚫 Flash blocked: not enough HP (self-damage would leave the player without life)")
         return
     end

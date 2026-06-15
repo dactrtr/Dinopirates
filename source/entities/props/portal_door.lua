@@ -1,9 +1,8 @@
 PortalDoor = {}
 class('PortalDoor').extends(NobleSprite)
 
-function PortalDoor:init(portalId, destLevel, destRoom, spawnX, spawnY, conditions, blockedDialog, x, y, width, height)
+function PortalDoor:init(portalId, spawnX, spawnY, conditions, blockedDialog, x, y, width, height)
     self.portalId      = portalId
-    self.destRoomId    = destLevel * 100 + destRoom
     self.spawnX        = spawnX
     self.spawnY        = spawnY
     self.conditions    = conditions or {}
@@ -98,7 +97,7 @@ function CreatePortalsFromNode(node)
         local portalId = cf.PortalID or 0
 
         local p = PortalDoor(
-            portalId, cf.DestLevel or 1, cf.DestRoom or 0,
+            portalId,
             cf.SpawnX or 196, cf.SpawnY or 116,
             cf.Conditions or {}, cf.BlockedDialog or "nokeys",
             entity.x, entity.y,

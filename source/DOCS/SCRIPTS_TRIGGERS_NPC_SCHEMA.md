@@ -364,8 +364,7 @@ In procedural mode (keys are removed), `CreateDoorsFromNode` creates a functiona
 | `x`, `y` | Number | Yes | Portal position in the room. |
 | `width`, `height` | Number | Yes | Dimensions of the collider (`24×24` per `Config.Portals.collideRect`). |
 | `customFields.PortalID` | Number | Yes | Pairing id. The portal in the destination room with the **same** `PortalID` is the return portal. |
-| `customFields.DestLevel` | Number | Yes | Destination floor. Resolves the secret room by `DestLevel*100 + DestRoom`. |
-| `customFields.DestRoom` | Number | Yes | Destination room number (the secret room is authored `procGen = false`). |
+| `customFields.DestRoom` | String | Yes | Destination room's LDtk `identifier` (e.g. `"Room_3"`). `MapGenerator` matches it against each template's `identifier`. The secret room is authored `procGen = false`. |
 | `customFields.SpawnX` | Number | Yes | Spawn X in the destination room. |
 | `customFields.SpawnY` | Number | Yes | Spawn Y in the destination room. |
 | `customFields.Conditions` | Array\<String\> | No | Conditions to use the portal (e.g. `{"isTiny:true"}`). Same syntax as `conditionalScripts` conditions. |
@@ -380,7 +379,7 @@ During generation, each placed room's portals pull their destination template in
 - If `canEnter()` (all `Conditions`) passes: `other:setSpawn()` (spawn at `SpawnX/SpawnY`) + `other:goTo()` → `RunState.goTo(targetNodeId)` + transition.
 - If not: `dialogUI:addScreen(other.blockedDialog or "nokeys")` + `'freeze'`.
 
-> Authoring: a secret-room pair is two `PortalDoors` sharing a `PortalID`, each pointing at the other's room (`DestLevel`/`DestRoom`). The secret room must be `procGen = false` so it's reachable only via the portal.
+> Authoring: a secret-room pair is two `PortalDoors` sharing a `PortalID`, each pointing at the other's room via `DestRoom` (the target's `identifier` string). The secret room must be `procGen = false` so it's reachable only via the portal.
 
 ---
 

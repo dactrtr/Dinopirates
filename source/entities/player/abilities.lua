@@ -52,7 +52,7 @@ function Player:activateDarkReveal()
     -- Block the reveal if its self-damage would leave the player without life.
     -- The cost ignores invincibility, so it is always real; refuse to fire when lethal.
     local selfDamage = Config.DarkReveal.selfDamage or 0
-    if selfDamage > 0 and (PlayerData.healthPoints - selfDamage) < (PlayerData.danceThresholdHP or 5) then
+    if selfDamage > 0 and (PlayerData.healthPoints - selfDamage) < (PlayerData.danceThresholdHP or Config.Player.danceThresholdHP) then
         printDebug("🚫 Dark reveal blocked: not enough HP (self-damage would leave the player without life)")
         return
     end
@@ -60,6 +60,15 @@ function Player:activateDarkReveal()
     PlayerData.battery = 0
     PlayerData.rechargeBlocked = true
     PlayerData.showFullLight = true
+
+    -- Play the shock animation on activation; revert to idle after shockDuration, but
+    -- only if the player hasn't started another animation (e.g. walking) in the meantime.
+    self.animation:setState('shock')
+    playdate.timer.performAfterDelay(Config.DarkReveal.shockDuration, function()
+        if self.animation.currentName == 'shock' then
+            self:idle()
+        end
+    end)
 
     -- The reveal burns the player: it always costs HP and ignores invincibility.
     -- The lethal case was already rejected above, so this can never drop the

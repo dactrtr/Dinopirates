@@ -81,8 +81,6 @@ function Player:initAnimations()
   self.animation:addState('sleep', 146, 147)
   self.animation.sleep.frameDuration = 18
   
-  -- shoot is a one-shot throw; when it finishes it auto-advances to the looping noLeg pose
-  -- (held while the plungerang is out, see movement.lua / state.lua).
   self.animation:addState('shootLeft', 148, 150, 'noLegLeft')
   self.animation.shootLeft.frameDuration = 4
 
@@ -94,6 +92,12 @@ function Player:initAnimations()
   
   self.animation:addState('noLegRight', 152, 153)
   self.animation.noLegRight.frameDuration = 4
+  
+  self.animation:addState('eating', 154, 157)
+  self.animation.eating.frameDuration = 8
+  
+  self.animation:addState('shock', 158, 159)
+  self.animation.shock.frameDuration = 8
   
   if PlayerData.fromTitle then
     self.animation:setState('sleep')

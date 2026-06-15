@@ -76,6 +76,12 @@ Numeric IDs for the Playdate sprite collision system. Each sprite calls `:setGro
 | Player | `movementFramesPerAction` | 3 | frames | Movement frames distributed to NPCs/enemies per move |
 | Player | `knockbackDistance` | 2 | px | Push distance when colliding with an enemy |
 | Player | `maxHealthPoints` | 10 | HP | Hard cap on `healthPoints`; HUD draws up to 10 dots. Enforced in `Player:update()`, the cook loop, and the DanceScene win heal |
+| Player | `enemyContactDamage` | 1 | HP | Fallback HP lost on enemy contact when the enemy has no `.damage` |
+| Player | `danceThresholdHP` | 1 | HP | Fallback for `PlayerData.danceThresholdHP`; HP at/below which a hit triggers DanceScene (used in `collisions`, `abilities`, `lightburst`) |
+| Player | `deathScreenDelay` | 1000 | ms | Delay before the death screen transition fires |
+| Player | `wakeupPressesRequired` | 2 | presses | A-button presses needed to wake the player |
+| Player | `hudEdgeTop` | 60 | px | Below this Y the floating HUD flips under the player |
+| Player | `hudEdgeRight` | 350 | px | Past this X the floating HUD flips to the player's left |
 
 ---
 
@@ -114,7 +120,10 @@ See `MICROWAVE_AND_FOOD.md` for the full system.
 
 | Section | Name | Value | Unit | Description |
 |---|---|---|---|---|
+| Battery | `max` | 100 | % | Full charge cap and HUD ceiling (clamp in `chargeBattery`/`fillBattery`/`update`) |
+| Battery | `chargePerCrankTick` | 3 | units/tick | Battery gained per crank tick while charging in the maze |
 | Battery | `drainMovementDark` | 0.5 | units/frame | Drain per frame when moving in darkness |
+| Battery | `drainDWatchWalk` | 0.5 | units/frame | Drain per frame walking with the DWatch (gated by `movement.DRAIN_BATTERY_ON_WALK`) |
 | Battery | `drainHoleNormal` | 0.5 | units/frame | Drain per frame when crossing a hole (normal size) |
 | Battery | `drainHoleTiny` | 0.2 | units/frame | Drain per frame when crossing a hole (tiny mode) |
 | Battery | `thresholdCritical` | 10 | % | Critical level; enemies override speed, crew stops |
@@ -127,6 +136,8 @@ See `MICROWAVE_AND_FOOD.md` for the full system.
 
 | Section | Name | Value | Unit | Description |
 |---|---|---|---|---|
+| Sanity | `max` | 100 | pts | Sanity cap (floor is always 0) |
+| Sanity | `baseLoss` | 1 | multiplier | Base multiplier applied to every gain/loss tick (`player.sanityLoss`) |
 | Sanity | `tickInterval` | 2000 | ms | Interval between sanity checks |
 | Sanity | `lossLowBattery` | 2 | pts/tick | Loss per tick when `battery < batteryThresholdLow` |
 | Sanity | `lossMidBattery` | 1 | pts/tick | Loss per tick when `battery < batteryThresholdMid` |
@@ -135,6 +146,8 @@ See `MICROWAVE_AND_FOOD.md` for the full system.
 | Sanity | `batteryThresholdMid` | 40 | % | Mid battery level for sanity |
 | Sanity | `batteryThresholdHigh` | 50 | % | High battery level for sanity recovery |
 | Sanity | `focusCost` | 20 | pts | Sanity consumed by the focus ability (legacy) |
+| Sanity | `hudFace` | `{insane=30, mediocre=50, normal=80, good=100}` | pts | sanityHud face thresholds — state switches when `sanity <` each value |
+| Sanity | `hudPortrait` | `{s100=80, s80=60, s60=40, s40=20, s20=0}` | pts | playerHud portrait thresholds — state switches when `sanity >` each value |
 
 ---
 
@@ -232,6 +245,7 @@ See `MICROWAVE_AND_FOOD.md` for the full system.
 | Pedometer | `stepsPerMovement` | 0.5 | steps | Steps added per `player:move()` call |
 | Pedometer | `stepsToTrigger` | 200 | steps | Accumulated steps before burning calories |
 | Pedometer | `caloriesPerBurn` | 10 | calories | Calories burned when threshold is reached |
+| Pedometer | `crankCalorieBurn` | 1 | calories/tick | Calories burned per crank tick while charging the battery (skipped while cooking) |
 
 ---
 

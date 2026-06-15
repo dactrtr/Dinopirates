@@ -217,7 +217,10 @@ function generateTilemap(rooms) {
   }
 
   const sorted  = Object.keys(tilemapData).map(Number).sort((a, b) => a - b);
-  const entries = sorted.map(idx => `\t-- ${idx}\n${matrixToCompactLua(tilemapData[idx])}`);
+  // Emit explicit keys ([idx] = ...) so rooms index by their `tile` value directly.
+  // A bare sequential array breaks as soon as the tile numbers have gaps (e.g. a
+  // secret room with tile=81), since the array position no longer equals the tile id.
+  const entries = sorted.map(idx => `\t[${idx}] = ${matrixToCompactLua(tilemapData[idx])}`);
   const lua     = `tileMapData = {\n${entries.join(',\n')}\n}\n`;
 
   fs.writeFileSync(path.join(OUT_DATA, 'tilemap.lua'), lua);

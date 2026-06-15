@@ -49,12 +49,11 @@ local function doorCountsOf(template)
 	return counts
 end
 
--- Resolve a room template by its RoomID (level*100 + roomNumber). Used to pull in the
+-- Resolve a room template by its LDtk identifier (e.g. "Room_3"). Used to pull in the
 -- destination of a PortalDoor; secret rooms are procGen=false so they aren't in the pool.
-local function templateByRoomId(roomId)
+local function templateByIdentifier(identifier)
 	for _, tmpl in ipairs(levelsLDTK or {}) do
-		local cf = tmpl.customFields
-		if cf and ((cf.level or 0) * 100 + (cf.roomNumber or 0)) == roomId then
+		if tmpl.identifier == identifier then
 			return tmpl
 		end
 	end
@@ -395,7 +394,7 @@ function MapGenerator.generate(progress, entryRole)
 	-- PortalID in both directions (A<->A). Gating (e.g. isTiny) stays in the portal's
 	-- Conditions and is enforced at touch time. Snapshot the count first so we only scan
 	-- the connectivity nodes, not the secret nodes we're adding.
-	local secretByRoomId = {}  -- RoomID -> nodeId (a secret room is one shared node)
+	local secretByIdentifier = {}  -- room identifier -> nodeId (a secret room is one shared node)
 	local mainCount = #graph
 	for hid = 1, mainCount do
 		local host = graph[hid]
@@ -405,17 +404,17 @@ function MapGenerator.generate(progress, entryRole)
 			for _, pd in ipairs(portals) do
 				local cf = pd.customFields or {}
 				local pid = cf.PortalID
-				local destId = (cf.DestLevel or 0) * 100 + (cf.DestRoom or 0)
-				local destTmpl = templateByRoomId(destId)
+				local destIdentifier = cf.DestRoom
+				local destTmpl = destIdentifier and templateByIdentifier(destIdentifier)
 				if pid and destTmpl then
-					local secretId = secretByRoomId[destId]
+					local secretId = secretByIdentifier[destIdentifier]
 					if not secretId then
 						secretId = #graph + 1
 						local snode = makeNode(secretId, destTmpl)
 						snode.isSecret = true
 						snode.portals  = {}
 						graph[secretId] = snode
-						secretByRoomId[destId] = secretId
+						secretByIdentifier[destIdentifier] = secretId
 					end
 					host.portals[pid] = secretId
 					graph[secretId].portals[pid] = hid

@@ -144,7 +144,7 @@ Every run includes at least one **dark** room (`customFields.shadow == true`) an
 
 ## 7. Secret rooms via PortalDoors
 
-PortalDoors are tiny-gated entrances to secret rooms, paired **A↔A** by `PortalID` (each room's portal cross-references the other's `DestLevel`/`DestRoom`). They are **not** part of side-connectivity.
+PortalDoors are tiny-gated entrances to secret rooms, paired **A↔A** by `PortalID` (each room's portal cross-references the other's `DestRoom`, the target room's `identifier`). They are **not** part of side-connectivity.
 
 - During generation, each placed room's `PortalDoors` resolves its destination template (`level*100 + roomNumber`; secret rooms are `procGen=false`) and adds it as an `isSecret` node, linking `host.portals[pid] ↔ secret.portals[pid]`.
 - `CreatePortalsFromNode` (portal_door.lua) instantiates the portals with `targetNodeId = node.portals[pid]`.
@@ -240,7 +240,7 @@ For a template to participate in procedural generation:
 - [ ] At least one `Start` room with no `requiredItems`. Author `StartDown`/`StartUp` rooms for hole/tube entries and one `Final` room.
 - [ ] Door sides authored consistently so facing sides share door count + x/width (top/down) or y/height (left/right) — see §4.
 - [ ] (Optional) `requiredItems` for item-gated rooms; `forceSpawn = true` on entities that must always appear; `spawnConditions` on items/triggers for fine gating.
-- [ ] Secret rooms: a `PortalDoors` pair sharing a `PortalID`, each pointing at the other's `DestLevel`/`DestRoom`, with `Conditions` (e.g. `isTiny:true`).
+- [ ] Secret rooms: a `PortalDoors` pair sharing a `PortalID`, each pointing at the other's `DestRoom` (the target room's `identifier`), with `Conditions` (e.g. `isTiny:true`).
 - [ ] At least one dark room (`shadow`) and one hole room in the pool with door layouts that match other rooms (so the feature guarantee can place/connect them).
 
 ---

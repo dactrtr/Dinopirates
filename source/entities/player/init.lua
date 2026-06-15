@@ -47,7 +47,7 @@ function Player:init(x, y, speed, Zindex)
     self.speed = speed
     self.initialSanity = PlayerData.sanity
     self.initialBattery = PlayerData.battery
-    self.sanityLoss = 1
+    self.sanityLoss = Config.Sanity.baseLoss
     self.sanity = PlayerData.sanity
     self.playerUIX = Config.Player.uiOffsetX
     self.playerUIY = Config.Player.uiOffsetY
