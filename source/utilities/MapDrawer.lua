@@ -1,12 +1,18 @@
 -- MapDrawer.lua
 -- Renders the current procedural run graph (RunState.graph) onto an image context.
--- Style mirrors the old fixed-floor map: dithered/filled squares with a white-box /
--- black-center marker for the current room. The legacy level*100+roomNumber floor grid
--- has been removed; the map now reflects the active per-run graph only.
+-- Style mirrors the old fixed-floor map: dithered/filled squares with a marker for the
+-- current room. The legacy level*100+roomNumber floor grid has been removed.
+--
+-- LAYOUT: rooms are positioned straight from the grid cell MapGenerator assigned to each
+-- node (node.coord). The generator builds the graph on a 2D grid so every edge connects
+-- physically adjacent cells (no overlaps, no teleport-looking links), so the map just
+-- reads those coordinates. A few nodes are added after generation without a coord —
+-- visited secret rooms (portal-linked) and the revealed final room — and are placed
+-- relative to a neighbour, nudged to the nearest free cell.
 
 MapDrawer = {}
 
--- Direction -> grid cell offset (col, row) used for directional grid embedding.
+local DIRS = { "top", "right", "down", "left" }
 local DIR_OFFSET = {
 	right = {  1,  0 },
 	left  = { -1,  0 },
@@ -14,65 +20,91 @@ local DIR_OFFSET = {
 	down  = {  0,  1 },
 }
 
--- Build a grid layout from the graph via directional grid embedding (spec section 1).
--- Returns: cells (nodeId -> {col, row}), maxCol, maxRow. Cells are normalized so min
--- col/row = 0. Secret nodes are only placed if visited (offset from their portal host).
+-- Build a grid layout from the graph. Returns: cells (nodeId -> {col,row}), maxCol, maxRow.
+-- Cells are normalized so min col/row = 0.
 local function buildLayout(g)
-	local cells = {}
+	local cells    = {}
+	local occupied = {}
+	local function key(c, r) return c .. "," .. r end
 
-	-- BFS from startId over edges, skipping secret nodes.
-	local queue = {}
-	local head = 1
-	if g.startId and g[g.startId] and not g[g.startId].isSecret then
-		cells[g.startId] = { 0, 0 }
-		queue[#queue + 1] = g.startId
+	-- Nearest free cell to (c,r), searched in expanding rings (only used for coord-less nodes).
+	local function freeCellNear(c, r)
+		if not occupied[key(c, r)] then return c, r end
+		for radius = 1, 64 do
+			for dc = -radius, radius do
+				for dr = -radius, radius do
+					if math.abs(dc) == radius or math.abs(dr) == radius then
+						local nc, nr = c + dc, r + dr
+						if not occupied[key(nc, nr)] then return nc, nr end
+					end
+				end
+			end
+		end
+		return c, r
 	end
 
-	while head <= #queue do
-		local nodeId = queue[head]
-		head = head + 1
-		local node = g[nodeId]
-		local cell = cells[nodeId]
-		if node and node.edges and cell then
-			for dir, neighborId in pairs(node.edges) do
-				local neighbor = g[neighborId]
-				local offset = DIR_OFFSET[dir]
-				if neighbor and offset and not neighbor.isSecret and not cells[neighborId] then
-					cells[neighborId] = { cell[1] + offset[1], cell[2] + offset[2] }
-					queue[#queue + 1] = neighborId
+	local function place(id, c, r)
+		cells[id] = { c, r }
+		occupied[key(c, r)] = id
+	end
+
+	-- Phase 1: main connectivity rooms by their generated grid coordinate.
+	for id = 1, #g do
+		local node = g[id]
+		if node and not node.isSecret and node.coord then
+			place(id, node.coord.col, node.coord.row)
+		end
+	end
+
+	-- Phase 2: non-secret nodes without a coord (e.g. the revealed final room) — placed next
+	-- to a placed neighbour via the connecting edge, nudged to the nearest free cell.
+	local changed = true
+	while changed do
+		changed = false
+		for id = 1, #g do
+			local node = g[id]
+			if node and not node.isSecret and not cells[id] and node.edges then
+				for _, d in ipairs(DIRS) do
+					local nid = node.edges[d]
+					if nid and cells[nid] then
+						local nc  = cells[nid]
+						local off = DIR_OFFSET[d]
+						-- d is the side of `node` facing the neighbour, so step from the
+						-- neighbour back toward node = neighbour cell - offset(d).
+						local c, r = freeCellNear(nc[1] - off[1], nc[2] - off[2])
+						place(id, c, r)
+						changed = true
+						break
+					end
 				end
 			end
 		end
 	end
 
-	-- Lay out visited secret nodes at their portal host's cell + secretOffset.
+	-- Phase 3: visited secret rooms anchored next to their portal host.
 	local secretOffset = Config.Map.secretOffset
 	for id = 1, #g do
 		local node = g[id]
 		if node and node.isSecret and node.visited and not cells[id] then
-			local hostId = nil
+			local hostId
 			if node.portals then
-				for _, h in pairs(node.portals) do
-					hostId = h
-					break
-				end
+				for _, h in pairs(node.portals) do hostId = h; break end
 			end
-			local hostCell = hostId and cells[hostId]
-			if hostCell then
-				cells[id] = { hostCell[1] + secretOffset.col, hostCell[2] + secretOffset.row }
+			local hc = hostId and cells[hostId]
+			if hc then
+				local c, r = freeCellNear(hc[1] + secretOffset.col, hc[2] + secretOffset.row)
+				place(id, c, r)
 			end
 		end
 	end
 
-	-- Normalize so the minimum col/row is 0; compute bounds.
+	-- Normalize so min col/row = 0; compute bounds.
 	local minCol, minRow = math.huge, math.huge
 	for _, cell in pairs(cells) do
 		if cell[1] < minCol then minCol = cell[1] end
 		if cell[2] < minRow then minRow = cell[2] end
 	end
-	if minCol == math.huge then
-		return cells, 0, 0
-	end
+	if minCol == math.huge then return cells, 0, 0 end
 
 	local maxCol, maxRow = 0, 0
 	for _, cell in pairs(cells) do
@@ -81,7 +113,6 @@ local function buildLayout(g)
 		if cell[1] > maxCol then maxCol = cell[1] end
 		if cell[2] > maxRow then maxRow = cell[2] end
 	end
-
 	return cells, maxCol, maxRow
 end
 
@@ -89,15 +120,12 @@ end
 -- @param targetImage: The Graphics.image to draw the map on
 function MapDrawer.drawMap(targetImage)
 	local g = RunState.graph
-	if not g then
-		return
-	end
+	if not g then return end
 
 	local panel = Config.Map.panel
 	local cells, maxCol, maxRow = buildLayout(g)
 
-	-- Compute cell size to fit the (maxCol+1) x (maxRow+1) grid inside the panel,
-	-- capped at maxCellSize.
+	-- Cell size fits the grid inside the panel, capped at maxCellSize.
 	local colsCount = maxCol + 1
 	local rowsCount = maxRow + 1
 	local cellSize = math.min(panel.w / colsCount, panel.h / rowsCount)
@@ -111,55 +139,48 @@ function MapDrawer.drawMap(targetImage)
 	local px = panel.x + math.floor((panel.w - gridW) / 2)
 	local py = panel.y + math.floor((panel.h - gridH) / 2)
 
-	-- Box size (inset within its cell by cellGap).
 	local boxSize = cellSize - Config.Map.cellGap
 	if boxSize < 1 then boxSize = 1 end
 
-	-- Center of a cell (used for edge lines).
-	local function cellCenter(cell)
-		local cx = px + cell[1] * cellSize + cellSize / 2
-		local cy = py + cell[2] * cellSize + cellSize / 2
-		return cx, cy
-	end
-	-- Top-left of a box, centered within its cell.
-	local function boxOrigin(cell)
-		local bx = px + cell[1] * cellSize + math.floor((cellSize - boxSize) / 2)
-		local by = py + cell[2] * cellSize + math.floor((cellSize - boxSize) / 2)
-		return bx, by
-	end
-
-	local roomColor = Config.Map.roomColor
+	local roomColor   = Config.Map.roomColor
 	local markerColor = Config.Map.markerColor
 
-	-- Phase 1: draw edges between placed neighbors (only id < neighborId to avoid dupes).
+	local function cellCenter(cell)
+		return px + cell[1] * cellSize + cellSize / 2,
+		       py + cell[2] * cellSize + cellSize / 2
+	end
+	local function boxOrigin(cell)
+		return px + cell[1] * cellSize + math.floor((cellSize - boxSize) / 2),
+		       py + cell[2] * cellSize + math.floor((cellSize - boxSize) / 2)
+	end
+
+	-- Phase 1: connection lines between adjacent rooms (deduped via id < neighborId).
 	Graphics.pushContext(targetImage)
 	Graphics.setLineWidth(Config.Map.lineWidth)
 	for id = 1, #g do
 		local node = g[id]
 		local cell = cells[id]
 		if node and cell and node.edges then
-			for _, neighborId in pairs(node.edges) do
-				local neighborCell = cells[neighborId]
-				if neighborCell and id < neighborId then
-					local neighbor = g[neighborId]
+			for _, d in ipairs(DIRS) do
+				local nid = node.edges[d]
+				local neighborCell = nid and cells[nid]
+				if neighborCell and id < nid then
+					local neighbor = g[nid]
+					Graphics.setColor(roomColor)
+					if not (node.visited and neighbor and neighbor.visited) then
+						Graphics.setDitherPattern(Config.Map.ditherAlpha, Graphics.image.kDitherTypeBayer8x8)
+					end
 					local x1, y1 = cellCenter(cell)
 					local x2, y2 = cellCenter(neighborCell)
-					if node.visited and neighbor and neighbor.visited then
-						Graphics.setColor(roomColor)
-						Graphics.drawLine(x1, y1, x2, y2)
-					else
-						Graphics.setColor(roomColor)
-						Graphics.setDitherPattern(Config.Map.ditherAlpha, Graphics.image.kDitherTypeBayer8x8)
-						Graphics.drawLine(x1, y1, x2, y2)
-						Graphics.setColor(roomColor)
-					end
+					Graphics.drawLine(x1, y1, x2, y2)
+					Graphics.setColor(roomColor)  -- reset any dither to solid
 				end
 			end
 		end
 	end
 	Graphics.popContext()
 
-	-- Phase 2: draw node boxes on top.
+	-- Phase 2: room boxes on top.
 	for id = 1, #g do
 		local node = g[id]
 		local cell = cells[id]
@@ -167,7 +188,7 @@ function MapDrawer.drawMap(targetImage)
 			local bx, by = boxOrigin(cell)
 			Graphics.pushContext(targetImage)
 			if id == RunState.currentNodeId then
-				-- Current room: roomColor outer box with a contrasting markerColor center.
+				-- Current room: roomColor box with a contrasting markerColor center.
 				Graphics.setColor(roomColor)
 				Graphics.fillRect(bx, by, boxSize, boxSize)
 				local innerSize = boxSize - 2
@@ -194,26 +215,17 @@ end
 -- Returns 0 if there is no graph or no non-secret nodes.
 function MapDrawer.calculateMapPercent()
 	local g = RunState.graph
-	if not g then
-		return 0
-	end
+	if not g then return 0 end
 
-	local total = 0
-	local visited = 0
+	local total, visited = 0, 0
 	for id = 1, #g do
 		local node = g[id]
 		if node and not node.isSecret then
 			total = total + 1
-			if node.visited then
-				visited = visited + 1
-			end
+			if node.visited then visited = visited + 1 end
 		end
 	end
-
-	if total == 0 then
-		return 0
-	end
-
+	if total == 0 then return 0 end
 	return math.floor((visited / total) * 100)
 end
 

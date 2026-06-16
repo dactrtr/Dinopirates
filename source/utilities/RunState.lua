@@ -101,6 +101,7 @@ function RunState.serialize()
 			portals    = n.portals,   -- PortalID -> node id (secret-room links, A<->A)
 			isSecret   = n.isSecret,
 			visited    = n.visited,
+			coord      = n.coord,     -- grid cell {col,row} assigned by MapGenerator (map layout)
 		}
 	end
 	return {
@@ -141,6 +142,7 @@ function RunState.deserialize(data)
 			portals    = sn.portals or {},
 			isSecret   = sn.isSecret,
 			visited    = sn.visited,
+			coord      = sn.coord,
 		}
 	end
 	graph.startId       = data.startId

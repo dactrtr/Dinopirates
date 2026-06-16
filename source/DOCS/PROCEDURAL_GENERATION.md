@@ -103,9 +103,11 @@ A template qualifies for the pool only when it is a procGen room **and** the pla
 
 `progress` = crew recruited so far; it scales run size (`Config.MapGen.roomsBase + progress`, capped at `roomsMax`). `entryRole` picks the start bucket (`start` default, `startdown`/`startup` for vertical entries).
 
-1. **Start node** — random template from `pool[entryRole]` (falls back to `start`, then `normal`).
-2. **Guaranteed path** — repeatedly attach a `normal` room to a node that still has a free side, until the run reaches its size. The candidate must match the from-side's **door signature** (see §4). Selection prefers fresh (unused) templates while sane (see §6) and biases toward a still-missing required feature (dark room / hole room, see §5).
-3. **Loops (exhaustive)** — every free side links to the first placed node whose opposite side is free and signature-compatible. No probability gate, so no door dangles. (A specific pair is still not *guaranteed* adjacent — both must be placed and reach this phase with the matching side free.)
+The run is built on a **2D grid**: the start node sits at cell `(0,0)` and every node gets a `coord = {col,row}` (`occupied[ "col,row" ]` tracks which cell each node owns). A `right` door always leads to the room one cell to the right, etc. This makes the graph embed cleanly — no two rooms share a cell and every edge connects physically adjacent cells, so the in-game map (see `INGAME_MENU.md`) never shows an illogical "teleport" link.
+
+1. **Start node** — random template from `pool[entryRole]` (falls back to `start`, then `normal`); placed at cell `(0,0)`.
+2. **Guaranteed path** — repeatedly attach a `normal` room to a node that has a free side **whose adjacent grid cell is still empty**, until the run reaches its size; the new room takes that cell. The candidate must match the from-side's **door signature** (see §4). Selection prefers fresh (unused) templates while sane (see §6) and biases toward a still-missing required feature (dark room / hole room, see §5). Growth stops when no free side points at an empty cell.
+3. **Loops (adjacency-only)** — a free side links **only** to the room physically occupying the adjacent grid cell, and only if that room's opposite side is free and signature-compatible. Loops are therefore always between neighbouring cells (never a cross-map teleport). Free sides with no adjacent match stay open and become **wall plugs**. Consequence: runs are less densely interconnected than the old exhaustive pass — more doors end up plugged.
 4. **Feature guarantee** — if the run still lacks a dark room or a hole room, swap a placed normal node for one with the **same full door layout** that has the feature (keeps connectivity intact).
 5. **Secret rooms** — pull portal destinations in as `isSecret` nodes (see §7).
 6. **Content roll** — per node, decide which authored enemies/utilities are active this run (see §8).

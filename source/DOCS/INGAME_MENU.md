@@ -151,13 +151,16 @@ Hats are removed in `closeMenu()`.
 
 On opening, `inGameMenu:drawMapOnMenu()` calls `MapDrawer.drawMap(menuImage)` to draw the **current procedural run graph** directly onto the menu image — not a fixed floor grid.
 
-`MapDrawer` lays out `RunState.graph` via directional grid embedding (BFS over each node's `edges`, placing neighbors by direction) inside `Config.Map.panel`, then draws axis-aligned connection lines and one box per node:
+`MapDrawer` reads the grid cell `MapGenerator` assigned to each node (`node.coord = {col,row}`). The generator builds the run on a 2D grid, so every edge already connects physically adjacent cells (no overlaps, no teleport-looking links) — the map just plots those coordinates. A few nodes added after generation have no coord — visited secret rooms (portal-linked) and the revealed final room — and are placed next to a neighbour, nudged to the nearest free cell.
 
-- **Current room** (`RunState.currentNodeId`): white box with a black center.
-- **Visited rooms** (`node.visited`): solid white box.
-- **In-graph but not yet visited**: faint dithered outline.
+It then draws, inside `Config.Map.panel`:
 
-Secret rooms and the final room are **hidden until the player visits them** (a visited secret node appears offset from its portal host). `MapDrawer.calculateMapPercent()` returns the percent of the current run visited (visited non-secret nodes / total non-secret nodes).
+- **Connection lines** between adjacent rooms (solid when both ends are visited, otherwise dithered).
+- **Current room** (`RunState.currentNodeId`): `roomColor` box with a contrasting `markerColor` center.
+- **Visited rooms** (`node.visited`): solid `roomColor` box.
+- **In-graph but not yet visited**: dithered `roomColor` box.
+
+Colors are `Config.Map.roomColor` / `markerColor`. Secret rooms and the final room are **hidden until the player visits them** (a visited secret node appears offset from its portal host). `MapDrawer.calculateMapPercent()` returns the percent of the current run visited (visited non-secret nodes / total non-secret nodes).
 
 ---
 

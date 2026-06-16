@@ -7,6 +7,11 @@ MapGenerator = {}
 -- Cardinal door directions and their opposites (a "right" door must meet a "left").
 local OPPOSITE = { right = "left", left = "right", top = "down", down = "top" }
 local DIRS = { "right", "left", "top", "down" }
+-- Grid cell offset per direction. The graph is laid out on a 2D grid as it is built so
+-- that every edge connects two physically adjacent rooms — a "right" door always leads to
+-- the room one cell to the right. This guarantees the run map embeds with no overlaps and
+-- no illogical (teleport-looking) connections.
+local DIR_OFFSET = { right = { 1, 0 }, left = { -1, 0 }, top = { 0, -1 }, down = { 0, 1 } }
 
 -- Normalize a DoorsConnection entry ("Top"/"Down"/"Left"/"Right") to a lowercase dir.
 local function normDir(name)
@@ -265,6 +270,16 @@ function MapGenerator.generate(progress, entryRole)
 	local graph = {}
 	local used = {}  -- templates already placed (avoid repeats while sane)
 
+	-- Grid bookkeeping: each placed node gets a (col,row) cell. occupied maps a cell key
+	-- to the node id that owns it, so rooms never overlap and loops only form between
+	-- physically adjacent cells.
+	local occupied = {}
+	local function cellKey(c, r) return c .. "," .. r end
+	local function setCoord(node, c, r)
+		node.coord = { col = c, row = r }
+		occupied[cellKey(c, r)] = node.id
+	end
+
 	-- 1) Start node. entryRole picks the entry room kind ("startdown" after a hole,
 	--    "startup" after a tube); defaults to the normal "start".
 	local startKind = (entryRole and entryRole:lower()) or "start"
@@ -275,6 +290,7 @@ function MapGenerator.generate(progress, entryRole)
 	graph[nextId] = startNode
 	graph.startId = nextId
 	used[startTemplate] = true
+	setCoord(startNode, 0, 0)
 	nextId += 1
 
 	-- Per-run guarantee: include at least one dark room and one room with holes.
@@ -290,15 +306,25 @@ function MapGenerator.generate(progress, entryRole)
 	--    attaching a normal room whose opposite side is free.
 	local frontier = { startNode }
 	while #graph < N do
-		-- find a placed node with at least one free cardinal side
-		local fromNode, fromDir
+		-- Find a placed node with a free side whose adjacent grid cell is still EMPTY, so the
+		-- new room occupies a real, unoccupied neighbour cell. Free sides pointing at an
+		-- already-occupied cell are left for the loop pass (or become wall plugs).
+		local fromNode, fromDir, tCol, tRow
 		for _, node in ipairs(frontier) do
+			local nc = node.coord
 			for _, d in ipairs(DIRS) do
-				if node.freeSides[d] then fromNode = node; fromDir = d; break end
+				if node.freeSides[d] then
+					local off = DIR_OFFSET[d]
+					local cc, rr = nc.col + off[1], nc.row + off[2]
+					if not occupied[cellKey(cc, rr)] then
+						fromNode, fromDir, tCol, tRow = node, d, cc, rr
+						break
+					end
+				end
 			end
 			if fromNode then break end
 		end
-		if not fromNode then break end  -- no free sides anywhere; stop early
+		if not fromNode then break end  -- nowhere empty to grow; stop early
 
 		-- candidate must match the from-side's door signature on its opposite side, so
 		-- every door lines up in count, position and size ("door to door").
@@ -333,6 +359,7 @@ function MapGenerator.generate(progress, entryRole)
 			local node = makeNode(nextId, tmpl)
 			graph[nextId] = node
 			connect(fromNode, node, fromDir)
+			setCoord(node, tCol, tRow)
 			table.insert(frontier, node)
 			used[tmpl] = true
 			if isDark[tmpl] then placedDark = true end
@@ -341,21 +368,24 @@ function MapGenerator.generate(progress, entryRole)
 		end
 	end
 
-	-- 3) Loops: connect EVERY pair of placed nodes with compatible free sides, so no
-	--    door is left dangling. Greedy and exhaustive: each free side links to the
-	--    first placed node whose opposite side is free and signature-compatible.
+	-- 3) Loops: connect a free side ONLY to the room that physically sits in the adjacent
+	--    grid cell (and only if its opposite side is free and signature-compatible). This
+	--    is what keeps the map logical — a loop edge is always between neighbouring cells,
+	--    never a teleport across the run. Free sides with no adjacent match stay open and
+	--    become wall plugs.
 	local placed = {}
 	for i = 1, #graph do placed[i] = graph[i] end
 	for _, a in ipairs(placed) do
+		local ac = a.coord
 		for _, d in ipairs(DIRS) do
-			if a.freeSides[d] then
+			if a.freeSides[d] and ac and not a.edges[d] then
+				local off = DIR_OFFSET[d]
+				local bid = occupied[cellKey(ac.col + off[1], ac.row + off[2])]
+				local b = bid and graph[bid]
 				local opp = OPPOSITE[d]
-				for _, b in ipairs(placed) do
-					if b ~= a and b.freeSides[opp] and not a.edges[d]
-						and sidesMatch(a.poolRoom, d, b.poolRoom) then
-						connect(a, b, d)
-						break
-					end
+				if b and b ~= a and b.freeSides[opp]
+					and sidesMatch(a.poolRoom, d, b.poolRoom) then
+					connect(a, b, d)
 				end
 			end
 		end
