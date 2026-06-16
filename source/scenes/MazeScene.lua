@@ -122,6 +122,8 @@ function scene:enter()
 	-- transition fires in start() — calling Noble.transition here would BONK because
 	-- enter() runs at the transition midpoint (still transitioning).
 	self.pendingEndgame = (node.content and node.content.isFinal) or false
+	-- Per-node, run-scoped visited tracking for the in-game run-graph map.
+	node.visited = true
 	-- Map the template back to its levelsLDTK index so all existing levelsLDTK[room]
 	-- reads (background, tilemap, entities, door metadata) keep working unchanged.
 	room = nil
@@ -199,9 +201,8 @@ function scene:enter()
 	
 	PlayerData.actualLevel = levelsLDTK[room].customFields.level
 	PlayerData.actualRoom = levelsLDTK[room].customFields.roomNumber
-	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile 
-	levelsLDTK[room].customFields.visited = true
-	
+	PlayerData.actualTilemap = levelsLDTK[room].customFields.tile
+
 	-- MARK: Floor
 	local roomBgPath = 'assets/images/rooms/floor' .. PlayerData.actualLevel
 	                   .. '/' .. levelsLDTK[room].identifier

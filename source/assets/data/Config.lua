@@ -260,6 +260,18 @@ Config.Input = {
     crankMenuThreshold = 30,   -- degrees of crank rotation to navigate menu
 }
 
+-- Map (in-game run graph map drawn in the menu)
+Config.Map = {
+    panel        = { x = 32, y = 18, w = 140, h = 75 }, -- rectangle on the menu image the map fits into
+    maxCellSize  = 8,    -- cap on per-room box size (small runs stay small)
+    cellGap      = 1,    -- gap between a box and its grid cell edge
+    lineWidth    = 1,    -- connection line width
+    ditherAlpha  = 0,  -- dither alpha for unvisited boxes/edges
+    secretOffset = { col = 1, row = 0 }, -- cell offset for a visited secret node off its portal host
+    roomColor    = Graphics.kColorWhite, -- fill color for room boxes and connection lines
+    markerColor  = Graphics.kColorBlack, -- center of the current-room box (must contrast roomColor)
+}
+
 -- Enemy AI
 Config.Enemy = {
     sightRadiusBase         = 150,  -- min 50; base detection radius stored in PlayerData.EnemiesData.sightRadius

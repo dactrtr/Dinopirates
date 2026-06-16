@@ -51,10 +51,11 @@ Validations (all must pass, else returns silently):
 ```
 1. PlayerData.isInDarkness == false       (lit rooms only)
 2. PlayerData.items.hasPlunger == true     AND PlayerData.skills.canPlungerang == true
-3. self.hasProjectile == true              (not lost to a CrewMember; recover it first)
-4. PlayerData.isTiny == false
-5. self.isAlive == true  AND  PlayerData.isGaming == true
-6. not already isGrappleCharging / isPlunging / isGrapplePulling / isGrappling
+3. PlayerData.skills.canGrapple == true    (grappling hook skill must be unlocked)
+4. self.hasProjectile == true              (not lost to a CrewMember; recover it first)
+5. PlayerData.isTiny == false
+6. self.isAlive == true  AND  PlayerData.isGaming == true
+7. not already isGrappleCharging / isPlunging / isGrapplePulling / isGrappling
 ```
 
 On success: `isGrappleCharging = true`, `grappleCrankAccum = 0`, shows the `crankClock` HUD

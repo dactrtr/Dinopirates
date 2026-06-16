@@ -3,7 +3,8 @@
 This document describes the player's in-game menu: opening and closing, what it
 displays, and the distinction between pause and the menu.
 
-The menu is **purely visual / informational**. It shows the explored map and the
+The menu is **purely visual / informational**. It shows the current run's map
+(the active procedural run graph, with visited rooms highlighted) and the
 hats of the captured crew members. There is no skill or item selection — abilities
 fire directly from the B button based on context (see `PLAYER_SYSTEMS.md` and
 `entities/player/abilities.lua`).
@@ -148,7 +149,15 @@ Hats are removed in `closeMenu()`.
 
 ## Game Map in the Menu
 
-On opening, `inGameMenu:drawMapOnMenu()` calls `MapDrawer.drawMap(menuImage)` to draw the explored map directly onto the menu image.
+On opening, `inGameMenu:drawMapOnMenu()` calls `MapDrawer.drawMap(menuImage)` to draw the **current procedural run graph** directly onto the menu image — not a fixed floor grid.
+
+`MapDrawer` lays out `RunState.graph` via directional grid embedding (BFS over each node's `edges`, placing neighbors by direction) inside `Config.Map.panel`, then draws axis-aligned connection lines and one box per node:
+
+- **Current room** (`RunState.currentNodeId`): white box with a black center.
+- **Visited rooms** (`node.visited`): solid white box.
+- **In-graph but not yet visited**: faint dithered outline.
+
+Secret rooms and the final room are **hidden until the player visits them** (a visited secret node appears offset from its portal host). `MapDrawer.calculateMapPercent()` returns the percent of the current run visited (visited non-secret nodes / total non-secret nodes).
 
 ---
 

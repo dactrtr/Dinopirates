@@ -1013,41 +1013,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    TKNotes = {
-      {
-        id = "TKNotes",
-        iid = "f9ee3fa0-21a0-11f1-b443-c7cced9c425f",
-        x = 164,
-        y = 108,
-        width = 64,
-        height = 88,
-        customFields = {
-          String = "obstaculos"
-        }
-      },
-      {
-        id = "TKNotes",
-        iid = "14eca620-21a0-11f1-b443-a9f5cdba07f0",
-        x = 268,
-        y = 116,
-        width = 56,
-        height = 64,
-        customFields = {
-          String = "obstaculos"
-        }
-      },
-      {
-        id = "TKNotes",
-        iid = "2151dde0-21a0-11f1-b443-4f5e750d34c6",
-        x = 356,
-        y = 196,
-        width = 40,
-        height = 40,
-        customFields = {
-          String = "Llave"
-        }
-      }
-    },
     Triggers = {
       {
         id = "Triggers",
@@ -1101,22 +1066,6 @@ table.insert(levelsLDTK, {
         }
       }
     },
-    Notes = {
-      {
-        id = "Notes",
-        iid = "18c3f520-48b0-11f1-b67e-f71bda3ced77",
-        x = 356,
-        y = 196,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "notes",
-          grants = "canDance:true",
-          isItem = true,
-          SpawnConditions = {}
-        }
-      }
-    },
     Radio = {
       {
         id = "Radio",
@@ -1128,22 +1077,6 @@ table.insert(levelsLDTK, {
         customFields = {
           type = "radio",
           isItem = true
-        }
-      }
-    },
-    Microwave = {
-      {
-        id = "Microwave",
-        iid = "51a224e0-48b0-11f1-98a2-291ad2ba4d9e",
-        x = 308,
-        y = 204,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "microwave",
-          nocollider = false,
-          destroyed = false,
-          forceSpawn = false
         }
       }
     },
@@ -1751,6 +1684,20 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
+    Lamp = {
+      {
+        id = "Lamp",
+        iid = "480a0640-48b0-11f1-a37f-5720cdebc89d",
+        x = 60,
+        y = 52,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "lamp",
+          isItem = true
+        }
+      }
+    },
     Doors = {
       {
         id = "Doors",
@@ -1910,7 +1857,7 @@ table.insert(levelsLDTK, {
     },
     play = nil,
     procGen = true,
-    roomRole = "Armory",
+    roomRole = "Normal",
     requiredItems = {},
     requiredSkills = {},
     hasForeground = true

@@ -48,6 +48,22 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"Lamp": [
+			{
+				"id": "Lamp",
+				"iid": "480a0640-48b0-11f1-a37f-5720cdebc89d",
+				"layer": "Items_and_Props",
+				"x": 60,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "lamp",
+					"isItem": true
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",

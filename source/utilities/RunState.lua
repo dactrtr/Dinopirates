@@ -100,6 +100,7 @@ function RunState.serialize()
 			cleared    = n.cleared,
 			portals    = n.portals,   -- PortalID -> node id (secret-room links, A<->A)
 			isSecret   = n.isSecret,
+			visited    = n.visited,
 		}
 	end
 	return {
@@ -139,6 +140,7 @@ function RunState.deserialize(data)
 			cleared    = sn.cleared or {},
 			portals    = sn.portals or {},
 			isSecret   = sn.isSecret,
+			visited    = sn.visited,
 		}
 	end
 	graph.startId       = data.startId

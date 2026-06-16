@@ -57,47 +57,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"TKNotes": [
-			{
-				"id": "TKNotes",
-				"iid": "f9ee3fa0-21a0-11f1-b443-c7cced9c425f",
-				"layer": "Notes",
-				"x": 164,
-				"y": 108,
-				"width": 64,
-				"height": 88,
-				"color": 2943221,
-				"customFields": {
-					"String": "obstaculos"
-				}
-			},
-			{
-				"id": "TKNotes",
-				"iid": "14eca620-21a0-11f1-b443-a9f5cdba07f0",
-				"layer": "Notes",
-				"x": 268,
-				"y": 116,
-				"width": 56,
-				"height": 64,
-				"color": 2943221,
-				"customFields": {
-					"String": "obstaculos"
-				}
-			},
-			{
-				"id": "TKNotes",
-				"iid": "2151dde0-21a0-11f1-b443-4f5e750d34c6",
-				"layer": "Notes",
-				"x": 356,
-				"y": 196,
-				"width": 40,
-				"height": 40,
-				"color": 2943221,
-				"customFields": {
-					"String": "Llave"
-				}
-			}
-		],
 		"Triggers": [
 			{
 				"id": "Triggers",
@@ -114,28 +73,6 @@
 					"type": "Cutscene",
 					"mapPercent": 0,
 					"conditionalScripts": [],
-					"SpawnConditions": []
-				}
-			},
-			{
-				"id": "Triggers",
-				"iid": "ac81c810-fa90-11f0-bb17-65c231745807",
-				"layer": "Triggers",
-				"x": 260,
-				"y": 196,
-				"width": 24,
-				"height": 48,
-				"color": 16711748,
-				"customFields": {
-					"script": null,
-					"usedTrigger": false,
-					"type": "Search",
-					"mapPercent": 0,
-					"conditionalScripts": [
-						"crew>2:twoCM",
-						"crew>1:oneCM",
-						"crew>=0:noCM"
-					],
 					"SpawnConditions": []
 				}
 			}
@@ -157,24 +94,6 @@
 				}
 			}
 		],
-		"Notes": [
-			{
-				"id": "Notes",
-				"iid": "18c3f520-48b0-11f1-b67e-f71bda3ced77",
-				"layer": "Items_and_Props",
-				"x": 356,
-				"y": 196,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "notes",
-					"grants": "canDance:true",
-					"isItem": true,
-					"SpawnConditions": []
-				}
-			}
-		],
 		"Radio": [
 			{
 				"id": "Radio",
@@ -188,24 +107,6 @@
 				"customFields": {
 					"type": "radio",
 					"isItem": true
-				}
-			}
-		],
-		"Microwave": [
-			{
-				"id": "Microwave",
-				"iid": "51a224e0-48b0-11f1-98a2-291ad2ba4d9e",
-				"layer": "Items_and_Props",
-				"x": 308,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 16705377,
-				"customFields": {
-					"type": "microwave",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": false
 				}
 			}
 		],

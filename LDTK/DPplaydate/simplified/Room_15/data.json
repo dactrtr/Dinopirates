@@ -33,7 +33,7 @@
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Armory",
+		"roomRole": "Normal",
 		"requiredItems": [],
 		"requiredSkills": []
 	},

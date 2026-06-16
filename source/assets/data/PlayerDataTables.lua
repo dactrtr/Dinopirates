@@ -91,7 +91,8 @@ local DefaultPlayerData = {
 		canDance = false,
 		canFlash = false,
 		canPlungerang = false,
-		canCrossSlime = false,  -- late-run "outgrow" flag: walk over slime without sliding
+		canCrossSlime = false,
+		canGrapple = false, 
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20
