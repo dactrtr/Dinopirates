@@ -27,11 +27,13 @@
 		"tile": 15,
 		"DoorsConnection": [
 			"Top",
-			"Left"
+			"Left",
+			"Down",
+			"Right"
 		],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "Armory",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -72,6 +74,24 @@
 				}
 			}
 		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "19b194c0-48b0-11f1-a37f-59f17b173297",
+				"layer": "Items_and_Props",
+				"x": 196,
+				"y": 124,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": true
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",
@@ -90,16 +110,46 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "13eb8a50-48b0-11f1-98a2-8bd76a8dbe19",
+				"iid": "ebfdc080-48b0-11f1-a37f-87e869c0a45e",
 				"layer": "Doors",
 				"x": 4,
-				"y": 176,
+				"y": 120,
 				"width": 8,
-				"height": 32,
+				"height": 48,
 				"color": 7552569,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "eddc92a0-48b0-11f1-a37f-f5ca81b969af",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "ef365640-48b0-11f1-a37f-db0e5e5b7bf4",
+				"layer": "Doors",
+				"x": 200,
+				"y": 234,
+				"width": 48,
+				"height": 8,
+				"color": 7552569,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
 					"KeyNumber": null
 				}
 			}
