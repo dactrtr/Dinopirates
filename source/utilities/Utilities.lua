@@ -25,7 +25,7 @@ function Utilities.iddqd()
 	PlayerData.items.hasRadio = true
 	PlayerData.items.hasDWatch = true
 	PlayerData.items.hasNotes = true
-	PlayerData.items.hasBoots = true
+	-- PlayerData.items.hasBoots = true
 	PlayerData.items.hasPlunger = true
 	
 	PlayerData.battery = 100
@@ -33,28 +33,28 @@ function Utilities.iddqd()
 	PlayerData.skills.canFlash = true
 	PlayerData.skills.canPlungerang = true
 	
-	PlayerData.CrewMemberData.amountTaken = 21
-	PlayerData.CrewMemberData.idNumbers.CM001 = true
-	PlayerData.CrewMemberData.idNumbers.CM002 = true
-	PlayerData.CrewMemberData.idNumbers.CM003 = true
-	PlayerData.CrewMemberData.idNumbers.CM004 = true
-	PlayerData.CrewMemberData.idNumbers.CM005 = true
-	PlayerData.CrewMemberData.idNumbers.CM006 = true
-	PlayerData.CrewMemberData.idNumbers.CM007 = true
-	PlayerData.CrewMemberData.idNumbers.CM008 = true
-	PlayerData.CrewMemberData.idNumbers.CM009 = true
-	PlayerData.CrewMemberData.idNumbers.CM010 = true
-	PlayerData.CrewMemberData.idNumbers.CM011 = true
-	PlayerData.CrewMemberData.idNumbers.CM012 = true
-	PlayerData.CrewMemberData.idNumbers.CM013 = true
-	PlayerData.CrewMemberData.idNumbers.CM014 = true
-	PlayerData.CrewMemberData.idNumbers.CM015 = true
-	PlayerData.CrewMemberData.idNumbers.CM016 = true
-	PlayerData.CrewMemberData.idNumbers.CM017 = true
-	PlayerData.CrewMemberData.idNumbers.CM018 = true 
-	PlayerData.CrewMemberData.idNumbers.CM019 = true
-	PlayerData.CrewMemberData.idNumbers.CM020 = true
-	PlayerData.CrewMemberData.idNumbers.CM021 = true
+	-- PlayerData.CrewMemberData.amountTaken = 21
+	-- PlayerData.CrewMemberData.idNumbers.CM001 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM002 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM003 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM004 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM005 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM006 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM007 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM008 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM009 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM010 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM011 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM012 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM013 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM014 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM015 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM016 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM017 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM018 = true 
+	-- PlayerData.CrewMemberData.idNumbers.CM019 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM020 = true
+	-- PlayerData.CrewMemberData.idNumbers.CM021 = true
 end
 
 -- MARK: Cheat codes
@@ -134,29 +134,6 @@ function RoomTranslate(roomNumber)
 	local floorClass = "Floor" .. roomNumber
 	return _G[floorClass]
 end
--- Door utilities have been moved to entities/props/door.lua
-
--- ============================================================================
--- LEGACY (removed): vertical navigation by neighbourLevels
--- ----------------------------------------------------------------------------
--- BEFORE: the world was a fixed grid of authored rooms. Falling through a hole
--- or rising through a tube looked up a specific neighbour room:
---   FindNeighborByDirection(room, "<"/">")  -- scanned room.neighbourLevels for dir
---   CanMoveVertically(room, dir)            -- gated on customFields.DoorsConnection
---   GetLowerRoom / GetUpperRoom             -- resolved the neighbour iid → roomNumber
--- Player:fallBelow()/riseAbove() then transitioned to that exact room.
---
--- NOW: vertical movement starts a NEW procedural run instead of going to a fixed
--- neighbour. Player:fallBelow()/riseAbove() (entities/player/state.lua) call
--- RunState.startRun("startdown"/"startup"), which regenerates the whole graph via
--- MapGenerator and enters at a random room whose customFields.roomRole matches
--- "Startdown"/"Startup" (falling back to "Start"→"normal"). neighbourLevels and
--- DoorsConnection are no longer read at runtime.
---
--- LOVE2D PORT: if a port wants classic fixed-floor descent instead of a new run,
--- the old neighbour-lookup logic above is the reference implementation to restore.
--- ============================================================================
-
 --- Gets a room by its number
 -- @param roomNumber number Complete room number (e.g. 220 = level 2, room 20)
 -- @return table|nil Room data or nil

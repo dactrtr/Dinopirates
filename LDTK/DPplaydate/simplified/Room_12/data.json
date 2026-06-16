@@ -1,33 +1,12 @@
 {
 	"identifier": "Room_12",
 	"uniqueIdentifer": "6cc9d510-ac70-11f0-997a-191299f9209c",
-	"x": 0,
-	"y": 0,
+	"x": 64,
+	"y": 464,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "69eb2d80-ac70-11f0-989f-95306126bd74",
-			"dir": "nw"
-		},
-		{
-			"levelIid": "bab17c70-ac70-11f0-997a-85b3d3c5d229",
-			"dir": "n"
-		},
-		{
-			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
-			"dir": "ne"
-		},
-		{
-			"levelIid": "68b425c0-ac70-11f0-997a-7732cd72a5cc",
-			"dir": "w"
-		},
-		{
-			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
-			"dir": "e"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": false,
 		"light": 0,
