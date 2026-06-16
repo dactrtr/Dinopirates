@@ -279,6 +279,22 @@ function MapGenerator.generate(progress, entryRole)
 		node.coord = { col = c, row = r }
 		occupied[cellKey(c, r)] = node.id
 	end
+	-- Nearest free grid cell to (c,r), searched in expanding rings. Used to drop a node
+	-- (e.g. a portal-linked secret room) into the grid next to its host without overlap.
+	local function freeCellNear(c, r)
+		if not occupied[cellKey(c, r)] then return c, r end
+		for radius = 1, 64 do
+			for dc = -radius, radius do
+				for dr = -radius, radius do
+					if math.abs(dc) == radius or math.abs(dr) == radius then
+						local nc, nr = c + dc, r + dr
+						if not occupied[cellKey(nc, nr)] then return nc, nr end
+					end
+				end
+			end
+		end
+		return c, r
+	end
 
 	-- 1) Start node. entryRole picks the entry room kind ("startdown" after a hole,
 	--    "startup" after a tube); defaults to the normal "start".
@@ -445,6 +461,21 @@ function MapGenerator.generate(progress, entryRole)
 						snode.portals  = {}
 						graph[secretId] = snode
 						secretByIdentifier[destIdentifier] = secretId
+						-- Give the secret room a real grid cell next to its host so it lives
+						-- inside the same grid as every other room. Portals aren't cardinal
+						-- edges, so we just claim a free neighbouring cell (cardinal first,
+						-- then the nearest free cell).
+						local hc = host.coord
+						if hc then
+							local sc, sr
+							for _, d in ipairs(DIRS) do
+								local off = DIR_OFFSET[d]
+								local cc, rr = hc.col + off[1], hc.row + off[2]
+								if not occupied[cellKey(cc, rr)] then sc, sr = cc, rr; break end
+							end
+							if not sc then sc, sr = freeCellNear(hc.col, hc.row) end
+							setCoord(snode, sc, sr)
+						end
 					end
 					host.portals[pid] = secretId
 					graph[secretId].portals[pid] = hid

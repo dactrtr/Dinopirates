@@ -4,7 +4,10 @@ import "entities/props/hats"
 import 'utilities/MapDrawer'
 
 local shadow = Graphics.image.new(400,240)
-local menuImage = Graphics.image.new('assets/images/ui/menu/ingame-menu')
+-- Pristine menu art, plus a working buffer we paint the map onto. The buffer is reset to
+-- the pristine art on every open so repeated opens never stack ghost map renders.
+local baseMenuImage = Graphics.image.new('assets/images/ui/menu/ingame-menu')
+local menuImage = baseMenuImage:copy()
 local menuSprite = nil
 
 -- Crew member hat images
@@ -40,7 +43,11 @@ function inGameMenu:displayMenu()
 end
 
 function inGameMenu:drawMapOnMenu()
-    -- Draw the map on the menu image
+    -- Reset the buffer to the pristine menu art first, so the map is always drawn on a
+    -- clean canvas (otherwise each open paints over the previous render → ghost/double boxes).
+    Graphics.pushContext(menuImage)
+        baseMenuImage:draw(0, 0)
+    Graphics.popContext()
     MapDrawer.drawMap(menuImage)
 end
 

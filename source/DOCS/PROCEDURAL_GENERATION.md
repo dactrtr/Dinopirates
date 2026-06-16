@@ -148,7 +148,7 @@ Every run includes at least one **dark** room (`customFields.shadow == true`) an
 
 PortalDoors are tiny-gated entrances to secret rooms, paired **A↔A** by `PortalID` (each room's portal cross-references the other's `DestRoom`, the target room's `identifier`). They are **not** part of side-connectivity.
 
-- During generation, each placed room's `PortalDoors` resolves its destination template (`level*100 + roomNumber`; secret rooms are `procGen=false`) and adds it as an `isSecret` node, linking `host.portals[pid] ↔ secret.portals[pid]`.
+- During generation, each placed room's `PortalDoors` resolves its destination template (by `identifier`; secret rooms are `procGen=false`) and adds it as an `isSecret` node, linking `host.portals[pid] ↔ secret.portals[pid]`. The secret node is also given a grid `coord` in a free cell next to its host, so it lives inside the same grid as the rest of the run (the map draws it as a normal room with a dithered portal link to the host).
 - `CreatePortalsFromNode` (portal_door.lua) instantiates the portals with `targetNodeId = node.portals[pid]`.
 - `PortalDoor:goTo()` → `RunState.goTo(targetNodeId)` + transition, with `returningInPlace` so the player spawns at the portal's authored `SpawnX`/`SpawnY`.
 - Gating stays in the portal's `Conditions` (`canEnter`, e.g. `isTiny:true`); failing shows `BlockedDialog`.

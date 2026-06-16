@@ -149,13 +149,14 @@ Hats are removed in `closeMenu()`.
 
 ## Game Map in the Menu
 
-On opening, `inGameMenu:drawMapOnMenu()` calls `MapDrawer.drawMap(menuImage)` to draw the **current procedural run graph** directly onto the menu image — not a fixed floor grid.
+On opening, `inGameMenu:drawMapOnMenu()` first resets the working buffer to the pristine menu art (`baseMenuImage:draw(0,0)`) — so repeated opens never stack ghost renders — then calls `MapDrawer.drawMap(menuImage)` to draw the **current procedural run graph** directly onto it — not a fixed floor grid.
 
-`MapDrawer` reads the grid cell `MapGenerator` assigned to each node (`node.coord = {col,row}`). The generator builds the run on a 2D grid, so every edge already connects physically adjacent cells (no overlaps, no teleport-looking links) — the map just plots those coordinates. A few nodes added after generation have no coord — visited secret rooms (portal-linked) and the revealed final room — and are placed next to a neighbour, nudged to the nearest free cell.
+`MapDrawer` reads the grid cell `MapGenerator` assigned to each node (`node.coord = {col,row}`). The generator builds the run on a 2D grid, so every edge already connects physically adjacent cells (no overlaps, no teleport-looking links) — the map just plots those coordinates. Secret rooms also get a real grid cell next to their host (assigned by the generator), so they live inside the same grid as every other room. The only coord-less node is the revealed final room, which is placed next to a placed neighbour via its edge, nudged to the nearest free cell.
 
 It then draws, inside `Config.Map.panel`:
 
 - **Connection lines** between adjacent rooms (solid when both ends are visited, otherwise dithered).
+- **Portal links**: a dithered line from a visited secret room to its host (portals are not cardinal edges, so this is drawn separately).
 - **Current room** (`RunState.currentNodeId`): `roomColor` box with a contrasting `markerColor` center.
 - **Visited rooms** (`node.visited`): solid `roomColor` box.
 - **In-graph but not yet visited**: dithered `roomColor` box.

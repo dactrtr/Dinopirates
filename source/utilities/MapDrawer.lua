@@ -20,11 +20,14 @@ local DIR_OFFSET = {
 	down  = {  0,  1 },
 }
 
--- Build a grid layout from the graph. Returns: cells (nodeId -> {col,row}), maxCol, maxRow.
+-- Build a grid layout from the graph. Returns: cells (nodeId -> {col,row}), maxCol, maxRow,
+-- and portalLinks (list of { secret = id, host = id }) so the map can draw the portal
+-- connection a secret room has to its host (portals are not part of node.edges).
 -- Cells are normalized so min col/row = 0.
 local function buildLayout(g)
-	local cells    = {}
-	local occupied = {}
+	local cells       = {}
+	local occupied    = {}
+	local portalLinks = {}
 	local function key(c, r) return c .. "," .. r end
 
 	-- Nearest free cell to (c,r), searched in expanding rings (only used for coord-less nodes).
@@ -48,16 +51,25 @@ local function buildLayout(g)
 		occupied[key(c, r)] = id
 	end
 
-	-- Phase 1: main connectivity rooms by their generated grid coordinate.
+	-- A secret room is only shown once visited; every other node is always shown.
+	local function placeable(node)
+		if not node then return false end
+		if node.isSecret then return node.visited == true end
+		return true
+	end
+
+	-- Phase 1: every node with a generated grid coordinate (MapGenerator assigns one to
+	-- main rooms AND to secret rooms — a free cell next to their host). Coords are unique
+	-- per run, so no nudging is needed.
 	for id = 1, #g do
 		local node = g[id]
-		if node and not node.isSecret and node.coord then
+		if node and node.coord and placeable(node) then
 			place(id, node.coord.col, node.coord.row)
 		end
 	end
 
-	-- Phase 2: non-secret nodes without a coord (e.g. the revealed final room) — placed next
-	-- to a placed neighbour via the connecting edge, nudged to the nearest free cell.
+	-- Phase 2: nodes without a coord (e.g. the revealed final room) — placed next to a
+	-- placed neighbour via the connecting edge, nudged to the nearest free cell.
 	local changed = true
 	while changed do
 		changed = false
@@ -81,19 +93,31 @@ local function buildLayout(g)
 		end
 	end
 
-	-- Phase 3: visited secret rooms anchored next to their portal host.
+	-- Phase 3 (fallback): a visited secret room with no coord (shouldn't normally happen)
+	-- is anchored next to its portal host.
 	local secretOffset = Config.Map.secretOffset
 	for id = 1, #g do
 		local node = g[id]
-		if node and node.isSecret and node.visited and not cells[id] then
+		if node and node.isSecret and node.visited and not cells[id] and node.portals then
 			local hostId
-			if node.portals then
-				for _, h in pairs(node.portals) do hostId = h; break end
-			end
+			for _, h in pairs(node.portals) do hostId = h; break end
 			local hc = hostId and cells[hostId]
 			if hc then
 				local c, r = freeCellNear(hc[1] + secretOffset.col, hc[2] + secretOffset.row)
 				place(id, c, r)
+			end
+		end
+	end
+
+	-- Portal links: connect each placed visited secret room to its (placed) portal host,
+	-- so the portal relationship is drawn even though it is not a cardinal edge.
+	for id = 1, #g do
+		local node = g[id]
+		if node and node.isSecret and node.visited and cells[id] and node.portals then
+			local hostId
+			for _, h in pairs(node.portals) do hostId = h; break end
+			if hostId and cells[hostId] then
+				portalLinks[#portalLinks + 1] = { secret = id, host = hostId }
 			end
 		end
 	end
@@ -113,7 +137,7 @@ local function buildLayout(g)
 		if cell[1] > maxCol then maxCol = cell[1] end
 		if cell[2] > maxRow then maxRow = cell[2] end
 	end
-	return cells, maxCol, maxRow
+	return cells, maxCol, maxRow, portalLinks
 end
 
 -- Draw the current run graph onto the provided image context.
@@ -123,7 +147,7 @@ function MapDrawer.drawMap(targetImage)
 	if not g then return end
 
 	local panel = Config.Map.panel
-	local cells, maxCol, maxRow = buildLayout(g)
+	local cells, maxCol, maxRow, portalLinks = buildLayout(g)
 
 	-- Cell size fits the grid inside the panel, capped at maxCellSize.
 	local colsCount = maxCol + 1
@@ -176,6 +200,19 @@ function MapDrawer.drawMap(targetImage)
 					Graphics.setColor(roomColor)  -- reset any dither to solid
 				end
 			end
+		end
+	end
+	-- Portal links (secret room -> its host): always dithered, so a portal reads as a
+	-- linked secret room rather than a duplicate box floating next to the predecessor.
+	for _, link in ipairs(portalLinks) do
+		local sc, hc = cells[link.secret], cells[link.host]
+		if sc and hc then
+			Graphics.setColor(roomColor)
+			Graphics.setDitherPattern(Config.Map.ditherAlpha, Graphics.image.kDitherTypeBayer8x8)
+			local x1, y1 = cellCenter(sc)
+			local x2, y2 = cellCenter(hc)
+			Graphics.drawLine(x1, y1, x2, y2)
+			Graphics.setColor(roomColor)
 		end
 	end
 	Graphics.popContext()
