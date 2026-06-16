@@ -467,6 +467,16 @@ function scene:start()
 	else
 		PlayerData.isGaming = true
 	end
+
+	-- If the door-spawn placed the player on a hole, fall now. This runs post-transition
+	-- (start, not enter) so fallBelow's own scene transition isn't swallowed mid-transition,
+	-- which would otherwise leave isFalling stuck true and silently block the fall. isFalling
+	-- is cleared first in case the per-frame check already tripped during the entry transition.
+	if PlayerData.isGaming == true and not player.isSleeping then
+		player.isFalling = false
+		player:checkHoleTile()
+		player:checkTinyHoleTile()
+	end
 end
 
 -- This runs once per frame.

@@ -251,6 +251,12 @@ function scene:enter()
 				PlayerData.runCount = 1  -- first run of a brand-new game
 				PlayerData.fromTitle = true
 				RunState.startRun()
+				-- Brand-new game spawns at a fixed position. returningInPlace makes
+				-- MazeScene keep this playerSpawn instead of overriding it with the start
+				-- room's door-spawn.
+				PlayerData.playerSpawn.x = 200
+				PlayerData.playerSpawn.y = 200
+				PlayerData.returningInPlace = true
 				Noble.transition(MazeScene, 1, Noble.Transition.Spotlight, {
 					x = 200, y = 120,
 					xExit = PlayerData.playerSpawn.x,

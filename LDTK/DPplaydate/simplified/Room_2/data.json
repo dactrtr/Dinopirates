@@ -28,7 +28,7 @@
 			"dir": "s"
 		},
 		{
-			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
+			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
 			"dir": "se"
 		}
 	],
@@ -150,24 +150,6 @@
 					],
 					"SpawnConditions": []
 				}
-			},
-			{
-				"id": "Triggers",
-				"iid": "20aea340-48b0-11f1-b67e-6354679cdabc",
-				"layer": "Triggers",
-				"x": 60,
-				"y": 84,
-				"width": 40,
-				"height": 40,
-				"color": 16711748,
-				"customFields": {
-					"script": "justBoxes",
-					"usedTrigger": false,
-					"type": "Story",
-					"mapPercent": 0,
-					"conditionalScripts": [],
-					"SpawnConditions": []
-				}
 			}
 		],
 		"ItemGift": [
@@ -190,53 +172,6 @@
 				}
 			}
 		],
-		"Box": [
-			{
-				"id": "Box",
-				"iid": "0ee36e70-48b0-11f1-b67e-0304cf2370db",
-				"layer": "Items_and_Props",
-				"x": 84,
-				"y": 60,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "box",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Box",
-				"iid": "101a67d0-48b0-11f1-b67e-cb9384f6940e",
-				"layer": "Items_and_Props",
-				"x": 28,
-				"y": 100,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "box",
-					"nocollider": false,
-					"destroyed": false
-				}
-			},
-			{
-				"id": "Box",
-				"iid": "1162c650-48b0-11f1-b67e-f70975554232",
-				"layer": "Items_and_Props",
-				"x": 60,
-				"y": 84,
-				"width": 32,
-				"height": 32,
-				"color": 12470831,
-				"customFields": {
-					"type": "box",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
 		"Minifier": [
 			{
 				"id": "Minifier",
@@ -252,6 +187,23 @@
 					"nocollider": false,
 					"destroyed": false,
 					"forceSpawn": false
+				}
+			}
+		],
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "f2aa63d0-48b0-11f1-a37f-c922cea0b4bc",
+				"layer": "Items_and_Props",
+				"x": 92,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		],
