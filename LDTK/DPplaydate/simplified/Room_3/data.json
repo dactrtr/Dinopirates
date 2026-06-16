@@ -204,7 +204,7 @@
 				"y": 120,
 				"width": 8,
 				"height": 48,
-				"color": 7552569,
+				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Left",
@@ -219,7 +219,7 @@
 				"y": 236,
 				"width": 48,
 				"height": 8,
-				"color": 7552569,
+				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Down",
@@ -234,7 +234,7 @@
 				"y": 236,
 				"width": 16,
 				"height": 8,
-				"color": 7552569,
+				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Down",
@@ -249,7 +249,7 @@
 				"y": 236,
 				"width": 16,
 				"height": 8,
-				"color": 7552569,
+				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Down",
@@ -264,7 +264,7 @@
 				"y": 216,
 				"width": 8,
 				"height": 16,
-				"color": 7552569,
+				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Left",

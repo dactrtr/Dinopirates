@@ -108,7 +108,7 @@
 				"y": 236,
 				"width": 32,
 				"height": 8,
-				"color": 7552569,
+				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Down",
@@ -123,7 +123,7 @@
 				"y": 120,
 				"width": 8,
 				"height": 48,
-				"color": 7552569,
+				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Right",
