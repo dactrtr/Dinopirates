@@ -168,10 +168,19 @@ end
 
 ## New Game Flow
 
+The game is procedural: a brand-new game generates a fresh run graph rather than
+loading a fixed start room. The single reused `MazeScene` enters whatever node
+`RunState` made current.
+
 ```
-SaveSystem.reset()          -- resets PlayerData and levelsLDTK entity states
+SaveSystem.reset()          -- resets PlayerData + levelsLDTK, RunState.clear()
+PlayerData.runCount = 1     -- first run of a brand-new game
 PlayerData.fromTitle = true
-Noble.transition(Floor407, 1, Noble.Transition.Spotlight, {
+RunState.startRun()         -- builds the run graph, picks the Start node as current
+PlayerData.playerSpawn.x = 200   -- fixed spawn for the start room
+PlayerData.playerSpawn.y = 200
+PlayerData.returningInPlace = true   -- keep this spawn; don't override with a door-spawn
+Noble.transition(MazeScene, 1, Noble.Transition.Spotlight, {
     x      = 200,                      -- spotlight center (screen)
     y      = 120,
     xExit  = PlayerData.playerSpawn.x, -- spotlight exit point
@@ -181,29 +190,47 @@ Noble.transition(Floor407, 1, Noble.Transition.Spotlight, {
 })
 ```
 
-The starting room is `Floor407` (level 4, room 07). `SaveSystem.reset()` restores `levelsLDTK` from the original backup and resets `PlayerData` to its initial values.
+`RunState.startRun()` generates the graph (via `MapGenerator`) and sets the current
+node to a `Start` room. `returningInPlace = true` tells `MazeScene` to honor the fixed
+`playerSpawn` (200, 200) instead of snapping the player to a door. See
+[PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md).
+
+> The dead `Floors.lua` / `RoomTranslate` path (fixed `FloorXXX` scenes) is only used by
+> the **debug menu** (GAME→`Floor407`, PLAYGROUND→`Floor409`); production New Game no
+> longer touches it.
 
 ---
 
 ## Continue Flow
 
+Continue restores the saved procedural run (`version 3.0-PROCGEN`) and resumes inside
+the saved node at the saved player position.
+
 ```
-SaveSystem.load()
-  └─ returns (success, savedLevel)   -- savedLevel is an integer RoomID (e.g. 407)
-RoomTranslate(savedLevel)
-  └─ returns FloorXXX class
-Noble.transition(nextScene, 1, Noble.Transition.Spotlight, {
-    x      = 200,
-    y      = 120,
-    xExit  = PlayerData.playerSpawn.x,
-    yExit  = PlayerData.playerSpawn.y,
-    holdTime = 0.25,
-    ease   = Ease.outInQuad
-})
+if SaveSystem.load() and RunState.graph then   -- load restores PlayerData + RunState
+    PlayerData.fromTitle        = true
+    PlayerData.returningInPlace = true          -- resume at the exact saved x/y
+    Noble.transition(MazeScene, 1, Noble.Transition.Spotlight, {
+        x      = 200,
+        y      = 120,
+        xExit  = PlayerData.playerSpawn.x,       -- saved player position
+        yExit  = PlayerData.playerSpawn.y,
+        holdTime = 0.25,
+        ease   = Ease.outInQuad
+    })
+else
+    -- load failed (e.g. a stale 2.0-LDTK save) → no-op, stay on the title
+end
 ```
 
-If `RoomTranslate` returns nil (room ID not found), it falls back to `Floor120`.
-`SaveSystem.load()` applies saved entity states onto a fresh `levelsLDTK` table and returns the `saveLevel` stored in `PlayerData`.
+`SaveSystem.load()` deserializes `PlayerData` plus the active run graph
+(`RunState.deserialize`) and returns `false` for any save that isn't `3.0-PROCGEN`.
+`returningInPlace` keeps `MazeScene` from overriding `playerSpawn`, so the player lands
+exactly where they saved (the position `MazeScene:pause()` captured before saving).
+
+> **Stale-save caveat:** `hasSave` is just `file.exists('gameState.json')`, so the
+> Continue button can appear for an old `2.0-LDTK` save, but pressing it does nothing
+> (load returns `false`). Migrating players must use **Delete** once.
 
 ---
 
@@ -234,7 +261,12 @@ Created in `init()` with `Noble.Menu.new(true, Noble.Text.ALIGN_RIGHT, false, ni
 | Item | Default selection | Action |
 |---|---|---|
 | **Exit** | yes (selected by default) | `Noble.transition(TitleScene)` |
-| **Retry** | no | `Noble.transition(RoomTranslate(PlayerData.saveLevel))` |
+| **Retry** | no | `RunState.startRun()` + `Noble.transition(MazeScene)` |
+
+Retry **regenerates a fresh procedural run** (it does not reload the room you died in);
+player meta (items, skills, crew, sanity counter, runCount) persists across the new run.
+`runCount` is bumped on death, so difficulty/spawn gating scales. The death message
+shown by `DeadScene` depends on `PlayerData.deathCause` (`"hp"` / `"sanity"` / `"void"`).
 
 The menu is drawn right-aligned at `(400, 60)`. The default selection is "Exit" — the player must deliberately move to retry.
 

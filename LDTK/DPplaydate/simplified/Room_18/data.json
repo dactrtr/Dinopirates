@@ -1,0 +1,97 @@
+{
+	"identifier": "Room_18",
+	"uniqueIdentifer": "723b72d0-6fc0-11f1-b67a-9309958fabf9",
+	"x": 800,
+	"y": 480,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "326d5080-48b0-11f1-a37f-1b74e05a8681",
+			"dir": "nw"
+		},
+		{
+			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
+			"dir": "w"
+		},
+		{
+			"levelIid": "831283a0-6fc0-11f1-b67a-cf68be7f737f",
+			"dir": "n"
+		}
+	],
+	"customFields": {
+		"shadow": true,
+		"light": 0.1,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 18,
+		"tile": 18,
+		"DoorsConnection": [
+			"Top",
+			"Left"
+		],
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal",
+		"requiredItems": [],
+		"requiredSkills": []
+	},
+	"layers": [
+		"Gameplay.png",
+		"Foreground.png"
+	],
+	"entities": {
+		"TubeExit": [
+			{
+				"id": "TubeExit",
+				"iid": "723b72d6-6fc0-11f1-b67a-bdce39825a5f",
+				"layer": "Items_and_Props",
+				"x": 364,
+				"y": 28,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "TubeExit",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "723b72d8-6fc0-11f1-b67a-874363e9f815",
+				"layer": "Doors",
+				"x": 4,
+				"y": 176,
+				"width": 8,
+				"height": 32,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": 1
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "723b72d9-6fc0-11f1-b67a-2b8b5df21eb5",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
+}

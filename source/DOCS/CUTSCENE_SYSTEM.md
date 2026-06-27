@@ -92,21 +92,27 @@ On the room's custom fields in LDtk:
 
 | Field | Type | Value | Meaning |
 |---|---|---|---|
-| `comic_name` | String | `"intro"` | Key into the `comics` table |
-| `play` | String | `"Enter"` | When to play (`"Enter"` = on room entry) |
-| `comic_wasPlayed` | Boolean | `false` | Tracks if already played (saved to disk) |
+| `comic_name` | String | `"intro"` | Key into the `comics` table AND the persistence key in `PlayerData.seenComics` |
+| `play` | String | `"Enter"` | When to play (`"Enter"` = on room entry, blocks input) |
+
+> **One-shot tracking is NOT a per-room LDtk field anymore.** Under the procedural
+> system rooms are reused templates and `levelsLDTK` reloads clean each run, so a
+> per-room `comic_wasPlayed` flag could not persist. Comics now play **once ever**,
+> tracked by name in `PlayerData.seenComics[comic_name]` (persisted across runs by the
+> save, wiped on Delete). The old `comic_wasPlayed` customField is gone.
 
 ### Code path (in `MazeScene:enter()`)
 
 ```lua
--- MazeScene.lua (step 11 of enter sequence)
+-- MazeScene.lua (room-enter FX/cutscene block)
+PlayerData.seenComics = PlayerData.seenComics or {}
 local cf = levelsLDTK[room].customFields
 
 if cf.comic_name then
-    local comicData = comics[cf.comic_name]     -- look up Panels sequence
-    if comicData then
-        if cf.play == "Enter" and cf.comic_wasPlayed == false then
-            PlayerData.isCutscene = true         -- block game input
+    local comicData = comics[cf.comic_name]                       -- look up Panels sequence
+    if comicData and not PlayerData.seenComics[cf.comic_name] then -- nil seq or already seen → skip
+        if cf.play == "Enter" then
+            PlayerData.isCutscene = true     -- block game input
             PlayerData.isGaming = false
         end
 
@@ -114,12 +120,16 @@ if cf.comic_name then
             -- This callback runs when the player finishes the cutscene
             PlayerData.isGaming = true
             PlayerData.isCutscene = false
-            levelsLDTK[room].customFields.comic_wasPlayed = true  -- mark as seen
+            PlayerData.seenComics[cf.comic_name] = true   -- mark as seen, forever
             Utilities.checkStoryAchievement(cf.comic_name)
         end)
     end
 end
 ```
+
+The "already seen" gate is the **outer** condition (`not PlayerData.seenComics[...]`),
+so a comic that has played once is skipped on every future visit, in this run or any
+later run.
 
 ### Update loop integration (`MazeScene:update()`)
 
@@ -144,11 +154,13 @@ The game ensures this by checking `PlayerData.isCutscene` in `MazeScene:update()
 
 When the cutscene completes, the callback sets:
 ```lua
-levelsLDTK[room].customFields.comic_wasPlayed = true
+PlayerData.seenComics[cf.comic_name] = true
 ```
-`SaveSystem.save()` (called on `MazeScene:finish()` and `MazeScene:pause()`) then
-serializes `comic_wasPlayed` into the save file. On next load, `SaveSystem.load()`
-restores it — so `comic_wasPlayed == true` and the cutscene is skipped.
+`PlayerData.seenComics` is part of `PlayerData`, which `SaveSystem.save()` serializes
+whole (version `3.0-PROCGEN`). On next boot `SaveSystem.load()` restores `PlayerData`
+(including `seenComics`), so the comic stays skipped across runs. It is cleared only by
+`SaveSystem.delete()` / `reset()` (a brand-new game). See
+[SAVE_SYSTEM.md](SAVE_SYSTEM.md).
 
 ### Flow diagram
 
@@ -156,8 +168,8 @@ restores it — so `comic_wasPlayed == true` and the cutscene is skipped.
 MazeScene:enter()
   ├─ Read customFields.comic_name
   ├─ Lookup comics[comic_name]           → nil? skip
-  ├─ comic_wasPlayed == false?           → true? skip (already seen)
-  ├─ Set isCutscene=true, isGaming=false
+  ├─ seenComics[comic_name] set?         → yes? skip (already seen, ever)
+  ├─ play == "Enter"? → isCutscene=true, isGaming=false (block input)
   └─ Panels.startCutscene(data, callback)
 
 MazeScene:update() [every frame]
@@ -172,7 +184,7 @@ MazeScene:update() [every frame]
 Panels completion callback:
   ├─ isGaming = true
   ├─ isCutscene = false
-  ├─ levelsLDTK[room].customFields.comic_wasPlayed = true
+  ├─ PlayerData.seenComics[comic_name] = true
   └─ Utilities.checkStoryAchievement(comic_name)
 ```
 
@@ -374,8 +386,10 @@ return CutscenePlayer
 Panels resolves image paths relative to `Panels.Settings.path` (set to `""` in `main.lua`).
 In Love2D, prefix all image paths with your asset root (e.g. `"assets/images/"`).
 
-### `comic_wasPlayed` persistence
+### `seenComics` persistence
 
-The field is saved and loaded by `SaveSystem`. In Love2D, ensure your save serializer
-includes `levelsLDTK[i].customFields.comic_wasPlayed` for every room — the existing
-`SaveSystem.getLevelState()` already handles this for the Playdate version.
+One-shot tracking lives in `PlayerData.seenComics` (a `{ [comic_name] = true }` set),
+not in per-room data. In Love2D, serialize `PlayerData` whole — `seenComics` rides
+along automatically. (The old per-room `comic_wasPlayed` field and the
+`SaveSystem.getLevelState()` helper were both removed when the game went procedural;
+don't port them.)

@@ -8,6 +8,10 @@
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
+			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+			"dir": "w"
+		},
+		{
 			"levelIid": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
 			"dir": "nw"
 		},
@@ -16,8 +20,24 @@
 			"dir": "n"
 		},
 		{
-			"levelIid": "68b425c0-ac70-11f0-997a-7732cd72a5cc",
+			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
+			"dir": "s"
+		},
+		{
+			"levelIid": "831283a0-6fc0-11f1-b67a-cf68be7f737f",
 			"dir": "e"
+		},
+		{
+			"levelIid": "f1f1b160-6fc0-11f1-b67a-957580c04f65",
+			"dir": "ne"
+		},
+		{
+			"levelIid": "723b72d0-6fc0-11f1-b67a-9309958fabf9",
+			"dir": "se"
+		},
+		{
+			"levelIid": "708f7320-ac70-11f0-998c-737ddc0c343a",
+			"dir": "sw"
 		}
 	],
 	"customFields": {
@@ -45,6 +65,23 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "e0f17d40-6fc0-11f1-b67a-c351f173c3d3",
+				"layer": "CM_and_enemies",
+				"x": 68,
+				"y": 100,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
 		"Plunger": [
 			{
 				"id": "Plunger",

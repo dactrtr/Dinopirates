@@ -161,4 +161,5 @@ Detailed system documentation lives in `source/DOCS/`:
 - `CREDITS_SCENE.md` — CreditsScene scrolling system, item types, input
 - `COCKPIT_SCENE.md` — CockpitScene: accelerometer pointer, button layout, sequence matching, fail system
 - `SPACE_SCENE.md` — SpaceScene: ship modes, meteorites, danger bar, accelerometer controls
+- `ACHIEVEMENTS.md` — PlaydateSquad achievements lib: definitions, grant wrappers (story/sanity), toasts, viewer, crossgame, Delete-clears
 - `DOORS_AND_KEYS.md`, `TRIGGER_SYSTEM.md`, `PROPS_AND_ITEMS.md`, `DIALOG_SYSTEM.md`, `HUD_SYSTEM.md`, `TILE_LOADING.md`, `CREWMEMBER_AND_COLLISIONS.md`

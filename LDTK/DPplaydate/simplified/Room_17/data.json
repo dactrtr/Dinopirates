@@ -1,0 +1,122 @@
+{
+	"identifier": "Room_17",
+	"uniqueIdentifer": "78785770-6fc0-11f1-b67a-cf9ecaa9adb5",
+	"x": -400,
+	"y": 0,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "69eb2d80-ac70-11f0-989f-95306126bd74",
+			"dir": "n"
+		},
+		{
+			"levelIid": "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+			"dir": "ne"
+		},
+		{
+			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+			"dir": "se"
+		},
+		{
+			"levelIid": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
+			"dir": "w"
+		},
+		{
+			"levelIid": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
+			"dir": "e"
+		},
+		{
+			"levelIid": "dab87dc0-ac70-11f0-997a-63497867517d",
+			"dir": "s"
+		}
+	],
+	"customFields": {
+		"shadow": false,
+		"light": 0,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 17,
+		"tile": 17,
+		"DoorsConnection": [
+			"Left",
+			"Down"
+		],
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal",
+		"requiredItems": [],
+		"requiredSkills": []
+	},
+	"layers": [
+		"Gameplay.png",
+		"Foreground.png"
+	],
+	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "78785777-6fc0-11f1-b67a-79514b1aa5d6",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "78785778-6fc0-11f1-b67a-6d0c150ad9d3",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "bca53840-6fc0-11f1-b96e-6d60e73b14e1",
+				"layer": "Doors",
+				"x": 336,
+				"y": 236,
+				"width": 32,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "d3b5e9d0-6fc0-11f1-b96e-cb34d890b6e2",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
+}

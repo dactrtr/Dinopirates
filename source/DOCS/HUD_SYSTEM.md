@@ -57,7 +57,8 @@ The full HUD (background, battery, health) is only visible when `PlayerData.item
 
 ### Animation States — Sanity
 
-The HUD background image changes based on `PlayerData.sanity`:
+The HUD background image changes based on `PlayerData.sanity`. Thresholds come from
+`Config.Sanity.hudPortrait` (`s100=80, s80=60, s60=40, s40=20, s20=0`):
 
 | Animation State | Frames | Condition |
 |---|---|---|
@@ -66,9 +67,22 @@ The HUD background image changes based on `PlayerData.sanity`:
 | `sanity60` | 5–6 | `sanity > 40` |
 | `sanity40` | 7–9 | `sanity > 20` |
 | `sanity20` | 10–11 | `sanity > 0` |
-| `sanity0` | 12–13 | `sanity == 0` |
+| `sanity0` | 12–13 | else (`sanity <= 0`) |
+| `flash` | 14–15 | dark-charge overcharge reached (see below) — overrides the sanity state |
 
 Frame duration: 12.
+
+### Dark-charge feedback (flash + jitter)
+
+When the player charges the battery **in the dark** (the "dark reveal" overcharge — see
+[PLAYER_SYSTEMS.md](PLAYER_SYSTEMS.md) / [INPUT_SYSTEM.md](INPUT_SYSTEM.md)), the HUD
+reacts to `player.isDarkCharging` and the accumulated crank rotation
+(`player.darkCrankAccum`, threshold `Config.DarkReveal.crankThreshold = 720°`):
+
+- **While cranking below the threshold:** the HUD container, battery and health all
+  **jitter** by a random `±2 px` each frame (visual "straining" feedback).
+- **Once the threshold is reached:** the portrait switches to the **`flash`** state
+  (frames 14–15), overriding the normal sanity portrait until dark-charging ends.
 
 ### `PlayerData` Fields Read
 
@@ -160,12 +174,15 @@ This sprite is **independent** of `playerHud`. It is not instantiated inside `pl
 
 ### Animation States
 
+Thresholds come from `Config.Sanity.hudFace` (`insane=30, mediocre=50, normal=80,
+good=100`); the update checks `sanity < threshold` from lowest to highest:
+
 | State | Frames | Condition |
 |---|---|---|
-| `good` | 1–2 | `sanity >= 80` |
-| `normal` | 3–4 | `sanity >= 50` |
-| `mediocre` | 5–6 | `sanity >= 30` |
 | `insane` | 7–8 | `sanity < 30` |
+| `mediocre` | 5–6 | `30 <= sanity < 50` |
+| `normal` | 3–4 | `50 <= sanity < 80` |
+| `good` | 1–2 | `80 <= sanity < 100` |
 
 Frame duration: 12.
 

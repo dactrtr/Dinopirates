@@ -1,19 +1,27 @@
 {
 	"identifier": "Room_5",
 	"uniqueIdentifer": "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
-	"x": 1200,
+	"x": 800,
 	"y": -240,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
 			"dir": "w"
 		},
 		{
-			"levelIid": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
-			"dir": "e"
+			"levelIid": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+			"dir": "nw"
+		},
+		{
+			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "f1f1b160-6fc0-11f1-b67a-957580c04f65",
+			"dir": "s"
 		}
 	],
 	"customFields": {
@@ -47,7 +55,7 @@
 				"layer": "Doors",
 				"x": 200,
 				"y": 236,
-				"width": 16,
+				"width": 48,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
@@ -63,7 +71,7 @@
 				"x": 4,
 				"y": 120,
 				"width": 8,
-				"height": 16,
+				"height": 48,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,

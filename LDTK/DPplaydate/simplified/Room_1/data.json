@@ -16,6 +16,14 @@
 			"dir": "ne"
 		},
 		{
+			"levelIid": "78785770-6fc0-11f1-b67a-cf9ecaa9adb5",
+			"dir": "s"
+		},
+		{
+			"levelIid": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
+			"dir": "sw"
+		},
+		{
 			"levelIid": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
 			"dir": "se"
 		}
@@ -42,5 +50,23 @@
 		"Gameplay.png",
 		"Foreground.png"
 	],
-	"entities" : {}
+	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "e415f5e0-6fc0-11f1-b96e-e7f4eec831c8",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
 }

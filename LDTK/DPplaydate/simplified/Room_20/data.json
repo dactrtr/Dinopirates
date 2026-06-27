@@ -1,0 +1,99 @@
+{
+	"identifier": "Room_20",
+	"uniqueIdentifer": "bd739520-6fc0-11f1-b67a-b3124c589208",
+	"x": 1280,
+	"y": -640,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [],
+	"customFields": {
+		"shadow": true,
+		"light": 0.1,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 20,
+		"tile": 20,
+		"DoorsConnection": [
+			"Top",
+			"Right",
+			"Left",
+			"Down"
+		],
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal",
+		"requiredItems": [],
+		"requiredSkills": []
+	},
+	"layers": [
+		"Gameplay.png",
+		"Foreground.png"
+	],
+	"entities": {
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "bd739527-6fc0-11f1-b67a-d13bea61f4ab",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": 1
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "bd739528-6fc0-11f1-b67a-d1836793325f",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "cdbfa400-6fc0-11f1-b67a-1908dbacfbfb",
+				"layer": "Doors",
+				"x": 200,
+				"y": 234,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "d95508a0-6fc0-11f1-b67a-fbe217718057",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
+}

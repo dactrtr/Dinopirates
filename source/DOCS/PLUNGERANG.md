@@ -7,7 +7,13 @@ The player's boomerang projectile system. It is split across two files: skill ac
 ## Entry Point — `Player:plunge()` (`entities/player/plunge.lua`)
 
 The skill is activated when the player presses B in a lit room (in darkness, B fires
-the lamp instead — see `entities/player/abilities.lua`).
+the lamp instead — see `entities/player/abilities.lua`: `useAbility()` routes to
+`usePlungeAbility()` → `plunge()` when `not isInDarkness`, else `useLampAbility()`).
+
+> **Related:** holding/charging B in a lit room over a grapple point is a separate
+> charged variant — see [GRAPPLING_HOOK.md](GRAPPLING_HOOK.md). The dark-charge
+> (overcharge) reveal is the darkness counterpart — see
+> [PLAYER_SYSTEMS.md](PLAYER_SYSTEMS.md). This doc covers the plain boomerang throw.
 
 ### Validations in Order
 
@@ -26,8 +32,18 @@ If all validations pass:
 ```lua
 self.isPlunging = true
 self.projectile = Projectile(self, direction)
-self:idle()    -- locks player movement by setting idle state
+self:distributeMovementTokens(Config.Player.movementTokensPerAction)  -- advance "time"
+
+-- Hold the shoot pose while the boomerang is out. Only left/right have shoot art, so a
+-- vertical throw uses the right pose. The pose persists (whether or not a direction is
+-- held) until the boomerang is caught.
+self.shootDir = (direction == 'left') and 'left' or 'right'
+self.animation:setState(self.shootDir == 'left' and 'shootLeft' or 'shootRight')
 ```
+
+Throwing is an **action**, so it distributes movement tokens to enemies/crew (the
+turn-based "time moves when you act" rule). Note the launch no longer forces `idle()` —
+the player keeps the shoot pose and can still walk; `idle()` happens on catch.
 
 ### `Player:onProjectileCaught()`
 
@@ -35,6 +51,7 @@ Called by the projectile when it returns to the player:
 ```lua
 self.isPlunging = false
 self.projectile = nil
+self:idle()    -- drop the shoot pose now that the boomerang is back in hand
 ```
 
 ---
@@ -153,8 +170,11 @@ Returns `'overlap'` for all targets — the projectile is not physically pushed;
 
 While `player.isPlunging == true`:
 - `Player:plunge()` cannot launch another projectile (guarded by `isPlunging`).
-- `player:idle()` is called on launch — the animation stays in idle state.
-- D-pad movement input remains active at the input level, but the animation stays idle until `player:onProjectileCaught()` is called.
+- On launch the animation is set to `shootLeft` / `shootRight` (via `self.shootDir`) and
+  **holds that pose** for the whole flight — the player can still move around.
+- `player:idle()` is called by `onProjectileCaught()` when the boomerang returns, which
+  drops the shoot pose. (Earlier versions snapped to idle on launch; that is no longer
+  the case.)
 
 **Permanent projectile loss:** If the projectile hits a `CrewMember`, `player.hasProjectile` is set to `false`. The player cannot throw again until the item is recovered in the world.
 

@@ -100,19 +100,28 @@ The tick fires every 2 seconds while the player exists in the scene.
 
 ### Tick logic
 
-On each tick, in order:
+On each tick, in order (only matters in the dark — `isInDarkness == true`):
 
-1. **Sanity loss** (only if `isInDarkness == true`):
-   - `battery < batteryThresholdLow (20)` → `sanity -= lossLowBattery (2) * self.sanityLoss`
-   - `battery < batteryThresholdMid (40)` → `sanity -= lossMidBattery (1) * self.sanityLoss`
-   - (Conditions are mutually exclusive: the more severe is evaluated first)
+1. **Sanity loss** — depends on whether the player even has a lamp:
+   - **No lamp at all** (`not hasLamp`) → it's total darkness, so you lose your mind
+     regardless of charge: `sanity -= lossLowBattery (2) * self.sanityLoss`.
+   - Has lamp but `battery < batteryThresholdLow (20)` → `sanity -= lossLowBattery (2) * self.sanityLoss`
+   - Has lamp but `battery < batteryThresholdMid (40)` → `sanity -= lossMidBattery (1) * self.sanityLoss`
+   - (Conditions are mutually exclusive: the no-lamp / more-severe case is evaluated first)
 
-2. **sanityCounter**: If `sanity <= 0` and it was previously `> 0`, increments `PlayerData.sanityCounter` by 1 and calls `Utilities.checkSanityAchievements()`.
+2. **Sanity death**: if `sanity <= 0` and it was previously `> 0`:
+   - `PlayerData.sanityCounter += 1` and `Utilities.checkSanityAchievements()`.
+   - **then, if alive and `isGaming`, calls `self:dead("sanity")`** → game over via
+     `DeadScene` (cause `"sanity"`). `sanityCounter` is preserved (it keeps scaling
+     difficulty and enabling the no-repeat-room rule). This is the death model added with
+     the procedural system — sanity hitting 0 is fatal, not just a difficulty bump.
 
-3. **Sanity gain**:
-   - `battery > batteryThresholdHigh (50)` OR `isInDarkness == false` → `sanity += gainHighBattery (2) * self.sanityLoss`
+3. **Sanity gain (recovery)** — only `if not dark OR (hasLamp and battery > batteryThresholdHigh (50))`:
+   `sanity += gainHighBattery (2) * self.sanityLoss`.
+   A **lampless** player in the dark can't restore sanity by cranking the battery — light
+   is the only cure.
 
-4. Clamp: `sanity = math.clamp(sanity, 0, 100)`.
+4. Clamp: `sanity` is held within `[0, Config.Sanity.max]`.
 
 `self.sanityLoss` is `1` by default (initialized in `init.lua`). It is a multiplier that could be scaled in the future.
 
@@ -521,15 +530,26 @@ Default → idle
 
 **File**: `entities/player/state.lua`
 
-`Player:dead()`:
+`Player:dead(cause)`:
 1. `self.isAlive = false` — blocks `move()` and `useAbility()`.
-2. After 1000 ms (timer): `Noble.transition(DeadScene)`.
+2. `PlayerData.deathCause = cause or "hp"` — `DeadScene` shows a message per cause.
+3. After 1000 ms (timer): `Noble.transition(DeadScene)`.
 
-Conditions that lead to `dead()`:
-- Defeat result in `DanceScene` (the scene calls `Player:dead()` in the defeat callback).
-- Special triggers in the level (not documented here).
+Conditions that lead to `dead(cause)`:
+- `"hp"` — defeat in `DanceScene` (the scene calls `Player:dead()` in the defeat callback).
+- `"sanity"` — sanity reaches 0 in the dark (see §3, `sanity.lua` calls `self:dead("sanity")`).
+- `"void"` — used for void/fall deaths.
 
-Falling into a hole without boots and without an available lower room also results in `Noble.transition(DeadScene)` directly from `state.lua:fallBelow()`.
+From `DeadScene`, **Retry regenerates a fresh procedural run** (`RunState.startRun()` +
+`Noble.transition(MazeScene)`); meta persists and `runCount` bumps. There is no longer a
+"reload the room you died in" path.
+
+> **Vertical navigation ≠ death:** falling through a hole (`fallBelow()`) or rising a
+> tube (`riseAbove()`) does **not** kill the player — each calls
+> `RunState.startRun("startdown")` / `RunState.startRun("startup")` to begin a brand-new
+> run entering at a `StartDown` / `StartUp` room. This replaced the old
+> "fall with no lower room → DeadScene" softlock. See
+> [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md).
 
 ---
 
