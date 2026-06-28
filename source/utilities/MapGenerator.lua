@@ -235,7 +235,8 @@ local function makeNode(id, template)
 		edges      = {},         -- dir -> destination node id (whole side -> one room)
 		doorCounts = counts,     -- dir -> number of doors on that side
 		freeSides  = free,       -- dir -> true while still unconnected
-		content    = { crewId = nil, enemies = {}, items = {}, utility = nil, isFinal = false },
+		-- enemies/crewId/crewSpawn/utilities are filled per-run in step 4; isFinal flags the final room.
+		content    = { crewId = nil, enemies = {}, isFinal = false },
 		cleared    = {},         -- runtime deltas on revisit
 	}
 end

@@ -4,6 +4,62 @@ This document describes the complete door system: the `Door` class, coordinate m
 
 ---
 
+## `DoorsConnection` — Authoring Door Sides (current model)
+
+Every **door entity** in LDtk carries a `DoorsConnection` customField naming **which
+wall of the room the door sits on**. This is the field you must author correctly on each
+door; the procedural graph reads it to decide connectivity.
+
+### Valid values — only four
+
+`normDir()` (`utilities/MapGenerator.lua:17-22`) accepts exactly the directions in
+`OPPOSITE` / `DIRS = { "right", "left", "top", "down" }` (compared case-insensitively):
+
+| Value | Wall | Plane |
+|---|---|---|
+| `"Top"` | top wall | horizontal — walk north to the neighbour |
+| `"Down"` | bottom wall | horizontal — walk south to the neighbour |
+| `"Left"` | left wall | horizontal — walk west |
+| `"Right"` | right wall | horizontal — walk east |
+
+> **`"Lower"` / `"Upper"` are dead.** They belonged to the removed fixed-grid vertical
+> system (`GetLowerRoom` / `GetUpperRoom`). `normDir()` returns `nil` for any value not in
+> the four above, so a door tagged `"Lower"`/`"Upper"` contributes to **no** side
+> signature and **never connects** — it would silently become a wall plug. Do not use
+> them. (They still appear in the LEGACY / Love2D-port section below for historical
+> reference only.)
+
+> **`"Top"`/`"Down"` mean the room's top/bottom wall on the same plane — not "go up/down a
+> floor."** Vertical navigation does **not** go through `DoorsConnection` at all:
+> - **Down a floor** = stepping on a hole tile → `Player:fallBelow()` → `RunState.startRun("startdown")` (a new run).
+> - **Up a floor** = pneumatic tube / `PortalDoors` while tiny → `Player:riseAbove()` → `RunState.startRun("startup")`.
+>
+> See [LEVEL_LOADING.md §11](LEVEL_LOADING.md#11-vertical-navigation) and
+> [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md).
+
+### What you author per door vs. what is automatic
+
+| You author on the door entity | Engine handles automatically |
+|---|---|
+| `x, y` — position on the wall | **Destination** (`targetNodeId`, assigned by the run graph — no `neighbourLevels`) |
+| `width, height` — size/orientation (`48×8` horizontal, `8×48` vertical) | **Whether the door is created** — only on sides the graph connected (`CreateDoorsFromNode`) |
+| `DoorsConnection` — the side (`Top/Down/Left/Right`) | **Covering unconnected sides** with a `WallPlug` (brick + collider) |
+| `NeedsKey` / `KeyNumber` — optional (keys are stripped in procedural mode today) | **Spawn side** on entry, matched to the authored door |
+
+### The rule that bites: door **signatures must match**
+
+Two rooms connect on a shared axis only when that side's **signature matches**: same
+**count**, **position**, and **size** of every door on the side. If room A's right side
+has a door at `y=120, 8×48` and room B's left side has one at `y=96`, they **do not
+connect** — the side becomes a wall plug. When authoring many rooms, standardise a fixed
+set of door "slots" (positions/sizes) so any room can connect to any other. See
+[PROCEDURAL_GENERATION.md §4](PROCEDURAL_GENERATION.md#4-door-connection-signature-matching).
+
+> `MazeScene.lua:162` also reads a door's `DoorsConnection` (lowercased) to pick the spawn
+> side when the player enters through it.
+
+---
+
 ## `Door` Class
 
 File: `entities/props/door.lua`
@@ -27,7 +83,10 @@ Door(direction, status, nextRoom, zIndex, keyNumber, x, y, width, height)
 | `width`, `height` | number or nil | LDTK entity dimensions; if `nil`, calculated by direction |
 
 Internally:
-- `self.nextRoom` is resolved with `RoomTranslate(nextRoom)` to get the scene class (e.g. `Floor220`).
+- `self.nextRoom` holds the destination. **Under procedural generation** the door's target
+  is the run-graph node (`targetNodeId`) assigned by `CreateDoorsFromNode`; the old
+  `RoomTranslate(nextRoom)` → `FloorXXX` scene lookup was **removed**. The `nextRoom`
+  parameter is retained for the Love2D-port reference flow below.
 - `self:setGroups(3)` — collision group `props` (ID 3).
 - The collision rect is assigned from `setRectValues(direction)` when no LDTK dimensions are provided.
 
@@ -145,7 +204,10 @@ function Door:goTo()
 end
 ```
 
-- `self.nextRoom` is the scene class (e.g. `Floor220`), obtained in the constructor via `RoomTranslate(nextRoom)`.
+- `self.nextRoom` is the transition target. Under procedural generation this resolves
+  through the run graph (`targetNodeId` → `MazeScene`), not the removed
+  `RoomTranslate(nextRoom)` → `FloorXXX` lookup. The example below reflects the legacy /
+  Love2D-port flow.
 - Fade duration: **1.5 seconds**.
 - Transition: `Noble.Transition.Default`.
 

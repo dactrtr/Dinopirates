@@ -56,12 +56,18 @@ Scenes extend `NobleScene`. Lifecycle: `init → enter → update → exit`.
 | `CockpitScene` | `scenes/CockpitScene.lua` | Accelerometer + D-pad button-sequence puzzle; leads to CreditsScene or TitleScene |
 | `SpaceScene` | `scenes/SpaceScene.lua` | Space escape shooter with crank-toggled fighter/travel modes |
 | `CreditsScene` | `scenes/CreditsScene.lua` | Scrolling credits sequence |
-| `FloorXXX` | `scenes/Floors.lua` | Auto-generated scene classes for every room |
+| `Floor407` / `Floor409` | `scenes/Floors.lua` | Debug-menu entry points only (TitleScene "GAME" / "PLAYGROUND") |
 
-`Floors.lua` generates classes from **hardcoded floor number ranges** (not from `levelsLDTK`). Current ranges: 166–180, 231–274, 316–330, 401–415. Each FloorXXX class calls `self:setFloor(level, room)` in `init()` (derived as `level = floor(i/100)`, `room = i % 100`) and sets `PlayerData.saveLevel = i`.
+Live gameplay enters `MazeScene` **directly** and navigates room→room through the
+procedural run graph (`RunState.goTo(nodeId)` + door `targetNodeId`). `Floors.lua` now
+generates only `Floor407` and `Floor409`, the two debug-menu shortcuts; each calls
+`self:setFloor(level, room)` in `init()` (`level = floor(i/100)`, `room = i % 100`) and sets
+`PlayerData.saveLevel = i`.
 
-**Room numbering**: `RoomID = level * 100 + roomNumber` (e.g., level 4, room 8 → `Floor408`).
-**Room lookup**: `RoomTranslate(roomNumber)` → looks up `_G["Floor408"]` to get the class for `Noble.transition`.
+> **Legacy (removed):** the per-room `FloorXXX` ranges and the `RoomTranslate(roomNumber)` →
+> `_G["Floor408"]` scene lookup are gone — they were the fixed-grid navigation model.
+> `RoomID = level*100 + roomNumber` survives only as the save-slot id and the Floor407/409
+> derivation.
 
 ---
 

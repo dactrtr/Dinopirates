@@ -1,9 +1,9 @@
+-- Only the debug-menu entry points need a generated FloorXXX class: the live game enters
+-- MazeScene directly via the procedural run graph (RunState). Floor407 = debug "GAME",
+-- Floor409 = debug "PLAYGROUND" (see TitleScene.lua).
 local floorRanges = {
-	{ start = 166, stop = 180 },
-	{ start = 231, stop = 274 },
-	{ start = 316, stop = 330 },
-	{ start = 401, stop = 415 },
-	{ start = 481, stop = 481 }
+	{ start = 407, stop = 407 },
+	{ start = 409, stop = 409 },
 }
 
 for _, range in ipairs(floorRanges) do

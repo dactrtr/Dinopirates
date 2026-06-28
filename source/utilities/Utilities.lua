@@ -130,30 +130,6 @@ function printDebug(value)
 		print(value)
 	end
 end
-function RoomTranslate(roomNumber)
-	local floorClass = "Floor" .. roomNumber
-	return _G[floorClass]
-end
---- Gets a room by its number
--- @param roomNumber number Complete room number (e.g. 220 = level 2, room 20)
--- @return table|nil Room data or nil
-function GetRoomByNumber(roomNumber)
-	local level = math.floor(roomNumber / 100)
-	local room = roomNumber % 100
-	
-	printDebug("🔍 Searching room by number:", roomNumber, "(level:", level, "room:", room, ")")
-	
-	for _, roomData in ipairs(levelsLDTK) do
-		if roomData.customFields.level == level and 
-		   roomData.customFields.roomNumber == room then
-			printDebug("✅ Room found:", roomData.identifier)
-			return roomData
-		end
-	end
-	
-	printDebug("❌ Room NOT found")
-	return nil
-end
 
 function drawVersionNumber(x, y, alignment)
 	-- Save current graphics context to avoid affecting sprites
@@ -387,19 +363,6 @@ function Utilities.clearAllAchievements()
 	for _, data in ipairs(achievementData.achievements) do
 		if data.id then
 			achievements.revoke(data.id)
-		end
-	end
-end
-
--- Dev Tools
-function printEnemies()
-	for i, enemy in pairs(playdate.graphics.sprite.getAllSprites()) do
-		if enemy.type == "Enemy" then
-			printDebug("x:", enemy.x)
-			printDebug("y:", enemy.y)
-			printDebug("Type:", enemy.type)
-			printDebug("ID:", enemy.id)
-			printDebug("----")
 		end
 	end
 end

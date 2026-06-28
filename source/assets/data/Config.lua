@@ -82,8 +82,6 @@ Config.MapGen = {
     utilityChance     = 0.4,  -- prob. of populating a FeatureSlot with a microwave/minifier
     totalCrew         = 12,   -- full crew roster; recruiting all of them reveals the final room
     enemyChance       = 0.6,  -- prob. of populating an enemy marker
-    itemChance        = 0.5,  -- prob. of populating an item marker
-    darkBiasPerCrew   = 0.02, -- added probability that a room renders dark, per crew recruited (capped at 1)
 }
 
 -- Dark Reveal skill (hold B + crank in darkness)

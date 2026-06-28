@@ -244,16 +244,7 @@ function scene:enter()
 		printDebug("✅ CurrentRoom:", currentRoom.identifier)
 		printDebug("📍 Level:", currentRoom.customFields.level)
 		printDebug("📍 RoomNumber:", currentRoom.customFields.roomNumber)
-		
-		if currentRoom.neighbourLevels then
-			printDebug("👥 Neighbors found:", #currentRoom.neighbourLevels)
-			for i, n in ipairs(currentRoom.neighbourLevels) do
-				printDebug("  Neighbor", i, "- iid:", n.levelIid, "dir:", n.dir)
-			end
-		else
-			printDebug("❌ neighbourLevels is nil")
-		end
-		
+
 		CreateDoorsFromNode(node)
 		CreateWallPlugsFromNode(node)
 		CreatePortalsFromNode(node)
