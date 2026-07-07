@@ -93,9 +93,9 @@ if bpm == nil or bpm == 0 then
 	
 	
 	self:setZIndex(2)
-	self:setSize(214, 214)
+	self:setSize(400, 240)
 	self:setCenter(0,0)
-	self:add(158, 26)
+	self:add(0, 0)
 	
 end
 

@@ -92,7 +92,8 @@ local DefaultPlayerData = {
 		canFlash = false,
 		canPlungerang = false,
 		canCrossSlime = false,
-		canGrapple = false, 
+		canGrapple = false,
+		canFight = false,
 	},
 	EnemiesData ={
 		powerLevel = 1, -- max 20

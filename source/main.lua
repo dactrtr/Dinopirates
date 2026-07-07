@@ -95,12 +95,7 @@ local menuItem, error = menu:addMenuItem("debug", function()
 		end
 	end
 end)
-local genItem, genErr = menu:addMenuItem("gen-test", function()
-	debug = true
-	MapGenerator.selfCheck(0)
-	MapGenerator.selfCheck(4)
-	MapGenerator.selfCheck(40)  -- exercises the roomsMax cap
-end)
+
 
 playdate.display.setRefreshRate(50)
 timers = playdate.timer

@@ -22,7 +22,7 @@
 	],
 	"customFields": {
 		"shadow": true,
-		"light": 0.1,
+		"light": 0.5,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
@@ -44,23 +44,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"TubeExit": [
-			{
-				"id": "TubeExit",
-				"iid": "723b72d6-6fc0-11f1-b67a-bdce39825a5f",
-				"layer": "Items_and_Props",
-				"x": 364,
-				"y": 28,
-				"width": 32,
-				"height": 32,
-				"color": 2943221,
-				"customFields": {
-					"type": "TubeExit",
-					"nocollider": false,
-					"destroyed": false
-				}
-			}
-		],
 		"Doors": [
 			{
 				"id": "Doors",

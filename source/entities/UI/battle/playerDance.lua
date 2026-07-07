@@ -22,10 +22,10 @@ function PlayerDance:init(bpm, spritePath)
 	
 	self.animation:setState('idle')
 	self:setZIndex(6)
-	self:setSize(246, 214)
+	self:setSize(400, 240)
 	--self:setCollideRect(0, 0, 10, 40)
 	self:setCenter(0,0)
-	self:add(0, 26)
+	self:add(0, 0)
 	
 end
 function PlayerDance:changeAnimation(input)

@@ -41,7 +41,7 @@
 		}
 	],
 	"customFields": {
-		"shadow": false,
+		"shadow": true,
 		"light": 0.5,
 		"visited": false,
 		"comic_name": null,
@@ -82,18 +82,18 @@
 				}
 			}
 		],
-		"Plunger": [
+		"Lamp": [
 			{
-				"id": "Plunger",
-				"iid": "8a009870-48b0-11f1-a37f-cfb85237b582",
+				"id": "Lamp",
+				"iid": "840abe70-6fc0-11f1-a302-45c803554877",
 				"layer": "Items_and_Props",
-				"x": 60,
-				"y": 196,
+				"x": 228,
+				"y": 84,
 				"width": 32,
 				"height": 32,
 				"color": 15389866,
 				"customFields": {
-					"type": "plunger",
+					"type": "lamp",
 					"isItem": true
 				}
 			}

@@ -30,7 +30,7 @@
 	],
 	"customFields": {
 		"shadow": true,
-		"light": 0.1,
+		"light": 0.5,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,

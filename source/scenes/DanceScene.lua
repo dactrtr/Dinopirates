@@ -63,6 +63,12 @@ local EnemyPatterns = {
     }
 }
 
+-- Helper: pick a random D-pad arrow key
+local function pickArrow()
+    local arrows = { "leftButton", "upButton", "rightButton", "downButton" }
+    return arrows[math.random(#arrows)]
+end
+
 -- Helper: pick next pattern key given a profile
 local function getPatternKey(profile)
     local weights = profile.weights
@@ -71,8 +77,7 @@ local function getPatternKey(profile)
     local choice = rand * sum
 
     if choice < weights.arrows then
-        local arrows = { "leftButton", "upButton", "rightButton", "downButton" }
-        local result = arrows[math.random(#arrows)]
+        local result = pickArrow()
         printDebug("Pattern: ARROW -> " .. result)
         return result
     elseif choice < weights.arrows + weights.aButton then
@@ -206,12 +211,18 @@ function scene:enter()
    -- Create ButtonPress instances using enemy pattern profile
    self.buttons = {}
    local profile = EnemyPatterns[self.enemyType] or EnemyPatterns.basic
-   
-   -- define a provider function that always pulls from this profile
+   local canFight = PlayerData.skills and PlayerData.skills.canFight
+
+   -- Provider: arrows-only until the canFight skill is unlocked, then the
+   -- difficulty-weighted A/B pool.
    local function keyProvider()
-       return getPatternKey(profile)
+       if canFight then
+           return getPatternKey(profile)
+       else
+           return pickArrow()
+       end
    end
-   
+
    for i = 1, self.numberOfButtons do
        local b = ButtonPress(self.bpm, startPoint + self.bpm, keyProvider)
        table.insert(self.buttons, b)
@@ -220,19 +231,31 @@ function scene:enter()
     -- Other entities
     hitzone = HitZone(40,30, self.bpm)
 
-    local charPath = PlayerData.isTiny
+    -- Swap to the *Fight spritesheet when canFight is on; fall back to the
+    -- base asset if the Fight PNG does not exist yet (dev-time probe; imagetable.new
+    -- resolves the -table-W-H naming and returns nil instead of crashing).
+    local function resolveFightPath(basePath, useFight)
+        if not useFight then return basePath end
+        local fightPath = basePath .. 'Fight'
+        if Graphics.imagetable.new(fightPath) then
+            return fightPath
+        end
+        return basePath
+    end
+
+    local charBase = PlayerData.isTiny
         and 'assets/images/ui/battle/playerDanceTiny'
         or  'assets/images/ui/battle/playerDance'
-    playerDance = PlayerDance(self.bpm, charPath)
+    playerDance = PlayerDance(self.bpm, resolveFightPath(charBase, canFight))
 
-    local enemyPath = (PlayerData.lastEnemyTouched and PlayerData.lastEnemyTouched.type == "bosscolli")
+    local enemyBase = (PlayerData.lastEnemyTouched and PlayerData.lastEnemyTouched.type == "bosscolli")
         and 'assets/images/ui/battle/enemyBosscolliDance'
         or  'assets/images/ui/battle/enemyDance'
-    enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving, enemyPath)
+    enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving, resolveFightPath(enemyBase, canFight))
     buttonCover = ButtonCover()
     winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
-    backgroundDance = BackgroundDance()
+    backgroundDance = BackgroundDance(resolveFightPath('assets/images/ui/battle/background', canFight))
     resultsScreen = ResultsScreen()
 
     if MazeScene.backgroundMusic and MazeScene.backgroundMusic:isPlaying() then

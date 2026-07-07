@@ -1,8 +1,8 @@
 BackgroundDance ={}
 class('BackgroundDance').extends(NobleSprite)
 
-function BackgroundDance:init()
-	BackgroundDance.super.init(self, 'assets/images/ui/battle/background',true)
+function BackgroundDance:init(spritePath)
+	BackgroundDance.super.init(self, spritePath or 'assets/images/ui/battle/background',true)
 	
 	if bpm == nil then
 		bpm = 6
