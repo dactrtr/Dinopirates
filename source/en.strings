@@ -1,133 +1,74 @@
--- These are example strings.
-"menuResumeGame" =		"Resume"
-"menuNewGame" =			"New Game"
-"menuOptions" =			"Options"
-"menuCredits" =			"Credits"
-
+"menuResumeGame" = "Resume"
+"menuNewGame" = "New Game"
+"menuOptions" = "Options"
+"menuCredits" = "Credits"
 "nolamp-01" = "I need a lamp"
 "nokeys" = "I dont have the key to enter"
 "gotcha-01" = "got you!!"
 "hugexmas-01" = "Wow so majestic, such a big tree, maybe I can hide here?"
-
 "hugexmas-02" = "I got the *Plumber* need to jump to the top and grab that star, and coins, get a lot of coins"
-
 "hugexmas-03" = "ah that's just my *pirate* need of collect coins, or anything, collect, collect."
 "whyxmas-01" = "Still don't understand this *Xmas* thing, why we celebrate? we are pirates, we are dinosaurs"
 "wakeup-01" = "wow that was a good *dino nap*, better than those beauty naps.."
-
 "wakeup-02" = "where's everybody? we were about to open the Dinomas gifts"
-
 "wakeup-03" = "where's my *captain hat*!? what kind of captain doesn't have a hat ahhh"
-
 "brocomess-01" = "is this.. broccoli?"
-
 "microwaveburn-01" = "ohh that's our *party microwave*?"
-
 "microwaveburn-02" = "its totally destroyed!! and it was my mom's microwave!!"
-
 "microwaveburn-03" = "I should have agreed with Dino Resources about the *introduction to microwaves*.."
-
 "sometrash-01" = "just some trash.."
-
 "giftfor100-01" = "for sure this one is mine.."
-
 "giftfor100-02" = "*it reads*: for crew member 100, our best 100 crew member."
-
 "giftfor233-01" = "as the younglings say *YOLO*, time to open some gifts.."
-
 "giftfor233-02" = "obviously the big one is for me because I'm the best captain ever.."
-
 "giftfor233-03" = "*it reads*: for crew member 233, our best 233 member."
-
 "kitchenweapons-02" = "Why we keep using human cutlery?, is too small for us, only *crew members* can use them.."
-
 "tinyKnife" = "woooo if a knife is huge, is still a knife?"
-
 "inneficientcutting-01" = "jeez, this is the most inefficient way to cut some broccoli, looks more like a fight.."
-
 "inneficientcutting-02" = "..that's why we have tiny knives.. maybe we need that  *Using knives* DR presentation.."
-
 "entrancemess-01" = "what happened here? another fight to enter first?, we have a line and waiting seats.."
-
 "entrancemess-02" = "we aren't animals in this ship, we are pirates but civilized."
 "justboxes-01" = "just boxes.."
-
 "noteslook-01" = "is that.."
-
 "noteslook-02" = "*My Super Dino Happy Cat Secret Captain Journal*!!!"
-
 "noteslook-03" = "all my secrets exposed.."
-
 "notespickup-01" = "Oh no it's all touched and filthy, my secrets.."
-
 "notespickup-02" = "aww my crew it's so lovely they leave me a picture and they wrote messages.."
-
 "notespickup-03" = "this is the *real meaning* of Dinomas, our friends are like our family.."
-
 "notespickup-04" = "*it reads*: To our former Captain, you were almost like a real Captain."
-
 "notespickup-05" = "what they mean with *former*, those idiots I'm gonna grab them one by one and slap them.."
-
 "investigation-01" = "I step on some crap!"
 "phonecall-01" = "Hello, this is a phone call"
-
 "phonecall-02" = "is it working?"
-
 "notnormalbrocoli-01" = "this doesn't look like normal broccoli..."
-
 "notnormalbrocoli-02" = "looks tasty, maybe should I try it?"
-
 "notnormalbrocoli-03" = "no, last time I ate something from the ground ended losing an eye, can't do that again."
-
 "mygift-01" = "I found a gift?? whats this??"
-
 "mygift-02" = "A DINOWATCH 4 PRO, it has some health metrics"
-
 "mygift-03" = "and I can check message..."
-
 "mygift-04" = "from “dino not human resources” this is a employee watch, isnt even a pro is a SE"
-
 "mygift-05" = "if I hold A I can check my tasks and my health metric..."
 "firstcall-01" = "Ahh? I got a message?"
-
 "firstcall-02" = "“welcome Crew Member, this is *Dino Resources* we will make your first day of work memorable."
-
 "firstcall-03" = "Thanks to our amazing Dinotech you have in your hands our company provided DinoFold and Dwatch"
-
 "firstcall-04" = "Here... y... can... ahhh Run! Run..."
-
 "firstcall-05" = "*Save the spreadsheet first, then run*"
-
 "firstcall-06" = "I don't remember we had such a *warming welcome*"
-
 "firstcall-07" = "get into the escape pods... *forget about the crew members*"
-
 "firstcall-08" = "Ah this stupid device don't let me communicate with *DR*, guess I'll need to find a *Radio*"
-
 "reachcomputer-01" = "Ahh this stupid boxes don't let me reach the note"
-
 "reachcomputer-02" = "One of this days i'm just *gonna smash* those stupid boxes"
 "secondcall-01" = "another message? "
-
 "secondcall-02" = "Hello, this is DR, sorry for the previous message, everything its under control, for us..."
-
 "secondcall-03" = "if you are a Crew Members who doesnt fear the darkness and isn't running like a crazy..."
-
 "secondcall-04" = "I'm scared of darkness, I can *feel how i'm gonna go crazy if I stay in the dark for too long*"
-
 "secondcall-05" = "we got good news for you, you are not alone, theres a bunch of other crew members that..."
-
 "secondcall-06" = "“decided” to stay in the ship, if you can gather them and go to the bottom floor"
-
 "secondcall-07" = "we left one escape pod for all of you, remember you are important for us"
-
 "secondcall-08" = "without our crew members we are nothing. Also remember to pay your DR insurance"
-
 "secondcall-09" = "why they escaped? what's happening? why is so dark?"
-
 "CM001-01" = "hola soy el crew member juan"
 "tinyfier-01" = "what's that machine? "
-
 "tinyfier-02" = "is another weird machine from *Dr GenoWiz*? he is always creating this things."
 "imtiny-01" = "awesome, now I’m smaller than a crew member"
 "alamp-01" = "sweet with this lamp I dont have to suffer in the dark"
@@ -135,21 +76,18 @@
 "wheredoor-01" = "there was supposed to be a door here, seems the developer run out of time for this demo"
 "bigemptyroom-01" = "this rooms are so empty"
 "smallspaces-01" = "this space is to small, where are the crewmembers?"
-
 "smallspaces-02" = "they are the only ones that fit this spaces, we need them!"
 "smallspacestiny-01" = "ok, now I can get through this."
-
 "npc-test-auth" = "Terminal online. Keycard dispensed."
 "npc-test-default" = "Insufficient clearance."
-
 "catnoboots-01" = "I feel the weird need of some shoes"
 "catnolamp-01" = "I have no lamp"
 "catwhat-01" = "What is this creature?"
 "cabinethole-01" = "Who made this hole to the kitchen sink"
 "nocm-01" = "No crewmembers"
-
 "nocm-02" = "only one CM"
 "onecm-01" = "just one"
 "twocm-01" = "two crewmembers"
 "finalterminal-01" = "The control panel! This must be the ship's cockpit."
 "finalterminal-02" = "Time to take the helm and get us out of here."
+"notthefirsttime-01" = "What? this isn’t the first time I visit this room, but looks different"

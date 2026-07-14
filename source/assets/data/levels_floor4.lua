@@ -478,7 +478,9 @@ table.insert(levelsLDTK, {
           usedTrigger = false,
           type = "Search",
           mapPercent = 0,
-          conditionalScripts = {},
+          conditionalScripts = {
+            "runCount>=2:notTheFirstTime"
+          },
           SpawnConditions = {}
         }
       }

@@ -3,122 +3,117 @@ script = {
         name = "secondCall",
         dialog = {
             {
-        video = 'playerSurprise',
-        text = "secondcall-01",
-    },
-                    {
-        video = 'radioHand',
-        text = "secondcall-02",
-    },
-                    {
-        video = 'radioHand',
-        text = "secondcall-03",
-    },
-                    {
-        video = 'playerCry',
-        text = "secondcall-04",
-    },
-                    {
-        video = 'radioHand',
-        text = "secondcall-05",
-    },
-                    {
-        video = 'radioHand',
-        text = "secondcall-06",
-    },
-                    {
-        video = 'radioHand',
-        text = "secondcall-07",
-    },
-                    {
-        video = 'radioHand',
-        text = "secondcall-08",
-    },
-                    {
-        video = 'player',
-        text = "secondcall-09",
-    }
-            
+                video = 'playerSurprise',
+                text = "secondcall-01",
+            },
+            {
+                video = 'radioHand',
+                text = "secondcall-02",
+            },
+            {
+                video = 'radioHand',
+                text = "secondcall-03",
+            },
+            {
+                video = 'playerCry',
+                text = "secondcall-04",
+            },
+            {
+                video = 'radioHand',
+                text = "secondcall-05",
+            },
+            {
+                video = 'radioHand',
+                text = "secondcall-06",
+            },
+            {
+                video = 'radioHand',
+                text = "secondcall-07",
+            },
+            {
+                video = 'radioHand',
+                text = "secondcall-08",
+            },
+            {
+                video = 'player',
+                text = "secondcall-09",
+            }
         }
     },
     {
         name = "reachComputer",
         dialog = {
             {
-        video = 'playerWorry',
-        text = "reachcomputer-01",
-    },
-                    {
-        video = 'playerAngry',
-        text = "reachcomputer-02",
-    }
-            
+                video = 'playerWorry',
+                text = "reachcomputer-01",
+            },
+            {
+                video = 'playerAngry',
+                text = "reachcomputer-02",
+            }
         }
     },
     {
         name = "firstCall",
         dialog = {
             {
-        video = 'player',
-        text = "firstcall-01",
-    },
-                    {
-        video = 'radioHand',
-        text = "firstcall-02",
-    },
-                    {
-        video = 'radioHand',
-        text = "firstcall-03",
-    },
-                    {
-        video = 'radioHand',
-        text = "firstcall-04",
-    },
-                    {
-        video = 'radioHand',
-        text = "firstcall-05",
-    },
-                    {
-        video = 'playerWorry',
-        text = "firstcall-06",
-    },
-                    {
-        video = 'radioHand',
-        text = "firstcall-07",
-    },
-                    {
-        video = 'playerWorry',
-        text = "firstcall-08",
-    }
-            
+                video = 'player',
+                text = "firstcall-01",
+            },
+            {
+                video = 'radioHand',
+                text = "firstcall-02",
+            },
+            {
+                video = 'radioHand',
+                text = "firstcall-03",
+            },
+            {
+                video = 'radioHand',
+                text = "firstcall-04",
+            },
+            {
+                video = 'radioHand',
+                text = "firstcall-05",
+            },
+            {
+                video = 'playerWorry',
+                text = "firstcall-06",
+            },
+            {
+                video = 'radioHand',
+                text = "firstcall-07",
+            },
+            {
+                video = 'playerWorry',
+                text = "firstcall-08",
+            }
         }
     },
     {
         name = "hugeXmas",
         dialog = {
             {
-        video = 'playerSurprise',
-        text = "hugexmas-01",
-    },
-                    {
-        video = 'player',
-        text = "hugexmas-02",
-    },
-                    {
-        video = 'playerHappy',
-        text = "hugexmas-03",
-    }
-            
+                video = 'playerSurprise',
+                text = "hugexmas-01",
+            },
+            {
+                video = 'player',
+                text = "hugexmas-02",
+            },
+            {
+                video = 'playerHappy',
+                text = "hugexmas-03",
+            }
         }
     },
     {
         name = "whyXmas",
         dialog = {
             {
-        video = 'player',
-        text = "whyxmas-01",
-    }
-            
+                video = 'player',
+                text = "whyxmas-01",
+            }
         }
     },
     {
@@ -127,7 +122,7 @@ script = {
             {
                 video = 'playerSleepy',
                 text = "nolamp-01",
-            },
+            }
         }
     },
     {
@@ -154,7 +149,7 @@ script = {
                 video = 'playerSurprise',
                 text = "gotcha-01",
                 screen = Graphics.image.new('assets/images/ui/dialog/img/captured.png')
-            },
+            }
         }
     },
     {
@@ -334,215 +329,207 @@ script = {
         name = "notnormalBrocoli",
         dialog = {
             {
-        video = 'playerSurprise',
-        text = "notnormalbrocoli-01",
-    },
-                    {
-        video = 'playerHappy',
-        text = "notnormalbrocoli-02",
-    },
-                    {
-        video = 'playerSleepy',
-        text = "notnormalbrocoli-03",
-    }
-            
+                video = 'playerSurprise',
+                text = "notnormalbrocoli-01",
+            },
+            {
+                video = 'playerHappy',
+                text = "notnormalbrocoli-02",
+            },
+            {
+                video = 'playerSleepy',
+                text = "notnormalbrocoli-03",
+            }
         }
     },
     {
         name = "myGift",
         dialog = {
             {
-        video = 'playerWorry',
-        text = "mygift-01",
-    },
-                    {
-        video = 'playerSurprise',
-        text = "mygift-02",
-    },
-                    {
-        video = 'playerHappy',
-        text = "mygift-03",
-    },
-                    {
-        video = 'player',
-        text = "mygift-04",
-    },
-                    {
-        video = 'playerSurprise',
-        text = "mygift-05",
-    }
-            
+                video = 'playerWorry',
+                text = "mygift-01",
+            },
+            {
+                video = 'playerSurprise',
+                text = "mygift-02",
+            },
+            {
+                video = 'playerHappy',
+                text = "mygift-03",
+            },
+            {
+                video = 'player',
+                text = "mygift-04",
+            },
+            {
+                video = 'playerSurprise',
+                text = "mygift-05",
+            }
         }
     },
     {
         name = "CM001_tiny",
         dialog = {
             {
-            video = 'playerWorry',
-            text = "CM001-01",
-            }, 
+                video = 'playerWorry',
+                text = "CM001-01",
+            }
         }
     },
     {
         name = "tinyfier",
         dialog = {
             {
-        video = 'playerWorry',
-        text = "tinyfier-01",
-    },
-                    {
-        video = 'player',
-        text = "tinyfier-02",
-    }
-    
+                video = 'playerWorry',
+                text = "tinyfier-01",
+            },
+            {
+                video = 'player',
+                text = "tinyfier-02",
+            }
         }
     },
     {
         name = "aLamp",
         dialog = {
             {
-        video = 'player',
-        text = "alamp-01",
-    }
-    
+                video = 'player',
+                text = "alamp-01",
+            }
         }
     },
     {
         name = "abigJump",
         dialog = {
             {
-        video = 'player',
-        text = "abigjump-01",
-    }
-    
+                video = 'player',
+                text = "abigjump-01",
+            }
         }
     },
     {
         name = "whereDoor",
         dialog = {
             {
-        video = 'player',
-        text = "wheredoor-01",
-    }
-    
+                video = 'player',
+                text = "wheredoor-01",
+            }
         }
     },
     {
         name = "bigEmptyRoom",
         dialog = {
             {
-        video = 'player',
-        text = "bigemptyroom-01",
-    }
-    
+                video = 'player',
+                text = "bigemptyroom-01",
+            }
         }
     },
     {
         name = "smallSpaces",
         dialog = {
             {
-        video = 'player',
-        text = "smallspaces-01",
-    },
-                    {
-        video = 'player',
-        text = "smallspaces-02",
-    }
-    
+                video = 'player',
+                text = "smallspaces-01",
+            },
+            {
+                video = 'player',
+                text = "smallspaces-02",
+            }
         }
     },
     {
         name = "smallSpacesTiny",
         dialog = {
             {
-        video = 'player',
-        text = "smallspacestiny-01",
-    }
-
+                video = 'player',
+                text = "smallspacestiny-01",
+            }
         }
     },
     {
         name = "npc_test_has_lamp",
         dialog = {
-            { video = 'radioHand', text = "npc-test-auth" }
+            {
+                video = 'radioHand',
+                text = "npc-test-auth",
+            }
         }
     },
     {
         name = "npc_test_default",
         dialog = {
-            { video = 'player', text = "npc-test-default" }
+            {
+                video = 'player',
+                text = "npc-test-default",
+            }
         }
     },
-    
     {
         name = "catWhat",
         dialog = {
-            { video = 'player', text = "catwhat-01" }
+            {
+                video = 'player',
+                text = "catwhat-01",
+            }
         }
     },
-    
     {
         name = "catNoLamp",
         dialog = {
             {
-        video = 'playerWorry',
-        text = "catnolamp-01",
-    }
-    
+                video = 'playerWorry',
+                text = "catnolamp-01",
+            }
         }
     },
     {
         name = "catNoBoots",
         dialog = {
             {
-        video = 'playerWorry',
-        text = "catnoboots-01",
-    }
-    
+                video = 'playerWorry',
+                text = "catnoboots-01",
+            }
         }
     },
     {
         name = "cabinetHole",
         dialog = {
             {
-        video = 'playerWorry',
-        text = "cabinethole-01",
-    }
-    
+                video = 'playerWorry',
+                text = "cabinethole-01",
+            }
         }
     },
     {
         name = "noCM",
         dialog = {
             {
-        video = 'playerWorry',
-        text = "nocm-01",
-    },
-                    {
-        video = 'playerAngry',
-        text = "nocm-02",
-    }
-    
+                video = 'playerWorry',
+                text = "nocm-01",
+            },
+            {
+                video = 'playerAngry',
+                text = "nocm-02",
+            }
         }
     },
     {
         name = "oneCM",
         dialog = {
             {
-        video = 'player',
-        text = "onecm-01",
-    }
-    
+                video = 'player',
+                text = "onecm-01",
+            }
         }
     },
     {
         name = "twoCM",
         dialog = {
             {
-        video = 'playerCry',
-        text = "twocm-01",
-    }
-
+                video = 'playerCry',
+                text = "twocm-01",
+            }
         }
     },
     {
@@ -558,4 +545,13 @@ script = {
             }
         }
     },
+    {
+        name = "notTheFirstTime",
+        dialog = {
+            {
+                video = 'playerWorry',
+                text = "notthefirsttime-01",
+            }
+        }
+    }
 }

@@ -1,110 +1,58 @@
-"menuResumeGame" =		"再開"
-"menuNewGame" =			"新しい冒険"
-"menuOptions" =			"設定"
-"menuCredits" =			"スタッフ"
-
+"menuResumeGame" = "再開"
+"menuNewGame" = "新しい冒険"
+"menuOptions" = "設定"
+"menuCredits" = "スタッフ"
 "wakeup-01" = "恐竜の昼寝は最高だな、普通の昼寝よりもいい！"
-
 "wakeup-02" = "みんなはどこだ？プレゼントを開けるはずだったのに"
-
-"wakeup-03" = "船長帽子がない！？" 
-
+"wakeup-03" = "船長帽子がない！？"
 "brocomess-01" = "..これ、ブロッコリー？"
-
 "microwaveburn-01" = "あれがパーティ電子レンジ？"
-
 "microwaveburn-02" = "完全に壊れてる！しかも母のだった！"
-
 "microwaveburn-03" = "電子レンジ講座を受けるべきだったか.."
-
 "sometrash-01" = "ただのゴミか.."
-
 "giftfor100-01" = "これは私のだな.."
-
 "giftfor100-02" = "書いてある：乗組員百番、最優秀百人目。"
-
 "giftfor233-01" = "若者言葉で言えばYOLO、開けよう！"
-
 "giftfor233-02" = "大きいのは当然私の、最高の船長だから！"
-
 "giftfor233-03" = "書いてある：乗組員二三三番、最優秀二三三人目。"
-
 "kitchenweapons-02" = "人間用の道具は小さい、乗組員だけが使える.."
-
 "inneficientcutting-01" = "ブロッコリー切るのに、戦いみたいだ.."
-
 "inneficientcutting-02" = "小さい包丁だからな..講座受けるべきか.."
-
 "entrancemess-01" = "ここ何があった？順番を守れよ、座席もあるぞ.."
-
 "entrancemess-02" = "海賊でも、ここでは文明人だ。"
-
 "justboxes-01" = "ただの箱だ.."
-
 "noteslook-01" = "あれは.."
-
 "noteslook-02" = "秘密のキャプテン日記だ！！"
-
 "noteslook-03" = "秘密がバレた.."
-
 "notespickup-01" = "ああ、汚れてしまった..秘密が.."
-
 "notespickup-02" = "乗組員が絵とメッセージを残してくれた.."
-
 "notespickup-03" = "これがディノマスの本当の意味、仲間は家族だ.."
-
 "notespickup-04" = "書いてある：元船長へ、ほとんど本物の船長だった。"
-
 "notespickup-05" = "「元」って何だよ、あいつら許さん.."
-
 "thisdemo-01" = "*リリリ*"
-
 "thisdemo-02" = "もしもし、開発者だよ.."
-
 "thisdemo-03" = "開発者？恐竜開発者だろ？"
-
 "thisdemo-04" = "いや、プレイヤーと話してる。マイク、このランプの機能を試せる。"
-
 "thisdemo-05" = "動くと電池消耗して遅くなる、右上に.."
-
 "thisdemo-06" = "脳のマークで正気度が分かる.."
-
 "thisdemo-07" = "暗いのは嫌だな.."
-
 "thisdemo-08" = "今は動かない、その先に敵がいるぞ、では.."
-
 "nolights-01" = "*リリリ*"
-
 "nolights-02" = "もしもし"
-
 "nolights-03" = "船長、着信だ。お元気ですか.."
-
 "nolights-04" = "要点を言え！"
-
 "nolights-05" = "暗い部屋にいて誰かに見られてる気がする.."
-
 "nolights-06" = "恐竜資源部が見張ってるのさ.."
-
 "nolights-07" = "心配ない、船には君しかいない、たぶん.."
-
 "nolights-08" = "「一人」って何だ！？"
-
 "nolights-09" = "ごめん、次の船長に料理を作るから.."
-
 "nolights-10" = "部屋にランプがあるはずだ、探せ.."
-
 "nolights-11" = "ここより暗い部屋もある.."
-
 "nolights-12" = "..でも私は一人だよな..？"
-
 "nolights-13" = "誰かいる？"
-
 "nolights-14" = "今は一人.."
-
 "nolights-15" = ".."
-
 "boo-01" = "わっ！冗談さ、ランプはこの先にある！"
-
 "finalterminal-01" = "制御パネルだ！ここが船のコックピットに違いない。"
-
 "finalterminal-02" = "操縦桿を握って、ここから抜け出す時だ。"
+"notthefirsttime-01" = "Nani?"
