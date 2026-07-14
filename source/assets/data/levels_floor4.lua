@@ -1591,7 +1591,7 @@ table.insert(levelsLDTK, {
       {
         id = "CrewMember",
         iid = "282768a0-48b0-11f1-98a2-1d4cd08822d8",
-        x = 108,
+        x = 84,
         y = 36,
         width = 48,
         height = 48,
@@ -1951,6 +1951,19 @@ table.insert(levelsLDTK, {
         customFields = {
           NeedsKey = false,
           DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "d0707a20-6fc0-11f1-989d-db5b0204b526",
+        x = 396,
+        y = 176,
+        width = 8,
+        height = 32,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
           KeyNumber = nil
         }
       }
@@ -2550,6 +2563,311 @@ table.insert(levelsLDTK, {
         x = 200,
         y = 236,
         width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      }
+    }
+  }
+})
+	--22
+table.insert(levelsLDTK, {
+  identifier = "Room_22",
+  uniqueIdentifer = "af4d7e50-6fc0-11f1-989d-8151041b4734",
+  neighbourLevels = {
+    {
+      levelIid = "6c078cc0-6fc0-11f1-989d-171d9e0d832f",
+      dir = "n"
+    }
+  },
+  customFields = {
+    shadow = true,
+    light = 0.1,
+    visited = false,
+    comic_name = nil,
+    comic_wasPlayed = false,
+    level = 4,
+    roomNumber = 22,
+    tile = 22,
+    DoorsConnection = {},
+    play = nil,
+    procGen = true,
+    roomRole = "StartDown",
+    requiredItems = {},
+    requiredSkills = {},
+    hasForeground = true
+  },
+  entities = {
+    TKNotes = {
+      {
+        id = "TKNotes",
+        iid = "d5c86a40-6fc0-11f1-989d-35b219133546",
+        x = 260,
+        y = 84,
+        width = 32,
+        height = 48,
+        customFields = {
+          String = "player spawn drop"
+        }
+      }
+    },
+    CrewMember = {
+      {
+        id = "CrewMember",
+        iid = "af4da560-6fc0-11f1-989d-cdee7b47a7a1",
+        x = 68,
+        y = 100,
+        width = 48,
+        height = 48,
+        customFields = {
+          isTaken = false,
+          crewID = "100",
+          forceSpawn = false
+        }
+      }
+    },
+    Lamp = {
+      {
+        id = "Lamp",
+        iid = "af4da562-6fc0-11f1-989d-77b3e3bfc5f9",
+        x = 228,
+        y = 84,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "lamp",
+          isItem = true
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "af4da564-6fc0-11f1-989d-9b10dae8155e",
+        x = 200,
+        y = 236,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "af4da565-6fc0-11f1-989d-e569b633a73f",
+        x = 200,
+        y = 4,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "af4da566-6fc0-11f1-989d-0f8a38709c36",
+        x = 88,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "af4da567-6fc0-11f1-989d-a14e745f4ad6",
+        x = 396,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      }
+    }
+  }
+})
+	--23
+table.insert(levelsLDTK, {
+  identifier = "Room_23",
+  uniqueIdentifer = "6c078cc0-6fc0-11f1-989d-171d9e0d832f",
+  neighbourLevels = {
+    {
+      levelIid = "af4d7e50-6fc0-11f1-989d-8151041b4734",
+      dir = "s"
+    }
+  },
+  customFields = {
+    shadow = true,
+    light = 0.5,
+    visited = false,
+    comic_name = nil,
+    comic_wasPlayed = false,
+    level = 4,
+    roomNumber = 23,
+    tile = 23,
+    DoorsConnection = {
+      "Top",
+      "Down",
+      "Right"
+    },
+    play = nil,
+    procGen = true,
+    roomRole = "Normal",
+    requiredItems = {
+      "HasLamp"
+    },
+    requiredSkills = {},
+    hasForeground = true
+  },
+  entities = {
+    Triggers = {
+      {
+        id = "Triggers",
+        iid = "6c078cc4-6fc0-11f1-989d-95a76337895f",
+        x = 214,
+        y = 108,
+        width = 32,
+        height = 32,
+        customFields = {
+          script = "pick-the-device",
+          usedTrigger = false,
+          type = "Cutscene",
+          mapPercent = 0,
+          conditionalScripts = {},
+          SpawnConditions = {}
+        }
+      }
+    },
+    TubeExit = {
+      {
+        id = "TubeExit",
+        iid = "6c078cc7-6fc0-11f1-989d-ef5b03520221",
+        x = 36,
+        y = 204,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "TubeExit",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
+    Radio = {
+      {
+        id = "Radio",
+        iid = "6c078cc8-6fc0-11f1-989d-c7ebb453bf97",
+        x = 212,
+        y = 108,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "radio",
+          isItem = true
+        }
+      }
+    },
+    Minifier = {
+      {
+        id = "Minifier",
+        iid = "6c078cc9-6fc0-11f1-989d-d583550687bb",
+        x = 36,
+        y = 36,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "minifier",
+          nocollider = false,
+          destroyed = false,
+          forceSpawn = false
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "6c078ccb-6fc0-11f1-989d-2984a215336b",
+        x = 200,
+        y = 236,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "6c078ccc-6fc0-11f1-989d-4738aa318e4e",
+        x = 200,
+        y = 4,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "6c078ccd-6fc0-11f1-989d-33e68e2c9a23",
+        x = 344,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "6c078cce-6fc0-11f1-989d-655f9f271daf",
+        x = 88,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "6c078ccf-6fc0-11f1-989d-01f43a61e679",
+        x = 396,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "6c078cd0-6fc0-11f1-989d-3115cb3c35b5",
+        x = 88,
+        y = 234,
+        width = 16,
         height = 8,
         customFields = {
           NeedsKey = false,

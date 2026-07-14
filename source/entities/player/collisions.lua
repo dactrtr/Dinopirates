@@ -52,9 +52,16 @@ function Player:collisionResponse(other)
 
   elseif other:isa(Trigger) then
   if other.type == "Cutscene" then
-      -- Cutscenes trigger automatically
-      PlayerData.isGaming = false
-      PlayerData.isCutscene = true
+      -- Cutscenes trigger automatically, but only arm Panels.update() if this
+      -- comic's Panels sequence was actually started this room-entry. On a repeat
+      -- run through the same room template, MazeScene:enter() skips
+      -- Panels.startCutscene() once the comic is in PlayerData.seenComics, so
+      -- flipping isCutscene here would call Panels.update() against a stale/empty
+      -- sequence and crash.
+      if not (PlayerData.seenComics and PlayerData.seenComics[other.script]) then
+          PlayerData.isGaming = false
+          PlayerData.isCutscene = true
+      end
       other:returnScript()
       printDebug("🔍 Verificando trigger después de usar:")
       local roomData = levelsLDTK[PlayerData.floor]

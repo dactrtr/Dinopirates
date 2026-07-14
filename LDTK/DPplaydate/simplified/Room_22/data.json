@@ -1,0 +1,147 @@
+{
+	"identifier": "Room_22",
+	"uniqueIdentifer": "af4d7e50-6fc0-11f1-989d-8151041b4734",
+	"x": 400,
+	"y": 1056,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "6c078cc0-6fc0-11f1-989d-171d9e0d832f",
+			"dir": "n"
+		}
+	],
+	"customFields": {
+		"shadow": true,
+		"light": 0.1,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 22,
+		"tile": 22,
+		"DoorsConnection": [],
+		"play": null,
+		"procGen": true,
+		"roomRole": "StartDown",
+		"requiredItems": [],
+		"requiredSkills": []
+	},
+	"layers": [
+		"Gameplay.png",
+		"Foreground.png"
+	],
+	"entities": {
+		"TKNotes": [
+			{
+				"id": "TKNotes",
+				"iid": "d5c86a40-6fc0-11f1-989d-35b219133546",
+				"layer": "Notes",
+				"x": 260,
+				"y": 84,
+				"width": 32,
+				"height": 48,
+				"color": 2943221,
+				"customFields": {
+					"String": "player spawn drop"
+				}
+			}
+		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "af4da560-6fc0-11f1-989d-cdee7b47a7a1",
+				"layer": "CM_and_enemies",
+				"x": 68,
+				"y": 100,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
+		"Lamp": [
+			{
+				"id": "Lamp",
+				"iid": "af4da562-6fc0-11f1-989d-77b3e3bfc5f9",
+				"layer": "Items_and_Props",
+				"x": 228,
+				"y": 84,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "lamp",
+					"isItem": true
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "af4da564-6fc0-11f1-989d-9b10dae8155e",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "af4da565-6fc0-11f1-989d-e569b633a73f",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "af4da566-6fc0-11f1-989d-0f8a38709c36",
+				"layer": "Doors",
+				"x": 88,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "af4da567-6fc0-11f1-989d-a14e745f4ad6",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
+}

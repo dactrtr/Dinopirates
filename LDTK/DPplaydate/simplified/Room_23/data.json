@@ -1,0 +1,206 @@
+{
+	"identifier": "Room_23",
+	"uniqueIdentifer": "6c078cc0-6fc0-11f1-989d-171d9e0d832f",
+	"x": 400,
+	"y": 816,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "af4d7e50-6fc0-11f1-989d-8151041b4734",
+			"dir": "s"
+		}
+	],
+	"customFields": {
+		"shadow": true,
+		"light": 0.5,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 23,
+		"tile": 23,
+		"DoorsConnection": [
+			"Top",
+			"Down",
+			"Right"
+		],
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal",
+		"requiredItems": [
+			"HasLamp"
+		],
+		"requiredSkills": []
+	},
+	"layers": [
+		"Gameplay.png",
+		"Foreground.png"
+	],
+	"entities": {
+		"Triggers": [
+			{
+				"id": "Triggers",
+				"iid": "6c078cc4-6fc0-11f1-989d-95a76337895f",
+				"layer": "Triggers",
+				"x": 214,
+				"y": 108,
+				"width": 32,
+				"height": 32,
+				"color": 16711748,
+				"customFields": {
+					"script": "pick-the-device",
+					"usedTrigger": false,
+					"type": "Cutscene",
+					"mapPercent": 0,
+					"conditionalScripts": [],
+					"SpawnConditions": []
+				}
+			}
+		],
+		"TubeExit": [
+			{
+				"id": "TubeExit",
+				"iid": "6c078cc7-6fc0-11f1-989d-ef5b03520221",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "TubeExit",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Radio": [
+			{
+				"id": "Radio",
+				"iid": "6c078cc8-6fc0-11f1-989d-c7ebb453bf97",
+				"layer": "Items_and_Props",
+				"x": 212,
+				"y": 108,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "radio",
+					"isItem": true
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "6c078cc9-6fc0-11f1-989d-d583550687bb",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "6c078ccb-6fc0-11f1-989d-2984a215336b",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "6c078ccc-6fc0-11f1-989d-4738aa318e4e",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "6c078ccd-6fc0-11f1-989d-33e68e2c9a23",
+				"layer": "Doors",
+				"x": 344,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "6c078cce-6fc0-11f1-989d-655f9f271daf",
+				"layer": "Doors",
+				"x": 88,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "6c078ccf-6fc0-11f1-989d-01f43a61e679",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "6c078cd0-6fc0-11f1-989d-3115cb3c35b5",
+				"layer": "Doors",
+				"x": 88,
+				"y": 234,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
+}
