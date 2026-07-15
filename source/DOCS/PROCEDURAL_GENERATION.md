@@ -59,7 +59,7 @@ Because `progress` only ever rises, each successive run tends to be larger and m
 | **Pool** | Templates grouped by `roomRole`, filtered to those the player can use this run. Built by `MapGenerator.buildPool()`. |
 | **Node** | A placed room in the run. References a template via `poolRoom`; holds per-run `content`/`cleared`/`edges`/`portals`. |
 | **Graph** | Array of nodes (`RunState.graph`) plus `startId` and (when revealed) `finalReserved`. |
-| **Run** | One generated graph, played until death. `PlayerData.runCount` counts runs (NewGame + each death). |
+| **Run** | One generated graph, played until death. `PlayerData.runCount` counts runs (NewGame + each death + each hole fall/tube rise). |
 
 A node never mutates its template. Everything run-specific lives on the node:
 
@@ -186,7 +186,7 @@ Two independent gates layered on top of the pool:
 - **Room-level** `requiredItems` / `requiredSkills` (§2): excludes whole rooms from the pool (checked against `PlayerData.items` / `PlayerData.skills`).
 - **Entity-level** `spawnConditions` on Items and Triggers: a render gate evaluated before the entity is created. See [SCRIPTS_TRIGGERS_NPC_SCHEMA.md](SCRIPTS_TRIGGERS_NPC_SCHEMA.md#spawn-conditions-render-gate). Uses `utilities/Conditions.lua` (`run`/`crew` aliases, AND across the array, OR with `|` inside an entry).
 
-`PlayerData.runCount` (alias `run`) increments on NewGame (set to 1) and on each death/Retry — not on hole/tube.
+`PlayerData.runCount` (alias `run`) increments on NewGame (set to 1), on each death/Retry, and on each hole fall/tube rise (every new run counts).
 
 ---
 

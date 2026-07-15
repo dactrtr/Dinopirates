@@ -92,11 +92,19 @@ Thresholds are centralized in `Config.Battery` and referenced by multiple system
 
 ### Tick timer
 
-`Player:sanityCheck()` (called from `Player:init()`) creates a `playdate.timer.keyRepeatTimerWithDelay` with:
+A **single, persistent** `playdate.timer.keyRepeatTimerWithDelay` is created **once at boot**
+in `main.lua`, driving the global `checkSanityGlobal()` (in `sanity.lua`) with:
 - Initial delay: `Config.Sanity.tickInterval = 2000` ms
 - Repeat interval: `Config.Sanity.tickInterval = 2000` ms
 
-The tick fires every 2 seconds while the player exists in the scene.
+The tick fires every 2 seconds and acts on the current live player via the global
+`CurrentPlayer` (set in `Player:init`); it is a no-op before any player exists.
+
+> **Why global, not per-Player:** a new `Player` is built on every room entry, and the tick
+> timer used to be created inside `Player:init` (via the old `Player:sanityCheck()`) with no
+> stored handle and no `remove()`. Since Noble ticks all SDK timers globally each frame, those
+> timers accumulated — after N rooms, N timers drained sanity in parallel (N×). One persistent
+> timer keeps it at exactly 1×.
 
 ### Tick logic
 
@@ -104,9 +112,9 @@ On each tick, in order (only matters in the dark — `isInDarkness == true`):
 
 1. **Sanity loss** — depends on whether the player even has a lamp:
    - **No lamp at all** (`not hasLamp`) → it's total darkness, so you lose your mind
-     regardless of charge: `sanity -= lossLowBattery (2) * self.sanityLoss`.
-   - Has lamp but `battery < batteryThresholdLow (20)` → `sanity -= lossLowBattery (2) * self.sanityLoss`
-   - Has lamp but `battery < batteryThresholdMid (40)` → `sanity -= lossMidBattery (1) * self.sanityLoss`
+     regardless of charge: `sanity -= lossLowBattery (2) * baseLoss`.
+   - Has lamp but `battery < batteryThresholdLow (20)` → `sanity -= lossLowBattery (2) * baseLoss`
+   - Has lamp but `battery < batteryThresholdMid (40)` → `sanity -= lossMidBattery (1) * baseLoss`
    - (Conditions are mutually exclusive: the no-lamp / more-severe case is evaluated first)
 
 2. **Sanity death**: if `sanity <= 0` and it was previously `> 0`:
@@ -117,13 +125,13 @@ On each tick, in order (only matters in the dark — `isInDarkness == true`):
      the procedural system — sanity hitting 0 is fatal, not just a difficulty bump.
 
 3. **Sanity gain (recovery)** — only `if not dark OR (hasLamp and battery > batteryThresholdHigh (50))`:
-   `sanity += gainHighBattery (2) * self.sanityLoss`.
+   `sanity += gainHighBattery (2) * baseLoss`.
    A **lampless** player in the dark can't restore sanity by cranking the battery — light
    is the only cure.
 
 4. Clamp: `sanity` is held within `[0, Config.Sanity.max]`.
 
-`self.sanityLoss` is `1` by default (initialized in `init.lua`). It is a multiplier that could be scaled in the future.
+`baseLoss` (`Config.Sanity.baseLoss`) is `1` by default. It is a multiplier applied to every gain/loss tick that could be scaled in the future.
 
 ### sanityCounter and powerLevel scaling
 

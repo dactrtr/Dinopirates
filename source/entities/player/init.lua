@@ -47,7 +47,6 @@ function Player:init(x, y, speed, Zindex)
     self.speed = speed
     self.initialSanity = PlayerData.sanity
     self.initialBattery = PlayerData.battery
-    self.sanityLoss = Config.Sanity.baseLoss
     self.sanity = PlayerData.sanity
     self.playerUIX = Config.Player.uiOffsetX
     self.playerUIY = Config.Player.uiOffsetY
@@ -96,7 +95,10 @@ function Player:init(x, y, speed, Zindex)
     -- MARK: Add to scene
     self.dialogUI = dialogScreen()
     self.uiHud = UIHud(x, y)
-    self:sanityCheck()
+    -- Point the single global sanity ticker (main.lua) at this live player. Reassigning
+    -- here also drops the previous player's reference so it can be GC'd — the old
+    -- per-Player timer used to pin every past player alive via its closure.
+    CurrentPlayer = self
     self:add(x, y)
 end
 

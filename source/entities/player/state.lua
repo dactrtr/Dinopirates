@@ -3,6 +3,7 @@ function Player:fallBelow()
   -- "startDown" room instead of softlocking. Meta (items/skills/crew/sanity) persists.
   printDebug("🕳️ Fell through a hole — new run (startDown)")
   PlayerData.returningInPlace = false
+  PlayerData.runCount = (PlayerData.runCount or 0) + 1  -- a hole fall starts a new run
   RunState.startRun("startdown")
   Noble.transition(MazeScene, 1.5, Noble.Transition.Imagetable, {
     imagetableEnter = Graphics.imagetable.new('assets/images/screens/transitions/transitionFallEnter'),
@@ -14,6 +15,7 @@ function Player:riseAbove()
   -- Rising through a tube starts a NEW run, entering at a "startUp" room. Meta persists.
   printDebug("🛗 Rose through a tube — new run (startUp)")
   PlayerData.returningInPlace = false
+  PlayerData.runCount = (PlayerData.runCount or 0) + 1  -- a tube rise starts a new run
   RunState.startRun("startup")
   Noble.transition(MazeScene, 1.5, Noble.Transition.Default)
 end

@@ -535,7 +535,7 @@ customFields = {
 }
 ```
 
-> `runCount` is incremented on NewGame and on each death/Retry (not on hole/tube), and persists in the save. See `PLAYERDATA_REFERENCE.md`.
+> `runCount` is incremented on NewGame, on each death/Retry, and on each hole fall/tube rise (every new run counts), and persists in the save. See `PLAYERDATA_REFERENCE.md`.
 
 ---
 

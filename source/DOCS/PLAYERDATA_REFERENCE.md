@@ -39,7 +39,7 @@ PlayerData = deepcopy(DefaultPlayerData) -- resets to default values (without re
 | `steps` | number | `0` | 0 – `Config.Pedometer.stepsToTrigger` (200, then resets) | `state.lua:pedometer()` (+0.5 per each `move()`) | `state.lua:pedometer()` (burn threshold) | Yes |
 | `totalSteps` | number | `1000` | 0 – ∞ (lifetime, never resets) | `state.lua:pedometer()` (+0.5 per each `move()`) | — (not used in active logic, potential for achievements) | Yes |
 | `mapPercent` | number | `0` | 0 – 100 | — (no documented active writer) | `Trigger:conditionalScript()` (script conditions) | Yes |
-| `runCount` | number | `0` | 0 – ∞ | `TitleScene` NewGame (set to `1`), `DeadScene` Retry (`+1` on death) — **not** on hole/tube | `Conditions.eval` (alias `run`) for `spawnConditions` gates on items/triggers | Yes |
+| `runCount` | number | `0` | 0 – ∞ | `TitleScene` NewGame (set to `1`), `DeadScene` Retry (`+1` on death), `Player:fallBelow`/`riseAbove` (`+1` per hole fall/tube rise) | `Conditions.eval` (alias `run`) for `spawnConditions` gates on items/triggers | Yes |
 
 ---
 

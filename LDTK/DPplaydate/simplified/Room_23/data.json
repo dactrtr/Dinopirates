@@ -39,26 +39,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"Triggers": [
-			{
-				"id": "Triggers",
-				"iid": "6c078cc4-6fc0-11f1-989d-95a76337895f",
-				"layer": "Triggers",
-				"x": 214,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 16711748,
-				"customFields": {
-					"script": "pick-the-device",
-					"usedTrigger": false,
-					"type": "Cutscene",
-					"mapPercent": 0,
-					"conditionalScripts": [],
-					"SpawnConditions": []
-				}
-			}
-		],
 		"TubeExit": [
 			{
 				"id": "TubeExit",
@@ -73,22 +53,6 @@
 					"type": "TubeExit",
 					"nocollider": false,
 					"destroyed": false
-				}
-			}
-		],
-		"Radio": [
-			{
-				"id": "Radio",
-				"iid": "6c078cc8-6fc0-11f1-989d-c7ebb453bf97",
-				"layer": "Items_and_Props",
-				"x": 212,
-				"y": 108,
-				"width": 32,
-				"height": 32,
-				"color": 15389866,
-				"customFields": {
-					"type": "radio",
-					"isItem": true
 				}
 			}
 		],

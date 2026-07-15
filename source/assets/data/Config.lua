@@ -136,7 +136,7 @@ Config.Battery = {
 -- Sanity
 Config.Sanity = {
     max                  = 100,   -- sanity cap (floor is always 0)
-    baseLoss             = 1,     -- base multiplier applied to every gain/loss tick (player.sanityLoss)
+    baseLoss             = 1,     -- base multiplier applied to every gain/loss tick (read by checkSanityGlobal)
     tickInterval         = 2000,  -- ms between checks
     lossLowBattery       = 2,     -- multiplier per tick when battery < batteryThresholdLow
     lossMidBattery       = 1,     -- multiplier per tick when battery < batteryThresholdMid

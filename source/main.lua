@@ -100,6 +100,11 @@ end)
 playdate.display.setRefreshRate(50)
 timers = playdate.timer
 
+-- Single, persistent sanity ticker. Replaces the per-Player timer that Player:init used
+-- to create (and never removed), which accumulated one drain per room visited. This one
+-- lives for the whole session and drives sanity at 1× via CurrentPlayer. See sanity.lua.
+playdate.timer.keyRepeatTimerWithDelay(Config.Sanity.tickInterval, Config.Sanity.tickInterval, checkSanityGlobal)
+
 function playdate.deviceDidWake()
 	MazeScene.onDeviceSleep()
 end
