@@ -190,7 +190,7 @@
 					"type": "minifier",
 					"nocollider": false,
 					"destroyed": false,
-					"forceSpawn": false
+					"forceSpawn": true
 				}
 			}
 		],

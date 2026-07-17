@@ -76,23 +76,6 @@
 				}
 			}
 		],
-		"CrewMember": [
-			{
-				"id": "CrewMember",
-				"iid": "4aab4ea0-48b0-11f1-98a2-8fbefa5863ad",
-				"layer": "CM_and_enemies",
-				"x": 76,
-				"y": 164,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
-				"customFields": {
-					"isTaken": false,
-					"crewID": "100",
-					"forceSpawn": false
-				}
-			}
-		],
 		"Minifier": [
 			{
 				"id": "Minifier",
@@ -124,6 +107,23 @@
 					"nocollider": false,
 					"destroyed": false,
 					"forceSpawn": true
+				}
+			}
+		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "4aab4ea0-48b0-11f1-98a2-8fbefa5863ad",
+				"layer": "CM_and_enemies",
+				"x": 76,
+				"y": 164,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
 				}
 			}
 		],

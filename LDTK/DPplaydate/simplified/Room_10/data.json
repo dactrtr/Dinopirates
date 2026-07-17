@@ -65,36 +65,39 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"CrewMember": [
+		"Minifier": [
 			{
-				"id": "CrewMember",
-				"iid": "e0f17d40-6fc0-11f1-b67a-c351f173c3d3",
-				"layer": "CM_and_enemies",
-				"x": 68,
-				"y": 100,
-				"width": 48,
-				"height": 48,
-				"color": 14984818,
+				"id": "Minifier",
+				"iid": "e47dfc70-6fc0-11f1-a708-57ea21846123",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
 				"customFields": {
-					"isTaken": false,
-					"crewID": "100",
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
 					"forceSpawn": false
 				}
 			}
 		],
-		"Lamp": [
+		"Notes": [
 			{
-				"id": "Lamp",
-				"iid": "840abe70-6fc0-11f1-a302-45c803554877",
+				"id": "Notes",
+				"iid": "e8efae70-6fc0-11f1-a708-81ab7e39568f",
 				"layer": "Items_and_Props",
-				"x": 228,
-				"y": 84,
+				"x": 84,
+				"y": 196,
 				"width": 32,
 				"height": 32,
 				"color": 15389866,
 				"customFields": {
-					"type": "lamp",
-					"isItem": true
+					"type": "notes",
+					"grants": "canShrink:true",
+					"isItem": true,
+					"SpawnConditions": []
 				}
 			}
 		],

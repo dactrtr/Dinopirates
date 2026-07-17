@@ -83,22 +83,23 @@
 					"conditionalScripts": [],
 					"SpawnConditions": []
 				}
-			}
-		],
-		"TubeExit": [
+			},
 			{
-				"id": "TubeExit",
-				"iid": "9fbc56a0-21a0-11f1-9039-37e7cd6f0338",
-				"layer": "Items_and_Props",
-				"x": 36,
-				"y": 204,
+				"id": "Triggers",
+				"iid": "fc22d7e0-6fc0-11f1-a708-0f64cf814c0c",
+				"layer": "Triggers",
+				"x": 348,
+				"y": 84,
 				"width": 32,
 				"height": 32,
-				"color": 2943221,
+				"color": 16711748,
 				"customFields": {
-					"type": "TubeExit",
-					"nocollider": false,
-					"destroyed": false
+					"script": "flashCrewMember",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": [],
+					"SpawnConditions": []
 				}
 			}
 		],
@@ -107,7 +108,7 @@
 				"id": "Radio",
 				"iid": "d912a690-48b0-11f1-b67e-b3bd8fef5a8f",
 				"layer": "Items_and_Props",
-				"x": 212,
+				"x": 214,
 				"y": 108,
 				"width": 32,
 				"height": 32,
@@ -118,21 +119,21 @@
 				}
 			}
 		],
-		"Minifier": [
+		"Notes": [
 			{
-				"id": "Minifier",
-				"iid": "a8596f40-48b0-11f1-98a2-3f686639278d",
+				"id": "Notes",
+				"iid": "f8714190-6fc0-11f1-a708-5de4593edd8d",
 				"layer": "Items_and_Props",
-				"x": 36,
-				"y": 36,
+				"x": 348,
+				"y": 84,
 				"width": 32,
 				"height": 32,
-				"color": 2943221,
+				"color": 15389866,
 				"customFields": {
-					"type": "minifier",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": false
+					"type": "notes",
+					"grants": "canDance:true",
+					"isItem": true,
+					"SpawnConditions": []
 				}
 			}
 		],
