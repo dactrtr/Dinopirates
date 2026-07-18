@@ -232,7 +232,7 @@ table.insert(levelsLDTK, {
           type = "minifier",
           nocollider = false,
           destroyed = false,
-          forceSpawn = false
+          forceSpawn = true
         }
       }
     },
@@ -497,6 +497,20 @@ table.insert(levelsLDTK, {
           type = "box",
           nocollider = false,
           destroyed = false
+        }
+      }
+    },
+    Lamp = {
+      {
+        id = "Lamp",
+        iid = "f05c9f40-6fc0-11f1-a708-e973129e086d",
+        x = 340,
+        y = 180,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "lamp",
+          isItem = true
         }
       }
     },
@@ -1154,20 +1168,21 @@ table.insert(levelsLDTK, {
           conditionalScripts = {},
           SpawnConditions = {}
         }
-      }
-    },
-    TubeExit = {
+      },
       {
-        id = "TubeExit",
-        iid = "9fbc56a0-21a0-11f1-9039-37e7cd6f0338",
-        x = 36,
-        y = 204,
+        id = "Triggers",
+        iid = "fc22d7e0-6fc0-11f1-a708-0f64cf814c0c",
+        x = 348,
+        y = 84,
         width = 32,
         height = 32,
         customFields = {
-          type = "TubeExit",
-          nocollider = false,
-          destroyed = false
+          script = "flashCrewMember",
+          usedTrigger = false,
+          type = "Story",
+          mapPercent = 0,
+          conditionalScripts = {},
+          SpawnConditions = {}
         }
       }
     },
@@ -1175,7 +1190,7 @@ table.insert(levelsLDTK, {
       {
         id = "Radio",
         iid = "d912a690-48b0-11f1-b67e-b3bd8fef5a8f",
-        x = 212,
+        x = 214,
         y = 108,
         width = 32,
         height = 32,
@@ -1185,19 +1200,19 @@ table.insert(levelsLDTK, {
         }
       }
     },
-    Minifier = {
+    Notes = {
       {
-        id = "Minifier",
-        iid = "a8596f40-48b0-11f1-98a2-3f686639278d",
-        x = 36,
-        y = 36,
+        id = "Notes",
+        iid = "f8714190-6fc0-11f1-a708-5de4593edd8d",
+        x = 348,
+        y = 84,
         width = 32,
         height = 32,
         customFields = {
-          type = "minifier",
-          nocollider = false,
-          destroyed = false,
-          forceSpawn = false
+          type = "notes",
+          grants = "canDance:true",
+          isItem = true,
+          SpawnConditions = {}
         }
       }
     },
@@ -1468,32 +1483,35 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    CrewMember = {
+    Minifier = {
       {
-        id = "CrewMember",
-        iid = "e0f17d40-6fc0-11f1-b67a-c351f173c3d3",
-        x = 68,
-        y = 100,
-        width = 48,
-        height = 48,
+        id = "Minifier",
+        iid = "e47dfc70-6fc0-11f1-a708-57ea21846123",
+        x = 36,
+        y = 196,
+        width = 32,
+        height = 32,
         customFields = {
-          isTaken = false,
-          crewID = "100",
+          type = "minifier",
+          nocollider = false,
+          destroyed = false,
           forceSpawn = false
         }
       }
     },
-    Lamp = {
+    Notes = {
       {
-        id = "Lamp",
-        iid = "840abe70-6fc0-11f1-a302-45c803554877",
-        x = 228,
-        y = 84,
+        id = "Notes",
+        iid = "e8efae70-6fc0-11f1-a708-81ab7e39568f",
+        x = 84,
+        y = 196,
         width = 32,
         height = 32,
         customFields = {
-          type = "lamp",
-          isItem = true
+          type = "notes",
+          grants = "canShrink:true",
+          isItem = true,
+          SpawnConditions = {}
         }
       }
     },
@@ -1714,21 +1732,6 @@ table.insert(levelsLDTK, {
         }
       }
     },
-    CrewMember = {
-      {
-        id = "CrewMember",
-        iid = "4aab4ea0-48b0-11f1-98a2-8fbefa5863ad",
-        x = 76,
-        y = 164,
-        width = 48,
-        height = 48,
-        customFields = {
-          isTaken = false,
-          crewID = "100",
-          forceSpawn = false
-        }
-      }
-    },
     Minifier = {
       {
         id = "Minifier",
@@ -1756,6 +1759,21 @@ table.insert(levelsLDTK, {
           nocollider = false,
           destroyed = false,
           forceSpawn = true
+        }
+      }
+    },
+    CrewMember = {
+      {
+        id = "CrewMember",
+        iid = "4aab4ea0-48b0-11f1-98a2-8fbefa5863ad",
+        x = 76,
+        y = 164,
+        width = 48,
+        height = 48,
+        customFields = {
+          isTaken = false,
+          crewID = "100",
+          forceSpawn = false
         }
       }
     },
@@ -2532,6 +2550,21 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
+    CrewMember = {
+      {
+        id = "CrewMember",
+        iid = "17ea8a60-6fc0-11f1-a708-21a3ebcb94e2",
+        x = 100,
+        y = 108,
+        width = 48,
+        height = 48,
+        customFields = {
+          isTaken = false,
+          crewID = "100",
+          forceSpawn = false
+        }
+      }
+    },
     Doors = {
       {
         id = "Doors",
@@ -2616,6 +2649,20 @@ table.insert(levelsLDTK, {
         }
       }
     },
+    Lamp = {
+      {
+        id = "Lamp",
+        iid = "af4da562-6fc0-11f1-989d-77b3e3bfc5f9",
+        x = 228,
+        y = 84,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "lamp",
+          isItem = true
+        }
+      }
+    },
     CrewMember = {
       {
         id = "CrewMember",
@@ -2628,20 +2675,6 @@ table.insert(levelsLDTK, {
           isTaken = false,
           crewID = "100",
           forceSpawn = false
-        }
-      }
-    },
-    Lamp = {
-      {
-        id = "Lamp",
-        iid = "af4da562-6fc0-11f1-989d-77b3e3bfc5f9",
-        x = 228,
-        y = 84,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "lamp",
-          isItem = true
         }
       }
     },
@@ -2735,24 +2768,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Triggers = {
-      {
-        id = "Triggers",
-        iid = "6c078cc4-6fc0-11f1-989d-95a76337895f",
-        x = 214,
-        y = 108,
-        width = 32,
-        height = 32,
-        customFields = {
-          script = "pick-the-device",
-          usedTrigger = false,
-          type = "Cutscene",
-          mapPercent = 0,
-          conditionalScripts = {},
-          SpawnConditions = {}
-        }
-      }
-    },
     TubeExit = {
       {
         id = "TubeExit",
@@ -2765,20 +2780,6 @@ table.insert(levelsLDTK, {
           type = "TubeExit",
           nocollider = false,
           destroyed = false
-        }
-      }
-    },
-    Radio = {
-      {
-        id = "Radio",
-        iid = "6c078cc8-6fc0-11f1-989d-c7ebb453bf97",
-        x = 212,
-        y = 108,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "radio",
-          isItem = true
         }
       }
     },

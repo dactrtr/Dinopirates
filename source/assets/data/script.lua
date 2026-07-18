@@ -553,5 +553,51 @@ script = {
                 text = "notthefirsttime-01",
             }
         }
+    },
+    {
+        name = "minifier",
+        dialog = {
+            {
+                video = 'notesHand',
+                text = "minifier-01",
+            },
+            {
+                video = 'playerSurprise',
+                text = "minifier-02",
+            },
+            {
+                video = 'notesHand',
+                text = "minifier-03",
+            },
+            {
+                video = 'playerHappy',
+                text = "minifier-04",
+            }
+        }
+    },
+    {
+        name = "flashCrewMember",
+        dialog = {
+            {
+                video = 'notesHand',
+                text = "flashcrewmember-01",
+            },
+            {
+                video = 'player',
+                text = "flashcrewmember-02",
+            },
+            {
+                video = 'radioPocket',
+                text = "flashcrewmember-03",
+            },
+            {
+                video = 'playerSurprise',
+                text = "flashcrewmember-04",
+            },
+            {
+                video = 'radioHand',
+                text = "flashcrewmember-05",
+            }
+        }
     }
 }

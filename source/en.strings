@@ -91,3 +91,13 @@
 "finalterminal-01" = "The control panel! This must be the ship's cockpit."
 "finalterminal-02" = "Time to take the helm and get us out of here."
 "notthefirsttime-01" = "What? this isn’t the first time I visit this room, but looks different"
+"minifier-01" = "The machine in front of you is my latest invention, the minifier, it can turn anyone in a crewmember size dinosaur."
+"minifier-02" = "Wow, I dunno why someone would like to become that small and powerless, but seems like a great machine."
+"flashcrewmember-01" = "DR NOTES:
+Crewmembers are really photo sensitive, if you flash them they can get stunned."
+"minifier-03" = "Just get close, press *A*, and then turn the crank anticlockwise to *minify* and clockwise to *normalize*"
+"minifier-04" = "maybe I can lose some weight and fit in tighter spaces. . ."
+"flashcrewmember-02" = "so if I point to them and press *B* they will be stunned?"
+"flashcrewmember-03" = "Captain you don’t need to say everything that you think"
+"flashcrewmember-04" = "You can read my thought with this device?"
+"flashcrewmember-05" = "NO, you were literally talking."

@@ -65,6 +65,44 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"Triggers": [
+			{
+				"id": "Triggers",
+				"iid": "a08811a0-6fc0-11f1-a708-f7aab4cf528d",
+				"layer": "Triggers",
+				"x": 108,
+				"y": 200,
+				"width": 32,
+				"height": 32,
+				"color": 16711748,
+				"customFields": {
+					"script": "minifier",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": [],
+					"SpawnConditions": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "fb5d1a40-6fc0-11f1-a708-c33a306889c2",
+				"layer": "Triggers",
+				"x": 132,
+				"y": 24,
+				"width": 16,
+				"height": 16,
+				"color": 16711748,
+				"customFields": {
+					"script": null,
+					"usedTrigger": false,
+					"type": "Search",
+					"mapPercent": 0,
+					"conditionalScripts": [],
+					"SpawnConditions": []
+				}
+			}
+		],
 		"Minifier": [
 			{
 				"id": "Minifier",
@@ -86,37 +124,22 @@
 		"Notes": [
 			{
 				"id": "Notes",
-				"iid": "e8efae70-6fc0-11f1-a708-81ab7e39568f",
+				"iid": "f2684690-6fc0-11f1-a708-e1d6abd78072",
 				"layer": "Items_and_Props",
-				"x": 84,
+				"x": 108,
 				"y": 196,
 				"width": 32,
 				"height": 32,
 				"color": 15389866,
 				"customFields": {
 					"type": "notes",
-					"grants": "canShrink:true",
+					"grants": "canDance:true",
 					"isItem": true,
 					"SpawnConditions": []
 				}
 			}
 		],
 		"Doors": [
-			{
-				"id": "Doors",
-				"iid": "326d5091-48b0-11f1-a37f-c9c6dc1c96aa",
-				"layer": "Doors",
-				"x": 200,
-				"y": 236,
-				"width": 48,
-				"height": 8,
-				"color": 16711680,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Down",
-					"KeyNumber": null
-				}
-			},
 			{
 				"id": "Doors",
 				"iid": "326d5092-48b0-11f1-a37f-056bd4dafd81",
