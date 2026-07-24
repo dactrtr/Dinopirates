@@ -589,6 +589,14 @@ function scene:finish()
 	scene.super.finish(self)
 	-- Your code here
 	PlayerData.isGaming = false
+	-- Noble runs the OUTGOING scene's finish() (this) at the transition midpoint,
+	-- BEFORE the incoming scene's enter() runs RunState.consumePending(). So on a door
+	-- transition currentNodeId is still the room we're leaving — the destination is
+	-- staged in pendingNodeId and not yet promoted. Promote it here so the save records
+	-- the room the player is actually entering, not the previous one (otherwise Continue
+	-- after a cold boot lands in the previous room). No-op for transitions that didn't
+	-- queue a destination (DanceScene, DeadScene, Cockpit), where pendingNodeId is nil.
+	RunState.consumePending()
 	SaveSystem.save()
 end
 
