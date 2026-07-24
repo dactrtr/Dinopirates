@@ -29,7 +29,19 @@ function Player:initAnimations()
   
   self.animation:addState('charge', 36, 40)
   self.animation.charge.frameDuration = 12
-  
+
+  self.animation:addState('dashRight', 65, 68)
+  self.animation.dashRight.frameDuration = 3
+
+  self.animation:addState('dashLeft', 69, 72)
+  self.animation.dashLeft.frameDuration = 3
+
+  self.animation:addState('dashUp', 65, 68)
+  self.animation.dashUp.frameDuration = 3
+
+  self.animation:addState('dashDown', 65, 68)
+  self.animation.dashDown.frameDuration = 3
+
   self.animation:addState('tinyIdle', 73, 81)
   self.animation.tinyIdle.frameDuration = frameDurationWalk/2
   

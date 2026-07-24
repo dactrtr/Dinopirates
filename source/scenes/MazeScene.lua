@@ -64,6 +64,16 @@ local crankIsMoving = false
 local crankStopTimer = 0
 local CRANK_STOP_THRESHOLD = 0.1 -- seconds of inactivity before considering crank stopped
 local bButtonDownTime = nil -- ms timestamp when B was pressed; drives custom hold-to-charge (SDK Held is fixed at 1s)
+local lastTapTime = { up = nil, down = nil, left = nil, right = nil } -- ms timestamps for double-tap dash detection
+local function checkDoubleTap(dir)
+	local now = playdate.getCurrentTimeMilliseconds()
+	if lastTapTime[dir] and (now - lastTapTime[dir]) <= Config.Dash.tapWindow then
+		lastTapTime[dir] = nil
+		return true
+	end
+	lastTapTime[dir] = now
+	return false
+end
 local tileColliders = {}
 
 -- This is the background color of this scene.
@@ -704,6 +714,10 @@ scene.inputHandler = {
 	--
 	leftButtonDown = function()
 		if player.isSleeping then return end
+		if checkDoubleTap('left') then
+			player:dash('left')
+			return
+		end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'left'
@@ -731,6 +745,10 @@ scene.inputHandler = {
 	--
 	rightButtonDown = function()
 		if player.isSleeping then return end
+		if checkDoubleTap('right') then
+			player:dash('right')
+			return
+		end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'right'
@@ -758,6 +776,10 @@ scene.inputHandler = {
 	--
 	upButtonDown = function()
 		if player.isSleeping then return end
+		if checkDoubleTap('up') then
+			player:dash('up')
+			return
+		end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'up'
@@ -785,6 +807,10 @@ scene.inputHandler = {
 	--
 	downButtonDown = function()
 		if player.isSleeping then return end
+		if checkDoubleTap('down') then
+			player:dash('down')
+			return
+		end
 		if isDiagonalMovementEnabled or not isPlayerMoving then
 			isPlayerMoving = true
 			currentMoveDirection = 'down'

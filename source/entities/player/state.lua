@@ -308,6 +308,9 @@ function Player:update()
     return
   end
 
+  -- Update dash movement if dashing
+  self:updateDash()
+
   -- Update sliding movement if on slime
   self:updateSliding()
 

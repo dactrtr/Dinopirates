@@ -3,7 +3,7 @@
 
 -- Check if the player is standing on a slime tile and start sliding
 function Player:checkSlimeTile()
-    if self.isSliding or self.isPlunging then
+    if self.isSliding or self.isDashing or self.isPlunging then
         return
     end
 
@@ -28,7 +28,7 @@ function Player:checkSlimeTile()
 end
 
 function Player:startSliding(direction)
-    if self.isSliding then
+    if self.isSliding or self.isDashing then
         return
     end
 

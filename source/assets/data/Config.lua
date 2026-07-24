@@ -64,6 +64,15 @@ Config.Player = {
     hudEdgeRight            = 350, -- px from left; past this the floating HUD flips to the player's left
 }
 
+-- Dash ability (double-tap a D-pad direction to trigger)
+Config.Dash = {
+    speed          = 6,
+    totalDistance  = 56,
+    bounceDistance = 16,
+    cooldown       = 500,   -- ms, dash-to-dash
+    tapWindow      = 250,   -- ms, double-tap detection window
+}
+
 -- Microwave + Food healing
 Config.Microwave = {
     hpPerFood       = 1,   -- HP restored per food cooked (1:1 for now; tune later)
