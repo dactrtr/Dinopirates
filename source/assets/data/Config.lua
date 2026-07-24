@@ -195,7 +195,8 @@ Config.Projectile = {
 Config.Doors = {
     thickness = 8,   -- thin axis of a door's collide rect (px) — keeps doors from grabbing the player early
     span      = 48,  -- long axis of a door's collide rect (px) — width of the doorway opening
-    spawnInset = 32, -- px the player spawns inward from the door it entered through (clears the door rect)
+    spawnInsetTiny   = 16, -- px spawned inward from the entry door when tiny (smaller collider → spawns closer)
+    spawnInsetNormal = 24, -- px spawned inward from the entry door at normal size (clears the door rect)
     positions = {
         right = {x=393, y=122},
         left  = {x=4,   y=122},

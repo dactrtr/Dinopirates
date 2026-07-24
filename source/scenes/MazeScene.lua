@@ -173,27 +173,30 @@ function scene:enter()
 		end
 	end
 	if spawnDoor then
-		local inset = Config.Doors.spawnInset
+		-- Tiny player has a much smaller collider, so it can spawn closer to the door.
+		local inset = PlayerData.isTiny and Config.Doors.spawnInsetTiny or Config.Doors.spawnInsetNormal
 		-- The player sprite is 48x48 and anchored at its centre, but its collide rect is
 		-- offset within it, so the centre is not the visual body. Compute the body offset
-		-- and align the player's body to the door's centre on the cross axis (centred),
-		-- while pushing it 'inset' away on the main axis (away from the door).
-		local cr = Config.Player.collideRect
+		-- (using the collider that matches the current size) and align the player's body to
+		-- the door's centre on the cross axis, while pushing the body 'inset' away on the
+		-- main axis. bodyDX/bodyDY are subtracted on BOTH axes so it's the body — not the
+		-- sprite centre — that lands at 'inset', keeping top/down (and left/right) symmetric.
+		local cr = PlayerData.isTiny and Config.Player.collideRectTiny or Config.Player.collideRect
 		local spriteHalf = 24  -- player sprite is 48x48 (see Player:init setSize)
 		local bodyDX = (cr.x + cr.w / 2) - spriteHalf
 		local bodyDY = (cr.y + cr.h / 2) - spriteHalf
 		local sx, sy = spawnDoor.x, spawnDoor.y
 		if spawnSide == "left" then
-			sx = spawnDoor.x + inset
+			sx = spawnDoor.x + inset - bodyDX
 			sy = spawnDoor.y - bodyDY
 		elseif spawnSide == "right" then
-			sx = spawnDoor.x - inset
+			sx = spawnDoor.x - inset - bodyDX
 			sy = spawnDoor.y - bodyDY
 		elseif spawnSide == "top" then
-			sy = spawnDoor.y + inset
+			sy = spawnDoor.y + inset - bodyDY
 			sx = spawnDoor.x - bodyDX
 		elseif spawnSide == "down" then
-			sy = spawnDoor.y - inset
+			sy = spawnDoor.y - inset - bodyDY
 			sx = spawnDoor.x - bodyDX
 		end
 		-- Don't override the spawn when returning in place from a fight (DanceScene set
