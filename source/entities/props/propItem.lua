@@ -82,8 +82,9 @@ function PropItem:update()
 end
 
 function PropItem:destroyProp(id)
-  findAndDestroyPropById(id) 
+  findAndDestroyPropById(id)
   self:clearCollideRect()
+  self.isStaticZIndex = true
   self:setZIndex(ZIndex.props)
   self.animation:setState('debris')
 end
