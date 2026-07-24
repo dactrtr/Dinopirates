@@ -95,10 +95,10 @@ TitleScene.inputHandler = {
 -- first thing that happens when transitioning away from another scene.
 function scene:init()
 	scene.super.init(self)
-	
+
 	-- Crear backup del estado original de levelsLDTK (solo una vez)
 	SaveSystem.createOriginalBackup()
-	
+
 	-- Initialize original state if needed (legacy, puedes removerlo después)
 	if not playdate.file.exists('levelOriginal.json') then
 		playdate.datastore.write(PlayerDataOriginal, 'playerOriginal', true)
@@ -124,7 +124,7 @@ end
 function scene:enter()
 	scene.super.enter(self)
 	PlayerData.isGaming = false
-	
+
 	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 	menuItems = {}
 	isDebugMenu = (debugMenu == true)
@@ -294,6 +294,11 @@ function scene:enter()
 
 	selectedIndex = 1
 	updateMenuSelection()
+
+	-- Force an explicit redraw so the title sprites are guaranteed to hit the
+	-- screen on the very first frame. Mirrors the fix already applied in
+	-- CreditsScene:enter() for the same "black screen on cold boot" symptom.
+	Graphics.sprite.redrawBackground()
 
 	if menuBackgroundMusic then
 		menuBackgroundMusic:play(0)

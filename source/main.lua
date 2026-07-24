@@ -1,4 +1,21 @@
 import 'libraries/noble/Noble'
+
+-- playdate.getFPS() reports a MEASURED rate and can legitimately return 0 on
+-- the very first transition of a freshly-launched process (no frame history
+-- yet). Noble.Transition:init() divides 1/playdate.getFPS() as a failsafe
+-- padding calculation; 1/0 silently produces an infinite frameDuration in Lua
+-- (not an error), which makes the transition's "enter" duration effectively
+-- infinite — its midpoint (and the scene's enter()) then never fires, which
+-- showed up as a black screen with no audio on the console's very first
+-- launch after a fresh install. Patched here instead of in the vendored
+-- library so it survives a Noble Engine update.
+local _playdateGetFPS = playdate.getFPS
+function playdate.getFPS()
+	local fps = _playdateGetFPS()
+	if not fps or fps <= 0 then return 30 end
+	return fps
+end
+
 import 'libraries/panels/Panels'
 -- import 'libraries/ldtk/LDtk'
 import 'achievements/all'
