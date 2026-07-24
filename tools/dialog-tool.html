@@ -393,7 +393,12 @@ function exportStrings(lang) {
   const obj = state.strings[lang];
   const keys = Object.keys(obj);
   if (!keys.length) return '';
-  return keys.map(k=>`"${k}" = "${(obj[k]||'').replace(/"/g,'\\"')}"`).join('\n');
+  // .strings entries must be single-line: escape backslashes first, then quotes,
+  // then any real newline in the text as a literal \n so multi-line dialog text
+  // (e.g. "DR NOTES:\nCrewmembers...") round-trips through getLocalizedText()
+  // instead of breaking the "key" = "value" line and silently failing to load.
+  const escapeValue = v => (v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\r?\n/g,'\\n');
+  return keys.map(k=>`"${k}" = "${escapeValue(obj[k])}"`).join('\n');
 }
 
 // ----- Helpers -----
