@@ -92,7 +92,10 @@ function Player:initAnimations()
   
   self.animation:addState('sleep', 146, 147)
   self.animation.sleep.frameDuration = 18
-  
+
+  self.animation:addState('sleepTiny', 160, 161)
+  self.animation.sleepTiny.frameDuration = 18
+
   self.animation:addState('shootLeft', 148, 150, 'noLegLeft')
   self.animation.shootLeft.frameDuration = 4
 
@@ -112,7 +115,7 @@ function Player:initAnimations()
   self.animation.shock.frameDuration = 8
   
   if PlayerData.fromTitle then
-    self.animation:setState('sleep')
+    self.animation:setState(PlayerData.isTiny and 'sleepTiny' or 'sleep')
   elseif (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')
   elseif PlayerData.isTiny == true then

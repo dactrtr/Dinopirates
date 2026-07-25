@@ -464,11 +464,9 @@ function scene:start()
 	self:setDiagonalMovement(diagonalMovement)
 	if PlayerData.fromTitle then
 		PlayerData.fromTitle = false
-		if not PlayerData.isTiny then
-			player:startSleeping()
-		else
-			PlayerData.isGaming = true
-		end
+		-- Sleep on entry from the title (normal → 'sleep', tiny → 'sleepTiny'; the state
+		-- is picked inside startSleeping). Wake is via any d-pad press (Player:update).
+		player:startSleeping()
 	else
 		PlayerData.isGaming = true
 	end
@@ -607,7 +605,7 @@ function scene:pause()
 end
 
 function MazeScene.onDeviceSleep()
-	if player and PlayerData.isGaming and not PlayerData.isTiny then
+	if player and PlayerData.isGaming then
 		player:startSleeping()
 	end
 end

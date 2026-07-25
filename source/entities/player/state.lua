@@ -405,7 +405,7 @@ end
 function Player:startSleeping()
     self.isSleeping = true
     self.wakeupPresses = 0
-    self.animation:setState('sleep')
+    self.animation:setState(PlayerData.isTiny and 'sleepTiny' or 'sleep')
 end
 
 function Player:onWakePress()
