@@ -1,12 +1,25 @@
 {
 	"identifier": "Room_20",
 	"uniqueIdentifer": "bd739520-6fc0-11f1-b67a-b3124c589208",
-	"x": 1280,
-	"y": -640,
+	"x": 800,
+	"y": -480,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [],
+	"neighbourLevels": [
+		{
+			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
+			"dir": "w"
+		},
+		{
+			"levelIid": "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
+			"dir": "s"
+		}
+	],
 	"customFields": {
 		"shadow": true,
 		"light": 0.1,
@@ -23,7 +36,7 @@
 			"Down"
 		],
 		"play": null,
-		"procGen": true,
+		"procGen": false,
 		"roomRole": "Normal",
 		"requiredItems": [],
 		"requiredSkills": []
@@ -33,6 +46,106 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "392cf760-6fc0-11f1-81c8-079adf67aa66",
+				"layer": "Items_and_Props",
+				"x": 156,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "3a5d3a00-6fc0-11f1-81c8-992bd2cfb4f2",
+				"layer": "Items_and_Props",
+				"x": 156,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "401a57c0-6fc0-11f1-81c8-6d07dc2b645b",
+				"layer": "Items_and_Props",
+				"x": 44,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
+				}
+			},
+			{
+				"id": "Minifier",
+				"iid": "43a81260-6fc0-11f1-81c8-c9e2321e3370",
+				"layer": "Items_and_Props",
+				"x": 252,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "30a10230-6fc0-11f1-81c8-6556572588e3",
+				"layer": "CM_and_enemies",
+				"x": 308,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "320c7910-6fc0-11f1-81c8-27949d5cf5c8",
+				"layer": "CM_and_enemies",
+				"x": 316,
+				"y": 44,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",

@@ -1,9 +1,11 @@
--- Only the debug-menu entry points need a generated FloorXXX class: the live game enters
--- MazeScene directly via the procedural run graph (RunState). Floor407 = debug "GAME",
--- Floor409 = debug "PLAYGROUND" (see TitleScene.lua).
+-- Only the debug-menu "GAME" entry point needs a generated FloorXXX class: the live game
+-- enters MazeScene directly via the procedural run graph (RunState). Floor407 = debug "GAME"
+-- (starts a fresh procedural run — see TitleScene.lua). The debug "PLAYGROUND" entry no
+-- longer uses a FloorXXX class; it builds a single-room run via RunState.startDebugRoom and
+-- transitions straight to MazeScene, because the old FloorXXX/setFloor room jump is dead
+-- under the procedural model (MazeScene:enter resolves the room from the run graph node).
 local floorRanges = {
 	{ start = 407, stop = 407 },
-	{ start = 409, stop = 409 },
 }
 
 for _, range in ipairs(floorRanges) do

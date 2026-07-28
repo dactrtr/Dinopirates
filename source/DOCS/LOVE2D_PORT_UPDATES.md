@@ -10,6 +10,37 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-07-26 — Tiny player sleep state (new `sleepTiny` animation)
+
+**What:** The player can now sleep while minified, using a dedicated tiny sleep animation.
+Previously tiny players never entered the sleep state, yet the entry-from-title pose forced
+the normal `sleep` frames on them — so a tiny player returning via Continue briefly showed
+the wrong (normal-size) sleep pose while not actually being asleep.
+
+**Why:** The spritesheet gained a tiny-sleep animation (last two tiles), and the sleep
+behaviour was inconsistent between the initial pose and the actual sleep trigger for tiny.
+
+**Fix:**
+- New animation state `sleepTiny` (frames 160-161, `frameDuration = 18`, same cadence as
+  `sleep`).
+- `Player:startSleeping()` and the from-title initial pose now pick `sleepTiny` when
+  `PlayerData.isTiny`, else `sleep`.
+- Removed the two `not PlayerData.isTiny` guards that prevented tiny from sleeping:
+  `MazeScene:start()` (entry from title) and `MazeScene.onDeviceSleep()` (console sleep).
+  Wake is size-agnostic — handled in `Player:update()` by any d-pad press
+  (`wakeupPressesRequired = 2`).
+
+**Files:** `entities/player/animations.lua` (`sleepTiny` state + from-title pose),
+`entities/player/state.lua` (`startSleeping`), `scenes/MazeScene.lua` (`start`,
+`onDeviceSleep`).
+
+**Love2D mapping:** Add a `sleepTiny` animation and select it by player size wherever the
+sleep pose is set (both the initial pose on scene entry and the runtime sleep trigger — keep
+them consistent). The port's sleep/wake state machine is otherwise unchanged: enter sleep on
+title-entry and device-sleep; wake on N d-pad presses regardless of size.
+
+---
+
 ## 2026-07-25 — Save records the wrong room on door transitions
 
 **What:** Fixed a bug where, after entering a room and cold-booting (simulator "Restart"),

@@ -171,9 +171,16 @@ function scene:enter()
 		table.insert(menuItems, {
 			label  = "PLAYGROUND",
 			action = function()
+				-- Debug: load one specific room in isolation. The old FloorXXX/setFloor jump
+				-- is dead under the procedural model (MazeScene:enter resolves the room from
+				-- the run graph), so build a single-node run for it and enter MazeScene
+				-- directly. Change the level/room here to test a different room.
+				SaveSystem.reset()
+				RunState.startDebugRoom(4, 20)
 				PlayerData.playerSpawn.x = 200
 				PlayerData.playerSpawn.y = 200
-				Noble.transition(Floor409, 0.3, Noble.Transition.MetroNexus)
+				PlayerData.returningInPlace = true
+				Noble.transition(MazeScene, 0.3, Noble.Transition.MetroNexus)
 			end
 		})
 		table.insert(menuItems, {

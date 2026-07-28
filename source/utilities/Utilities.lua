@@ -32,6 +32,7 @@ function Utilities.iddqd()
 	
 	PlayerData.skills.canFlash = true
 	PlayerData.skills.canPlungerang = true
+	PlayerData.skills.canGrapple = true
 	
 	-- PlayerData.CrewMemberData.amountTaken = 21
 	-- PlayerData.CrewMemberData.idNumbers.CM001 = true

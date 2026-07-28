@@ -552,6 +552,46 @@ function MapGenerator.generate(progress, entryRole)
 	return graph
 end
 
+-- Debug/playground: build a single-node run graph containing exactly the room matching
+-- level+roomNumber. Unlike generate(), all authored enemies and utilities are force-spawned
+-- (no random roll) so the room can be tested in isolation, and every door side is left
+-- unconnected (so it wall-plugs into a sealed room). Returns the graph, or nil if no room
+-- with that level+roomNumber exists. See RunState.startDebugRoom / TitleScene PLAYGROUND.
+function MapGenerator.debugRoomGraph(level, roomNumber)
+	local template
+	for _, t in ipairs(levelsLDTK or {}) do
+		local cf = t.customFields
+		if cf and cf.level == level and cf.roomNumber == roomNumber then template = t; break end
+	end
+	if not template then
+		printDebug("⚠️ debugRoomGraph: no room for level " .. tostring(level) .. ", room " .. tostring(roomNumber))
+		return nil
+	end
+
+	local node = makeNode(1, template)
+	local ents = template.entities or {}
+	for _, kind in ipairs({ "Brocorat", "Bosscolli" }) do
+		for _, e in ipairs(ents[kind] or {}) do
+			table.insert(node.content.enemies, {
+				x = e.x, y = e.y, kind = kind,
+				speed = e.customFields and e.customFields.speed,
+				key = "1:" .. (e.iid or ("e" .. #node.content.enemies)),
+			})
+		end
+	end
+	node.content.utilities = {}
+	for _, kind in ipairs({ "Microwave", "Minifier" }) do
+		for _, e in ipairs(ents[kind] or {}) do
+			if e.iid then node.content.utilities[e.iid] = true end
+		end
+	end
+
+	local graph = { node }
+	graph.startId = 1
+	graph.finalReserved = nil
+	return graph
+end
+
 -- Debug invariant check: generates a graph at a given progress and asserts that
 -- every node is reachable from the start and every edge is bidirectional.
 -- Prints a summary via printDebug. Returns true on success.

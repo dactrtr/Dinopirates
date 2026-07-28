@@ -22,6 +22,18 @@ function RunState.getNode(id)
 	return RunState.graph[id]
 end
 
+-- Debug/playground: replace the active run with a single-node run holding exactly the room
+-- matching level+roomNumber (see MapGenerator.debugRoomGraph). Staged like startRun so the
+-- next MazeScene:enter lands on it. Returns true if the room exists.
+function RunState.startDebugRoom(level, roomNumber)
+	local graph = MapGenerator.debugRoomGraph(level, roomNumber)
+	if not graph then return false end
+	RunState.graph = graph
+	RunState.currentNodeId = nil
+	RunState.pendingNodeId = graph.startId
+	return true
+end
+
 function RunState.currentNode()
 	return RunState.getNode(RunState.currentNodeId)
 end
