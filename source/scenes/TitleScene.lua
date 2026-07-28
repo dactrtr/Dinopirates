@@ -129,17 +129,7 @@ function scene:enter()
 	menuItems = {}
 	isDebugMenu = (debugMenu == true)
 
-	local version = "* Demo " .. playdate.metadata.version .. "*"
-	local vw, vh = Graphics.getTextSize(version)
-	local versionImage = Graphics.image.new(vw + 4, vh + 4, Graphics.kColorClear)
-	Graphics.pushContext(versionImage)
-		Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
-		Graphics.drawText(version, 0, 0)
-	Graphics.popContext()
-	versionSprite = Graphics.sprite.new(versionImage)
-	versionSprite:setZIndex(200)
-	versionSprite:moveTo(400 - vw / 2 - 2, vh / 2 + 2)
-	versionSprite:add()
+	versionSprite = drawVersionNumber()
 
 	if isDebugMenu then
 		-- Debug mode: text-only menu, no background or sprites

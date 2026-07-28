@@ -1,4 +1,4 @@
-	import 'enemy'
+	import 'entities/enemies/enemy'
 
 Brocorat = {}
 class('Brocorat').extends('Enemy')

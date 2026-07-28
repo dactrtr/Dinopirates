@@ -132,30 +132,27 @@ function printDebug(value)
 	end
 end
 
-function drawVersionNumber(x, y, alignment)
-	-- Save current graphics context to avoid affecting sprites
-	Graphics.pushContext()
-	
-	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
-	
-	-- local version = "*"..Panels.vars.lang.."* Demo*" .. playdate.metadata.version .. "*"
-	local version = "* Demo " .. playdate.metadata.version .. "*"  -- Wrap version in * for bold
-	local versionWidth = Graphics.getTextSize(version)
-	
-	-- If no x position provided, default to right-aligned at 400 (screen width)
-	x = x or 400
-	-- If no y position provided, default to 2 (near top)
-	y = y or 2
-	-- If no alignment provided, default to right alignment with 4px padding
-	if alignment == nil then
-		x = x - versionWidth - 4
-	end
-	
-	Graphics.drawText(version, x, y)
-	
-	-- Restore previous graphics context
+-- Builds the "Demo <version>" label as its own sprite (bold, black text on a
+-- clear background) and adds it to the display. Returns the sprite so the caller
+-- can remove it later (e.g. on scene exit). x/y default to the top-right corner
+-- and zIndex defaults to 200.
+function drawVersionNumber(x, y, zIndex)
+	-- local version = "*"..Panels.vars.lang.."* Demo*" .. playdate.metadata.version .. "*" -- future JP support
+	local version = "* Demo " .. playdate.metadata.version .. "*"  -- * wraps text in bold
+	local vw, vh = Graphics.getTextSize(version)
+
+	local versionImage = Graphics.image.new(vw + 4, vh + 4, Graphics.kColorClear)
+	Graphics.pushContext(versionImage)
+		Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
+		Graphics.drawText(version, 0, 0)
 	Graphics.popContext()
-end 
+
+	local versionSprite = Graphics.sprite.new(versionImage)
+	versionSprite:setZIndex(zIndex or 200)
+	versionSprite:moveTo(x or (400 - vw / 2 - 2), y or (vh / 2 + 2))
+	versionSprite:add()
+	return versionSprite
+end
 
 -- Finds and kills an enemy by its unique ID (LDtk version)
 -- Procedural runs: an enemy's id is its per-node key. Mark it cleared on the active
@@ -265,17 +262,6 @@ function Utilities.checkSanityAchievements()
 	if achievement then
 		Utilities.grantAchievementIfNeeded(achievement)
 	end
-end
-
-function renderTileMap(tileData, tilemap)
-  local height = #tileData
-  local width = #tileData[1]
-  tilemap:setSize(width, height)
-  for y = 1, height do
-	for x = 1, width do
-	  tilemap:setTileAtPosition(x, y, tileData[y][x])
-	end
-  end
 end
 
 local TILE_SIZE = Config.Tiles.size

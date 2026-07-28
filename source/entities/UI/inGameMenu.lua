@@ -1,6 +1,5 @@
 inGameMenu = {}
 class('inGameMenu').extends(Graphics.sprite)
-import "entities/props/hats"
 import 'utilities/MapDrawer'
 
 local shadow = Graphics.image.new(400,240)
