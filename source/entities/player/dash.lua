@@ -144,6 +144,7 @@ function Player:updateDash()
 end
 
 function Player:endDash()
+    local dashDir = self.dashDirection
     self.isDashing = false
     self.dashDirection = nil
     self.dashProgress = 0
@@ -156,4 +157,22 @@ function Player:endDash()
     end
 
     printDebug("✅ Dash completed!")
+
+    -- Dashing into a hazard is a deliberate commit: if the dash LANDS on a hole/slime, fall or
+    -- slide immediately (bypassing the grace period). If the dash carried the player off the
+    -- tile, nothing happens — a clean cross.
+    if self.isFalling then return end
+    local onHole = IsPlayerOnHole(self.x, self.y)
+        or (PlayerData.isTiny and IsPlayerOnTinyHole(self.x, self.y))
+    if onHole and not (PlayerData.items.hasBoots == true and PlayerData.battery > 0) then
+        self.holeGracePixels = 0
+        self.isFalling = true
+        self:fallBelow()
+        return
+    end
+    if Config.Slide.warningEnabled and PlayerData.skills.canCrossSlime ~= true
+        and IsPlayerOnSlime(self.x, self.y) then
+        self.slideGracePixels = 0
+        self:startSliding(dashDir or self.direction)
+    end
 end

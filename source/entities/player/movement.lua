@@ -76,6 +76,12 @@ function Player:move(direction)
         self.animation:setState(self.shootDir == 'left' and 'noLegLeft' or 'noLegRight')
       end
 
+      -- About to fall/slide: override the walk pose with the balancing sprite so the state
+      -- reads clearly. Gated by Config.Player.balancingSprite (via isBalancing).
+      if self:isBalancing() then
+        self.animation:setState(PlayerData.isTiny and 'balancingTiny' or 'balancing')
+      end
+
       self.uiHud:moveTo(movementX + self.playerUIX, movementY - self.playerUIY)
       
       local actualX, actualY, collisions, lenght = self:moveWithCollisions(movementX, movementY )

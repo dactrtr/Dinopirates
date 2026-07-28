@@ -317,12 +317,32 @@ function Player:update()
   -- Update grappling-hook pull if active
   self:updateGrapplePull()
 
+  -- Balancing grace: measure this frame's movement + reset counters when off the hazard.
+  self:updateGraceMove()
+
   -- Check if player is on a slime tile (IDs 89-97)
   self:checkSlimeTile()
 
   -- Check if player is on a hole tile (IDs 104-115)
   self:checkHoleTile()
   self:checkTinyHoleTile()
+
+  -- Balancing warning HUD + sprite: show the moment grace crosses the warning threshold, hide
+  -- when it clears. Driven from update() (not move()) so both the HUD and the balancing sprite
+  -- appear on contact and persist even if the player stops on the hazard without pressing a
+  -- direction. The _warningShown flag ensures we only hide the HUD we showed (never a
+  -- pressA/crank prompt another system put up). setState is idempotent, so re-setting the
+  -- balancing pose every frame here (and again in move()) does not restart the animation.
+  if self:hasBalanceGrace() then
+    self.uiHud:setWarning()
+    self._warningShown = true
+    if self:isBalancing() then
+      self.animation:setState(PlayerData.isTiny and 'balancingTiny' or 'balancing')
+    end
+  elseif self._warningShown then
+    self.uiHud:setVisible(false)
+    self._warningShown = false
+  end
 
   -- Hide light cone after display time
   if self.lightConeHideTime and playdate.getCurrentTimeMilliseconds() >= self.lightConeHideTime then

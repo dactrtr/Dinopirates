@@ -96,6 +96,14 @@ function Player:initAnimations()
   self.animation:addState('sleepTiny', 160, 161)
   self.animation.sleepTiny.frameDuration = 18
 
+  -- Balancing (about to fall/slide). Placeholder: reuse the sleep frames until dedicated art
+  -- exists. balancingTiny mirrors the tiny/normal split like sleep/sleepTiny.
+  self.animation:addState('balancing', 146, 147)
+  self.animation.balancing.frameDuration = 18
+
+  self.animation:addState('balancingTiny', 160, 161)
+  self.animation.balancingTiny.frameDuration = 18
+
   self.animation:addState('shootLeft', 148, 150, 'noLegLeft')
   self.animation.shootLeft.frameDuration = 4
 

@@ -23,8 +23,18 @@ function Player:checkSlimeTile()
     if PlayerData.skills.canCrossSlime == true then
         return
     end
-    -- Start sliding in current direction
-    self:startSliding(self.direction)
+    -- When the warning is disabled, keep the legacy immediate slide.
+    if Config.Slide.warningEnabled == false then
+        self:startSliding(self.direction)
+        return
+    end
+
+    -- Accumulate grace; only start sliding once the player has moved slidePixels over slime.
+    self.slideGracePixels = self.slideGracePixels + self._graceMove
+    if self.slideGracePixels >= Config.Slide.slidePixels then
+        self.slideGracePixels = 0
+        self:startSliding(self.direction)
+    end
 end
 
 function Player:startSliding(direction)

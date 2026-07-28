@@ -10,6 +10,49 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-07-28 — Balancing: grace before falling/sliding
+
+**What:** Falling through holes and sliding on slime no longer trigger on first contact; they
+now require a short grace period (measured in pixels of movement while over the tile) with an
+on-screen HUD warning and an optional "balancing" player sprite. A single-pixel clip no longer
+drops the player into a whole new run.
+
+**Why (root cause):** The immediate trigger was too punishing and led to frustrating deaths from
+accidental one-frame clips.
+
+**Fix:**
+- Two per-player pixel accumulators (`holeGracePixels`, `slideGracePixels`) grow while moving
+  over a hazard tile and reset when stepping off (`Player:updateGraceMove`).
+- **Two thresholds per hazard**, both in px of movement over the tile: a *warning* threshold
+  (when the HUD warning + balancing sprite appear) and an *activation* threshold (when the
+  fall/slide actually fires). Config: `Config.Hole.warningPixels` (default 0 = on contact),
+  `Config.Hole.fallPixels` (normal), `Config.Hole.fallPixelsTiny` (tiny); `Config.Slide.warningPixels`
+  (default 0), `Config.Slide.slidePixels`, gated by `Config.Slide.warningEnabled`.
+- The warning threshold drives BOTH the HUD warning and the balancing sprite (`hasBalanceGrace`),
+  so with `warningPixels = 0` both show the moment the player steps on; the fall/slide waits for
+  the activation threshold.
+- Dash bypasses the grace entirely and commits (fall or slide) **only when the dash ends on a
+  hazard tile** (`Player:endDash`).
+- Optional `balancing` / `balancingTiny` sprite states (placeholder = sleep frames) gated by
+  `Config.Player.balancingSprite`, overriding the walk pose while balancing.
+- HUD warning uses the `Warning` state with a `_warningShown` flag to avoid clobbering other prompts.
+
+**Files:** `assets/data/Config.lua` (thresholds + toggles); `entities/player/init.lua` (grace
+accumulator fields); `entities/player/hole.lua` (`updateGraceMove`, `hasBalanceGrace`, `isBalancing`,
+hole fall thresholds); `entities/player/sliding.lua` (slime slide threshold + `warningEnabled` gate);
+`entities/player/dash.lua` (end-of-dash commit); `entities/player/animations.lua` (`balancing` /
+`balancingTiny` states); `entities/player/movement.lua` (balancing sprite override in the walk path);
+`entities/player/state.lua` (per-frame `updateGraceMove` call + warning HUD show/hide);
+`entities/UI/UIHud.lua` (`setWarning()`).
+
+**Love2D mapping:** The grace accumulators and the two thresholds are pure gameplay logic and must
+be mirrored exactly (the warning-vs-activation split, the normal/tiny hole thresholds, and the
+`warningEnabled` gate for slides). The dash-commits-only-at-end logic is also core. The HUD warning
+and balancing sprite are presentation layer — map them to the port's equivalent state machine, and
+drive them from the warning threshold so they appear on contact.
+
+---
+
 ## 2026-07-26 — Tiny player sleep state (new `sleepTiny` animation)
 
 **What:** The player can now sleep while minified, using a dedicated tiny sleep animation.

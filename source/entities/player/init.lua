@@ -90,6 +90,14 @@ function Player:init(x, y, speed, Zindex)
     -- Hole state variable
     self.isFalling = false  -- Prevents fallBelow() firing every frame during transition
 
+    -- Balancing (fall/slide grace) state
+    self.holeGracePixels  = 0
+    self.slideGracePixels = 0
+    self._prevGraceX      = nil
+    self._prevGraceY      = nil
+    self._graceMove       = 0
+    self._warningShown    = false
+
     self.isPlunging = false
     self.isDarkCharging  = false
     self.darkCrankAccum  = 0

@@ -30,6 +30,9 @@ function UIHud:init(x,y)
     self.animation:addState('Investigate', 23, 28)
     self.animation.Investigate.frameDuration = 6
     
+    self.animation:addState('Warning', 29, 32)
+    self.animation.Warning.frameDuration = 6
+    
     self.animation:setState('pressA')
     -- Mark: properties (since are the sames from the sonar hud maybe this should be just a class)
     self:setSize(22,37)
@@ -52,6 +55,11 @@ function UIHud:setCrankAntiClock()
 end
 function UIHud:setInvestigate()
     self.animation:setState('Investigate')
+end
+
+function UIHud:setWarning()
+    self.animation:setState('Warning')
+    self:setVisible(true)
 end
 
 

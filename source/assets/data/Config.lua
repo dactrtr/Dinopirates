@@ -62,6 +62,7 @@ Config.Player = {
     wakeupPressesRequired   = 2,   -- A-button presses needed to wake the player
     hudEdgeTop              = 60,  -- px from top; below this the floating HUD flips under the player
     hudEdgeRight            = 350, -- px from left; past this the floating HUD flips to the player's left
+    balancingSprite         = true,  -- swap the player sprite to 'balancing' while on hole/slime grace (false = keep walk sprite)
 }
 
 -- Dash ability (double-tap a D-pad direction to trigger)
@@ -116,9 +117,21 @@ Config.Grapple = {
     ropeWidth       = 2,     -- px width of the black rope drawn from player to hook
 }
 
--- Slide (slime)
+-- Slide (slime). Two thresholds: the warning (HUD + balancing sprite) shows first, the slide
+-- triggers later. Both measured in px of movement while the feet are over slime.
 Config.Slide = {
-    speed = 4,
+    speed          = 4,
+    warningPixels  = 0,     -- px before the warning shows (0 = the moment the player steps on)
+    slidePixels    = 8,     -- px before the slide actually starts (~4 walk-frames of visible warning)
+    warningEnabled = false,  -- false → slime slides immediately on contact (no grace/warning)
+}
+
+-- Hole fall grace ("balancing"). Two thresholds: the warning (HUD + balancing sprite) shows
+-- first, the fall triggers later. Both measured in px of movement while over the hole.
+Config.Hole = {
+    warningPixels  = 0,  -- px before the warning shows (0 = the moment the player steps on)
+    fallPixels     = 8,  -- px over a normal hole before the player falls (~4 walk-frames of warning)
+    fallPixelsTiny = 4,  -- px over a tiny hole before falling (smaller player, smaller grace)
 }
 
 -- Invincibility
