@@ -196,7 +196,7 @@ Grants are applied **only once** (controlled by `hasGranted`). Dialog can always
 | Format | Example | Effect on PlayerData |
 |--------|---------|---------------------|
 | `key:N` | `key:2` | `PlayerData.keys[2] = true` |
-| `fieldName:true` | `hasBoots:true` | `PlayerData.items.hasBoots = true` |
+| `fieldName:true` | `hasRadio:true` | `PlayerData.items.hasRadio = true` |
 
 An NPC can give **one grant per entry**. For multiple grants, use separate entries with different conditions.
 
@@ -214,7 +214,7 @@ An NPC can give **one grant per entry**. For multiple grants, use separate entri
         type = "cat",
         conditionalScripts = {
             "!items.hasLamp:catNoLamp",      -- does not have the lamp
-            "!items.hasBoots:catNoBoots",    -- has the lamp but not the boots
+            "!items.hasPlunger:catNoPlunger",-- has the lamp but not the plunger
             "true:catWhat"                   -- catch-all
         },
         sourceFeed = 0,
@@ -305,11 +305,11 @@ Entity in LDtk representing a collectible item. Processed by the Items block in 
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `id` | String | Yes | LDtk entity identifier (e.g., `"ItemGift"`, `"Lamp"`, `"Boots"`, etc.). |
+| `id` | String | Yes | LDtk entity identifier (e.g., `"ItemGift"`, `"Lamp"`, `"Plunger"`, etc.). |
 | `iid` | String | Yes | Unique UUID. |
 | `x`, `y` | Number | Yes | Position. |
 | `width`, `height` | Number | Yes | Dimensions. |
-| `customFields.type` | String | Yes | Item type. Values: `"lamp"`, `"radio"`, `"notes"`, `"boots"`, `"plunger"`, `"bag"`, `"honk"`, `"tools"`, `"keycard"`, `"itemGift"`. |
+| `customFields.type` | String | Yes | Item type. Values: `"lamp"`, `"radio"`, `"notes"`, `"plunger"`, `"bag"`, `"honk"`, `"tools"`, `"keycard"`, `"itemGift"`. |
 | `customFields.isItem` | Bool | Yes | Must be `true` for MazeScene to generate the item. |
 | `customFields.grants` | String | No | For `"itemGift"`: what it grants when collected. Format: `"fieldName:true"` (e.g., `"hasDWatch:true"`). Multiple grants separated by comma. |
 | `customFields.KeyNumber` | Number | No | For `"keycard"`: key number (1, 2, 3...). |
@@ -468,7 +468,6 @@ Both entities use the same condition syntax evaluated against `PlayerData`.
 ```
 isTiny                      -- bool: player is in tiny mode
 items.hasLamp               -- bool: has the lamp
-items.hasBoots              -- bool: has the boots
 items.hasRadio              -- bool: has the radio
 items.hasBag                -- bool: has the bag
 items.hasPlunger            -- bool: has the plunger

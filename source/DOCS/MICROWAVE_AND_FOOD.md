@@ -53,7 +53,7 @@ end
 
 ### Food `Items` type (`entities/items/Items.lua`)
 
-`food` is a standard `Items` type alongside `boots`/`plunger`/`lamp`/`notes`/etc.
+`food` is a standard `Items` type alongside `plunger`/`lamp`/`notes`/etc.
 
 ```lua
 -- TODO art: dedicated food frames; reuse 'notes' frames (10-12) as a placeholder for now
@@ -323,14 +323,13 @@ the intended tension (below) actually fires.
 
 ---
 
-## 7. Emergent Difficulty Tension (intended, no extra code)
+## 7. Vulnerability while cooking (intended, no extra code)
 
-Cooking raises `PlayerData.calories` as a byproduct, and `calories` is one of the three
-inputs to the `DanceScene` difficulty-upgrade probability
-(`caloriesNorm × Config.Dance.weightCalories`, see `DANCE_SCENE.md`). So **healing makes the
-next dance harder** — a built-in risk/reward, achieved purely through existing systems.
+> Note: cooking no longer affects DanceScene difficulty. Difficulty is now driven solely by
+> crew recruited (`amountTaken`); `calories` is just clamped to `Config.Dance.caloriesMax`
+> and no longer feeds a difficulty roll (see `DANCE_SCENE.md`).
 
-Additionally, cranking sets `PlayerData.isActive`, which is the turn-based signal that lets
+Cranking sets `PlayerData.isActive`, which is the turn-based signal that lets
 enemies and crew advance. So **you are vulnerable while cooking** — every crank tick moves
 the world. Designers are expected to place microwaves in relatively safe rooms.
 

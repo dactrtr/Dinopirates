@@ -146,8 +146,6 @@ Config.Battery = {
     chargePerCrankTick = 3,    -- battery gained per crank tick while charging in the maze
     drainMovementDark = 0.5,   -- per frame moving in darkness
     drainDWatchWalk   = 0.5,   -- per frame walking while carrying the DWatch (gated by movement.DRAIN_BATTERY_ON_WALK)
-    drainHoleNormal   = 0.5,   -- per frame crossing a hole (normal size)
-    drainHoleTiny     = 0.2,   -- per frame crossing a hole (tiny)
 
     -- Shared battery level thresholds used across Sanity, Enemy, and CrewMember systems
     thresholdCritical = 10,    -- critically low; enemies override speed, crew stops moving
@@ -316,20 +314,22 @@ Config.Enemy = {
 
 -- Dance (rhythm combat)
 Config.Dance = {
-    basic  = { bpm = 16, buttons = 4  },
-    evolve = { bpm = 24, buttons = 6  },
-    badass = { bpm = 28, buttons = 8  },
-    boss   = { bpm = 32, buttons = 12 },
+    -- Per-tier combat tuning. `sprite` is the enemy spritesheet for that tier (placeholder
+    -- art until authored — DanceScene falls back to the base `enemyDance` sheet if the tier
+    -- PNG doesn't exist yet, so missing art never crashes).
+    basic  = { bpm = 16, buttons = 4,  sprite = 'assets/images/ui/battle/enemyDance'       },
+    evolve = { bpm = 24, buttons = 6,  sprite = 'assets/images/ui/battle/enemyDanceEvolve'  },
+    badass = { bpm = 28, buttons = 8,  sprite = 'assets/images/ui/battle/enemyDanceBadass'  },
+    boss   = { bpm = 32, buttons = 12, sprite = 'assets/images/ui/battle/enemyDanceBoss'    },
 
-    -- Normalization maxima for difficulty roll inputs
-    sanityMax   = 100,  -- assumed sanityCounter ceiling for normalization
-    powerMax    = 20,   -- assumed powerLevel ceiling for normalization (matches PlayerData max)
-    caloriesMax = 500,  -- assumed calories ceiling for normalization
+    -- Difficulty scales with how many crew members have been recruited
+    -- (PlayerData.CrewMemberData.amountTaken, 0..Config.MapGen.totalCrew). These are the
+    -- minimum crew captured needed to reach each tier (below crewEvolve = basic). Tune freely.
+    crewEvolve = 3,
+    crewBadass = 6,
+    crewBoss   = 9,
 
-    -- Weights for the weighted difficulty upgrade roll (must sum to 1.0)
-    weightSanity   = 0.35,  -- contribution of sanityCounter to upgrade probability
-    weightPower    = 0.45,  -- contribution of powerLevel to upgrade probability
-    weightCalories = 0.20,  -- contribution of calories to upgrade probability
+    caloriesMax = 500,  -- calorie clamp ceiling (microwave cooking + dance win gains)
 }
 
 -- Cockpit scene

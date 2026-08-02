@@ -420,12 +420,9 @@ self:checkTinyHoleTile()   -- tiles with value 32
 
 `checkTinyHoleTile()` only acts if `PlayerData.isTiny == true`. This enables secret routes accessible only to the player in tiny state.
 
-The battery cost for crossing a hole differs by state:
-
-```lua
-Config.Battery.drainHoleNormal = 0.5  -- per frame crossing hole (normal size)
-Config.Battery.drainHoleTiny   = 0.2  -- per frame crossing hole (tiny)
-```
+Holes cannot be crossed: after a short grace distance the player falls through
+(`fallBelow()` → new procedural run at a `StartDown` room). There is no item or hover that
+lets you walk over a hole.
 
 #### Hitbox
 
@@ -491,7 +488,6 @@ All animations have `frameDuration = 8`.
 
 | Type | Frames | Player function | Effect on PlayerData |
 |------|--------|-----------------|----------------------|
-| `boots` | 1-3 | `Player:grabBoots()` | `items.hasBoots = true`, `fillBattery()` |
 | `plunger` | 4-6 | `Player:grabPlunger()` | `items.hasPlunger = true`, `skills.canPlungerang = true`, `fillBattery()` |
 | `lamp` | 7-9 | `Player:grabLamp()` | `items.hasLamp = true`, `skills.canFlash = true`, `fillBattery()` |
 | `notes` | 10-12 | `Player:grabNotes(grants)` | Updates fields in `PlayerData.skills` via `processGrants` |
@@ -503,13 +499,6 @@ All animations have `frameDuration = 8`.
 There is no `bag` or `tools` type in the current `Items.lua` or `player/items.lua` code — no `grabBag()` or `grabTools()` functions are defined.
 
 ### 3.3 Exact Effects by Type
-
-**boots** — `Player:grabBoots()`
-```lua
-PlayerData.items.hasBoots = true
-self:fillBattery()
-```
-Prevents falling through holes (while battery is available).
 
 **plunger** — `Player:grabPlunger()`
 ```lua
@@ -722,7 +711,6 @@ items = {
     hasRadio   = true,   -- player starts with radio
     hasDWatch  = false,
     hasNotes   = true,   -- player starts with notes
-    hasBoots   = false,
     hasPlunger = false,
 },
 skills = {

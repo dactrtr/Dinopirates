@@ -138,7 +138,6 @@ Items "notes"               → grabNotes(grants)
 Items "itemgift"            → grabItemGift(grants)
 Items "bag" / "honk"        → grabBag()
 Items "tools"               → grabTools()
-Items "boots"               → grabBoots()
 Items "plunger"             → grabPlunger()
 Items "food"                → collect by iid, grabFood() [food += perPickup]
 PropItem "minifier"         → readyToShrink=true, show "Press A" HUD

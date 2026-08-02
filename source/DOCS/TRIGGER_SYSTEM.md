@@ -142,7 +142,7 @@ Format: `dotPath` (true if the field is `true`)
 ```
 "isTiny:scriptIfSmall"
 "items.hasLamp:scriptWithLamp"
-"items.hasBoots:scriptWithBoots"
+"items.hasPlunger:scriptWithPlunger"
 "keys.1:scriptWithKey1"
 ```
 

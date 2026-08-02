@@ -357,7 +357,7 @@ Iterates `levelsLDTK[room].entities` looking for `customFields.isItem == true`. 
 |-------------|------------------------|
 | `keycard` | `not PlayerData.keys[keyNum]` — player does not have that key |
 | Has a `grants` field | Parses `"key:value,key:value"` and generates only if NONE of the keys are already in `PlayerData.items[key]` or `PlayerData.skills[key]` |
-| Other known items (lamp, radio, notes, boots, plunger) | `PlayerData.items[fieldName] == false` |
+| Other known items (lamp, radio, notes, plunger) | `PlayerData.items[fieldName] == false` |
 
 If `shouldGenerate == true`:
 ```lua

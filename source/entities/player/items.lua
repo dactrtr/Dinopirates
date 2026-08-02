@@ -1,9 +1,4 @@
 
-function Player:grabBoots()
-  PlayerData.items.hasBoots = true
-  self:fillBattery()
-end
-
 function Player:grabPlunger()
   PlayerData.items.hasPlunger = true
   PlayerData.skills.canPlungerang = true

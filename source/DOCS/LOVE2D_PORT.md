@@ -859,7 +859,7 @@ The `getLevelState()` and `restoreLevelState()` functions are **identical to the
 - The player registers which button was pressed in `DanceScene.ButtonPressed`
 - In `update()`, if there is a collision and `ButtonPressed` matches the `buttonKey` of the ButtonPress: successful hit → `balancePosition += accuracy`
 - `balancePosition` is an integer ranging from `-balanceMaxOffset` to `+balanceMaxOffset`. Reaching either extreme results in a win or a loss
-- Difficulty is determined by `determineDifficultyUpgrade()` using weighted sanity, powerLevel, and calories
+- Difficulty is determined deterministically by `determineEnemyType()` from crew recruited (`PlayerData.CrewMemberData.amountTaken`)
 
 ### Love2D implementation
 
@@ -993,7 +993,10 @@ end
 
 ### Difficulty calculation
 
-The `determineDifficultyUpgrade()` function uses weights from the original `Config.Dance`. It ports without changes — it only needs to receive `PlayerData.sanityCounter`, `PlayerData.EnemiesData.powerLevel`, and `PlayerData.calories`.
+`determineEnemyType()` maps `PlayerData.CrewMemberData.amountTaken` to a tier using the
+`Config.Dance.crewEvolve/crewBadass/crewBoss` thresholds (deterministic, no RNG). Each tier
+supplies `bpm`, `buttons`, and a `sprite` sheet; load the tier's sprite atlas with a fallback
+to the base `enemyDance` atlas.
 
 ---
 

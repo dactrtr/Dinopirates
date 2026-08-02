@@ -166,7 +166,7 @@ The path is traversed using `gmatch("[^%.]+")` on `PlayerData`. If the field doe
 -- Cat NPC that evaluates the player's inventory
 conditionalScripts = {
     "!items.hasLamp:catNoLamp",      -- if they don't have the lamp
-    "!items.hasBoots:catNoBoots",    -- if they have the lamp but not the boots
+    "!items.hasPlunger:catNoPlunger",-- if they have the lamp but not the plunger
     "true:catWhat"                   -- fallback: always applies
 }
 ```
@@ -202,7 +202,7 @@ end
 | Grant format | Example | Effect on PlayerData |
 |-------------|---------|---------------------|
 | `key:N` | `key:2` | `PlayerData.keys[2] = true` |
-| `fieldName:true` | `hasBoots:true` | `PlayerData.items.hasBoots = true` |
+| `fieldName:true` | `hasRadio:true` | `PlayerData.items.hasRadio = true` |
 
 An NPC can give **a single grant per `conditionalScripts` entry**. For multiple grants, use separate entries with appropriate conditions, or resolve the second grant through script logic.
 

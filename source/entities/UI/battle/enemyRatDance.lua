@@ -12,7 +12,12 @@ if bpm == nil or bpm == 0 then
 	-- Mark: animation states
 	self.animation:addState('evolving', 30, 33)
 	self.animation.evolving.frameDuration = frameduration
-	
+
+	-- PLACEHOLDER per-tier animation states. Each tier (basic/evolve/badass/boss) gets its
+	-- own branch so the frame ranges can diverge per difficulty; right now every branch is a
+	-- duplicate of `basic`. The tier ALSO loads its own spritesheet (Config.Dance[tier].sprite,
+	-- resolved in DanceScene), so once the art + real frame ranges are filled in here the enemy
+	-- visibly changes with difficulty. Tune the addState frame numbers per branch below.
 	if self.evolveType == 'basic' then
 		
 		self.animation:addState('idle', 1, 5)

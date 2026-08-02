@@ -484,15 +484,6 @@ script = {
         }
     },
     {
-        name = "catNoBoots",
-        dialog = {
-            {
-                video = 'playerWorry',
-                text = "catnoboots-01",
-            }
-        }
-    },
-    {
         name = "cabinetHole",
         dialog = {
             {

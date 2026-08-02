@@ -118,7 +118,7 @@ Draws a black rectangle of 27×2 px on a `Graphics.image.new(27, 2)` using `push
 
 ### Update Condition
 
-Only updates the image when `PlayerData.items.hasLamp == true` OR `PlayerData.items.hasBoots == true`. If the player has neither, nothing is drawn.
+Only updates the image when `PlayerData.items.hasLamp == true`. If the player has no lamp, nothing is drawn.
 
 ### `PlayerData` Fields Read
 
@@ -126,7 +126,6 @@ Only updates the image when `PlayerData.items.hasLamp == true` OR `PlayerData.it
 |---|---|
 | `PlayerData.battery` | Value 0–100 to calculate bar width |
 | `PlayerData.items.hasLamp` | Activates indicator update |
-| `PlayerData.items.hasBoots` | Activates indicator update |
 
 ---
 

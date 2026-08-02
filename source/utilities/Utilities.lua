@@ -25,7 +25,6 @@ function Utilities.iddqd()
 	PlayerData.items.hasRadio = true
 	PlayerData.items.hasDWatch = true
 	PlayerData.items.hasNotes = true
-	-- PlayerData.items.hasBoots = true
 	PlayerData.items.hasPlunger = true
 	
 	PlayerData.battery = 100

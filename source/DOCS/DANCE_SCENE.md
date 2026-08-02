@@ -57,16 +57,15 @@ Runs each time DanceScene becomes the active scene.
 2. Defines `startPoint = 400` — the off-screen X position on the right where buttons spawn.
 3. Resets `condition = nil` and stops any prior `Sequence`.
 4. Starts a Noble Engine `Sequence` from 0→100 over 1.5 s with `Ease.outBounce` (entrance visual effect).
-5. **Difficulty determination** (see Difficulty section below):
-   - If `DanceScene.debugMode == true`: forces `enemyType = "basic"`, `bpm = Config.Dance.basic.bpm`, `numberOfButtons = Config.Dance.basic.buttons`, `enemyEvolving = false`.
-   - Otherwise: calls `self:determineDifficultyUpgrade()` → gets `chance` (0–100) → rolls `roll = math.random(0, 100)`.
-     - If `roll <= chance`: calls `self:determineEnemyType()`, reads `Config.Dance[enemyType]`, assigns `bpm` and `numberOfButtons`, sets `enemyEvolving = true`.
-     - If `roll > chance`: `enemyType = "basic"`, `enemyEvolving = false`, uses `Config.Dance.basic` values.
+5. **Difficulty determination** (deterministic — see Difficulty section below):
+   - If `DanceScene.debugMode == true`: forces `enemyType = "basic"`.
+   - Otherwise: `enemyType = self:determineEnemyType()`, which maps `PlayerData.CrewMemberData.amountTaken` (crew recruited) to a tier.
+   - Then reads `Config.Dance[enemyType]` for `bpm` and `numberOfButtons`, and sets `enemyEvolving = (enemyType ~= "basic")`. There is **no random roll** — more crew = a harder tier, every fight.
 6. **ButtonPress creation**: Instantiates `self.numberOfButtons` sprites. Each receives `(self.bpm, startPoint + self.bpm, keyProvider)`. The `keyProvider` is a closure that calls `getPatternKey(profile)` with the current enemy's profile.
 7. **HitZone creation**: `HitZone(40, 30, self.bpm)`.
 8. **Dynamic sprite selection**:
    - Player: if `PlayerData.isTiny` → `'assets/images/ui/battle/playerDanceTiny'`; otherwise → `'assets/images/ui/battle/playerDance'`.
-   - Enemy: if `PlayerData.lastEnemyTouched.type == "bosscolli"` → `'assets/images/ui/battle/enemyBosscolliDance'`; otherwise → `'assets/images/ui/battle/enemyDance'`.
+   - Enemy: a `bosscolli` encounter uses `'assets/images/ui/battle/enemyBosscolliDance'`; otherwise the sheet is **the difficulty tier's** `Config.Dance[enemyType].sprite` (e.g. `enemyDanceEvolve`), probed with `Graphics.imagetable.new` and **falling back to the base `enemyDance` sheet** if the per-tier PNG doesn't exist yet. So the enemy art changes with difficulty as soon as the tier sheets are authored.
 9. Instantiates the remaining UI sprites: `EnemyRatDance`, `ButtonCover`, `WinIndicator`, `LoseIndicator`, `BackgroundDance`, `ResultsScreen`.
    - `WinIndicator` is positioned at `(screenCenterX + balanceMaxOffset + 2*barWidth, barY + barHeight/2 - 6)` = `(200 + 50 + 16, 56 + 5 - 6)` = `(266, 55)`.
    - `LoseIndicator` is positioned at `(screenCenterX - balanceMaxOffset - 2*barWidth, barY + barHeight/2 - 6)` = `(134, 55)`.
@@ -133,44 +132,37 @@ A local table defined in `DanceScene.lua` with four profiles. Each profile has `
 
 ### Exact Values per Type (`Config.Dance`)
 
-| Type | BPM | Buttons on screen |
-|------|-----|-------------------|
-| `basic` | 16 | 4 |
-| `evolve` | 24 | 6 |
-| `badass` | 28 | 8 |
-| `boss` | 32 | 12 |
+Each tier also declares its own enemy `sprite` sheet (placeholder art; DanceScene falls back to
+the base `enemyDance` sheet until the per-tier PNG exists).
+
+| Type | BPM | Buttons on screen | Sprite sheet (placeholder) |
+|------|-----|-------------------|----------------------------|
+| `basic` | 16 | 4 | `enemyDance` |
+| `evolve` | 24 | 6 | `enemyDanceEvolve` |
+| `badass` | 28 | 8 | `enemyDanceBadass` |
+| `boss` | 32 | 12 | `enemyDanceBoss` |
 
 ### `determineEnemyType()`
 
-Maps `PlayerData.EnemiesData.powerLevel` to a profile:
+Difficulty is **deterministic** and scales with meta-progression: the tier is chosen from how
+many crew members have been recruited (`PlayerData.CrewMemberData.amountTaken`). There is **no
+random roll**. Thresholds live in `Config.Dance` (`crewEvolve`, `crewBadass`, `crewBoss`):
 
-| powerLevel | Result |
-|------------|--------|
-| 1 – 5 | `"basic"` |
-| 6 – 12 | `"evolve"` |
-| 13 – 19 | `"badass"` |
-| 20 | `"boss"` |
-| any other | `"basic"` (fallback) |
+| Crew recruited (`amountTaken`) | Result |
+|--------------------------------|--------|
+| `>= crewBoss` (9) | `"boss"` |
+| `>= crewBadass` (6) | `"badass"` |
+| `>= crewEvolve` (3) | `"evolve"` |
+| below `crewEvolve` | `"basic"` |
 
-### `determineDifficultyUpgrade()`
+Because `amountTaken` only ever rises (it persists across runs), fights get harder the further
+along the roster you are. Tune the thresholds freely; the full roster is `Config.MapGen.totalCrew`
+(12).
 
-Calculates the probability of upgrading difficulty above `"basic"`. Exact formula:
-
-```
-sanityNorm   = clamp(sanityCounter / 100,  0, 1)   -- Config.Dance.sanityMax = 100
-powerNorm    = clamp(powerLevel    / 20,   0, 1)   -- Config.Dance.powerMax  = 20
-caloriesNorm = clamp(calories      / 500,  0, 1)   -- Config.Dance.caloriesMax = 500
-
-normalizedScore = (sanityNorm × 0.35) + (powerNorm × 0.45) + (caloriesNorm × 0.20)
-                                        ↑ weightSanity       ↑ weightPower     ↑ weightCalories
-
-probability = clamp(normalizedScore × 100, 0, 100)
-```
-
-- Weights are configurable in `Config.Dance`: `weightSanity = 0.35`, `weightPower = 0.45`, `weightCalories = 0.20`.
-- The dominant weight is `powerLevel` (45%). Reaching powerLevel 20 with high sanity and calories can push the probability close to 100%.
-- The roll is `math.random(0, 100)`. If `roll <= probability` → `determineEnemyType()` is called. Otherwise → `"basic"` is used.
-- If the roll fails, the enemy is always `"basic"` regardless of how high `powerLevel` is.
+> **History:** this replaced an earlier probabilistic system (`determineDifficultyUpgrade()`)
+> that rolled a weighted chance from `sanityCounter` + `EnemiesData.powerLevel` + `calories`.
+> Because `powerLevel` was never actually incremented, that system was effectively stuck at
+> `"basic"`; the crew-based model is deterministic and functional.
 
 ### `getPatternKey(profile)`
 
@@ -527,9 +519,8 @@ State flow:
 | `isTiny` | `false` | Selects the alternate player spritesheet |
 | `lastEnemyTouched` | `{type=nil, id=nil, x=nil, y=nil}` | `type` selects the enemy spritesheet; `id` is used to kill the enemy on victory |
 | `danceThresholdHP` | `1` | Minimum HP at which combat is triggered |
-| `EnemiesData.powerLevel` | `1` (max 20) | Determines enemy type |
-| `sanityCounter` | `0` (max 100) | Input to the difficulty roll (35% weight) |
-| `calories` | `100` (max 500) | Input to the difficulty roll (20% weight) |
+| `CrewMemberData.amountTaken` | `0` (max `totalCrew` = 12) | Determines the enemy difficulty tier (`determineEnemyType`) |
+| `calories` | `100` (max 500) | Clamped to `Config.Dance.caloriesMax`; gained on victory (no longer feeds difficulty) |
 | `healedHP` | `2` | HP restored on victory |
 | `amountDances` | `0` | Combat counter; incremented on victory |
 | `playerExit` | `{x=nil, y=nil}` | Position restored on victory |

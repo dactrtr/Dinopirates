@@ -298,7 +298,6 @@ function scene:enter()
 		lamp = "items.hasLamp",
 		radio = "items.hasRadio",
 		notes = "items.hasNotes",
-		boots = "items.hasBoots",
 		plunger = "items.hasPlunger"
 	}
 

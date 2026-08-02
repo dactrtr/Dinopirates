@@ -129,11 +129,6 @@ function Player:collisionResponse(other)
     self:grabTools()
   return 'overlap'
 
-  elseif other:isa(Items) and other.type == 'boots' then
-    other:removeAll()
-    self:grabBoots()
-  return 'overlap'
-
   elseif other:isa(Items) and other.type == 'plunger' then
     other:removeAll()
     self:grabPlunger()

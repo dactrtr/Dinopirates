@@ -124,8 +124,6 @@ See `MICROWAVE_AND_FOOD.md` for the full system.
 | Battery | `chargePerCrankTick` | 3 | units/tick | Battery gained per crank tick while charging in the maze |
 | Battery | `drainMovementDark` | 0.5 | units/frame | Drain per frame when moving in darkness |
 | Battery | `drainDWatchWalk` | 0.5 | units/frame | Drain per frame walking with the DWatch (gated by `movement.DRAIN_BATTERY_ON_WALK`) |
-| Battery | `drainHoleNormal` | 0.5 | units/frame | Drain per frame when crossing a hole (normal size) |
-| Battery | `drainHoleTiny` | 0.2 | units/frame | Drain per frame when crossing a hole (tiny mode) |
 | Battery | `thresholdCritical` | 10 | % | Critical level; enemies override speed, crew stops |
 | Battery | `thresholdLow` | 20 | % | Low level; sanity drains faster, enemies slow down |
 | Battery | `thresholdMid` | 60 | % | Mid level; enemies use reduced speed, crew restores movement |
@@ -282,23 +280,24 @@ See `MICROWAVE_AND_FOOD.md` for the full system.
 
 ### Difficulties
 
-| Section | Name | bpm | buttons | Description |
-|---|---|---|---|---|
-| Dance | `basic` | 16 | 4 | Basic difficulty |
-| Dance | `evolve` | 24 | 6 | Medium difficulty |
-| Dance | `badass` | 28 | 8 | Hard difficulty |
-| Dance | `boss` | 32 | 12 | Boss difficulty |
+| Section | Name | bpm | buttons | sprite (placeholder) | Description |
+|---|---|---|---|---|---|
+| Dance | `basic` | 16 | 4 | `enemyDance` | Basic difficulty |
+| Dance | `evolve` | 24 | 6 | `enemyDanceEvolve` | Medium difficulty |
+| Dance | `badass` | 28 | 8 | `enemyDanceBadass` | Hard difficulty |
+| Dance | `boss` | 32 | 12 | `enemyDanceBoss` | Boss difficulty |
 
-### Normalization and Weights
+### Difficulty thresholds (crew-based)
+
+Difficulty tier is chosen deterministically from `PlayerData.CrewMemberData.amountTaken`
+(crew recruited). Minimum crew to reach each tier:
 
 | Section | Name | Value | Unit | Description |
 |---|---|---|---|---|
-| Dance | `sanityMax` | 100 | pts | Assumed sanityCounter ceiling for normalization |
-| Dance | `powerMax` | 20 | pts | Assumed powerLevel ceiling for normalization |
-| Dance | `caloriesMax` | 500 | pts | Assumed calorie ceiling for normalization |
-| Dance | `weightSanity` | 0.35 | weight (0–1) | sanityCounter contribution to upgrade probability |
-| Dance | `weightPower` | 0.45 | weight (0–1) | powerLevel contribution to upgrade probability |
-| Dance | `weightCalories` | 0.20 | weight (0–1) | Calorie contribution to upgrade probability |
+| Dance | `crewEvolve` | 3 | crew | Min crew recruited to reach `evolve` |
+| Dance | `crewBadass` | 6 | crew | Min crew recruited to reach `badass` |
+| Dance | `crewBoss` | 9 | crew | Min crew recruited to reach `boss` |
+| Dance | `caloriesMax` | 500 | pts | Calorie clamp ceiling (cooking + dance win gains) |
 
 Weights sum to exactly 1.0.
 

@@ -84,7 +84,6 @@ local DefaultPlayerData = {
 		hasRadio = false,
 		hasDWatch = false,
 		hasNotes = false,
-		hasBoots = false,
 		hasPlunger = false,
 	},
 	skills ={

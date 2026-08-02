@@ -15,8 +15,6 @@ function Items:init(x, y, type, keyNumber, grants, iid)
   self.animation.itemgift.frameDuration = 8 
   self.animation:addState('notes', 10, 12)
   self.animation.notes.frameDuration = 8
-  self.animation:addState('boots', 1, 3)
-  self.animation.boots.frameDuration = 8  
   self.animation:addState('plunger', 4, 6)
   self.animation.plunger.frameDuration = 8  
   self.animation:addState('radio', 19, 21)

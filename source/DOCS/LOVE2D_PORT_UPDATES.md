@@ -10,6 +10,64 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-07-31 — DanceScene difficulty now scales with crew recruited (+ per-tier enemy sprite)
+
+**What:** DanceScene difficulty is now **deterministic** and driven by
+`PlayerData.CrewMemberData.amountTaken` (crew recruited), replacing the old probabilistic roll.
+Each fight picks a tier from crew-count thresholds; higher tiers use higher BPM, more buttons,
+a harder button-pattern profile, **and their own enemy spritesheet**.
+
+**Why:** The old system rolled a weighted chance from `sanityCounter` + `EnemiesData.powerLevel`
++ `calories`, but `powerLevel` was never incremented, so it was stuck at `basic` and the
+evolve/badass/boss tiers were unreachable. Tying difficulty to crew progress makes it functional
+and intentional. Requested: enemy sprite should also change with difficulty.
+
+**Fix:**
+- `scene:determineEnemyType()` now maps `amountTaken` → tier via `Config.Dance.crewEvolve/crewBadass/crewBoss` (defaults 3/6/9; roster = `Config.MapGen.totalCrew` = 12). Below `crewEvolve` = `basic`.
+- `scene:enter()` sets the tier deterministically (no `math.random` roll); `enemyEvolving = (tier ~= "basic")`.
+- Removed `scene:determineDifficultyUpgrade()` and its config (`sanityMax`, `powerMax`, `weightSanity/Power/Calories`). Kept `Config.Dance.caloriesMax` (still used to clamp calories).
+- Each `Config.Dance` tier gained a `sprite` field (`enemyDance` / `enemyDanceEvolve` / `enemyDanceBadass` / `enemyDanceBoss`). DanceScene loads the tier sheet with an `imagetable.new` probe and **falls back to the base `enemyDance` sheet** until the per-tier PNG exists (placeholder-safe).
+- `EnemyRatDance:init` keeps its four per-tier animation branches as **placeholders** (currently duplicates of `basic`) to be tuned per tier later.
+
+**Files:** `scenes/DanceScene.lua`, `assets/data/Config.lua`, `entities/UI/battle/enemyRatDance.lua`, plus docs.
+
+**Love2D mapping:** difficulty tier = pure function of `amountTaken` (no RNG). Load a different
+enemy sprite atlas per tier with a fallback to the base atlas. `powerLevel` no longer factors
+into dance difficulty (still used only for enemy sight radius / prop-eating).
+
+---
+
+## 2026-07-31 — Removed the Boots item (holes are always fatal-to-run)
+
+**What:** The **Boots** item and every system that referenced it are gone. Boots were the only
+way to cross a hole without falling (a battery-draining hover). Now **all holes always cause a
+fall** after the grace period → a fresh procedural run at a `StartDown` room. The **Dash is
+kept** and unchanged (it still smashes boxes and commits to a fall/slide when it ends on a
+hazard tile).
+
+**Why:** Design decision to cut the item; boots overlapped the lamp for battery pressure and
+complicated hole traversal. Simpler model: holes are uncrossable.
+
+**Fix (removed all of):**
+- `PlayerData.items.hasBoots` field; `Player:grabBoots()`; the `'boots'` `Items` pickup branch
+  in `collisions.lua`; the `'boots'` animation state in `Items.lua`.
+- The boots hover branch in `hole.lua` (`checkHoleTile` / `checkTinyHoleTile`) — both now fall
+  unconditionally after grace.
+- The `hasBoots` check in the dash hole-commit and in the battery HUD update.
+- `boots = "items.hasBoots"` from MazeScene's `requiredItems` map; the iddqd cheat line.
+- `Config.Battery.drainHoleNormal` / `drainHoleTiny` (only the hover used them).
+- The `catNoBoots` dialog entry in `script.lua` (nothing referenced it).
+
+**Files:** `assets/data/PlayerDataTables.lua`, `assets/data/Config.lua`, `assets/data/script.lua`,
+`entities/player/hole.lua`, `entities/player/dash.lua`, `entities/player/items.lua`,
+`entities/player/collisions.lua`, `entities/items/Items.lua`, `entities/UI/battery.lua`,
+`scenes/MazeScene.lua`, `utilities/Utilities.lua`, plus docs.
+
+**Love2D mapping:** Do not port a boots item or any hole-hover. In the hole handler, always run
+the grace-then-`fallBelow` path; there is no `hasBoots`/battery bypass.
+
+---
+
 ## 2026-07-28 — Balancing: grace before falling/sliding
 
 **What:** Falling through holes and sliding on slime no longer trigger on first contact; they

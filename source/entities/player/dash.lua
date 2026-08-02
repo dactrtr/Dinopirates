@@ -164,7 +164,7 @@ function Player:endDash()
     if self.isFalling then return end
     local onHole = IsPlayerOnHole(self.x, self.y)
         or (PlayerData.isTiny and IsPlayerOnTinyHole(self.x, self.y))
-    if onHole and not (PlayerData.items.hasBoots == true and PlayerData.battery > 0) then
+    if onHole then
         self.holeGracePixels = 0
         self.isFalling = true
         self:fallBelow()

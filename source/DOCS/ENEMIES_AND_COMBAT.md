@@ -474,7 +474,10 @@ Example: with global powerLevel=5, sanityCounter=3, sightRadiusBase=150:
 
 `PlayerData.sanityCounter` increments every time the player's sanity reaches 0. Each time `sanityCounter` increases, all Brocorats spawned from that point onward will have a higher local `powerLevel` and therefore a larger `sightRadius`.
 
-DanceScene difficulty also scales with `powerLevel`. The difficulty selector (`determineDifficultyUpgrade()` in `DanceScene`) performs a weighted roll using `sanityCounter` (normalized against 100), `powerLevel` (normalized against 20), and `calories` (normalized against 500).
+DanceScene difficulty is **separate** from this: it no longer uses `powerLevel`. The tier is
+chosen deterministically from crew recruited (`PlayerData.CrewMemberData.amountTaken`) via
+`determineEnemyType()` — see `DANCE_SCENE.md`. `powerLevel` now only affects Brocorat sight
+radius / prop-eating, not rhythm combat.
 
 ### DanceScene Difficulty Profiles
 

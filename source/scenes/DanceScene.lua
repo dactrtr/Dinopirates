@@ -145,35 +145,6 @@ function scene:init()
     end
 end
 
--- Helper: calculate the probability (0-100) to upgrade difficulty
-function scene:determineDifficultyUpgrade()
-    -- Get safe values from PlayerData (use 0 as fallback)
-    local sanity = PlayerData.sanityCounter or 0
-    local power = (PlayerData.EnemiesData and PlayerData.EnemiesData.powerLevel) or 0
-    local calories = PlayerData.calories or 0
-
-    -- Normalize each input into [0,1] using assumed maxima.
-    -- Tweak these maxima to fit your game's real ranges for better results.
-    local sanityNorm   = math.max(0, math.min(1, sanity   / Config.Dance.sanityMax))
-    local powerNorm    = math.max(0, math.min(1, power    / Config.Dance.powerMax))
-    local caloriesNorm = math.max(0, math.min(1, calories / Config.Dance.caloriesMax))
-
-    local weightSanity   = Config.Dance.weightSanity
-    local weightPower    = Config.Dance.weightPower
-    local weightCalories = Config.Dance.weightCalories
-
-    -- Combined normalized score
-    local normalizedScore = (sanityNorm * weightSanity) + (powerNorm * weightPower) + (caloriesNorm * weightCalories)
-
-    -- Convert to percentage probability
-    local probability = normalizedScore * 100
-
-    -- Clamp to [0,100]
-    probability = math.max(0, math.min(100, probability))
-
-    return probability
-end
-
 function scene:enter()
     scene.super.enter(self)
     local startPoint = 400
@@ -182,31 +153,19 @@ function scene:enter()
     sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
     sequence:start()
 
+    -- Difficulty is deterministic: the enemy tier scales with how many crew members have
+    -- been recruited so far (see determineEnemyType() + Config.Dance crew thresholds).
     if DanceScene.debugMode then
         self.enemyType = "basic"
-        self.bpm = Config.Dance.basic.bpm
-        self.numberOfButtons = Config.Dance.basic.buttons
-        self.enemyEvolving = false
     else
-        -- Decide whether to upgrade difficulty based on PlayerData
-        local chance = self:determineDifficultyUpgrade()
-        local roll = math.random(0, 100)
-
-        if roll <= chance then
-            self.enemyType = self:determineEnemyType()
-            local diffConfig = Config.Dance[self.enemyType] or Config.Dance.basic
-            self.bpm = diffConfig.bpm
-            self.numberOfButtons = diffConfig.buttons
-            self.enemyEvolving = true
-            printDebug("Difficulty UPGRADED to " .. self.enemyType .. " (roll=" .. roll .. ", chance=" .. chance .. ")")
-        else
-            self.enemyType = "basic"
-            self.enemyEvolving = false
-            self.bpm = Config.Dance.basic.bpm
-            self.numberOfButtons = Config.Dance.basic.buttons
-            printDebug("Difficulty KEPT: basic (roll=" .. roll .. ", chance=" .. chance .. ")")
-        end
+        self.enemyType = self:determineEnemyType()
     end
+    local diffConfig = Config.Dance[self.enemyType] or Config.Dance.basic
+    self.bpm = diffConfig.bpm
+    self.numberOfButtons = diffConfig.buttons
+    self.enemyEvolving = (self.enemyType ~= "basic")
+    printDebug("Dance difficulty: " .. self.enemyType .. " (crew=" ..
+        ((PlayerData.CrewMemberData and PlayerData.CrewMemberData.amountTaken) or 0) .. ")")
 
    -- Create ButtonPress instances using enemy pattern profile
    self.buttons = {}
@@ -248,9 +207,20 @@ function scene:enter()
         or  'assets/images/ui/battle/playerDance'
     playerDance = PlayerDance(self.bpm, resolveFightPath(charBase, canFight))
 
-    local enemyBase = (PlayerData.lastEnemyTouched and PlayerData.lastEnemyTouched.type == "bosscolli")
-        and 'assets/images/ui/battle/enemyBosscolliDance'
-        or  'assets/images/ui/battle/enemyDance'
+    -- Enemy spritesheet changes with the difficulty tier (Config.Dance[tier].sprite).
+    -- Placeholder art: probe the tier sheet and fall back to the base enemyDance sheet
+    -- until the per-tier PNG is authored, so a missing asset never crashes. A bosscolli
+    -- encounter overrides the tier and uses its dedicated sheet.
+    local enemyBase
+    if PlayerData.lastEnemyTouched and PlayerData.lastEnemyTouched.type == "bosscolli" then
+        enemyBase = 'assets/images/ui/battle/enemyBosscolliDance'
+    else
+        local tierSheet = (Config.Dance[self.enemyType] and Config.Dance[self.enemyType].sprite)
+            or 'assets/images/ui/battle/enemyDance'
+        enemyBase = Graphics.imagetable.new(tierSheet)
+            and tierSheet
+            or 'assets/images/ui/battle/enemyDance'
+    end
     enemyDance = EnemyRatDance(self.bpm, self.enemyType, self.enemyEvolving, resolveFightPath(enemyBase, canFight))
     buttonCover = ButtonCover()
     winIndicator = WinIndicator(screenCenterX + self.balanceMaxOffset + 2*barWidth , barY + barHeight / 2 - 6)
@@ -465,18 +435,17 @@ function scene:finish()
 end
 
 function scene:determineEnemyType()
-    local pwr = PlayerData.EnemiesData.powerLevel
+    -- Enemy tier scales with crew recruited (meta-progression). More crew = tougher fights.
+    local crew = (PlayerData.CrewMemberData and PlayerData.CrewMemberData.amountTaken) or 0
 
-    if pwr >= 1 and pwr <= 5 then
-        return "basic"
-    elseif pwr >= 6 and pwr <= 12 then
-        return "evolve"
-    elseif pwr >= 13 and pwr <= 19 then
-        return "badass"
-    elseif pwr == 20 then
+    if crew >= Config.Dance.crewBoss then
         return "boss"
+    elseif crew >= Config.Dance.crewBadass then
+        return "badass"
+    elseif crew >= Config.Dance.crewEvolve then
+        return "evolve"
     else
-        return "basic" -- fallback safety
+        return "basic"
     end
 end
 

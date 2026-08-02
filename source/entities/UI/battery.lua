@@ -13,7 +13,7 @@ end
 
 
 function Battery:update()
-    if PlayerData.items.hasLamp == true or PlayerData.items.hasBoots == true then
+    if PlayerData.items.hasLamp == true then
         self.battery = PlayerData.battery
         
             local fillWidth = 27

@@ -64,8 +64,6 @@ Each time `Player:move()` executes successfully, `PlayerData.isActive = true` is
 | Situation | Rate | When applied |
 |---|---|---|
 | Moving in darkness | `Config.Battery.drainMovementDark = 0.5` per frame | `Player:move()`, only if `isInDarkness == true` |
-| Crossing hole (normal size) | `Config.Battery.drainHoleNormal = 0.5` per frame | `checkHoleTile()`, only if `isActive` |
-| Crossing hole (tiny) | `Config.Battery.drainHoleTiny = 0.2` per frame | `checkHoleTile()` / `checkTinyHoleTile()`, only if `isActive` |
 | Using LightBurst | `Config.LightBurst.batteryCost = 10` (fixed cost) | `lightBurst()` on activation |
 | Walking with DWatch | `0.5` per frame (disabled) | Flag `DRAIN_BATTERY_ON_WALK = false` in `movement.lua` |
 
@@ -133,9 +131,9 @@ On each tick, in order (only matters in the dark — `isInDarkness == true`):
 
 `baseLoss` (`Config.Sanity.baseLoss`) is `1` by default. It is a multiplier applied to every gain/loss tick that could be scaled in the future.
 
-### sanityCounter and powerLevel scaling
+### sanityCounter scaling
 
-`PlayerData.sanityCounter` is a cumulative lifetime counter. Each time sanity reaches 0, the counter increases. In `DanceScene`, `determineDifficultyUpgrade()` uses `sanityCounter` (together with `powerLevel` and `calories`) in a weighted formula to decide whether the difficulty level scales. When it scales, `PlayerData.EnemiesData.powerLevel` increments (maximum 20), which increases enemy detection radius and rhythm difficulty in DanceScene.
+`PlayerData.sanityCounter` is a cumulative lifetime counter. Each time sanity reaches 0, the counter increases. It gates the "no repeated room" rule and feeds `Utilities.checkSanityAchievements()`. It does **not** drive DanceScene difficulty — that now scales deterministically with crew recruited (`amountTaken`); see [DANCE_SCENE.md](DANCE_SCENE.md). (`PlayerData.EnemiesData.powerLevel` is initialized to 1 and is currently not incremented anywhere; it only affects Brocorat sight radius when read.)
 
 ---
 
@@ -216,7 +214,7 @@ Each time `Player:move()` completes (after `moveWithCollisions`), it calls `Play
 
 ### What calories are used for
 
-`PlayerData.calories` is one of the three inputs to the `DanceScene` difficulty system. In `determineDifficultyUpgrade()` it is normalized against `Config.Dance.caloriesMax = 500` and weighted with `Config.Dance.weightCalories = 0.20` to calculate the probability of scaling the combat level.
+`PlayerData.calories` is a lifetime stat gained by cooking food and winning dances, and burned by the pedometer. It is clamped to `Config.Dance.caloriesMax = 500` on every gain. It **no longer affects DanceScene difficulty** (difficulty now scales with crew recruited — see [DANCE_SCENE.md](DANCE_SCENE.md)); the cap simply keeps the value bounded.
 
 Besides the pedometer burn, calories are **gained** by cooking food at a microwave
 (`+Config.Microwave.caloriesPerFood` per food) and by winning a `DanceScene` (`+60`); both
@@ -264,7 +262,7 @@ end
 
 ### What changes in tiny mode
 
-- **Speed**: Does not change directly, but holes only drain `drainHoleTiny = 0.2` (vs `0.5`).
+- **Speed**: Does not change directly.
 - **Animations**: All states use the `tiny` prefix (`tinyIdle`, `tinyLeft`, `tinyRight`, `tinyUp`, `tinyDown`, `slideTiny`). Frame duration reduced to half (`frameDurationWalk/2 = 4`).
 - **Special holes**: `checkTinyHoleTile()` detects tiles with IntGrid ID `32` (tinyHole). Only the tiny player falls into these holes; the normal player ignores them.
 - **Pneumatic tubes**: `collisionResponse` allows `riseAbove()` when colliding with `PropItem.isTube == true` only if `isTiny == true`. Otherwise it returns `'freeze'`.

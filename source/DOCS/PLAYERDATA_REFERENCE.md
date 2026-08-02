@@ -33,8 +33,8 @@ PlayerData = deepcopy(DefaultPlayerData) -- resets to default values (without re
 | `healedHP` | number | `2` | 0 – N | — (constant) | `DanceScene` win — amount of HP to restore | Yes |
 | `battery` | number | `100` | 0 – 100 (forced clamp in `update()`) | `movement.lua` (drain in darkness), `hole.lua` (drain in holes), `lightburst.lua` (cost), `sanity.lua` (charging), `items.lua` (`fillBattery`) | `sanity.lua` (sanity tick), `movement.lua` (reduced speed), `enemy.lua` (AI speed), `crewmember.lua` (AI movement), `lightburst.lua` (validation) | Yes |
 | `sanity` | number | `100` | 0 – 100 (clamp in `sanity.lua`) | `sanity.lua` (periodic tick every 2 s), `state.lua:focus()` (spending) | `sanityHud` (HUD), `sanity.lua` (detects 0 hit) | Yes |
-| `sanityCounter` | number | `0` | 0 – N (no hard limit; `Config.Dance.sanityMax = 100` for normalization) | `sanity.lua` (increments when `sanity` reaches 0) | `DanceScene:determineDifficultyUpgrade()` (weight 0.35), `Utilities.checkSanityAchievements()` | Yes |
-| `calories` | number | `100` | 0 – 500 (`Config.Dance.caloriesMax = 500`, clamped on every gain) | `state.lua:burnCalories()` (−10 every 200 steps), `MazeScene.cranked` (microwave: +`Config.Microwave.caloriesPerFood` per food cooked), `DanceScene` (+60 on win) | `DanceScene:determineDifficultyUpgrade()` (weight 0.20) | Yes |
+| `sanityCounter` | number | `0` | 0 – N (no hard limit) | `sanity.lua` (increments when `sanity` reaches 0) | "no repeated room" rule, `Utilities.checkSanityAchievements()` | Yes |
+| `calories` | number | `100` | 0 – 500 (`Config.Dance.caloriesMax = 500`, clamped on every gain) | `state.lua:burnCalories()` (−10 every 200 steps), `MazeScene.cranked` (microwave: +`Config.Microwave.caloriesPerFood` per food cooked), `DanceScene` (+60 on win) | (lifetime stat; no longer feeds difficulty) | Yes |
 | `food` | number | `0` | 0 – `Config.Microwave.carryMax` (10) | `items.lua:grabFood()` (+`perPickup` on pickup, clamped), `MazeScene.cranked` (−1 per food cooked) | `MazeScene.cranked` (cook loop), `state.lua:startCooking()` (entry guard) | Yes |
 | `steps` | number | `0` | 0 – `Config.Pedometer.stepsToTrigger` (200, then resets) | `state.lua:pedometer()` (+0.5 per each `move()`) | `state.lua:pedometer()` (burn threshold) | Yes |
 | `totalSteps` | number | `1000` | 0 – ∞ (lifetime, never resets) | `state.lua:pedometer()` (+0.5 per each `move()`) | — (not used in active logic, potential for achievements) | Yes |
@@ -101,7 +101,6 @@ The `PlayerData.items` and `PlayerData.skills` fields are subtables with boolean
 | `hasRadio` | boolean | `true` | Default in `PlayerDataTables.lua` | `dialogScreen` / `Trigger` (radio feed sources) | Story item; enables radio feed dialogs | Yes |
 | `hasDWatch` | boolean | `false` | `grabItemGift()` / LDtk grants | `inGameMenu` (open condition) | Required to open the in-game equipment menu | Yes |
 | `hasNotes` | boolean | `true` | Default in `PlayerDataTables.lua` | `dialogScreen` (notes sources) | Story item; enables note reading | Yes |
-| `hasBoots` | boolean | `false` | `player:grabBoots()` in `items.lua` | `hole.lua` (hole safety), `inGameMenu` (skill slot 2) | Allows crossing holes by draining battery instead of falling | Yes |
 | `hasPlunger` | boolean | `false` | `player:grabPlunger()` in `items.lua` | `sliding.lua` (slime immunity), `plunge.lua` (validation) | Immunity to slime tiles; grants `canPlungerang` | Yes |
 | `hasBag` | boolean | — (not in Default) | `player:grabBag()` in `items.lua` | `crewmember.lua` (capture) | Required to capture CrewMembers | Yes |
 | `hasTools` | boolean | — (not in Default) | `player:grabTools()` in `items.lua` | Story triggers | Story item | Yes |
@@ -150,7 +149,7 @@ to the plungerang (`plunge`). Each ability self-gates on its own item/skill flag
 
 | Field | Lua type | Default | Valid range | Who writes | Who reads | Persisted |
 |---|---|---|---|---|---|---|
-| `EnemiesData.powerLevel` | number | `1` | 1 – 20 (`Config.Dance.powerMax`) | `DanceScene:determineDifficultyUpgrade()` (increments) | `DanceScene` (rhythm difficulty), `Config.Enemy.sightRadiusPerPowerLevel` (sight radius), `sanity.lua` indirectly | Yes |
+| `EnemiesData.powerLevel` | number | `1` | 1 – 20 (nominal) | Not incremented anywhere (currently constant `1`) | `brocorat.lua` (sight radius via `Config.Enemy.sightRadiusPerPowerLevel`) — **not** DanceScene difficulty anymore | Yes |
 | `EnemiesData.sightRadius` | number | `Config.Enemy.sightRadiusBase = 150` | 50 – N (`sightRadiusMin = 50`) | `enemy.lua` (updates with `sightRadiusBase + powerLevel * 3`) | `enemy.lua:search()`, `enemy.lua:linealSearch()` (detection radius) | Yes |
 | `EnemiesData.isEvolved` | boolean | `false` | `true` \| `false` | — (legacy field, no active writer) | — (no documented active reader) | Yes |
 
