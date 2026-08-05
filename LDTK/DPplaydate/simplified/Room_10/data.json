@@ -139,6 +139,23 @@
 				}
 			}
 		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "9cf2e5a0-6fc0-11f1-8c51-43df57f56df0",
+				"layer": "CM_and_enemies",
+				"x": 276,
+				"y": 108,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": true
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",

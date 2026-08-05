@@ -282,7 +282,7 @@ function scene:enter()
 			sprite = creditsSprite,
 			defaultState = 'defCredits',
 			selectedState = 'selCredits',
-			backgroundState = 'achievements',
+			backgroundState = 'credits',
 			action = function()
 				Noble.transition(CreditsScene, 0.3, Noble.Transition.MetroNexus)
 			end

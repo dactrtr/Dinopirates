@@ -85,12 +85,12 @@ Config.Microwave = {
 
 -- Procedural map generation (roguelike run graph)
 Config.MapGen = {
-    roomsBase         = 8,    -- minimum run size (rooms in the smallest run)
-    crewPerExtraRoom  = 1,    -- recruit this many crew to grow the run by +1 room (lower = faster growth)
+    roomsBase         = 6,    -- minimum run size (rooms in the smallest run)
+    crewPerExtraRoom  = 2,    -- recruit this many crew to grow the run by +1 room (lower = faster growth)
     roomsMax          = 20,   -- run size cap
     roomsPerCrewSpawn = 4,    -- spawn ~1 crew per this many rooms in a run (crew density)
     utilityChance     = 0.4,  -- prob. of populating a FeatureSlot with a microwave/minifier
-    totalCrew         = 12,   -- full crew roster; recruiting all of them reveals the final room
+    totalCrew         = 21,   -- full crew roster; recruiting all of them reveals the final room
     enemyChance       = 0.6,  -- prob. of populating an enemy marker
 }
 

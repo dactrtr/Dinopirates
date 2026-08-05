@@ -13,7 +13,7 @@ local achievementData = {
 		{
 			id = "comms",
 			name = "Moshi moshi",
-			description = "Achievement 1 Description",
+			description = "Dunno, are this calls helping?",
 			isSecret = true,
 			icon = "assets/images/achievements/achievements-3"
 		},

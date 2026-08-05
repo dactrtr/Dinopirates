@@ -19,8 +19,10 @@ function TitleBackground:init(x, y, zIndex)
   self.animation.deleteGame.frameDuration = frameDefault
   self.animation:addState('newGame', 6, 6)
   self.animation.newGame.frameDuration = frameDefault
-  self.animation:addState('achievements', 8, 8)
+  self.animation:addState('achievements', 10, 10)
   self.animation.achievements.frameDuration = frameDefault
+  self.animation:addState('credits', 9, 9)
+  self.animation.credits.frameDuration = frameDefault
   -- Default to first frame
   self.animation:setState('continue')
   
