@@ -1302,6 +1302,19 @@ table.insert(levelsLDTK, {
           DoorsConnection = "Down",
           KeyNumber = nil
         }
+      },
+      {
+        id = "Doors",
+        iid = "88dd5c90-6fc0-11f1-8c51-113a2bb0ae04",
+        x = 396,
+        y = 40,
+        width = 8,
+        height = 16,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
       }
     }
   }
@@ -1554,6 +1567,21 @@ table.insert(levelsLDTK, {
           grants = "canDance:true",
           isItem = true,
           SpawnConditions = {}
+        }
+      }
+    },
+    CrewMember = {
+      {
+        id = "CrewMember",
+        iid = "9cf2e5a0-6fc0-11f1-8c51-43df57f56df0",
+        x = 276,
+        y = 108,
+        width = 48,
+        height = 48,
+        customFields = {
+          isTaken = false,
+          crewID = "100",
+          forceSpawn = true
         }
       }
     },
@@ -2680,6 +2708,101 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
+    PneumaticTube = {
+      {
+        id = "PneumaticTube",
+        iid = "6bb5e9a0-6fc0-11f1-8c51-27af4cec03f9",
+        x = 356,
+        y = 196,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "pneumaticTube",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
+    Tube = {
+      {
+        id = "Tube",
+        iid = "6f6b7790-6fc0-11f1-8c51-31e79f0e84bd",
+        x = 356,
+        y = 164,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "718c34b0-6fc0-11f1-8c51-23eb1f76cd70",
+        x = 356,
+        y = 132,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "722d56b0-6fc0-11f1-8c51-b9d128b8ef51",
+        x = 356,
+        y = 100,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "72a45b70-6fc0-11f1-8c51-85e5b82e16b9",
+        x = 356,
+        y = 68,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "735c60d0-6fc0-11f1-8c51-196031bbe7c7",
+        x = 356,
+        y = 36,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "74743970-6fc0-11f1-8c51-81939792c0ee",
+        x = 356,
+        y = 4,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
     CrewMember = {
       {
         id = "CrewMember",
@@ -2732,6 +2855,19 @@ table.insert(levelsLDTK, {
         customFields = {
           NeedsKey = false,
           DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "949c9050-6fc0-11f1-8c51-0715749fdbc0",
+        x = 4,
+        y = 40,
+        width = 8,
+        height = 16,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
           KeyNumber = nil
         }
       }

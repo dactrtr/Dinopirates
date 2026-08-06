@@ -10,6 +10,57 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-06 — Stealth-hunter enemy AI: pathfinding, line of sight, sensory states
+
+**What:** Replaced the hunter AI (`Brocorat`, and `Bosscolli` by inheritance) with a stealth model.
+Enemies now **path around walls** (Playdate native A*), detect the player through a **directional
+sight cone gated by line of sight + light**, hear **omnidirectional noise** (dashing/walking), and
+run a **memory state machine** (`PATROL → CHASE → INVESTIGATE → GIVE UP`) using a `lastKnownTile`.
+The old see-through-walls square check and straight-line `blindSearch`-only chase are gone;
+`blindSearch` survives only as the adjacent/no-path fallback. `linealSearch` (unused) was deleted.
+
+**Why:** The previous AI saw through walls, could not navigate around them (grinding corners), and
+had no memory — it snapped on/off. The new model makes the existing darkness/battery/light stealth
+systems meaningful: lit = seen from afar, dark + still = nearly invisible, but dashing in the dark
+gives you away.
+
+**How it works:**
+- **Sight** (`Enemy:perceive`): player within `sightRadius * lightFactor * tinyMult`, inside the
+  heading cone (`facingX/Y` from real movement delta, `coneHalfAngle`), and with clear
+  `HasLineOfSight`. Yields the exact tile → CHASE.
+- **Hearing** (`Enemy:perceive`): omnidirectional radius (`hearDash`/`hearWalk`/`hearIdle`) from
+  `player.isDashing` / `PlayerData.direction`. No cone, no LOS. Yields an approximate tile →
+  INVESTIGATE.
+- **State machine** (`Enemy:tick`) drives movement through the **existing** `moveCollision` (bounce,
+  eat-props, hole-halt preserved). CHASE paths to the player (beeline when adjacent); INVESTIGATE
+  paths to `lastKnownTile` and looks around for `investigateTimeout` frames before giving up.
+
+**Files (Playdate side):**
+- **NEW** `utilities/Pathing.lua` — wrapper over `playdate.pathfinder` (`new2DGrid` + `findPath`),
+  with a first-hop-direction interface and a target-tile-keyed path cache.
+- **NEW** `utilities/TileVision.lua` — `HasLineOfSight(x1,y1,x2,y2)` via Bresenham over tiles.
+- `entities/enemies/enemy.lua` — `perceive()`, `tick()`, `stepTowardWorld()`, `facingX/Y` in
+  `moveCollision`, `drawDebug()`; deleted `linealSearch`.
+- `entities/enemies/brocorat.lua` — `search()` body is now `self:tick(player)` (stunProc gate kept).
+- `assets/data/Config.lua` — new `Config.Enemy.Perception` block (all tunables; no magic numbers).
+- `scenes/MazeScene.lua` — `Pathing.rebuild(...)` on room enter, `Pathing.invalidate()` on exit;
+  enemy debug overlay drawn from `scene:update()` (Noble draws sprites before `scene:update`, so
+  overlays drawn from a sprite's own `update()` would render underneath).
+- `main.lua` — imports the two new modules.
+
+**Love2D port mapping:**
+- **`Pathing.lua` is the ONLY file the port must reimplement** — it wraps the Playdate-only
+  `playdate.pathfinder`. Provide a plain-Lua A*/BFS behind the identical interface
+  (`Pathing.rebuild(tileData)`, `Pathing.stepToward(fromX,fromY,toX,toY) → dirX,dirY` normalized
+  first hop or nil, `Pathing.invalidate()`, plus `Pathing.debugPath()` for the overlay). Build the
+  graph from `IsTileWalkable` over `tileData[y][x]`, diagonals allowed. Everything else ports
+  unchanged.
+- `TileVision.lua` is pure Lua — copy as-is (Bresenham over `tileMapData[floor][y][x]`).
+- `Enemy:perceive` / `Enemy:tick` / `drawDebug` are engine-agnostic; only the `Graphics.*` calls in
+  `drawDebug` map to `love.graphics` equivalents.
+
+---
+
 ## 2026-07-31 — DanceScene difficulty now scales with crew recruited (+ per-tier enemy sprite)
 
 **What:** DanceScene difficulty is now **deterministic** and driven by

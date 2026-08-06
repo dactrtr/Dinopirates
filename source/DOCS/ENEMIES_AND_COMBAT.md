@@ -30,7 +30,7 @@ File: `source/entities/enemies/enemy.lua`
 
 ## updateMoveSpeed()
 
-Adjusts `self.moveSpeed` based on the player's battery level and whether the room is in darkness. Called at the start of `blindSearch()` and `linealSearch()` before calculating movement.
+Adjusts `self.moveSpeed` based on the player's battery level and whether the room is in darkness. Called at the start of `blindSearch()` and `tick()` before calculating movement.
 
 ```lua
 function Enemy:updateMoveSpeed()
@@ -89,45 +89,46 @@ function Enemy:blindSearch(player)
 end
 ```
 
-Movement is purely diagonal: `moveSpeed` is subtracted or added to both axes independently. There is no diagonal vector normalization.
+Movement is purely diagonal: `moveSpeed` is subtracted or added to both axes independently. There is no diagonal vector normalization. Since the 2026-08-06 stealth AI, `blindSearch` is used **only** as the CHASE fallback — for the final approach when the enemy is already adjacent to the player, and as a safety net when the pathfinder returns no path.
 
-### linealSearch(player)
+> `linealSearch` was removed on 2026-08-06 (it was never used by any hunter).
 
-The enemy only moves if the player is aligned on the same horizontal or vertical axis, within a margin equal to `self.viewRange`.
+### `facingX` / `facingY`
 
-```lua
-function Enemy:linealSearch(player)
-    self.player = player
-    self:updateMoveSpeed()
+The heading the enemy "looks" toward, updated inside `moveCollision()` from the real movement delta (each axis normalized to `-1/0/1`). Defaults to "down" until the enemy first moves. Read by the sight cone in `perceive()`. When the enemy is blocked and does not actually move, the previous heading is kept.
 
-    local movementX = self.x
-    local movementY = self.y
+---
 
-    if math.abs(self.y - self.player.y) < self.viewRange then
-        movementX = self.player.x <= self.x and self.x - self.moveSpeed or self.x + self.moveSpeed
-        self:moveCollision(movementX, self.y, self.player)
-    end
+## Stealth-Hunter AI (2026-08-06)
 
-    if math.abs(self.x - self.player.x) < self.viewRange then
-        movementY = self.player.y <= self.y and self.y - self.moveSpeed or self.y + self.moveSpeed
-        self:moveCollision(self.x, movementY, self.player)
-    end
-end
-```
+Hunters (`Brocorat`, and `Bosscolli` by inheritance) run a two-sense perception model plus a memory state machine. All tunables live in `Config.Enemy.Perception` (see `CONFIG_REFERENCE.md`). Two pure utility modules back it:
 
-Exact logic:
-- If the Y difference between player and enemy is less than `viewRange`, the enemy pursues along X.
-- If the X difference is less than `viewRange`, the enemy pursues along Y.
-- Both conditions can be true simultaneously (when the player is close on both axes), causing two `moveCollision` calls in the same frame.
+- **`utilities/Pathing.lua`** — wrapper over the Playdate-native A* (`playdate.pathfinder`). Interface: `Pathing.rebuild(tileData)`, `Pathing.stepToward(fromX,fromY,toX,toY) → dirX,dirY` (normalized first-hop direction, or `nil` if no path), `Pathing.invalidate()`. Built/torn down by `MazeScene` on room enter/exit. This is the **only** file the Love2D port must reimplement.
+- **`utilities/TileVision.lua`** — `HasLineOfSight(x1,y1,x2,y2)` via Bresenham over the tile grid; false if any tile between the points is non-walkable.
 
-> `viewRange` is not defined in the base Enemy class; each subclass is responsible for defining it. In the current `Brocorat` code, `sightRadius` is used directly in `search()` without calling `linealSearch()`.
+### `Enemy:perceive(player)` — two senses
 
-### search(player)
+Returns `{ seen, sense = "sight"|"hearing"|nil, tile }`. If either sense fires, the player is perceived.
 
-`search()` is not implemented in the base `Enemy` class. Each subclass defines it:
+- **Sight** — directional, precise, gated by light and walls. Fires only if the player is (1) within `sightRadius * lightFactor * tinyMult`, (2) inside the heading cone (`coneHalfAngle` each side of `facingX/Y`), and (3) has clear `HasLineOfSight`. `lightFactor`: `lightFactorLit` when lit (`battery > 0 and not isInDarkness`), else `lightFactorDim` / `lightFactorDark` split by the mid/critical battery thresholds. Yields the **exact** player tile → CHASE.
+- **Hearing** — omnidirectional, no cone, no LOS. Radius from player noise: `hearDash` (dashing), `hearWalk` (`PlayerData.direction ~= "idle"`), `hearIdle` (still, `0` = inaudible). Yields the **approximate** (current) player tile → INVESTIGATE.
 
-- **Brocorat**: checks if the player is within the `sightRadius` square (or `sightRadius/2` in tiny mode) and calls `blindSearch()`.
-- **CrewMember**: opposite logic — calls `escape()` to move away from the player.
+`isTiny` halves both senses (`tinyMult`), preserving the old range-halving.
+
+### `Enemy:tick(player)` — state machine
+
+Runs once per AI turn (respecting `movementFrames`/token gating and the 3-frame throttle). Drives movement through the existing `moveCollision` (bounce, eat-props, hole-halt preserved).
+
+| State | Trigger | Behavior |
+|-------|---------|----------|
+| **PATROL** | No perception | Idle; keeps last heading. |
+| **CHASE** | Sight | `lastKnownTile = player tile` each turn; paths to the player via `Pathing.stepToward`; beelines (`blindSearch`) when adjacent or when no path exists. |
+| **INVESTIGATE** | Lost sight, or heard-only | Paths to `lastKnownTile`; on arrival, looks around, incrementing a timer. |
+| **GIVE UP** | `investigateTimer >= investigateTimeout` | Returns to PATROL, clears `lastKnownTile`. |
+
+### Debug overlay
+
+`Enemy:drawDebug()` (gated by the global `debug` flag) draws the vision cone + effective range, hearing radius, state label, a mark on `lastKnownTile`, and the current path dots. It is invoked from `MazeScene:update()` (not the enemy's own `update()`), because Noble draws all sprites **before** `scene:update()`, so overlays drawn from a sprite's update would render underneath.
 
 ---
 
@@ -330,24 +331,19 @@ self.updateFrameCounter = math.random(0, 2)  -- random offset for staggering
 | `shine` | 9–14 | yes (frameDuration=6) |
 | `eaten` | 16–16 | yes (frameDuration=6) |
 
-### sightRadius Reduction with isTiny
+### search(player) → tick(player)
 
-When `PlayerData.isTiny == true`, the effective detection radius is halved:
+Since the 2026-08-06 stealth AI, `Brocorat:search` just gates on `stunProc` and delegates to the base state machine:
 
 ```lua
 function Brocorat:search(player)
-    if self.stunProc > 1 then
-        if PlayerData.isTiny == true then
-            local tinySight = self.sightRadius / 2
-            -- checks square of tinySight
-        else
-            -- checks square of normal sightRadius
-        end
+    if self.stunProc > 1 then -- stun idea
+        self:tick(player)
     end
 end
 ```
 
-Detection is a square (AABB), not a circle: both `player.x` and `player.y` must be within the range `[self.x - radius, self.x + radius]` × `[self.y - radius, self.y + radius]`.
+Detection is no longer an AABB square around the enemy. It is a directional sight cone (gated by line of sight and light-scaled range) plus an omnidirectional hearing radius — see **Stealth-Hunter AI** above. The `isTiny` range-halving now lives inside `Enemy:perceive` (`tinyMult`).
 
 ### update() Loop
 

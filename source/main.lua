@@ -23,6 +23,8 @@ import 'achievements/all'
 import 'assets/data/Config'
 
 import 'utilities/Utilities'
+import 'utilities/Pathing'
+import 'utilities/TileVision'
 import 'utilities/Conditions'
 import 'utilities/SaveSystem'
 import 'utilities/MapGenerator'

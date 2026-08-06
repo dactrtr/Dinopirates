@@ -245,6 +245,8 @@ function scene:enter()
 	-- MARK: Tile Colliders
 	if room and levelsLDTK[room] then
 		tileColliders = CreateTileColliders(tileMapData[PlayerData.actualTilemap])
+		-- Build the enemy pathfinding graph from the same tilemap the colliders use.
+		Pathing.rebuild(tileMapData[PlayerData.actualTilemap])
 	else
 		printDebug("❌ ERROR: could not create wall colliders, room or levelsLDTK[room] is nil")
 	end
@@ -529,6 +531,17 @@ function scene:update()
 		end
 	end
 	
+	-- Mark: Enemy AI debug overlay (cone, hearing radius, state, path).
+	-- Drawn here (not in the enemy's update) because Noble draws all sprites BEFORE
+	-- scene:update(), so overlays drawn from a sprite's update() render underneath.
+	if debug == true then
+		for _, s in ipairs(Graphics.sprite.getAllSprites()) do
+			if s.isa and s:isa(Enemy) and s.drawDebug then
+				s:drawDebug()
+			end
+		end
+	end
+
 	-- Mark: Crank notification (only when needed)
 	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true and PlayerData.isTiny == false and not PlayerData.showFullLight and not PlayerData.rechargeBlocked then
 		playdate.ui.crankIndicator:draw(0, 0)
@@ -560,6 +573,9 @@ function scene:exit()
 		collider:remove()
 	end
 	tileColliders = {}
+
+	-- Drop the enemy pathfinding graph/cache for the room we're leaving.
+	Pathing.invalidate()
 	
 	Graphics.sprite.performOnAllSprites(function(s)
 		if s:getZIndex() ~= -32768 then s:remove() end

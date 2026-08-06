@@ -4,6 +4,8 @@ This document describes how to port DinoPirates from the Playdate SDK + Noble En
 
 > ⚠️ **Procedural model supersedes parts of this guide.** The game is now a procedural roguelike: levels are generated into a run graph instead of using fixed rooms. For **level flow, navigation, doors, secret rooms, wall plugs, and persistence**, follow [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md) (it has its own Love2D port section). The sections below on **RoomTranslate / Floors.lua (§10, §12)** and the **`2.0-LDTK` save with per-iid `levelState` (§8)** describe the *old* fixed-map model — use them only for engine-level mapping context. Everything else here (bump.lua collisions, Scene Manager, input, FX/lighting, DanceScene, anim8) still applies.
 
+> 🧭 **Enemy AI — single port reimplementation point.** The stealth-hunter AI (2026-08-06) is deliberately split so the port stays contained. **`utilities/Pathing.lua` is the ONLY file the port must reimplement** — it wraps the Playdate-only `playdate.pathfinder` (native A*). Provide a plain-Lua A*/BFS behind the identical interface: `Pathing.rebuild(tileData)`, `Pathing.stepToward(fromX,fromY,toX,toY) → dirX,dirY` (normalized first-hop direction, or `nil`), `Pathing.invalidate()`, plus `Pathing.debugPath()` for the overlay. `utilities/TileVision.lua` (`HasLineOfSight`, Bresenham over tiles) and the perception/state-machine code in `entities/enemies/enemy.lua` (`perceive`, `tick`, `drawDebug`) are pure Lua and port unchanged — only the `Graphics.*` calls in `drawDebug` map to `love.graphics`. See the 2026-08-06 entry in [LOVE2D_PORT_UPDATES.md](LOVE2D_PORT_UPDATES.md) and the **Stealth-Hunter AI** section in [ENEMIES_AND_COMBAT.md](ENEMIES_AND_COMBAT.md).
+
 ---
 
 ## 1. Original Stack Summary

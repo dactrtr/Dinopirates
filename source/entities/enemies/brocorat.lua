@@ -51,20 +51,11 @@ function Brocorat:init(x, y, moveSpeed, Zindex, player, ID)
 end
 
 function Brocorat:search(player)
-	
+	-- Stealth-hunter AI: perception + state machine (sight cone, hearing,
+	-- pathfinding around walls, last-known memory). isTiny range-halving now
+	-- lives inside Enemy:perceive. The stunProc gate is preserved.
 	if self.stunProc > 1 then -- stun idea
-		if PlayerData.isTiny == true then
-			local tinySight = self.sightRadius/2
-			if (player.x >= self.x - tinySight) and (player.x <= self.x + tinySight) and 
-			(player.y >= self.y - tinySight) and (player.y <= self.y + tinySight) then
-				self:blindSearch(player)
-			end
-		else
-			if (player.x >= self.x - self.sightRadius) and (player.x <= self.x + self.sightRadius) and 
-			(player.y >= self.y - self.sightRadius) and (player.y <= self.y + self.sightRadius) then
-				self:blindSearch(player)
-			end
-		end
+		self:tick(player)
 	end
 end
 

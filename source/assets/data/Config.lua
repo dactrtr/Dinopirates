@@ -130,8 +130,8 @@ Config.Slide = {
 -- first, the fall triggers later. Both measured in px of movement while over the hole.
 Config.Hole = {
     warningPixels  = 0,  -- px before the warning shows (0 = the moment the player steps on)
-    fallPixels     = 8,  -- px over a normal hole before the player falls (~4 walk-frames of warning)
-    fallPixelsTiny = 4,  -- px over a tiny hole before falling (smaller player, smaller grace)
+    fallPixels     = 10,  -- px over a normal hole before the player falls (~4 walk-frames of warning)
+    fallPixelsTiny = 6,  -- px over a tiny hole before falling (smaller player, smaller grace)
 }
 
 -- Invincibility
@@ -310,6 +310,19 @@ Config.Enemy = {
     eatPropPowerThreshold   = 25,   -- min powerLevel required for an enemy to eat an edible prop
     eatPropPowerPenalty     = 5,    -- powerLevel lost after eating a prop (cost of feeding)
     stunProcMultiplier      = 20,   -- multiplied by moveSpeed to compute stun threshold (enemy stops if below result)
+}
+
+-- Stealth-hunter perception (sight cone + light-scaled range, omnidirectional hearing).
+-- Consumed by Enemy:perceive / Enemy:tick. All tunables live here — no magic numbers.
+Config.Enemy.Perception = {
+    coneHalfAngle      = 30,    -- degrees each side of the enemy heading for the sight cone
+    lightFactorLit     = 2.0,   -- sight-range multiplier when the player is lit (lamp on)
+    lightFactorDim     = 1,   -- darkness + mid battery
+    lightFactorDark    = 0.5,   -- darkness + battery ~0 (nearly blind)
+    hearDash           = 120,    -- px, omnidirectional hearing radius while the player dashes
+    hearWalk           = 100,    -- px, hearing radius while the player walks
+    hearIdle           = 0,     -- px, hearing radius while the player is still (inaudible)
+    investigateTimeout = 120,   -- frames looking at lastKnownTile before giving up (-> PATROL)
 }
 
 -- Dance (rhythm combat)
