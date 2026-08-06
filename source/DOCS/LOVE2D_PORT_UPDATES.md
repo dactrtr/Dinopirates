@@ -10,6 +10,29 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-06 — Fix: enemy wall-sliding (stop grinding/oscillating against walls)
+
+**What:** Enemies now **slide along walls** on the free axis instead of freezing and bouncing off
+them. In `Enemy:collisionResponse`, walls (`Box`) return `'slide'` instead of `'freeze'`, and the
+manual bounce in `Enemy:moveCollision` no longer fires for `Box` (only for dynamic `PropItem` /
+`Enemy`).
+
+**Why:** With `'freeze'` a diagonal move into a wall stopped the enemy dead (no free-axis motion),
+and the manual bounce then shoved it back a few px — so each AI turn it re-approached the same wall
+corner and oscillated in place ("kept trying to push through the wall") instead of rounding it. The
+pathfinder was correct; the 32px body just couldn't execute the diagonal step through a 16px-grid
+corner. Sliding lets the free axis carry it around the corner.
+
+**Files (Playdate side):** `entities/enemies/enemy.lua` (`collisionResponse` Box → `'slide'`;
+`moveCollision` bounce excludes `Box`).
+
+**How it maps to Love2D:** Use the port's collision layer to slide the enemy along wall AABBs on the
+free axis when the primary axis is blocked (resolve axes separately: attempt X and Y independently,
+keep whichever succeeds), and do NOT apply the dynamic-object pushback to static wall tiles. Applies
+to hunters only; `CrewMember` is unaffected.
+
+---
+
 ## 2026-08-06 — Stealth-hunter enemy AI: pathfinding, line of sight, sensory states
 
 **What:** Replaced the hunter AI (`Brocorat`, and `Bosscolli` by inheritance) with a stealth model.

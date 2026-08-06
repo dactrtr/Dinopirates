@@ -543,7 +543,7 @@ function scene:update()
 	end
 
 	-- Mark: Crank notification (only when needed)
-	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true and PlayerData.isTiny == false and not PlayerData.showFullLight and not PlayerData.rechargeBlocked then
+	if PlayerData.battery == 0 and PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and (PlayerData.isTalking == false and PlayerData.isCutscene == false) and PlayerData.isGaming == true and (Config.Battery.chargeWhileTiny or PlayerData.isTiny == false) and not PlayerData.showFullLight and not PlayerData.rechargeBlocked then
 		playdate.ui.crankIndicator:draw(0, 0)
 	end
 end
@@ -865,7 +865,7 @@ scene.inputHandler = {
 		crankIsMoving = true
 		crankStopTimer = 0
 		
-		local ticksValue = playdate.getCrankTicks(4) -- maybe its better use change or acceleratedChange
+		local ticksValue = playdate.getCrankTicks(Config.Battery.crankTicksPerRev)
 		if not player.isAlive then return end
 
 		if player.isDarkCharging then
@@ -888,7 +888,7 @@ scene.inputHandler = {
 		
 		if PlayerData.isGaming == true then
 			if ticksValue > 0 then
-				if PlayerData.battery < Config.Battery.max and PlayerData.readyToShrink == false and PlayerData.isTiny == false then
+				if PlayerData.battery < Config.Battery.max and PlayerData.readyToShrink == false and (Config.Battery.chargeWhileTiny or PlayerData.isTiny == false) then
 					player:chargeBattery(Config.Battery.chargePerCrankTick)
 					if shadow then
 						shadow:refresh()

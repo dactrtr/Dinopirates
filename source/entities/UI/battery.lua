@@ -17,7 +17,7 @@ function Battery:update()
         self.battery = PlayerData.battery
         
             local fillWidth = 27
-            local batteryPercent = (self.battery * fillWidth) / 100
+            local batteryPercent = (self.battery * fillWidth) / Config.Battery.max
             
             local batteryFill = Graphics.image.new(fillWidth, 2)
             

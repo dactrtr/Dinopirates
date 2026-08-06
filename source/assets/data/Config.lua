@@ -131,7 +131,7 @@ Config.Slide = {
 Config.Hole = {
     warningPixels  = 0,  -- px before the warning shows (0 = the moment the player steps on)
     fallPixels     = 10,  -- px over a normal hole before the player falls (~4 walk-frames of warning)
-    fallPixelsTiny = 6,  -- px over a tiny hole before falling (smaller player, smaller grace)
+    fallPixelsTiny = 8,  -- px over a tiny hole before falling (smaller player, smaller grace)
 }
 
 -- Invincibility
@@ -144,6 +144,8 @@ Config.Invincibility = {
 Config.Battery = {
     max               = 100,   -- full charge cap (and HUD ceiling)
     chargePerCrankTick = 3,    -- battery gained per crank tick while charging in the maze
+    chargeWhileTiny   = false, -- if false, the crank can't recharge the battery while the player is mini
+    crankTicksPerRev  = 4,     -- getCrankTicks() resolution: ticks reported per full crank revolution
     drainMovementDark = 0.5,   -- per frame moving in darkness
     drainDWatchWalk   = 0.5,   -- per frame walking while carrying the DWatch (gated by movement.DRAIN_BATTERY_ON_WALK)
 

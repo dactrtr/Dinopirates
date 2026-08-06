@@ -73,9 +73,12 @@ function Enemy:moveCollision(movementX, movementY, player)
         for index, collision in pairs(collisions) do
             local collideObject = collision['other']
             
-            -- Bounce effect here
-            if collideObject:isa(Box) or collideObject:isa(PropItem) or collideObject:isa(Enemy) then
-                
+            -- Bounce effect for DYNAMIC objects only (props / other enemies).
+            -- Walls (Box) are intentionally excluded: they now use a 'slide'
+            -- collision response, so applying the manual pushback here would fight
+            -- the slide and reproduce the wall-oscillation bug.
+            if collideObject:isa(PropItem) or collideObject:isa(Enemy) then
+
                 if collideObject:isa(Brocorat) then
                     -- add function to enemies be able to eat themselves
                 end
@@ -131,7 +134,13 @@ end
 function Enemy:collisionResponse(other)
     if other:isa(Items) or other:isa(Trigger) then
         return 'overlap'
-    elseif other:isa(Box) or other:isa(PropItem) then
+    elseif other:isa(Box) then
+        -- Walls: slide along the surface instead of freezing dead. This lets the
+        -- enemy round a wall corner on the free axis (continuing toward its target)
+        -- instead of grinding straight into it. Was 'freeze', which — combined with
+        -- the manual bounce below — made the enemy oscillate against walls.
+        return 'slide'
+    elseif other:isa(PropItem) then
         return 'freeze'
     elseif other:isa(Player) then
         return 'overlap'
