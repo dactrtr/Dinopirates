@@ -2,7 +2,7 @@
 	"identifier": "Room_22",
 	"uniqueIdentifer": "af4d7e50-6fc0-11f1-989d-8151041b4734",
 	"x": 400,
-	"y": 1056,
+	"y": 1392,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
@@ -33,21 +33,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"TKNotes": [
-			{
-				"id": "TKNotes",
-				"iid": "d5c86a40-6fc0-11f1-989d-35b219133546",
-				"layer": "Notes",
-				"x": 260,
-				"y": 84,
-				"width": 32,
-				"height": 48,
-				"color": 2943221,
-				"customFields": {
-					"String": "player spawn drop"
-				}
-			}
-		],
 		"Lamp": [
 			{
 				"id": "Lamp",
@@ -61,6 +46,23 @@
 				"customFields": {
 					"type": "lamp",
 					"isItem": true
+				}
+			}
+		],
+		"TubeExit": [
+			{
+				"id": "TubeExit",
+				"iid": "e602f690-6fc0-11f1-90a3-07815a3b0243",
+				"layer": "Items_and_Props",
+				"x": 364,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "TubeExit",
+					"nocollider": false,
+					"destroyed": false
 				}
 			}
 		],
@@ -88,7 +90,7 @@
 				"layer": "Doors",
 				"x": 200,
 				"y": 236,
-				"width": 48,
+				"width": 16,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
@@ -103,7 +105,7 @@
 				"layer": "Doors",
 				"x": 200,
 				"y": 4,
-				"width": 48,
+				"width": 16,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
@@ -134,7 +136,7 @@
 				"x": 396,
 				"y": 120,
 				"width": 8,
-				"height": 48,
+				"height": 16,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,

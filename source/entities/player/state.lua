@@ -66,7 +66,7 @@ function Player:idle()
     end
     
     if PlayerData.isTiny == true then
-      self.animation:setState('tinyIdle')
+      self.animation:setState('idleTiny')
     end
     
     PlayerData.direction = 'idle'

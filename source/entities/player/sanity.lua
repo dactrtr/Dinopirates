@@ -59,7 +59,16 @@ function Player:chargeBattery(amount)
   if PlayerData.rechargeBlocked then return end
   if self:isOnHole() then return end  -- can't recharge while crossing a hole
   if PlayerData.battery < Config.Battery.max then
-    self.animation:setState('charge')
+    -- Only play the charging animation when the player actually carries the lamp
+    -- (there is no battery to visibly charge without it). Tiny and normal size use
+    -- different charge sprites.
+    if PlayerData.items.hasLamp == true then
+      if PlayerData.isTiny == true then
+        self.animation:setState('chargeTiny')
+      else
+        self.animation:setState('charge')
+      end
+    end
   elseif PlayerData.battery >= Config.Battery.max then
     self:idle()
   end

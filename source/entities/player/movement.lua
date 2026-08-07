@@ -29,7 +29,7 @@ function Player:move(direction)
         if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false then
           self.animation:setState('lampLeft')
         elseif PlayerData.isTiny == true then
-            self.animation:setState('tinyLeft')
+            self.animation:setState('leftTiny')
         else
           self.animation:setState('left')
         end
@@ -39,7 +39,7 @@ function Player:move(direction)
         if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false then
           self.animation:setState('lampRight')
         elseif PlayerData.isTiny == true then
-          self.animation:setState('tinyRight')
+          self.animation:setState('rightTiny')
         else
           self.animation:setState('right')
         end
@@ -49,7 +49,7 @@ function Player:move(direction)
         if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false then
           self.animation:setState('up')
         elseif PlayerData.isTiny == true then
-          self.animation:setState('tinyUp')
+          self.animation:setState('upTiny')
         else
           self.animation:setState('up')
         end
@@ -59,7 +59,7 @@ function Player:move(direction)
         if PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false then
           self.animation:setState('lampDown')
         elseif PlayerData.isTiny == true then
-          self.animation:setState('tinyDown')
+          self.animation:setState('downTiny')
         else
           self.animation:setState('down')
         end 

@@ -42,22 +42,22 @@ function Player:initAnimations()
   self.animation:addState('dashDown', 65, 68)
   self.animation.dashDown.frameDuration = 3
 
-  self.animation:addState('tinyIdle', 73, 81)
-  self.animation.tinyIdle.frameDuration = frameDurationWalk/2
+  self.animation:addState('idleTiny', 73, 81)
+  self.animation.idleTiny.frameDuration = frameDurationWalk/2
   
-  self.animation:addState('tinyRight', 82, 84)
-  self.animation.tinyRight.frameDuration = frameDurationWalk/2
+  self.animation:addState('rightTiny', 82, 84)
+  self.animation.rightTiny.frameDuration = frameDurationWalk/2
   
-  self.animation:addState('tinyLeft', 85, 87)
-  self.animation.tinyLeft.frameDuration = frameDurationWalk/2
+  self.animation:addState('leftTiny', 85, 87)
+  self.animation.leftTiny.frameDuration = frameDurationWalk/2
   
-  self.animation:addState('tinyDown', 88, 90)
-  self.animation.tinyDown.frameDuration = frameDurationWalk/2
+  self.animation:addState('downTiny', 88, 90)
+  self.animation.downTiny.frameDuration = frameDurationWalk/2
   
-  self.animation:addState('tinyUp', 91, 93)
-  self.animation.tinyUp.frameDuration = frameDurationWalk/2
+  self.animation:addState('upTiny', 91, 93)
+  self.animation.upTiny.frameDuration = frameDurationWalk/2
   
-  self.animation:addState('transformTo', 94, 99, 'tinyIdle')
+  self.animation:addState('transformTo', 94, 99, 'idleTiny')
   self.animation.transformTo.frameDuration = 4
   
   self.animation:addState('transformCycle', 100, 105)
@@ -100,6 +100,9 @@ function Player:initAnimations()
   -- exists. balancingTiny mirrors the tiny/normal split like sleep/sleepTiny.
   self.animation:addState('balancing', 115, 116)
   self.animation.balancing.frameDuration = 18
+  
+  self.animation:addState('chargeTiny', 112, 114)
+  self.animation.chargeTiny.frameDuration = 18
 
   self.animation:addState('balancingTiny', 162, 163)
   self.animation.balancingTiny.frameDuration = 18
@@ -127,7 +130,7 @@ function Player:initAnimations()
   elseif (PlayerData.items.hasLamp == true and PlayerData.isInDarkness == true and  PlayerData.isTiny == false) then
     self.animation:setState('lampIdle')
   elseif PlayerData.isTiny == true then
-    self.animation:setState('tinyIdle')
+    self.animation:setState('idleTiny')
   else
     self.animation:setState('idle')
   end
