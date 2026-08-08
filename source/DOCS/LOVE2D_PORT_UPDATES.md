@@ -10,6 +10,107 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-08 — Feature: Ghost is incorporeal (phases through everything but walls)
+
+**What:** `Ghost:collisionResponse` now returns `'overlap'` for everything except walls (`Box`),
+which stay `'slide'`. The ghost drifts through props, items, enemies, and other crew, and passes
+over holes; only walls stop it.
+
+**Why:** Requested ghost feel — incorporeal. Holes need no code: hole tiles are walkable
+(`WALKABLE_TILES`), so `CreateTileColliders` never puts a collider there and the ghost already
+drifts over them. Player contact still banishes via the player's own `collisionResponse` (invoked
+from the inherited `moveCollision`), so `'overlap'` doesn't break banishing.
+
+**Files (Playdate side):** `source/entities/enemies/ghost.lua` — added `Ghost:collisionResponse`.
+
+**Love2D mapping:** Mirror in the port: the ghost's collision resolver blocks only on wall tiles;
+all other overlaps are pass-through and non-blocking.
+
+**Also — vanish animation (touch AND sanity recovery):** the ghost never disappears instantly.
+A shared `Ghost:beginVanish()` becomes untouchable (collide rect zeroed), stops fleeing, and plays
+a `vanish` animation state (same frames as CrewMember's `stunned`, `loop=false`, with an
+`onComplete` that removes the ghost exactly once — guarded, since onComplete re-fires every frame
+at the end). Two triggers: (1) `Ghost:banish()` (player touch) counts the banish then calls
+beginVanish; (2) `Ghost:update` calls beginVanish when sanity recovers **above** the threshold
+**while the ghost is currently manifested** (`isVisible()`) — this fade is NOT counted. A ghost that
+never manifested (still hidden since spawn) just stays dormant; it does not vanish on spawn.
+`Ghost:update` early-returns while `isVanishing` so the sanity gate/flee AI don't interfere; the
+sprite still advances the animation via `NobleSprite:draw`. Port mapping: one-shot vanish animation
+on both triggers, removal deferred to its completion callback (fired once).
+
+Also added `CrewMember:drawDebug` (omnidirectional vision circle + state label; inherited by
+Ghost, gated on visibility) and wired `MazeScene`'s debug overlay to draw it for `CrewMember` too.
+
+---
+
+## 2026-08-08 — Fix: CrewMember `forceSpawn` honored in map generation
+
+**What:** A `CrewMember` LDtk marker with `customFields.forceSpawn == true` now guarantees a
+crew member is assigned to that node (given the node is part of the run), instead of being
+subject to the random `nCrew` distribution like every other crew marker.
+
+**Why:** `forceSpawn` was already honored for enemies (`Brocorat`/`Bosscolli`) and utilities
+(`Microwave`/`Minifier`) in `MapGenerator.generate()`, but the crew-assignment block ignored
+it entirely — crew markers were treated as generic spawn points and only the first `nCrew`
+shuffled eligible nodes received crew. A forced crew room (e.g. room 20) therefore often got
+no crew. `markersOf` already preserved `customFields`; nothing was reading it.
+
+**Files (Playdate side):** `source/utilities/MapGenerator.lua` — the crew block splits eligible
+nodes into `forced` (any CrewMember marker with `forceSpawn == true`) and `optional`. Forced
+nodes are assigned first at their forced marker (guaranteed, not counted against the cap);
+`nCrew = max(desired - forcedAssigned, 0)` random slots then fill from the optional nodes.
+Roster identities are still consumed from `uncollected`; if the roster is exhausted a forced
+node gets nothing (expected). Also: `MapGenerator.debugRoomGraph` (TitleScene PLAYGROUND) never
+assigned crew at all — it now force-spawns crew when the room has a CrewMember marker (mirroring
+its force-all enemies/utilities), so authored crew rooms can be tested in isolation.
+
+**Love2D mapping:** Mirror the same forced/optional split in the port's map generator. Semantics:
+forceSpawn on a crew marker = "if this room is in the run, always place crew here" — it does NOT
+force the room into the graph (identical to enemy/utility forceSpawn).
+
+---
+
+## 2026-08-07 — Feature: Ghost entity (sanity-gated CrewMember subclass)
+
+**What:** New `Ghost` entity — a subclass of `CrewMember` that is only **visible and touchable
+when `PlayerData.sanity < Config.Ghost.revealThreshold`** (default 30). Above the threshold the
+ghost is invisible, has a zeroed collide rect, and banks no movement tokens; below it, it appears
+and runs the full inherited crew flee AI (`search` → `escape`). Touching a revealed ghost calls
+`Ghost:banish()` — removes it and increments `PlayerData.GhostData.banished`; at
+`Config.Ghost.achievementCount` it calls `Utilities.grantAchievementIfNeeded(Config.Ghost.achievementId)`
+(safe no-op until the `"ghostbuster"` id is registered). Ghosts have their **own spritesheet and no
+hat**, are authored per-room in LDtk as a `Ghost` entity type, and **do not persist** (respawn on
+re-entry). A `banishWhileTiny` flag (default true) gates whether tiny-player contact banishes or
+passes through crew-like.
+
+**Why:** Atmospheric enemy that manifests as the player goes insane, reusing the CrewMember flee AI
+and shared movement-token system with zero new plumbing.
+
+**Files (Playdate side):**
+- `entities/enemies/ghost.lua` — NEW. `Ghost` extends `CrewMember`; `init` reaches the grandparent
+  (`CrewMember.super.init`) to load its own sheet and skip the hat/hiding config; `update` adds the
+  sanity gate then delegates to `CrewMember.update`; `banish` counts + optional achievement.
+- `entities/enemies/crewmember.lua` — guarded the `self.hat:moveTo(...)` call in `moveCollision`
+  with `if self.hat then ... end` so hatless subclasses don't crash. No-op for real crew.
+- `entities/player/collisions.lua` — added an `elseif other:isa(Ghost)` branch BEFORE the
+  `isa(CrewMember)` branch (order matters: Ghost is-a CrewMember) that routes to `banish()`.
+- `scenes/MazeScene.lua` — imported `entities/enemies/ghost` (after crewmember) and spawn ghosts
+  from `levelsLDTK[room].entities.Ghost` in `enter()`.
+- `assets/data/Config.lua` — added `Config.Ghost` table; bounce math reuses `Config.CrewMember.*`.
+- `assets/data/PlayerDataTables.lua` — added `PlayerData.GhostData = { banished = 0 }` inside
+  `DefaultPlayerData` (reset on new game via the existing `ResetPlayerData` deepcopy).
+- `assets/images/enemies/ghost-table-48-48.png` — placeholder art (copied from crewmember sheet)
+  until the real ghost sheet exists; frame ranges in `Ghost:init` are placeholders.
+
+**Love2D mapping:** Ghost maps directly onto the port's `CrewMember` once the movement-token system
+is ported — it is a CrewMember subclass with two additions: (1) a **sanity-gated visibility +
+collision toggle** in `update` (compare `sanity < revealThreshold`; toggle `setVisible` and the
+collider), and (2) a **banish-on-touch counter** (`GhostData.banished`, optional achievement at a
+cap). No hat, own spritesheet, no persistence (respawn per room). Everything else (flee AI, bounce,
+token feed) is the already-ported CrewMember behavior.
+
+---
+
 ## 2026-08-06 — Fix: enemy wall-sliding (stop grinding/oscillating against walls)
 
 **What:** Enemies now **slide along walls** on the free axis instead of freezing and bouncing off

@@ -29,6 +29,18 @@ function Player:collisionResponse(other)
 
     end
 
+  elseif other:isa(Ghost) then
+    -- A Ghost is-a CrewMember, so this branch must come BEFORE the CrewMember branch.
+    -- Tiny gate: when banishWhileTiny is false and the player is tiny, don't banish —
+    -- behave crew-like (pass through, arm as trigger for future interaction). The flag
+    -- is currently true, so the ghost banishes regardless of player size.
+    if PlayerData.isTiny and not Config.Ghost.banishWhileTiny then
+      self.currentTrigger = other
+      return 'overlap'
+    end
+    other:banish()
+    return 'overlap'
+
   elseif other:isa(CrewMember) then
     if PlayerData.isTiny then
         self.currentTrigger = other

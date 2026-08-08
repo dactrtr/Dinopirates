@@ -25,6 +25,7 @@ import "assets/comics/comicsData"
 
 import "entities/enemies/brocorat"
 import "entities/enemies/crewmember"
+import "entities/enemies/ghost"
 
 import 'entities/props/propItem'
 import 'entities/props/door'
@@ -414,7 +415,7 @@ function scene:enter()
 	-- MARK: Crew (assigned identity → correct hat + dialog; persistence via node.cleared)
 	if node.content.crewId and not node.cleared.crewTaken then
 		local cs = node.content.crewSpawn or { x = 200, y = 120 }
-		CrewMember(cs.x, cs.y, Config.CrewMember.defaultSpeed or 1.5, ZIndex.enemy,
+		CrewMember(cs.x, cs.y, Config.CrewMember.defaultSpeed, ZIndex.enemy,
 		           player, "node" .. node.id .. "-crew", node.id, node.content.crewId)
 	end
 	
@@ -425,6 +426,14 @@ function scene:enter()
 		for _, npcData in ipairs(npcEntities.NPC) do
 			local cf = npcData.customFields or {}
 			NPC(npcData.x, npcData.y, cf.type or "computer", npcData.iid, room, cf.sourceFeed or 0, cf.triggerScene)
+		end
+	end
+
+	-- MARK: Ghosts (authored per-room; no persistence, respawn on re-entry)
+	local ghostEntities = levelsLDTK[room].entities
+	if ghostEntities and ghostEntities.Ghost then
+		for _, gData in ipairs(ghostEntities.Ghost) do
+			Ghost(gData.x, gData.y, Config.Ghost.defaultSpeed, ZIndex.enemy, player, gData.iid, room)
 		end
 	end
 
@@ -536,7 +545,7 @@ function scene:update()
 	-- scene:update(), so overlays drawn from a sprite's update() render underneath.
 	if debug == true then
 		for _, s in ipairs(Graphics.sprite.getAllSprites()) do
-			if s.isa and s:isa(Enemy) and s.drawDebug then
+			if s.isa and (s:isa(Enemy) or s:isa(CrewMember)) and s.drawDebug then
 				s:drawDebug()
 			end
 		end

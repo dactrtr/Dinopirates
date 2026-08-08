@@ -245,6 +245,7 @@ Config.Portals = {
 
 -- CrewMember AI
 Config.CrewMember = {
+    defaultSpeed             = 1.5,  -- escape/flee move speed
     hatDelta                 = 15,
     hidingTokensRequired     = 3,
     hidingVisionRange        = 80,   -- px
@@ -258,6 +259,17 @@ Config.CrewMember = {
     batteryThresholdStop     = Config.Battery.thresholdCritical,  -- shared with Enemy.batteryThresholdCritical
     batteryThresholdRestore  = Config.Battery.thresholdMid,       -- shared with Enemy.batteryThresholdMid
     collideRect              = {x=12, y=24, w=24, h=24},
+}
+
+-- Ghost (CrewMember subclass; visible/touchable only when sanity is low)
+Config.Ghost = {
+    revealThreshold  = 30,   -- ghost visible/touchable when PlayerData.sanity < this
+    defaultSpeed     = 1.5,   -- flee speed
+    collideRect      = { x = 12, y = 12, w = 24, h = 24 }, -- tune to sprite
+    achievementId    = "ghostbuster",
+    achievementCount = 5,     -- banish this many to grant the achievement
+    banishWhileTiny  = true,  -- if false, tiny contact does NOT banish (crew-like
+                              -- pass-through instead). Currently true → banishes at any size.
 }
 
 -- Screen dimensions and random bounds
