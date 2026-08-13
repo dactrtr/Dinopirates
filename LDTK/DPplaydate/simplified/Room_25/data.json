@@ -1,0 +1,161 @@
+{
+	"identifier": "Room_25",
+	"uniqueIdentifer": "d1edc1a0-6fc0-11f1-90a3-51b4142cd9bd",
+	"x": 1264,
+	"y": 1632,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "33a35890-96d0-11f1-90a3-f7a30423732b",
+			"dir": "n"
+		},
+		{
+			"levelIid": "9491fe30-96d0-11f1-90a3-511a03a6852c",
+			"dir": "ne"
+		}
+	],
+	"customFields": {
+		"shadow": true,
+		"light": 0.1,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 25,
+		"tile": 25,
+		"DoorsConnection": [
+			"Top",
+			"Left",
+			"Down",
+			"Right"
+		],
+		"play": null,
+		"procGen": true,
+		"roomRole": "StartDown",
+		"requiredItems": [],
+		"requiredSkills": []
+	},
+	"layers": [
+		"Gameplay.png",
+		"Foreground.png"
+	],
+	"entities": {
+		"Microwave": [
+			{
+				"id": "Microwave",
+				"iid": "221330f0-96d0-11f1-90a3-274eeba31929",
+				"layer": "Items_and_Props",
+				"x": 60,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 16705377,
+				"customFields": {
+					"type": "microwave",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": true
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "24692ee0-96d0-11f1-90a3-4dddf412c449",
+				"layer": "Items_and_Props",
+				"x": 332,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": true
+				}
+			}
+		],
+		"Food": [
+			{
+				"id": "Food",
+				"iid": "2c81c8d0-96d0-11f1-90a3-413f92293348",
+				"layer": "Items_and_Props",
+				"x": 268,
+				"y": 116,
+				"width": 32,
+				"height": 32,
+				"color": 16151930,
+				"customFields": {
+					"type": "food",
+					"grants": "hasitemname:bool",
+					"isItem": true
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "d1ede8b5-6fc0-11f1-90a3-29c09f95f50f",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f20f01b0-6fc0-11f1-90a3-fd76c8524431",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f85f10a0-6fc0-11f1-90a3-f9b54bccf788",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "ff05a400-6fc0-11f1-90a3-5fa59ee388c5",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
+}

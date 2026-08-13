@@ -2384,6 +2384,90 @@ table.insert(levelsLDTK, {
     }
   }
 })
+	--18
+table.insert(levelsLDTK, {
+  identifier = "Room_25",
+  uniqueIdentifer = "d1edc1a0-6fc0-11f1-90a3-51b4142cd9bd",
+  neighbourLevels = {},
+  customFields = {
+    shadow = true,
+    light = 0.5,
+    visited = false,
+    comic_name = nil,
+    comic_wasPlayed = false,
+    level = 4,
+    roomNumber = 18,
+    tile = 18,
+    DoorsConnection = {
+      "Top",
+      "Left",
+      "Down",
+      "Right"
+    },
+    play = nil,
+    procGen = true,
+    roomRole = "StartDown",
+    requiredItems = {},
+    requiredSkills = {},
+    hasForeground = true
+  },
+  entities = {
+    Doors = {
+      {
+        id = "Doors",
+        iid = "d1ede8b5-6fc0-11f1-90a3-29c09f95f50f",
+        x = 200,
+        y = 4,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "f20f01b0-6fc0-11f1-90a3-fd76c8524431",
+        x = 4,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "f85f10a0-6fc0-11f1-90a3-f9b54bccf788",
+        x = 396,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "ff05a400-6fc0-11f1-90a3-5fa59ee388c5",
+        x = 200,
+        y = 236,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      }
+    }
+  }
+})
 	--19
 table.insert(levelsLDTK, {
   identifier = "Room_19",
@@ -2896,12 +2980,13 @@ table.insert(levelsLDTK, {
     DoorsConnection = {},
     play = nil,
     procGen = true,
-    roomRole = "StartDown",
+    roomRole = "StartUp",
     requiredItems = {},
     requiredSkills = {},
     hasForeground = true
   },
   entities = {
+<<<<<<< Updated upstream
     TKNotes = {
       {
         id = "TKNotes",
@@ -2926,6 +3011,20 @@ table.insert(levelsLDTK, {
         customFields = {
           type = "lamp",
           isItem = true
+=======
+    TubeExit = {
+      {
+        id = "TubeExit",
+        iid = "e602f690-6fc0-11f1-90a3-07815a3b0243",
+        x = 364,
+        y = 196,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "TubeExit",
+          nocollider = false,
+          destroyed = false
+>>>>>>> Stashed changes
         }
       }
     },

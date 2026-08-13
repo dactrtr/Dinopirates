@@ -6,6 +6,7 @@ RunState = {
 	graph         = nil,  -- array of nodes (see MapGenerator); also has .startId / .finalReserved
 	currentNodeId = nil,  -- node the player is currently in
 	pendingNodeId = nil,  -- node a door transition is heading to; consumed on enter
+	entryRole     = nil,  -- "startup"/"startdown" for a vertical entry; one-shot, consumed on enter
 }
 
 -- Generate a fresh run from current progress (crew recruited). entryRole optionally
@@ -15,6 +16,17 @@ function RunState.startRun(entryRole)
 	RunState.graph = MapGenerator.generate(progress, entryRole)
 	RunState.currentNodeId = nil
 	RunState.pendingNodeId = RunState.graph.startId
+	-- Remember how the run was entered so MazeScene:enter can spawn the player at the entry
+	-- room's TubeExit (vertical entry) instead of the door-based spawn. Consumed on first enter.
+	RunState.entryRole = entryRole and entryRole:lower() or nil
+end
+
+-- Read and clear the pending vertical entry role. Returns "startup"/"startdown"/nil. One-shot:
+-- only the first MazeScene:enter after startRun sees it; later door navigation gets nil.
+function RunState.consumeEntryRole()
+	local r = RunState.entryRole
+	RunState.entryRole = nil
+	return r
 end
 
 function RunState.getNode(id)
@@ -31,6 +43,7 @@ function RunState.startDebugRoom(level, roomNumber)
 	RunState.graph = graph
 	RunState.currentNodeId = nil
 	RunState.pendingNodeId = graph.startId
+	RunState.entryRole = nil  -- debug room is not a vertical entry
 	return true
 end
 
@@ -91,6 +104,7 @@ function RunState.clear()
 	RunState.graph = nil
 	RunState.currentNodeId = nil
 	RunState.pendingNodeId = nil
+	RunState.entryRole = nil
 end
 
 -- Serialize the active run into a plain, datastore-safe table. Nodes store their
@@ -163,6 +177,7 @@ function RunState.deserialize(data)
 	RunState.graph         = graph
 	RunState.currentNodeId = nil
 	RunState.pendingNodeId = data.currentNodeId or data.startId
+	RunState.entryRole     = nil  -- a loaded run is not a fresh vertical entry
 	return true
 end
 

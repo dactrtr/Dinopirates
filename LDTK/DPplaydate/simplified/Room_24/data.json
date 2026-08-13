@@ -1,8 +1,8 @@
 {
 	"identifier": "Room_24",
 	"uniqueIdentifer": "71ff9a40-6fc0-11f1-90a3-d7542bedfd23",
-	"x": 400,
-	"y": 912,
+	"x": 800,
+	"y": 864,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
@@ -10,17 +10,21 @@
 		{
 			"levelIid": "6c078cc0-6fc0-11f1-989d-171d9e0d832f",
 			"dir": "s"
+		},
+		{
+			"levelIid": "8d9d4bd0-96d0-11f1-90a3-5b8851f14823",
+			"dir": "w"
 		}
 	],
 	"customFields": {
-		"shadow": true,
+		"shadow": false,
 		"light": 0.5,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
 		"level": 4,
-		"roomNumber": 23,
-		"tile": 23,
+		"roomNumber": 24,
+		"tile": 24,
 		"DoorsConnection": [
 			"Top",
 			"Down",
@@ -39,6 +43,93 @@
 		"Foreground.png"
 	],
 	"entities": {
+<<<<<<< Updated upstream
+=======
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "57ef93c0-96d0-11f1-90a3-252e4b46635f",
+				"layer": "Items_and_Props",
+				"x": 268,
+				"y": 164,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"Food": [
+			{
+				"id": "Food",
+				"iid": "86b72850-96d0-11f1-90a3-f3bd5eeb68c5",
+				"layer": "Items_and_Props",
+				"x": 276,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 16151930,
+				"customFields": {
+					"type": "food",
+					"grants": "hasitemname:bool",
+					"isItem": true
+				}
+			}
+		],
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "139c7e50-96d0-11f1-90a3-2b308c8e4acd",
+				"layer": "Items_and_Props",
+				"x": 252,
+				"y": 100,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "1413aa20-96d0-11f1-90a3-b7f0cc67fbb1",
+				"layer": "Items_and_Props",
+				"x": 284,
+				"y": 100,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "084dd8f0-96d0-11f1-90a3-73f6e8e2f4c2",
+				"layer": "CM_and_enemies",
+				"x": 268,
+				"y": 196,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
+>>>>>>> Stashed changes
 		"Doors": [
 			{
 				"id": "Doors",
@@ -74,9 +165,9 @@
 				"id": "Doors",
 				"iid": "71ff9a49-6fc0-11f1-90a3-25929e050004",
 				"layer": "Doors",
-				"x": 344,
+				"x": 336,
 				"y": 4,
-				"width": 16,
+				"width": 32,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
@@ -120,7 +211,7 @@
 				"iid": "71ff9a4c-6fc0-11f1-90a3-c1693d4b1eb4",
 				"layer": "Doors",
 				"x": 88,
-				"y": 234,
+				"y": 236,
 				"width": 16,
 				"height": 8,
 				"color": 16711680,
@@ -142,6 +233,36 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "b832f020-96d0-11f1-90a3-ef07f2f88c23",
+				"layer": "Doors",
+				"x": 152,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "0e03eea0-96d0-11f1-90a3-73b5a66f9262",
+				"layer": "Doors",
+				"x": 4,
+				"y": 128,
+				"width": 9,
+				"height": 32,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
 					"KeyNumber": null
 				}
 			}

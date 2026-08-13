@@ -64,17 +64,71 @@ local crankIsMoving = false
 local crankStopTimer = 0
 local CRANK_STOP_THRESHOLD = 0.1 -- seconds of inactivity before considering crank stopped
 local bButtonDownTime = nil -- ms timestamp when B was pressed; drives custom hold-to-charge (SDK Held is fixed at 1s)
-local lastTapTime = { up = nil, down = nil, left = nil, right = nil } -- ms timestamps for double-tap dash detection
-local function checkDoubleTap(dir)
+local lastTapTime = { up = nil, down = nil, left = nil, right = nil } -- ms timestamp of the previous tap per direction
+local dashTaps    = { up = 0,   down = 0,   left = 0,   right = 0   } -- consecutive taps within the window per direction
+-- Multi-tap dash trigger: fires once the player taps a direction Config.Dash.tapsToTrigger times
+-- in a row, each within Config.Dash.tapWindow of the previous. Any longer gap resets that
+-- direction's count (starting a fresh streak with the current tap).
+local function checkDashTaps(dir)
 	local now = playdate.getCurrentTimeMilliseconds()
 	if lastTapTime[dir] and (now - lastTapTime[dir]) <= Config.Dash.tapWindow then
+		dashTaps[dir] = dashTaps[dir] + 1
+	else
+		dashTaps[dir] = 1
+	end
+	lastTapTime[dir] = now
+	if dashTaps[dir] >= Config.Dash.tapsToTrigger then
+		dashTaps[dir] = 0
 		lastTapTime[dir] = nil
 		return true
 	end
-	lastTapTime[dir] = now
 	return false
 end
 local tileColliders = {}
+
+-- Returns true if the player's collide-rect footprint centred at sprite position (cx,cy) covers
+-- only walkable tiles (no wall). The player sprite is 48x48 anchored at its centre, so its
+-- top-left is (cx-24, cy-24); the collide rect is offset within that. Samples every tile the
+-- rect touches; out-of-bounds tiles count as walls, so a spawn is never pushed off the map.
+local function spawnFootprintClear(cx, cy)
+	local grid = tileMapData[PlayerData.actualTilemap]
+	if not grid then return true end  -- no tile data: don't fight it
+	local TILE = Config.Tiles.size
+	local cr = PlayerData.isTiny and Config.Player.collideRectTiny or Config.Player.collideRect
+	local left   = cx - 24 + cr.x
+	local top    = cy - 24 + cr.y
+	local right  = left + cr.w - 1
+	local bottom = top + cr.h - 1
+	local tx0, tx1 = math.floor(left / TILE) + 1, math.floor(right / TILE) + 1
+	local ty0, ty1 = math.floor(top / TILE) + 1, math.floor(bottom / TILE) + 1
+	for ty = ty0, ty1 do
+		local row = grid[ty]
+		for tx = tx0, tx1 do
+			if not IsTileWalkable(row and row[tx]) then return false end
+		end
+	end
+	return true
+end
+
+-- If the spawn point clips a wall, return the nearest position (expanding-ring search, 2px steps)
+-- whose collide-rect footprint is fully clear; otherwise return the point unchanged. Gives up
+-- (returns the original) if nothing clear is found within maxRadius.
+local function nudgeSpawnClearOfWalls(px, py)
+	if spawnFootprintClear(px, py) then return px, py end
+	local step, maxRadius = 2, 64
+	local dirs = { {-1,0},{1,0},{0,-1},{0,1},{-1,-1},{1,-1},{-1,1},{1,1} }
+	for r = step, maxRadius, step do
+		for _, d in ipairs(dirs) do
+			local nx, ny = px + d[1] * r, py + d[2] * r
+			if spawnFootprintClear(nx, ny) then
+				printDebug("🧱 Spawn was clipping a wall — nudged to", nx, ny)
+				return nx, ny
+			end
+		end
+	end
+	printDebug("⚠️ Spawn clipping a wall and no clear spot found within", maxRadius)
+	return px, py
+end
 
 -- This is the background color of this scene.
 scene.backgroundColor = Graphics.kColorWhite
@@ -207,6 +261,52 @@ function scene:enter()
 		end
 	end
 	PlayerData.returningInPlace = false
+
+	-- Vertical entry (tube rise / hole fall) overrides the door-based spawn above: a new run
+	-- enters at a Startup/StartDown room, but the door-based spawn uses a stale PlayerData.lastRoom
+	-- (vertical transitions never update it). One-shot: consumeEntryRole clears it, so later door
+	-- navigation within the run is unaffected.
+	--   • StartDown: spawn at the room's DOWN door by default, as if the player arrived from an UP
+	--     door in the room below (placed just inside the bottom of the room). Falls back to a
+	--     TubeExit if there is no down door.
+	--   • StartUp: spawn at the authored TubeExit.
+	local entryRole = RunState.consumeEntryRole()
+	if entryRole == "startup" or entryRole == "startdown" then
+		-- Body offset so the player BODY (not the 48x48 sprite centre) lands on the target,
+		-- matching the door-spawn math above.
+		local cr = PlayerData.isTiny and Config.Player.collideRectTiny or Config.Player.collideRect
+		local spriteHalf = 24  -- player sprite is 48x48 (see Player:init setSize)
+		local bodyDX = (cr.x + cr.w / 2) - spriteHalf
+		local bodyDY = (cr.y + cr.h / 2) - spriteHalf
+		local sx, sy
+
+		if entryRole == "startdown" then
+			local downDoors = MapGenerator.doorsForSide(template, "down")
+			local d = downDoors and downDoors[1]
+			if d then
+				local inset = PlayerData.isTiny and Config.Doors.spawnInsetTiny or Config.Doors.spawnInsetNormal
+				sx = d.x - bodyDX
+				sy = d.y - inset - bodyDY
+			end
+		end
+
+		-- StartUp default, and StartDown fallback when the room has no down door: authored TubeExit.
+		if not sx then
+			local exits = template.entities and template.entities.TubeExit
+			if exits and exits[1] then
+				local ex = exits[1]
+				sx = ex.x - bodyDX
+				sy = ex.y - bodyDY
+			end
+		end
+
+		if sx then
+			PlayerData.playerSpawn.x = sx
+			PlayerData.playerSpawn.y = sy
+		else
+			printDebug("⚠️ Vertical entry: no down door / TubeExit — kept door-based spawn")
+		end
+	end
 
 	PlayerData.room = levelsLDTK[room].customFields.roomNumber
 	PlayerData.isInDarkness = levelsLDTK[room].customFields.shadow
@@ -356,6 +456,10 @@ function scene:enter()
 	end
 		-- MARK: Player
 	local spawnPoint = PlayerData.playerSpawn
+	-- Safety: never spawn clipping a wall (e.g. a TubeExit authored tight to a wall). Check the
+	-- player's collide-rect footprint against the tilemap and, if it overlaps any non-walkable
+	-- tile, nudge to the nearest position that is fully clear. No-op when the spawn is already OK.
+	spawnPoint.x, spawnPoint.y = nudgeSpawnClearOfWalls(spawnPoint.x, spawnPoint.y)
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
 	uiScreen = playerHud(player)
 	PlayerData.x = player.x
@@ -738,7 +842,7 @@ scene.inputHandler = {
 	--
 	leftButtonDown = function()
 		if player.isSleeping then return end
-		if checkDoubleTap('left') then
+		if checkDashTaps('left') then
 			player:dash('left')
 			return
 		end
@@ -769,7 +873,7 @@ scene.inputHandler = {
 	--
 	rightButtonDown = function()
 		if player.isSleeping then return end
-		if checkDoubleTap('right') then
+		if checkDashTaps('right') then
 			player:dash('right')
 			return
 		end
@@ -800,7 +904,7 @@ scene.inputHandler = {
 	--
 	upButtonDown = function()
 		if player.isSleeping then return end
-		if checkDoubleTap('up') then
+		if checkDashTaps('up') then
 			player:dash('up')
 			return
 		end
@@ -831,7 +935,7 @@ scene.inputHandler = {
 	--
 	downButtonDown = function()
 		if player.isSleeping then return end
-		if checkDoubleTap('down') then
+		if checkDashTaps('down') then
 			player:dash('down')
 			return
 		end

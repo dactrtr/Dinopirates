@@ -65,13 +65,14 @@ Config.Player = {
     balancingSprite         = true,  -- swap the player sprite to 'balancing' while on hole/slime grace (false = keep walk sprite)
 }
 
--- Dash ability (double-tap a D-pad direction to trigger)
+-- Dash ability (tap a D-pad direction tapsToTrigger times to trigger)
 Config.Dash = {
     speed          = 6,
     totalDistance  = 56,
     bounceDistance = 16,
     cooldown       = 500,   -- ms, dash-to-dash
-    tapWindow      = 250,   -- ms, double-tap detection window
+    tapWindow      = 250,   -- ms, max gap between consecutive taps
+    tapsToTrigger  = 3,     -- number of taps in a row (within tapWindow each) that fire a dash
 }
 
 -- Microwave + Food healing

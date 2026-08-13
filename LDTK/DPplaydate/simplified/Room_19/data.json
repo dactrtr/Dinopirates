@@ -53,6 +53,99 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"Plunger": [
+			{
+				"id": "Plunger",
+				"iid": "f3aa8ba0-96d0-11f1-90a3-4b9bc8f52021",
+				"layer": "Items_and_Props",
+				"x": 84,
+				"y": 116,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "plunger",
+					"isItem": true
+				}
+			}
+		],
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "fe043bf0-96d0-11f1-90a3-0d34e401c80a",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "fea4e8c0-96d0-11f1-90a3-8742561962eb",
+				"layer": "Items_and_Props",
+				"x": 68,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "ff35de20-96d0-11f1-90a3-452fc44bf35e",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "00e2a3c0-96d0-11f1-90a3-37926acd1fd0",
+				"layer": "Items_and_Props",
+				"x": 68,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "02f1fbc0-96d0-11f1-90a3-89e312fd97a1",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",
