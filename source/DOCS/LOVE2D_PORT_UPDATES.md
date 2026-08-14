@@ -18,21 +18,24 @@ frames 1–6 = MISS, 7–12 = GOOD, 13–18 = PERFECT, 19–20 = blank. Each rat
 animation band that plays once (`loop = false`) then transitions to the blank `hidden` state,
 so the pop-up flashes and disappears. On a correct press the scene picks PERFECT when
 `self.accuracy >= Config.Dance.accuracyPerfectMin` (deeper in the hit window), else GOOD; a
-wrong-button press shows MISS.
+wrong-button press shows MISS, and so does a button that scrolls off the left edge unpressed
+(`ButtonPress.missedPass`, polled and cleared each frame in `DanceScene:update`).
 
 **Why:** Requested visual feedback for press timing.
 
 **Files (Playdate):** new `entities/UI/battle/accuracyIndicator.lua`;
 `scenes/DanceScene.lua` (import, file-scoped ref, instantiate in `enter()`, `:remove()` in
-`exit()`, `:show(rating)` calls in `update()`); `assets/data/Config.lua`
+`exit()`, `:show(rating)` calls in `update()`); `entities/UI/battle/buttonPress.lua`
+(`missedPass` flag set when a button wraps at `x <= 32`); `assets/data/Config.lua`
 (`Config.Dance.accuracyFrameDuration`, `Config.Dance.accuracyPerfectMin`).
 
 **Love2D mapping:** Full-screen (400×240) overlay drawn on top of the dancers. Model the three
 rating bands as one-shot animations over the same spritesheet (6 frames each,
 `accuracyFrameDuration` ticks/frame) that revert to an invisible/blank frame on completion.
 Trigger from the same press-resolution branches: correct press → good/perfect by the accuracy
-counter threshold, wrong press → miss. Note Noble's `animation.next` must reference the state
-*object* (not its name string) because the engine dereferences `next.startFrame`.
+counter threshold, wrong press → miss, and a note/button that leaves the hit window unpressed →
+miss. Note Noble's `animation.next` must reference the state *object* (not its name string)
+because the engine dereferences `next.startFrame`.
 
 ---
 

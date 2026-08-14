@@ -319,7 +319,17 @@ function scene:update()
     else
         self.accuracy = 0
     end
-    
+
+    -- MISS pop-up for any button that scrolled off the left edge without being pressed.
+    if accuracyIndicator and self.buttons then
+        for _, btn in ipairs(self.buttons) do
+            if btn.missedPass then
+                btn.missedPass = false
+                accuracyIndicator:show('miss')
+            end
+        end
+    end
+
     
     -- Mark: debug rendering
     debugTextX = 240
