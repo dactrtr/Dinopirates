@@ -10,6 +10,32 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-14 — Feature: DanceScene accuracy pop-up (MISS / GOOD / PERFECT)
+
+**What:** A new `AccuracyIndicator` sprite flashes a rating on every button press during the
+rhythm combat. It uses one imagetable (`accuracyIndicator-table-400-240`, 20 frames, 5×4):
+frames 1–6 = MISS, 7–12 = GOOD, 13–18 = PERFECT, 19–20 = blank. Each rating is a 6-frame
+animation band that plays once (`loop = false`) then transitions to the blank `hidden` state,
+so the pop-up flashes and disappears. On a correct press the scene picks PERFECT when
+`self.accuracy >= Config.Dance.accuracyPerfectMin` (deeper in the hit window), else GOOD; a
+wrong-button press shows MISS.
+
+**Why:** Requested visual feedback for press timing.
+
+**Files (Playdate):** new `entities/UI/battle/accuracyIndicator.lua`;
+`scenes/DanceScene.lua` (import, file-scoped ref, instantiate in `enter()`, `:remove()` in
+`exit()`, `:show(rating)` calls in `update()`); `assets/data/Config.lua`
+(`Config.Dance.accuracyFrameDuration`, `Config.Dance.accuracyPerfectMin`).
+
+**Love2D mapping:** Full-screen (400×240) overlay drawn on top of the dancers. Model the three
+rating bands as one-shot animations over the same spritesheet (6 frames each,
+`accuracyFrameDuration` ticks/frame) that revert to an invisible/blank frame on completion.
+Trigger from the same press-resolution branches: correct press → good/perfect by the accuracy
+counter threshold, wrong press → miss. Note Noble's `animation.next` must reference the state
+*object* (not its name string) because the engine dereferences `next.startFrame`.
+
+---
+
 ## 2026-08-08 — Feature: Ghost is incorporeal (phases through everything but walls)
 
 **What:** `Ghost:collisionResponse` now returns `'overlap'` for everything except walls (`Box`),

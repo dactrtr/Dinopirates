@@ -357,6 +357,11 @@ Config.Dance = {
     crewBoss   = 9,
 
     caloriesMax = 500,  -- calorie clamp ceiling (microwave cooking + dance win gains)
+
+    -- Accuracy pop-up (accuracyIndicator sprite). Each rating is a 6-frame band of the
+    -- imagetable; frameDuration = ticks per frame (~0.36s per pop at 50fps).
+    accuracyFrameDuration = 3,
+    accuracyPerfectMin    = 4,  -- self.accuracy >= this on a correct press = PERFECT, else GOOD
 }
 
 -- Cockpit scene

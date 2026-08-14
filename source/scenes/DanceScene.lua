@@ -13,6 +13,7 @@ import "entities/UI/battle/buttonCover"
 import "entities/UI/battle/winIndicator"
 import "entities/UI/battle/loseIndicator"
 import "entities/UI/battle/resultsScreen"
+import "entities/UI/battle/accuracyIndicator"
 
 local lifes = nil
 
@@ -27,6 +28,7 @@ local winIndicator = nil
 local loseIndicator = nil
 local backgroundDance = nil
 local resultsScreen = nil
+local accuracyIndicator = nil
 local sequence = nil
 local barWidth = 8
 local barHeight = 10
@@ -227,6 +229,7 @@ function scene:enter()
     loseIndicator = LoseIndicator(screenCenterX - self.balanceMaxOffset - 2*barWidth , barY + barHeight / 2 - 6)
     backgroundDance = BackgroundDance(resolveFightPath('assets/images/ui/battle/background', canFight))
     resultsScreen = ResultsScreen()
+    accuracyIndicator = AccuracyIndicator()
 
     if MazeScene.backgroundMusic and MazeScene.backgroundMusic:isPlaying() then
         MazeScene.backgroundMusic:stop()
@@ -294,16 +297,23 @@ function scene:update()
             
             -- Mark: change animation player and enemies
             playerDance:changeAnimation(self.ButtonPressed)
-            
+
             collisions[1]:hit()
-            
+
+            -- Accuracy pop-up: deeper into the hit window (higher self.accuracy) = PERFECT.
+            if accuracyIndicator then
+                local perfectMin = (Config.Dance and Config.Dance.accuracyPerfectMin) or 4
+                accuracyIndicator:show(self.accuracy >= perfectMin and 'perfect' or 'good')
+            end
+
             self:incrementCorrectPress(self.ButtonPressed)
         else
-           
+
             self.buttonText = "wrong"
             collisions[1]:hit()
-            self.balancePosition -= 5 
-            
+            self.balancePosition -= 5
+            if accuracyIndicator then accuracyIndicator:show('miss') end
+
         end
         self.ButtonPressed = nil
     else
@@ -404,6 +414,7 @@ function scene:exit()
     if loseIndicator then loseIndicator:remove() loseIndicator = nil end
     if backgroundDance then backgroundDance:remove() backgroundDance = nil end
     if resultsScreen then resultsScreen:remove() resultsScreen = nil end
+    if accuracyIndicator then accuracyIndicator:remove() accuracyIndicator = nil end
 
     if self.buttons then
         for _, btn in ipairs(self.buttons) do
