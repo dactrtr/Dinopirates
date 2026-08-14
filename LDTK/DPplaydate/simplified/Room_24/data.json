@@ -43,8 +43,6 @@
 		"Foreground.png"
 	],
 	"entities": {
-<<<<<<< Updated upstream
-=======
 		"Minifier": [
 			{
 				"id": "Minifier",
@@ -129,7 +127,6 @@
 				}
 			}
 		],
->>>>>>> Stashed changes
 		"Doors": [
 			{
 				"id": "Doors",

@@ -47,14 +47,31 @@
 				"id": "Ghost",
 				"iid": "9491fe38-96d0-11f1-90a3-b10b8f6eb5bf",
 				"layer": "CM_and_enemies",
-				"x": 300,
-				"y": 116,
+				"x": 60,
+				"y": 188,
 				"width": 48,
 				"height": 48,
 				"color": 14984818,
 				"customFields": {
 					"isTaken": false,
 					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "ae37d990-96d0-11f1-90a3-6ba74a2a3df0",
+				"layer": "CM_and_enemies",
+				"x": 116,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
 					"forceSpawn": false
 				}
 			}

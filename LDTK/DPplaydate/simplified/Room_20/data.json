@@ -1,27 +1,14 @@
 {
 	"identifier": "Room_20",
 	"uniqueIdentifer": "bd739520-6fc0-11f1-b67a-b3124c589208",
-	"x": 800,
-	"y": -480,
+	"x": 1504,
+	"y": -736,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "bf654080-ac70-11f0-997a-e578ba2da2ac",
-			"dir": "sw"
-		},
-		{
-			"levelIid": "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
-			"dir": "w"
-		},
-		{
-			"levelIid": "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
-			"dir": "s"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
-		"shadow": true,
+		"shadow": false,
 		"light": 0.1,
 		"visited": false,
 		"comic_name": null,
@@ -142,6 +129,23 @@
 				"customFields": {
 					"isTaken": false,
 					"crewID": "100",
+					"forceSpawn": true
+				}
+			}
+		],
+		"Ghost": [
+			{
+				"id": "Ghost",
+				"iid": "334af060-6fc0-11f1-90a3-274ba50284e2",
+				"layer": "CM_and_enemies",
+				"x": 196,
+				"y": 60,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
 					"forceSpawn": false
 				}
 			}
@@ -182,7 +186,7 @@
 				"iid": "cdbfa400-6fc0-11f1-b67a-1908dbacfbfb",
 				"layer": "Doors",
 				"x": 200,
-				"y": 234,
+				"y": 236,
 				"width": 48,
 				"height": 8,
 				"color": 16711680,
