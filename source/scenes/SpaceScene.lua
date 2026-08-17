@@ -6,6 +6,7 @@ import 'entities/space/Laser'
 import 'entities/space/EnergyMeter'
 import 'entities/space/DangerBar'
 import 'entities/space/HealthDisplay'
+import 'entities/space/SpaceBackground'
 
 SpaceScene = {}
 class('SpaceScene').extends(NobleScene)
@@ -20,6 +21,7 @@ local laser         = nil
 local energy        = nil
 local dangerBar     = nil
 local healthDisplay = nil
+local spaceBg       = nil
 
 local meteoritesNear = {}
 local meteoritesFar  = {}
@@ -41,12 +43,16 @@ local shakeFrames = 0
 local shipX = 200
 local shipY = 150
 
-function scene:init()
+function scene:init(props)
     scene.super.init(self)
+    self.finale       = (props and props.finale) or "maamaa"
+    self.finaleConfig = Config.Space.finales[self.finale] or Config.Space.finales.maamaa
 end
 
 function scene:enter()
     scene.super.enter(self)
+
+    print("SpaceScene: entered finale '" .. self.finale .. "' (lives=" .. self.finaleConfig.lives .. ")")
 
     cursorX    = 200
     cursorY    = 120
@@ -57,9 +63,10 @@ function scene:enter()
     prevAy     = 0
     idleFrames = 0
     danger      = 0
-    health      = 3
+    health      = self.finaleConfig.lives
     invFrames   = 0
     shakeFrames = 0
+    self.cutsceneActive = false
 
     ship      = Ship(shipX, shipY, 4, 0, ZIndex.player)
     crosshair = Crosshair(200, 134)
@@ -67,11 +74,16 @@ function scene:enter()
     laser     = Laser()
     energy    = EnergyMeter(ship)
 
-    for i = 1, Config.Space.meteoriteNearCount do
-        meteoritesNear[i] = Meteorite(math.random(0, 400), math.random(8, 232), Config.Space.meteoriteNearSpeed)
+    -- Optional animated backdrop; missing art falls back to the black background.
+    if Graphics.imagetable.new(self.finaleConfig.background) then
+        spaceBg = SpaceBackground(self.finaleConfig.background, Config.Space.backgroundFrameDuration)
     end
-    for i = 1, Config.Space.meteoriteFarCount do
-        local m = Meteorite(math.random(0, 400), math.random(8, 232), Config.Space.meteoriteFarSpeed)
+
+    for i = 1, self.finaleConfig.nearCount do
+        meteoritesNear[i] = Meteorite(math.random(0, 400), math.random(8, 232), self.finaleConfig.nearSpeed)
+    end
+    for i = 1, self.finaleConfig.farCount do
+        local m = Meteorite(math.random(0, 400), math.random(8, 232), self.finaleConfig.farSpeed)
         m:setScale(Config.Space.meteoriteFarScale)
         meteoritesFar[i] = m
     end
@@ -88,6 +100,11 @@ end
 
 function scene:update()
     scene.super.update(self)
+
+    if self.cutsceneActive then
+        Panels.update()
+        return
+    end
 
     if ship == nil then return end
 
@@ -151,13 +168,13 @@ function scene:update()
 
     -- danger bar
     if ship.mode == 'fighter' and ship.speed < Config.Space.minSpeed then
-        danger = math.min(1, danger + Config.Space.dangerFillRate)
+        danger = math.min(1, danger + self.finaleConfig.dangerFillRate)
     elseif ship.speed >= Config.Space.minSpeed then
         danger = math.max(0, danger - Config.Space.dangerDrainRate)
     end
     dangerBar:setDanger(danger)
     if danger >= 1 then
-        Noble.transition(TitleScene)
+        self:endRun()
         return
     end
 
@@ -191,12 +208,8 @@ function scene:update()
                 local m = meteoritesNear[j]
                 if s == m then
                     local z = m:getZDepth()
-                    print("OVERLAP near["..j.."] z="..string.format("%.2f",z).." counter="..math.floor(m.counter).." frame="..m.imgTable:getLength())
                     if z >= Config.Space.collisionZoneStart then
-                        print("  -> HIT near["..j.."]")
                         hit = true
-                    else
-                        print("  -> too far, skip")
                     end
                     break
                 end
@@ -206,12 +219,8 @@ function scene:update()
                     local m = meteoritesFar[j]
                     if s == m then
                         local z = m:getZDepth()
-                        print("OVERLAP far["..j.."] z="..string.format("%.2f",z).." counter="..math.floor(m.counter))
                         if z >= Config.Space.collisionZoneStart then
-                            print("  -> HIT far["..j.."]")
                             hit = true
-                        else
-                            print("  -> too far, skip")
                         end
                         break
                     end
@@ -225,7 +234,7 @@ function scene:update()
             shakeFrames   = Config.Space.shakeFrames
             healthDisplay:setHealth(health)
             if health <= 0 then
-                Noble.transition(TitleScene)
+                self:endRun()
                 return
             end
         end
@@ -243,6 +252,7 @@ function scene:exit()
     scene.super.exit(self)
 
     playdate.stopAccelerometer()
+    Noble.Input.setEnabled(true)
 
     if ship          then ship:remove()          ship          = nil end
     if crosshair     then crosshair:remove()     crosshair     = nil end
@@ -251,6 +261,7 @@ function scene:exit()
     if energy        then energy:remove()        energy        = nil end
     if dangerBar     then dangerBar:remove()     dangerBar     = nil end
     if healthDisplay then healthDisplay:remove() healthDisplay = nil end
+    if spaceBg then spaceBg:remove() spaceBg = nil end
 
     for i = 1, #meteoritesNear do meteoritesNear[i]:remove() end
     for i = 1, #meteoritesFar  do meteoritesFar[i]:remove()  end
@@ -261,6 +272,16 @@ end
 function scene:finish()
     scene.super.finish(self)
     Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
+end
+
+function scene:endRun()
+    if self.cutsceneActive then return end
+    self.cutsceneActive = true
+    playdate.stopAccelerometer()
+    Noble.Input.setEnabled(false)
+    Panels.startCutscene(comics[self.finaleConfig.cutscene], function()
+        Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+    end)
 end
 
 scene.inputHandler = {

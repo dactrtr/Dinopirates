@@ -406,6 +406,21 @@ Config.Space = {
     -- hit shake
     shakeFrames           = 25,    -- frames the shake lasts
     shakeMagnitude        = 6,     -- max px offset at start of shake (decays to 0)
+
+    -- Animated background (SpaceBackground sprite): ticks per frame.
+    backgroundFrameDuration = 6,
+
+    -- Per-"finale" tuning. The finale is chosen in CockpitScene and passed to
+    -- SpaceScene via Noble sceneProperties. `background` is an imagetable base path
+    -- (SpaceScene probes it and falls back to the black background if the PNG is
+    -- missing). `cutscene` is a comics[] key (see assets/comics/spaceFinales.lua).
+    -- `maamaa` mirrors the legacy hardcoded values so the debug TitleScene->SpaceScene
+    -- path is unchanged.
+    finales = {
+        good   = { lives = 5, dangerFillRate = 0.0012, nearCount = 10, farCount = 8,  nearSpeed = 2.5, farSpeed = 1.2, background = 'assets/images/space/bg_good',   cutscene = 'space-good'   },
+        maamaa = { lives = 3, dangerFillRate = 0.0020, nearCount = 14, farCount = 10, nearSpeed = 3.0, farSpeed = 1.5, background = 'assets/images/space/bg_maamaa', cutscene = 'space-maamaa' },
+        shura  = { lives = 2, dangerFillRate = 0.0032, nearCount = 18, farCount = 12, nearSpeed = 3.6, farSpeed = 1.9, background = 'assets/images/space/bg_shura',  cutscene = 'space-shura'  },
+    },
 }
 
 return Config

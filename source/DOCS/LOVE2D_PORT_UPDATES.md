@@ -10,6 +10,33 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-15 — Feature: SpaceScene finale parameter (good / maamaa / shura)
+
+**What:** SpaceScene now takes a `finale` string via Noble sceneProperties, chosen in
+CockpitScene: sequence `1,3,2,4` → `good`, `A,B,C,D` → `maamaa`, fail-limit (only
+errors) → `shura`. The finale (data in `Config.Space.finales`) drives ship lives,
+danger-bar fill rate, meteorite near/far counts and speeds, an optional animated
+background (`SpaceBackground` sprite, probed with imagetable fallback to black), and a
+per-finale end-of-run Panels cutscene (`comics["space-*"]`, boilerplate reusing intro
+art) that plays on death before returning to TitleScene. `maamaa` reproduces the old
+hardcoded values, so the debug TitleScene→SpaceScene path is unchanged.
+
+**Why:** Requested — cockpit outcomes lead into distinct space "finales".
+
+**Files (Playdate):** `assets/data/Config.lua` (`Config.Space.finales`,
+`backgroundFrameDuration`); new `entities/space/SpaceBackground.lua`;
+`scenes/SpaceScene.lua` (finale param, config-driven values, background probe,
+`endRun()` cutscene + update guard, input re-enable); new
+`assets/comics/spaceFinales.lua`; `assets/comics/comicsData.lua` (register three
+comics); `scenes/CockpitScene.lua` (sequence/fail actions → SpaceScene with finale).
+
+**Love2D mapping:** Model the finale as a scene argument selecting a config row. Map
+the Panels cutscene to the port's comic/cutscene system; model the background as a
+looping animated backdrop layer with a missing-asset fallback. Cockpit routes the same
+three outcomes to the space scene with the finale key.
+
+---
+
 ## 2026-08-14 — Feature: DanceScene accuracy pop-up (MISS / GOOD / PERFECT)
 
 **What:** A new `AccuracyIndicator` sprite flashes a rating on every button press during the

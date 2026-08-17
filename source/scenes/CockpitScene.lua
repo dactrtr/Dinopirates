@@ -28,12 +28,12 @@ local failCount  = 0
 local sequences = {
     {
         pattern = { "1", "3", "2", "4" },
-        action  = function() Noble.transition(CreditsScene, 0.3, Noble.Transition.MetroNexus) end,
+        action  = function() Noble.transition(SpaceScene, 0.3, Noble.Transition.MetroNexus, {}, { finale = "good" }) end,
         index   = 1,
     },
     {
         pattern = { "A", "B", "C", "D" },
-        action  = function() Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus) end,
+        action  = function() Noble.transition(SpaceScene, 0.3, Noble.Transition.MetroNexus, {}, { finale = "maamaa" }) end,
         index   = 1,
     },
 }
@@ -63,7 +63,7 @@ local function pressButton(label)
     if not advanced then
         failCount += 1
         if failCount >= Config.Cockpit.failLimit then
-            Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)
+            Noble.transition(SpaceScene, 0.3, Noble.Transition.MetroNexus, {}, { finale = "shura" })
         end
     end
 end
