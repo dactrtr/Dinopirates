@@ -293,6 +293,16 @@ Config.Input = {
     crankMenuThreshold = 30,   -- degrees of crank rotation to navigate menu
 }
 
+-- UI (title screen, menus)
+Config.UI = {
+    titleGlitch = {
+        burstIntervalMinFrames = 60,   -- ~1.2s at 50fps: shortest wait before a glitch burst
+        burstIntervalMaxFrames = 100,  -- ~2.0s at 50fps: longest wait before a glitch burst
+        burstDurationFrames = 12,      -- ~0.24s: how long a single burst lasts
+        burstRegenIntervalFrames = 3,  -- regenerate the distorted image every 3 frames during a burst (~16.7Hz flicker)
+    },
+}
+
 -- Map (in-game run graph map drawn in the menu)
 Config.Map = {
     panel        = { x = 32, y = 18, w = 140, h = 75 }, -- rectangle on the menu image the map fits into

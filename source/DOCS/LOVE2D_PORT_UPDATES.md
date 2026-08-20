@@ -10,6 +10,28 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-20 — Feature: Title-menu selected-item VCR-glitch flicker
+
+**What:** The currently-selected item in the title menu (`MenuTitle` sprite) now
+periodically flickers into a VCR-pause-style distorted image for a short burst, then
+returns to normal. Timing (wait between bursts, burst duration, image-regen interval)
+is tuned via `Config.UI.titleGlitch`. The burst is cancelled immediately if the item is
+deselected mid-burst.
+
+**Why:** Cosmetic polish for the title-menu selection state.
+
+**Files (Playdate):** `assets/data/Config.lua` (`Config.UI.titleGlitch`);
+`entities/UI/menuTitle.lua` (`setSelected`/`update`/`draw` glitch state machine, using
+`playdate.graphics.image:vcrPauseFilterImage()`); `scenes/TitleScene.lua`
+(`updateMenuSelection()` now calls `MenuTitle:setSelected(...)`).
+
+**Love2D mapping:** N/A — `vcrPauseFilterImage()` is a Playdate-SDK-specific 1-bit
+dither/distortion filter with no Love2D equivalent. This is a platform-specific
+cosmetic feature; the Love2D port can skip it or reimplement the flicker with a
+different (e.g. shader-based) distortion effect if desired.
+
+---
+
 ## 2026-08-15 — Feature: SpaceScene finale parameter (good / maamaa / shura)
 
 **What:** SpaceScene now takes a `finale` string via Noble sceneProperties, chosen in
