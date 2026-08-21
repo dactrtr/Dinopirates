@@ -10,6 +10,32 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-20 — Change: Ghost reveal gated by sanityCounter (was: current sanity)
+
+**What:** `Ghost:update()` (`entities/enemies/ghost.lua`) now gates visibility/collision on
+`PlayerData.sanityCounter > Config.Sanity.dangerCounterThreshold` (default 10) instead of the
+original `PlayerData.sanity < Config.Ghost.revealThreshold` (default 30, now removed from
+`Config.Ghost`). This supersedes the gate condition described in the 2026-08-07 entry below.
+Since `sanityCounter` is a lifetime counter that never decreases, this is a one-way, permanent
+unlock: once the player has bottomed out sanity more than 10 times, ghosts stay revealable for
+the rest of that save, regardless of the player's current (regenerating) sanity level. Everything
+else about Ghost (flee AI, banish-on-touch, achievement, no persistence) is unchanged.
+
+**Why:** `sanityCounter` is a better narrative fit for a permanent "you've broken down enough
+times" gate than a moment-to-moment check against regenerating sanity.
+
+**Files (Playdate side):**
+- `entities/enemies/ghost.lua` — one-line condition change in `update()`, header comment updated.
+- `assets/data/Config.lua` — added `Config.Sanity.dangerCounterThreshold`; removed
+  `Config.Ghost.revealThreshold` (now unused).
+
+**Love2D mapping:** Same as the original entry below, except the gate comparison is
+`sanityCounter > dangerCounterThreshold` instead of `sanity < revealThreshold` — both are plain
+numeric fields on the player-data equivalent, so the port's comparison just changes which field
+and operator it reads.
+
+---
+
 ## 2026-08-20 — Feature: Title-menu selected-item VCR-glitch flicker
 
 **What:** The currently-selected item in the title menu (`MenuTitle` sprite) now

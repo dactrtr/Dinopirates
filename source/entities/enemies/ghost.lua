@@ -1,12 +1,14 @@
--- Ghost: a CrewMember subclass that only manifests when the player's sanity is low.
+-- Ghost: a CrewMember subclass that only manifests once the player's sanityCounter crosses a threshold.
 -- It flees like a crew member (reusing the inherited search -> escape flee AI and the
 -- shared movement-token system) but has its own spritesheet, no hat, and is banished
 -- (removed + counted) when the player touches it while it is revealed.
 --
--- Visibility/collision are gated on PlayerData.sanity < Config.Ghost.revealThreshold:
--- above the threshold the ghost is invisible and intangible; below it, it appears and
--- runs the full inherited crew update. Ghosts are authored per-room in LDtk and respawn
--- on re-entry (no persistence).
+-- Visibility/collision are gated on PlayerData.sanityCounter > Config.Sanity.dangerCounterThreshold:
+-- once the player has bottomed out sanity enough times to cross that threshold, ghosts are
+-- revealable for the rest of the save (sanityCounter never decreases, so this is a permanent,
+-- one-way unlock — not a moment-to-moment check against current sanity). Above the threshold
+-- the ghost is invisible and intangible; below it, it appears and runs the full inherited crew
+-- update. Ghosts are authored per-room in LDtk and respawn on re-entry (no persistence).
 
 Ghost = {}
 class('Ghost').extends(CrewMember)
@@ -118,7 +120,7 @@ function Ghost:update()
 	-- onComplete removes the ghost). Skip the sanity gate and the flee AI entirely.
 	if self.isVanishing then return end
 
-	local revealed = PlayerData.sanity < Config.Ghost.revealThreshold
+	local revealed = PlayerData.sanityCounter > Config.Sanity.dangerCounterThreshold
 
 	if revealed then
 		-- Manifest: show + make touchable on the transition, then run the inherited crew AI.

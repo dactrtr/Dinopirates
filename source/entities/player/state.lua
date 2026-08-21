@@ -298,6 +298,8 @@ local wakeButtons = {
 }
 
 function Player:update()
+  self:updateGlitch()
+
   if self.isSleeping then
     for _, btn in ipairs(wakeButtons) do
       if playdate.buttonJustPressed(btn) then

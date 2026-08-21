@@ -63,6 +63,12 @@ Config.Player = {
     hudEdgeTop              = 60,  -- px from top; below this the floating HUD flips under the player
     hudEdgeRight            = 350, -- px from left; past this the floating HUD flips to the player's left
     balancingSprite         = true,  -- swap the player sprite to 'balancing' while on hole/slime grace (false = keep walk sprite)
+    glitch = {
+        burstIntervalMinFrames = 500,   -- ~10s at 50fps: shortest wait before a glitch burst
+        burstIntervalMaxFrames = 1000,  -- ~20s at 50fps: longest wait before a glitch burst
+        burstDurationFrames = 20,       -- ~0.4s: how long a single burst lasts
+        burstRegenIntervalFrames = 3,   -- regenerate the distorted image every 3 frames during a burst (~16.7Hz flicker)
+    },
 }
 
 -- Dash ability (double-tap a D-pad direction to trigger)
@@ -167,6 +173,9 @@ Config.Sanity = {
     batteryThresholdMid  = 40,
     batteryThresholdHigh = 50,
     focusCost            = 20,    -- sanity consumed by focus ability
+    dangerCounterThreshold = 10,  -- sanityCounter > this: ghosts become revealable and the
+                                  -- player sprite starts periodically glitching (both permanent
+                                  -- for the rest of the save, since sanityCounter never decreases)
 
     -- HUD face animation (sanityHud, 4 states) — switch when sanity drops below each value
     hudFace = {
@@ -261,9 +270,8 @@ Config.CrewMember = {
     collideRect              = {x=12, y=24, w=24, h=24},
 }
 
--- Ghost (CrewMember subclass; visible/touchable only when sanity is low)
+-- Ghost (CrewMember subclass; visible/touchable once sanityCounter crosses Config.Sanity.dangerCounterThreshold)
 Config.Ghost = {
-    revealThreshold  = 30,   -- ghost visible/touchable when PlayerData.sanity < this
     defaultSpeed     = 1.5,   -- flee speed
     collideRect      = { x = 12, y = 12, w = 24, h = 24 }, -- tune to sprite
     achievementId    = "ghostbuster",
