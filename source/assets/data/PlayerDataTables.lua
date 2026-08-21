@@ -28,7 +28,7 @@ local DefaultPlayerData = {
 	food = 0, -- raw food carried; cooked at a microwave to heal
 	steps = 0,
 	totalSteps = 1000,
-	sanityCounter = 0, -- top 100
+	sanityCounter = 12, -- top 100
 	deathCause = "hp",   -- "hp" | "sanity" | "void"; set on death, read by DeadScene
 	mapPercent = 0, -- Percentage of map explored (0-100)
 	keys = {}, -- Table to store collected keys by number: {[1] = true, [2] = true, ...}

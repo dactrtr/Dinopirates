@@ -1521,7 +1521,7 @@ table.insert(levelsLDTK, {
         width = 16,
         height = 16,
         customFields = {
-          script = nil,
+          script = "TinySpaces",
           usedTrigger = false,
           type = "Search",
           mapPercent = 0,

@@ -94,7 +94,7 @@
 				"height": 16,
 				"color": 16711748,
 				"customFields": {
-					"script": null,
+					"script": "TinySpaces",
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
