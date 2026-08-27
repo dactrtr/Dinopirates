@@ -10,8 +10,6 @@ or door flow, those documents are the authoritative model.
 
 ---
 
-<<<<<<< Updated upstream
-=======
 ## 2026-08-10 — Fix: spawn is nudged out of walls if it clips one
 
 **What:** Right before the player is created, the spawn point is validated against the tilemap; if
@@ -76,6 +74,108 @@ increments the count; a longer gap resets it to 1. Firing at `tapsToTrigger` cle
 **Love2D mapping:** Mirror the per-direction tap counter; trigger dash at `tapsToTrigger` taps,
 each within `tapWindow`.
 
+## 2026-08-20 — Change: Ghost reveal gated by sanityCounter (was: current sanity)
+
+**What:** `Ghost:update()` (`entities/enemies/ghost.lua`) now gates visibility/collision on
+`PlayerData.sanityCounter > Config.Sanity.dangerCounterThreshold` (default 10) instead of the
+original `PlayerData.sanity < Config.Ghost.revealThreshold` (default 30, now removed from
+`Config.Ghost`). This supersedes the gate condition described in the 2026-08-07 entry below.
+Since `sanityCounter` is a lifetime counter that never decreases, this is a one-way, permanent
+unlock: once the player has bottomed out sanity more than 10 times, ghosts stay revealable for
+the rest of that save, regardless of the player's current (regenerating) sanity level. Everything
+else about Ghost (flee AI, banish-on-touch, achievement, no persistence) is unchanged.
+
+**Why:** `sanityCounter` is a better narrative fit for a permanent "you've broken down enough
+times" gate than a moment-to-moment check against regenerating sanity.
+
+**Files (Playdate side):**
+- `entities/enemies/ghost.lua` — one-line condition change in `update()`, header comment updated.
+- `assets/data/Config.lua` — added `Config.Sanity.dangerCounterThreshold`; removed
+  `Config.Ghost.revealThreshold` (now unused).
+
+**Love2D mapping:** Same as the original entry below, except the gate comparison is
+`sanityCounter > dangerCounterThreshold` instead of `sanity < revealThreshold` — both are plain
+numeric fields on the player-data equivalent, so the port's comparison just changes which field
+and operator it reads.
+
+---
+
+## 2026-08-20 — Feature: Title-menu selected-item VCR-glitch flicker
+
+**What:** The currently-selected item in the title menu (`MenuTitle` sprite) now
+periodically flickers into a VCR-pause-style distorted image for a short burst, then
+returns to normal. Timing (wait between bursts, burst duration, image-regen interval)
+is tuned via `Config.UI.titleGlitch`. The burst is cancelled immediately if the item is
+deselected mid-burst.
+
+**Why:** Cosmetic polish for the title-menu selection state.
+
+**Files (Playdate):** `assets/data/Config.lua` (`Config.UI.titleGlitch`);
+`entities/UI/menuTitle.lua` (`setSelected`/`update`/`draw` glitch state machine, using
+`playdate.graphics.image:vcrPauseFilterImage()`); `scenes/TitleScene.lua`
+(`updateMenuSelection()` now calls `MenuTitle:setSelected(...)`).
+
+**Love2D mapping:** N/A — `vcrPauseFilterImage()` is a Playdate-SDK-specific 1-bit
+dither/distortion filter with no Love2D equivalent. This is a platform-specific
+cosmetic feature; the Love2D port can skip it or reimplement the flicker with a
+different (e.g. shader-based) distortion effect if desired.
+
+---
+
+## 2026-08-15 — Feature: SpaceScene finale parameter (good / maamaa / shura)
+
+**What:** SpaceScene now takes a `finale` string via Noble sceneProperties, chosen in
+CockpitScene: sequence `1,3,2,4` → `good`, `A,B,C,D` → `maamaa`, fail-limit (only
+errors) → `shura`. The finale (data in `Config.Space.finales`) drives ship lives,
+danger-bar fill rate, meteorite near/far counts and speeds, an optional animated
+background (`SpaceBackground` sprite, probed with imagetable fallback to black), and a
+per-finale end-of-run Panels cutscene (`comics["space-*"]`, boilerplate reusing intro
+art) that plays on death before returning to TitleScene. `maamaa` reproduces the old
+hardcoded values, so the debug TitleScene→SpaceScene path is unchanged.
+
+**Why:** Requested — cockpit outcomes lead into distinct space "finales".
+
+**Files (Playdate):** `assets/data/Config.lua` (`Config.Space.finales`,
+`backgroundFrameDuration`); new `entities/space/SpaceBackground.lua`;
+`scenes/SpaceScene.lua` (finale param, config-driven values, background probe,
+`endRun()` cutscene + update guard, input re-enable); new
+`assets/comics/spaceFinales.lua`; `assets/comics/comicsData.lua` (register three
+comics); `scenes/CockpitScene.lua` (sequence/fail actions → SpaceScene with finale).
+
+**Love2D mapping:** Model the finale as a scene argument selecting a config row. Map
+the Panels cutscene to the port's comic/cutscene system; model the background as a
+looping animated backdrop layer with a missing-asset fallback. Cockpit routes the same
+three outcomes to the space scene with the finale key.
+
+---
+
+## 2026-08-14 — Feature: DanceScene accuracy pop-up (MISS / GOOD / PERFECT)
+
+**What:** A new `AccuracyIndicator` sprite flashes a rating on every button press during the
+rhythm combat. It uses one imagetable (`accuracyIndicator-table-400-240`, 20 frames, 5×4):
+frames 1–6 = MISS, 7–12 = GOOD, 13–18 = PERFECT, 19–20 = blank. Each rating is a 6-frame
+animation band that plays once (`loop = false`) then transitions to the blank `hidden` state,
+so the pop-up flashes and disappears. On a correct press the scene picks PERFECT when
+`self.accuracy >= Config.Dance.accuracyPerfectMin` (deeper in the hit window), else GOOD; a
+wrong-button press shows MISS, and so does a button that scrolls off the left edge unpressed
+(`ButtonPress.missedPass`, polled and cleared each frame in `DanceScene:update`).
+
+**Why:** Requested visual feedback for press timing.
+
+**Files (Playdate):** new `entities/UI/battle/accuracyIndicator.lua`;
+`scenes/DanceScene.lua` (import, file-scoped ref, instantiate in `enter()`, `:remove()` in
+`exit()`, `:show(rating)` calls in `update()`); `entities/UI/battle/buttonPress.lua`
+(`missedPass` flag set when a button wraps at `x <= 32`); `assets/data/Config.lua`
+(`Config.Dance.accuracyFrameDuration`, `Config.Dance.accuracyPerfectMin`).
+
+**Love2D mapping:** Full-screen (400×240) overlay drawn on top of the dancers. Model the three
+rating bands as one-shot animations over the same spritesheet (6 frames each,
+`accuracyFrameDuration` ticks/frame) that revert to an invisible/blank frame on completion.
+Trigger from the same press-resolution branches: correct press → good/perfect by the accuracy
+counter threshold, wrong press → miss, and a note/button that leaves the hit window unpressed →
+miss. Note Noble's `animation.next` must reference the state *object* (not its name string)
+because the engine dereferences `next.startFrame`.
+
 ---
 
 ## 2026-08-08 — Feature: Ghost is incorporeal (phases through everything but walls)
@@ -109,12 +209,15 @@ on both triggers, removal deferred to its completion callback (fired once).
 Also added `CrewMember:drawDebug` (omnidirectional vision circle + state label; inherited by
 Ghost, gated on visibility) and wired `MazeScene`'s debug overlay to draw it for `CrewMember` too.
 
+
 **Ghosts never hide:** the inherited CrewMember corner-bounce "hide" behavior is disabled for
 ghosts — `bouncesRequiredToHide = math.huge` (so the inherited `moveCollision` never takes its
 `enterHiding` branch, while the normal wall-bounce redirect still works), plus an `enterHiding`
 no-op override as a defensive guard. The `hide` animation state and the hiding-token fields were
 dropped from `Ghost:init`; only `hidingVisionRange` remains (it is the flee vision radius, not a
 hiding field). Port mapping: ghosts reuse crew flee/bounce but skip the hide state machine.
+
+
 
 ---
 
@@ -186,7 +289,8 @@ token feed) is the already-ported CrewMember behavior.
 
 ---
 
->>>>>>> Stashed changes
+
+
 ## 2026-08-06 — Fix: enemy wall-sliding (stop grinding/oscillating against walls)
 
 **What:** Enemies now **slide along walls** on the free axis instead of freezing and bouncing off

@@ -127,7 +127,10 @@ function CrewMember:moveCollision(movementX, movementY, player)
 	end
 	
 	local actualX, actualY, collisions, length = self:moveWithCollisions(movementX, movementY)
-	self.hat:moveTo(actualX, actualY - self.hatDelta)
+	-- Guard the hat: hatless subclasses (Ghost) share this movement code. Safe no-op for real crew.
+	if self.hat then
+		self.hat:moveTo(actualX, actualY - self.hatDelta)
+	end
 	
 	-- Detect if movement was blocked by comparing intended vs actual position
 	local blockedX = math.abs(actualX - movementX) > self.cornerDetectionThreshold
@@ -468,4 +471,27 @@ function CrewMember:update()
 		end
 	end
 	--self:sonar()
+end
+
+-- Debug overlay: unlike the hunter Enemy (directional sight cone), crew vision is
+-- OMNIDIRECTIONAL — the flee/hide decision uses a simple radius (hidingVisionRange) via
+-- isPlayerOutOfVision. So we draw that radius as a circle plus a state label. Called from
+-- MazeScene:update (after sprites are drawn) so it renders on top. Inherited by Ghost, which
+-- only draws while it is revealed (visible) thanks to the isVisible guard.
+function CrewMember:drawDebug()
+	if debug ~= true then return end
+	if not self:isVisible() then return end  -- hidden ghost (or any hidden crew): skip
+
+	Graphics.setColor(Graphics.kColorBlack)
+	Graphics.drawCircleAtPoint(self.x, self.y, self.hidingVisionRange or 0)
+
+	local state = "idle"
+	if self.isHiding then
+		state = "hiding"
+	elseif self.isBlinded then
+		state = "blind"
+	elseif not self:isPlayerOutOfVision() and not PlayerData.isTiny then
+		state = "flee"
+	end
+	Graphics.drawText(string.upper(state), self.x - 16, self.y - 28)
 end

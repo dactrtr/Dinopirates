@@ -255,6 +255,17 @@ See `MICROWAVE_AND_FOOD.md` for the full system.
 
 ---
 
+## Config.UI — UI Tuning
+
+| Section | Name | Value | Unit | Description |
+|---|---|---|---|---|
+| UI.titleGlitch | `burstIntervalMinFrames` | 60 | frames | Shortest wait before a glitch burst on the selected title-menu item |
+| UI.titleGlitch | `burstIntervalMaxFrames` | 100 | frames | Longest wait before a glitch burst on the selected title-menu item |
+| UI.titleGlitch | `burstDurationFrames` | 12 | frames | How long a single glitch burst lasts |
+| UI.titleGlitch | `burstRegenIntervalFrames` | 3 | frames | How often the distorted image is regenerated during a burst |
+
+---
+
 ## Config.Enemy — Enemy AI
 
 | Section | Name | Value | Unit | Description |

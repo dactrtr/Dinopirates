@@ -1,12 +1,14 @@
--- Ghost: a CrewMember subclass that only manifests when the player's sanity is low.
+-- Ghost: a CrewMember subclass that only manifests once the player's sanityCounter crosses a threshold.
 -- It flees like a crew member (reusing the inherited search -> escape flee AI and the
 -- shared movement-token system) but has its own spritesheet, no hat, and is banished
 -- (removed + counted) when the player touches it while it is revealed.
 --
--- Visibility/collision are gated on PlayerData.sanity < Config.Ghost.revealThreshold:
--- above the threshold the ghost is invisible and intangible; below it, it appears and
--- runs the full inherited crew update. Ghosts are authored per-room in LDtk and respawn
--- on re-entry (no persistence).
+-- Visibility/collision are gated on PlayerData.sanityCounter > Config.Sanity.dangerCounterThreshold:
+-- once the player has bottomed out sanity enough times to cross that threshold, ghosts are
+-- revealable for the rest of the save (sanityCounter never decreases, so this is a permanent,
+-- one-way unlock — not a moment-to-moment check against current sanity). Above the threshold
+-- the ghost is invisible and intangible; below it, it appears and runs the full inherited crew
+-- update. Ghosts are authored per-room in LDtk and respawn on re-entry (no persistence).
 
 Ghost = {}
 class('Ghost').extends(CrewMember)
@@ -21,13 +23,16 @@ function Ghost:init(x, y, moveSpeed, Zindex, player, iid, room)
 		moveSpeed = Config.Ghost.defaultSpeed
 	end
 
-	-- MARK: Animation states (same state names the inherited escape/search use).
+	-- MARK: Animation states (same state names the inherited escape/search/hide use).
 	-- Frame ranges mirror CrewMember's as placeholders until the ghost sheet exists.
-	-- No 'hide' state: ghosts never hide (see Ghost:enterHiding override below).
 	self.animation:addState('walk', 1, 4)
 	self.animation.walk.frameDuration = 8
 	self.animation:addState('idle', 5, 8)
 	self.animation.idle.frameDuration = 6
+	-- The inherited moveCollision can enter hiding on repeated corner bounces; give it a
+	-- 'hide' state so that path doesn't crash (placeholder: reuse idle frames).
+	self.animation:addState('hide', 5, 8)
+	self.animation.hide.frameDuration = 6
 	-- 'vanish' plays once when the ghost is banished (same frames as CrewMember's 'stunned'),
 	-- then removes the ghost via onComplete. loop=false freezes on the last frame; the guard
 	-- ensures remove() runs exactly once (onComplete re-fires every frame at the end otherwise).
@@ -79,15 +84,15 @@ function Ghost:init(x, y, moveSpeed, Zindex, player, iid, room)
 	self.recentBounceCount = 0
 	self.bounceCountDecayFrames = 0
 	self.bounceCountDecayRate = Config.CrewMember.bounceCountDecayRate
-	-- Ghosts never hide: keep the wall-bounce redirect but make the hide threshold unreachable,
-	-- so the inherited moveCollision never takes its enterHiding branch. (enterHiding is also
-	-- overridden to a no-op below as a defensive guard.)
-	self.bouncesRequiredToHide = math.huge
+	self.bouncesRequiredToHide = Config.CrewMember.bouncesRequiredToHide
 
-	-- Vision radius the inherited flee decision (search -> isPlayerOutOfVision) reads. Despite the
-	-- name it is NOT about hiding; it MUST be set or the ghost crashes on its first AI tick.
+	-- Hiding/vision fields the inherited search/moveCollision/update read. NOTE: hidingVisionRange
+	-- is not only for hiding — the flee decision (search -> isPlayerOutOfVision) uses it as the
+	-- vision radius, so it MUST be set or the ghost crashes on its first AI tick.
+	self.isHiding = false
+	self.hidingMovementTokensRequired = Config.CrewMember.hidingTokensRequired
+	self.hidingMovementTokensAccumulated = 0
 	self.hidingVisionRange = Config.CrewMember.hidingVisionRange
-	self.isHiding = false  -- always false for ghosts; kept so inherited update() guards read a bool
 
 	-- Blind/stun fields the inherited update reads.
 	self.isBlinded = false
@@ -115,7 +120,7 @@ function Ghost:update()
 	-- onComplete removes the ghost). Skip the sanity gate and the flee AI entirely.
 	if self.isVanishing then return end
 
-	local revealed = PlayerData.sanity < Config.Ghost.revealThreshold
+	local revealed = PlayerData.sanityCounter > Config.Sanity.dangerCounterThreshold
 
 	if revealed then
 		-- Manifest: show + make touchable on the transition, then run the inherited crew AI.
@@ -137,13 +142,6 @@ function Ghost:update()
 			self.movementFrames = 0
 		end
 	end
-end
-
--- Ghosts never hide. The inherited moveCollision would call enterHiding after repeated corner
--- bounces; bouncesRequiredToHide is set to math.huge so that never happens, and this no-op is a
--- defensive guard in case any other inherited path invokes it (there is no 'hide' animation state).
-function Ghost:enterHiding()
-	-- intentionally does nothing
 end
 
 -- Shared vanish routine: become untouchable, stop fleeing, and play the 'vanish' animation

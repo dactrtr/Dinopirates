@@ -590,5 +590,18 @@ script = {
                 text = "flashcrewmember-05",
             }
         }
+    },
+    {
+        name = "TinySpaces",
+        dialog = {
+            {
+                video = 'player',
+                text = "tinyspaces-01",
+            },
+            {
+                video = 'playerHappy',
+                text = "tinyspaces-02",
+            }
+        }
     }
 }
