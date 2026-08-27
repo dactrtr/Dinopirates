@@ -12,8 +12,13 @@
 			"dir": "s"
 		},
 		{
+<<<<<<< Updated upstream
 			"levelIid": "8d9d4bd0-96d0-11f1-90a3-5b8851f14823",
 			"dir": "w"
+=======
+			"levelIid": "032447f0-96d0-11f1-81ed-b5c1c19b309f",
+			"dir": "e"
+>>>>>>> Stashed changes
 		}
 	],
 	"customFields": {

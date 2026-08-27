@@ -25,7 +25,7 @@ The game generates a fresh room graph every run instead of using a fixed LDtk ma
    | Fall through a hole (`Player:fallBelow`) | `startRun("startdown")` |
    | Rise through a tube (`Player:riseAbove`) | `startRun("startup")` |
 
-4. **Roster complete = victory** — when `amountTaken >= Config.MapGen.totalCrew` (currently **12**), recruiting that last crew calls `RunState.revealFinalRoom()`, which **attaches a `Final` room to the current graph** (it does not regenerate). Entering it ends the game → CreditsScene.
+4. **Roster complete = victory** — when `amountTaken >= Config.MapGen.totalCrew` (currently **21**, still being tuned upward), recruiting that last crew calls `RunState.revealFinalRoom()`, which **attaches a `Final` room to the current graph** (it does not regenerate). Entering it ends the game → CreditsScene.
 
 ### Why later runs are bigger
 
@@ -256,7 +256,7 @@ Config.MapGen = {
     roomsMax          = 20,   -- run size cap
     roomsPerCrewSpawn = 4,    -- ~1 crew per this many rooms
     utilityChance     = 0.4,  -- chance a microwave/minifier marker is active
-    totalCrew         = 12,   -- full roster; recruiting all reveals the final room
+    totalCrew         = 21,   -- full roster; recruiting all reveals the final room
     enemyChance       = 0.6,  -- chance an enemy marker is active
     itemChance        = 0.5,  -- chance an item marker is active
     darkBiasPerCrew   = 0.02, -- added dark-room probability per crew recruited

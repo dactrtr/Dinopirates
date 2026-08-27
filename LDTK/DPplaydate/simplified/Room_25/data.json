@@ -1,40 +1,77 @@
 {
 	"identifier": "Room_25",
+<<<<<<< Updated upstream
 	"uniqueIdentifer": "d1edc1a0-6fc0-11f1-90a3-51b4142cd9bd",
 	"x": 1264,
 	"y": 1632,
+=======
+	"uniqueIdentifer": "032447f0-96d0-11f1-81ed-b5c1c19b309f",
+	"x": 800,
+	"y": 912,
+>>>>>>> Stashed changes
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
+<<<<<<< Updated upstream
 			"levelIid": "33a35890-96d0-11f1-90a3-f7a30423732b",
 			"dir": "n"
 		},
 		{
 			"levelIid": "9491fe30-96d0-11f1-90a3-511a03a6852c",
 			"dir": "ne"
+=======
+			"levelIid": "6c078cc0-6fc0-11f1-989d-171d9e0d832f",
+			"dir": "sw"
+		},
+		{
+			"levelIid": "71ff9a40-6fc0-11f1-90a3-d7542bedfd23",
+			"dir": "w"
+		},
+		{
+			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
+			"dir": "e"
+>>>>>>> Stashed changes
 		}
 	],
 	"customFields": {
 		"shadow": true,
+<<<<<<< Updated upstream
 		"light": 0.1,
+=======
+		"light": 0.5,
+>>>>>>> Stashed changes
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
 		"level": 4,
+<<<<<<< Updated upstream
 		"roomNumber": 25,
 		"tile": 25,
 		"DoorsConnection": [
 			"Top",
 			"Left",
+=======
+		"roomNumber": 23,
+		"tile": 23,
+		"DoorsConnection": [
+			"Top",
+>>>>>>> Stashed changes
 			"Down",
 			"Right"
 		],
 		"play": null,
 		"procGen": true,
+<<<<<<< Updated upstream
 		"roomRole": "StartDown",
 		"requiredItems": [],
+=======
+		"roomRole": "Normal",
+		"requiredItems": [
+			"HasLamp"
+		],
+>>>>>>> Stashed changes
 		"requiredSkills": []
 	},
 	"layers": [
@@ -42,6 +79,7 @@
 		"Foreground.png"
 	],
 	"entities": {
+<<<<<<< Updated upstream
 		"Microwave": [
 			{
 				"id": "Microwave",
@@ -92,27 +130,55 @@
 					"type": "food",
 					"grants": "hasitemname:bool",
 					"isItem": true
+=======
+		"Ghost": [
+			{
+				"id": "Ghost",
+				"iid": "032447f6-96d0-11f1-81ed-8db8a69bae5b",
+				"layer": "CM_and_enemies",
+				"x": 276,
+				"y": 92,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+>>>>>>> Stashed changes
 				}
 			}
 		],
 		"Doors": [
 			{
 				"id": "Doors",
+<<<<<<< Updated upstream
 				"iid": "d1ede8b5-6fc0-11f1-90a3-29c09f95f50f",
 				"layer": "Doors",
 				"x": 200,
 				"y": 4,
+=======
+				"iid": "032447f8-96d0-11f1-81ed-558663965e7f",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+>>>>>>> Stashed changes
 				"width": 48,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
+<<<<<<< Updated upstream
 					"DoorsConnection": "Top",
+=======
+					"DoorsConnection": "Down",
+>>>>>>> Stashed changes
 					"KeyNumber": null
 				}
 			},
 			{
 				"id": "Doors",
+<<<<<<< Updated upstream
 				"iid": "f20f01b0-6fc0-11f1-90a3-fd76c8524431",
 				"layer": "Doors",
 				"x": 4,
@@ -129,6 +195,9 @@
 			{
 				"id": "Doors",
 				"iid": "f85f10a0-6fc0-11f1-90a3-f9b54bccf788",
+=======
+				"iid": "03246f03-96d0-11f1-81ed-7d58203bdb05",
+>>>>>>> Stashed changes
 				"layer": "Doors",
 				"x": 396,
 				"y": 120,
@@ -143,6 +212,7 @@
 			},
 			{
 				"id": "Doors",
+<<<<<<< Updated upstream
 				"iid": "ff05a400-6fc0-11f1-90a3-5fa59ee388c5",
 				"layer": "Doors",
 				"x": 200,
@@ -153,6 +223,18 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Down",
+=======
+				"iid": "053b4ba0-96d0-11f1-81ed-89757899c095",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+>>>>>>> Stashed changes
 					"KeyNumber": null
 				}
 			}
