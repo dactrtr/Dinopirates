@@ -12,20 +12,12 @@
 			"dir": "nw"
 		},
 		{
-			"levelIid": "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
-			"dir": "n"
-		},
-		{
 			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
 			"dir": "w"
 		},
 		{
 			"levelIid": "326d5080-48b0-11f1-a37f-1b74e05a8681",
 			"dir": "sw"
-		},
-		{
-			"levelIid": "831283a0-6fc0-11f1-b67a-cf68be7f737f",
-			"dir": "s"
 		}
 	],
 	"customFields": {

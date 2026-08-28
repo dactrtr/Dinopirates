@@ -1,25 +1,12 @@
 {
 	"identifier": "Room_6",
 	"uniqueIdentifer": "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
-	"x": -800,
-	"y": 0,
+	"x": -1120,
+	"y": -240,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#FFA90E",
-	"neighbourLevels": [
-		{
-			"levelIid": "69eb2d80-ac70-11f0-989f-95306126bd74",
-			"dir": "ne"
-		},
-		{
-			"levelIid": "78785770-6fc0-11f1-b67a-cf9ecaa9adb5",
-			"dir": "e"
-		},
-		{
-			"levelIid": "dab87dc0-ac70-11f0-997a-63497867517d",
-			"dir": "se"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": false,
 		"light": 0,
