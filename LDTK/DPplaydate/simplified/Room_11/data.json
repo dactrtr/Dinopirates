@@ -1,21 +1,12 @@
 {
 	"identifier": "Room_11",
 	"uniqueIdentifer": "68b425c0-ac70-11f0-997a-7732cd72a5cc",
-	"x": 1520,
-	"y": 0,
+	"x": 1792,
+	"y": 208,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "6cc9d510-ac70-11f0-997a-191299f9209c",
-			"dir": "n"
-		},
-		{
-			"levelIid": "6de95960-ac70-11f0-998c-e3108c5f25c9",
-			"dir": "s"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields": {
 		"shadow": true,
 		"light": 0.2,
@@ -64,7 +55,7 @@
 				"iid": "da4e0e90-48b0-11f1-98a2-fb3afdfe837c",
 				"layer": "Doors",
 				"x": 396,
-				"y": 72,
+				"y": 120,
 				"width": 8,
 				"height": 48,
 				"color": 16711680,

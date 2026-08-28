@@ -1,41 +1,31 @@
 {
 	"identifier": "Room_23",
-	"uniqueIdentifer": "6c078cc0-6fc0-11f1-989d-171d9e0d832f",
-	"x": 400,
-	"y": 1152,
+	"uniqueIdentifer": "dd89a870-96d0-11f1-8259-cb287d7a3096",
+	"x": 1792,
+	"y": 1648,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "71ff9a40-6fc0-11f1-90a3-d7542bedfd23",
-			"dir": "n"
-		},
-		{
 			"levelIid": "af4d7e50-6fc0-11f1-989d-8151041b4734",
-			"dir": "s"
+			"dir": "n"
 		}
 	],
 	"customFields": {
 		"shadow": true,
-		"light": 0.5,
+		"light": 0.1,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
 		"level": 4,
 		"roomNumber": 23,
 		"tile": 23,
-		"DoorsConnection": [
-			"Top",
-			"Down",
-			"Right"
-		],
+		"DoorsConnection": [],
 		"play": null,
 		"procGen": true,
 		"roomRole": "Normal",
-		"requiredItems": [
-			"HasLamp"
-		],
+		"requiredItems": [],
 		"requiredSkills": []
 	},
 	"layers": [
@@ -46,9 +36,84 @@
 		"Doors": [
 			{
 				"id": "Doors",
-				"iid": "6c078ccb-6fc0-11f1-989d-2984a215336b",
+				"iid": "dd89cf89-96d0-11f1-8259-857d50a4cee1",
 				"layer": "Doors",
 				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "dd89cf8a-96d0-11f1-8259-cddc70ddb04e",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "dd89cf8b-96d0-11f1-8259-df36685f14ee",
+				"layer": "Doors",
+				"x": 88,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "dd89cf8c-96d0-11f1-8259-f3cd6d877b81",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "dd8a1da0-96d0-11f1-8259-c37ee9824f18",
+				"layer": "Doors",
+				"x": 396,
+				"y": 56,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "dd8a1da1-96d0-11f1-8259-f384da946ebc",
+				"layer": "Doors",
+				"x": 88,
 				"y": 236,
 				"width": 16,
 				"height": 8,
@@ -61,55 +126,70 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "6c078ccc-6fc0-11f1-989d-4738aa318e4e",
+				"iid": "dd8a1da2-96d0-11f1-8259-c5f910a3d297",
 				"layer": "Doors",
-				"x": 200,
-				"y": 4,
+				"x": 328,
+				"y": 236,
 				"width": 16,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
-					"DoorsConnection": "Top",
+					"DoorsConnection": "Down",
 					"KeyNumber": null
 				}
 			},
 			{
 				"id": "Doors",
-				"iid": "6c078ccd-6fc0-11f1-989d-33e68e2c9a23",
+				"iid": "dd8a1da3-96d0-11f1-8259-617035a923c1",
 				"layer": "Doors",
-				"x": 344,
-				"y": 4,
-				"width": 16,
-				"height": 8,
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
-					"DoorsConnection": "Top",
+					"DoorsConnection": "Left",
 					"KeyNumber": null
 				}
 			},
 			{
 				"id": "Doors",
-				"iid": "6c078cce-6fc0-11f1-989d-655f9f271daf",
+				"iid": "dd8a1da4-96d0-11f1-8259-f79a38f90f7b",
 				"layer": "Doors",
-				"x": 88,
-				"y": 4,
-				"width": 16,
-				"height": 8,
+				"x": 4,
+				"y": 200,
+				"width": 8,
+				"height": 16,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
-					"DoorsConnection": "Top",
+					"DoorsConnection": "Left",
 					"KeyNumber": null
 				}
 			},
 			{
 				"id": "Doors",
-				"iid": "6c078ccf-6fc0-11f1-989d-01f43a61e679",
+				"iid": "dd8a1da5-96d0-11f1-8259-b1cd3b75aafc",
+				"layer": "Doors",
+				"x": 4,
+				"y": 56,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "dd8a1da6-96d0-11f1-8259-7d7d34df2ec3",
 				"layer": "Doors",
 				"x": 396,
-				"y": 120,
+				"y": 200,
 				"width": 8,
 				"height": 16,
 				"color": 16711680,
@@ -121,16 +201,16 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "6c078cd0-6fc0-11f1-989d-3115cb3c35b5",
+				"iid": "dd8a1da7-96d0-11f1-8259-2d6b300f83b6",
 				"layer": "Doors",
-				"x": 88,
-				"y": 234,
+				"x": 328,
+				"y": 4,
 				"width": 16,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
-					"DoorsConnection": "Down",
+					"DoorsConnection": "Top",
 					"KeyNumber": null
 				}
 			}
