@@ -98,6 +98,10 @@ Config.MapGen = {
     roomsPerCrewSpawn = 4,    -- spawn ~1 crew per this many rooms in a run (crew density)
     utilityChance     = 0.4,  -- prob. of populating a FeatureSlot with a microwave/minifier
     totalCrew         = 21,   -- full crew roster; recruiting all of them reveals the final room
+    -- TODO(design): the final room should open once a minimum crew count is rescued,
+    -- not necessarily the full roster -- that minimum determines which of the 3 cockpit
+    -- endings (bad/normal/good) are reachable. Fine to require all 21 for now; revisit
+    -- once the roster grows toward the 41-crew target.
     enemyChance       = 0.6,  -- prob. of populating an enemy marker
 }
 
