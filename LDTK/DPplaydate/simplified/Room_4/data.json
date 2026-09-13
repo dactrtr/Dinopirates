@@ -1,41 +1,38 @@
 {
 	"identifier": "Room_4",
-	"uniqueIdentifer": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-	"x": 0,
-	"y": 240,
+	"uniqueIdentifer": "e0227920-96d0-11f1-ad82-1da941d0a645",
+	"x": 2384,
+	"y": 752,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
-			"dir": "n"
+			"levelIid": "bfb67140-96d0-11f1-ad82-3f89976fa342",
+			"dir": "w"
 		},
 		{
-			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
-			"dir": "ne"
+			"levelIid": "36aeb150-96d0-11f1-ad82-b10fc3715a0d",
+			"dir": "nw"
 		},
 		{
-			"levelIid": "326d5080-48b0-11f1-a37f-1b74e05a8681",
-			"dir": "e"
+			"levelIid": "3d0f8920-96d0-11f1-ad82-6736b96083c7",
+			"dir": "sw"
 		}
 	],
 	"customFields": {
-		"shadow": false,
-		"light": 0,
+		"shadow": true,
+		"light": 0.1,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
 		"level": 4,
 		"roomNumber": 4,
 		"tile": 4,
-		"DoorsConnection": [
-			"Right",
-			"Down"
-		],
+		"DoorsConnection": [],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "StartDown",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -44,65 +41,14 @@
 		"Foreground.png"
 	],
 	"entities": {
-		"Minifier": [
-			{
-				"id": "Minifier",
-				"iid": "2925e110-48b0-11f1-8344-6fb57014178b",
-				"layer": "Items_and_Props",
-				"x": 332,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 2943221,
-				"customFields": {
-					"type": "minifier",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": true
-				}
-			},
-			{
-				"id": "Minifier",
-				"iid": "324d52f0-48b0-11f1-8344-29cd947bea73",
-				"layer": "Items_and_Props",
-				"x": 348,
-				"y": 44,
-				"width": 32,
-				"height": 32,
-				"color": 2943221,
-				"customFields": {
-					"type": "minifier",
-					"nocollider": false,
-					"destroyed": false,
-					"forceSpawn": true
-				}
-			}
-		],
-		"Food": [
-			{
-				"id": "Food",
-				"iid": "2eaba5b0-48b0-11f1-8344-1b3639a78649",
-				"layer": "Items_and_Props",
-				"x": 284,
-				"y": 36,
-				"width": 32,
-				"height": 32,
-				"color": 16151930,
-				"customFields": {
-					"type": "food",
-					"grants": "hasitemname:bool",
-					"isItem": true
-				}
-			}
-		],
 		"Doors": [
 			{
 				"id": "Doors",
-				"iid": "e6a14d50-48b0-11f1-98a2-35c152986596",
+				"iid": "e022792f-96d0-11f1-ad82-6f6327058eab",
 				"layer": "Doors",
-				"x": 336,
+				"x": 200,
 				"y": 236,
-				"width": 32,
+				"width": 48,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
@@ -113,7 +59,37 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "098a69e0-48b0-11f1-98a2-47f423465842",
+				"iid": "e0227930-96d0-11f1-ad82-e56d7bf2cccb",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227931-96d0-11f1-ad82-c7cea2a6ccf8",
+				"layer": "Doors",
+				"x": 88,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227932-96d0-11f1-ad82-f59826f992c1",
 				"layer": "Doors",
 				"x": 396,
 				"y": 120,
@@ -123,6 +99,126 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227933-96d0-11f1-ad82-c5956fe92573",
+				"layer": "Doors",
+				"x": 396,
+				"y": 56,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227934-96d0-11f1-ad82-f5d0c329c357",
+				"layer": "Doors",
+				"x": 88,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227935-96d0-11f1-ad82-4b91caec99f8",
+				"layer": "Doors",
+				"x": 328,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227936-96d0-11f1-ad82-cd9da1036bf3",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227937-96d0-11f1-ad82-270e11cca35c",
+				"layer": "Doors",
+				"x": 4,
+				"y": 200,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227938-96d0-11f1-ad82-87469424476a",
+				"layer": "Doors",
+				"x": 4,
+				"y": 56,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e0227939-96d0-11f1-ad82-07394d413969",
+				"layer": "Doors",
+				"x": 396,
+				"y": 200,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "e022793a-96d0-11f1-ad82-e9a8dbe22585",
+				"layer": "Doors",
+				"x": 328,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
 					"KeyNumber": null
 				}
 			}

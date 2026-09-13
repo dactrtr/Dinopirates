@@ -1,28 +1,38 @@
 {
 	"identifier": "Room_5",
-	"uniqueIdentifer": "c2b4e0b0-ac70-11f0-997a-09fdc7fc6323",
-	"x": 864,
-	"y": -400,
+	"uniqueIdentifer": "36aeb150-96d0-11f1-ad82-b10fc3715a0d",
+	"x": 1984,
+	"y": 512,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
-	"neighbourLevels": [],
+	"neighbourLevels": [
+		{
+			"levelIid": "bfb67140-96d0-11f1-ad82-3f89976fa342",
+			"dir": "s"
+		},
+		{
+			"levelIid": "e0227920-96d0-11f1-ad82-1da941d0a645",
+			"dir": "se"
+		},
+		{
+			"levelIid": "39589ba0-96d0-11f1-ad82-85b08eec6ff7",
+			"dir": "sw"
+		}
+	],
 	"customFields": {
 		"shadow": true,
-		"light": 0.5,
+		"light": 0.1,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
 		"level": 4,
 		"roomNumber": 5,
 		"tile": 5,
-		"DoorsConnection": [
-			"Left",
-			"Down"
-		],
+		"DoorsConnection": [],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "StartDown",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -34,7 +44,7 @@
 		"Doors": [
 			{
 				"id": "Doors",
-				"iid": "cdde3ac0-48b0-11f1-98a2-1be89f9f9a01",
+				"iid": "36aeb157-96d0-11f1-ad82-25383a516ae3",
 				"layer": "Doors",
 				"x": 200,
 				"y": 236,
@@ -49,7 +59,97 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "fff65380-48b0-11f1-98a2-8d2e177562cb",
+				"iid": "36aeb158-96d0-11f1-ad82-f118b31d0d6e",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aeb159-96d0-11f1-ad82-055300908783",
+				"layer": "Doors",
+				"x": 88,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aeb15a-96d0-11f1-ad82-b30b5a92c175",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aeb15b-96d0-11f1-ad82-59776acf02bb",
+				"layer": "Doors",
+				"x": 396,
+				"y": 56,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aed860-96d0-11f1-ad82-df4c532c4cf9",
+				"layer": "Doors",
+				"x": 88,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aed861-96d0-11f1-ad82-5937e2661809",
+				"layer": "Doors",
+				"x": 328,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aed862-96d0-11f1-ad82-2f5f1be0e5dc",
 				"layer": "Doors",
 				"x": 4,
 				"y": 120,
@@ -59,6 +159,66 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aed863-96d0-11f1-ad82-112d4f428e40",
+				"layer": "Doors",
+				"x": 4,
+				"y": 200,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aed864-96d0-11f1-ad82-4bee62ee6c72",
+				"layer": "Doors",
+				"x": 4,
+				"y": 56,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aed865-96d0-11f1-ad82-79a386c6362e",
+				"layer": "Doors",
+				"x": 396,
+				"y": 200,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "36aed866-96d0-11f1-ad82-b7aa68357d64",
+				"layer": "Doors",
+				"x": 328,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
 					"KeyNumber": null
 				}
 			}

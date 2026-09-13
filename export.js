@@ -9,11 +9,34 @@ const LDTK_EXPORT_DIR = process.argv[2] || './LDTK/DPplaydate/simplified';
 const BUILD_DIR       = path.join(LDTK_EXPORT_DIR, 'build');
 const OUT_DATA        = path.join(BUILD_DIR, 'assets', 'data');
 const OUT_IMAGES      = path.join(BUILD_DIR, 'assets', 'images', 'rooms');
+// Where the game actually reads its data/images from — the build dir above is
+// just a staging area, so every run must also land here.
+const SOURCE_DIR      = process.argv[3] || './source';
+const SOURCE_DATA     = path.join(SOURCE_DIR, 'assets', 'data');
+const SOURCE_IMAGES   = path.join(SOURCE_DIR, 'assets', 'images', 'rooms');
 // ───────────────────────────────────────────────────────────────────────────
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
+}
+
+// Recursively copies every file from src into dest, creating folders as needed
+// and overwriting whatever is already there.
+function copyDirRecursive(src, dest) {
+  let count = 0;
+  ensureDir(dest);
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+	const srcPath  = path.join(src, entry.name);
+	const destPath = path.join(dest, entry.name);
+	if (entry.isDirectory()) {
+	  count += copyDirRecursive(srcPath, destPath);
+	} else {
+	  fs.copyFileSync(srcPath, destPath);
+	  count++;
+	}
+  }
+  return count;
 }
 
 function jsonToLua(obj, indent = 0) {
@@ -292,9 +315,16 @@ function main() {
   console.log('\n── Images ──');
   copyImages(rooms);
 
+  console.log('\n── Sync to source ──');
+  const dataCopied   = copyDirRecursive(OUT_DATA, SOURCE_DATA);
+  console.log(`  ✓ ${dataCopied} data file(s) → ${path.resolve(SOURCE_DATA)}`);
+  const imagesCopied = copyDirRecursive(OUT_IMAGES, SOURCE_IMAGES);
+  console.log(`  ✓ ${imagesCopied} image(s) → ${path.resolve(SOURCE_IMAGES)}`);
+
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  ✅ Done!');
   console.log(`  ${path.resolve(BUILD_DIR)}`);
+  console.log(`  ${path.resolve(SOURCE_DIR)}`);
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 }
 

@@ -1,30 +1,38 @@
 {
-	"identifier": "Room_23",
-	"uniqueIdentifer": "dd89a870-96d0-11f1-8259-cb287d7a3096",
-	"x": 1792,
-	"y": 1648,
+	"identifier": "Room_12",
+	"uniqueIdentifer": "197eebe0-96d0-11f1-ad82-255366b1b178",
+	"x": 2000,
+	"y": -832,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
 			"levelIid": "af4d7e50-6fc0-11f1-989d-8151041b4734",
-			"dir": "n"
+			"dir": "s"
+		},
+		{
+			"levelIid": "d995d660-96d0-11f1-ad82-7bd6ddf00333",
+			"dir": "se"
+		},
+		{
+			"levelIid": "2125b130-96d0-11f1-ad82-81c4cee9fd1a",
+			"dir": "sw"
 		}
 	],
 	"customFields": {
-		"shadow": true,
-		"light": 0.1,
+		"shadow": false,
+		"light": 0.5,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
 		"level": 4,
-		"roomNumber": 23,
-		"tile": 23,
+		"roomNumber": 12,
+		"tile": 12,
 		"DoorsConnection": [],
 		"play": null,
 		"procGen": true,
-		"roomRole": "Normal",
+		"roomRole": "StartUp",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -36,7 +44,7 @@
 		"Doors": [
 			{
 				"id": "Doors",
-				"iid": "dd89cf89-96d0-11f1-8259-857d50a4cee1",
+				"iid": "197f12f6-96d0-11f1-ad82-2b661d32abf9",
 				"layer": "Doors",
 				"x": 200,
 				"y": 236,
@@ -51,7 +59,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd89cf8a-96d0-11f1-8259-cddc70ddb04e",
+				"iid": "197f12f7-96d0-11f1-ad82-2b4192a07f5c",
 				"layer": "Doors",
 				"x": 200,
 				"y": 4,
@@ -66,7 +74,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd89cf8b-96d0-11f1-8259-df36685f14ee",
+				"iid": "197f12f8-96d0-11f1-ad82-91e2206868c5",
 				"layer": "Doors",
 				"x": 88,
 				"y": 4,
@@ -81,7 +89,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd89cf8c-96d0-11f1-8259-f3cd6d877b81",
+				"iid": "197f12f9-96d0-11f1-ad82-b14f518e7493",
 				"layer": "Doors",
 				"x": 396,
 				"y": 120,
@@ -96,7 +104,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd8a1da0-96d0-11f1-8259-c37ee9824f18",
+				"iid": "197f12fa-96d0-11f1-ad82-dd47967480f9",
 				"layer": "Doors",
 				"x": 396,
 				"y": 56,
@@ -111,7 +119,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd8a1da1-96d0-11f1-8259-f384da946ebc",
+				"iid": "197f12fb-96d0-11f1-ad82-f500a883fc8e",
 				"layer": "Doors",
 				"x": 88,
 				"y": 236,
@@ -126,7 +134,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd8a1da2-96d0-11f1-8259-c5f910a3d297",
+				"iid": "197f12fc-96d0-11f1-ad82-07d97c9f434f",
 				"layer": "Doors",
 				"x": 328,
 				"y": 236,
@@ -141,7 +149,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd8a1da3-96d0-11f1-8259-617035a923c1",
+				"iid": "197f12fd-96d0-11f1-ad82-a1ae0e7ecf9d",
 				"layer": "Doors",
 				"x": 4,
 				"y": 120,
@@ -156,7 +164,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd8a1da4-96d0-11f1-8259-f79a38f90f7b",
+				"iid": "197f12fe-96d0-11f1-ad82-15e7ff80ee6d",
 				"layer": "Doors",
 				"x": 4,
 				"y": 200,
@@ -171,7 +179,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd8a1da5-96d0-11f1-8259-b1cd3b75aafc",
+				"iid": "197f12ff-96d0-11f1-ad82-9f0346ec4860",
 				"layer": "Doors",
 				"x": 4,
 				"y": 56,
@@ -186,7 +194,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd8a1da6-96d0-11f1-8259-7d7d34df2ec3",
+				"iid": "197f1300-96d0-11f1-ad82-e1824768b50b",
 				"layer": "Doors",
 				"x": 396,
 				"y": 200,
@@ -201,7 +209,7 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "dd8a1da7-96d0-11f1-8259-2d6b300f83b6",
+				"iid": "197f1301-96d0-11f1-ad82-df353b0e395e",
 				"layer": "Doors",
 				"x": 328,
 				"y": 4,

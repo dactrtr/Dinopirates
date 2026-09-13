@@ -1,67 +1,8 @@
-	--1
-table.insert(levelsLDTK, {
-  identifier = "Room_1",
-  uniqueIdentifer = "69eb2d80-ac70-11f0-989f-95306126bd74",
-  neighbourLevels = {
-    {
-      levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
-      dir = "e"
-    },
-    {
-      levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
-      dir = "ne"
-    },
-    {
-      levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
-      dir = "se"
-    }
-  },
-  customFields = {
-    shadow = false,
-    light = 0,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 1,
-    tile = 1,
-    DoorsConnection = {
-      "Down"
-    },
-    play = nil,
-    procGen = false,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "e415f5e0-6fc0-11f1-b96e-e7f4eec831c8",
-        x = 200,
-        y = 236,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
 	--2
 table.insert(levelsLDTK, {
   identifier = "Room_2",
   uniqueIdentifer = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
   neighbourLevels = {
-    {
-      levelIid = "69eb2d80-ac70-11f0-989f-95306126bd74",
-      dir = "w"
-    },
     {
       levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
       dir = "n"
@@ -73,6 +14,10 @@ table.insert(levelsLDTK, {
     {
       levelIid = "a9a25e80-48b0-11f1-b2c1-f5dd8f6d463a",
       dir = "ne"
+    },
+    {
+      levelIid = "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
+      dir = "w"
     },
     {
       levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
@@ -593,15 +538,7 @@ table.insert(levelsLDTK, {
   uniqueIdentifer = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
   neighbourLevels = {
     {
-      levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
-      dir = "n"
-    },
-    {
-      levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
-      dir = "ne"
-    },
-    {
-      levelIid = "326d5080-48b0-11f1-a37f-1b74e05a8681",
+      levelIid = "bfb67140-96d0-11f1-ad82-3f89976fa342",
       dir = "e"
     }
   },
@@ -761,7 +698,20 @@ table.insert(levelsLDTK, {
 table.insert(levelsLDTK, {
   identifier = "Room_6",
   uniqueIdentifer = "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
-  neighbourLevels = {},
+  neighbourLevels = {
+    {
+      levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
+      dir = "e"
+    },
+    {
+      levelIid = "a82c8680-48b0-11f1-9f4d-49a4be703c65",
+      dir = "ne"
+    },
+    {
+      levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
+      dir = "se"
+    }
+  },
   customFields = {
     shadow = false,
     light = 0,
@@ -851,10 +801,6 @@ table.insert(levelsLDTK, {
   uniqueIdentifer = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
   neighbourLevels = {
     {
-      levelIid = "69eb2d80-ac70-11f0-989f-95306126bd74",
-      dir = "nw"
-    },
-    {
       levelIid = "bab17c70-ac70-11f0-997a-85b3d3c5d229",
       dir = "n"
     },
@@ -863,8 +809,8 @@ table.insert(levelsLDTK, {
       dir = "ne"
     },
     {
-      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-      dir = "s"
+      levelIid = "cb0db7f0-ac70-11f0-997a-b9923cff9cbf",
+      dir = "nw"
     },
     {
       levelIid = "d8b90440-ac70-11f0-997a-77d867841568",
@@ -1030,10 +976,6 @@ table.insert(levelsLDTK, {
     {
       levelIid = "bf654080-ac70-11f0-997a-e578ba2da2ac",
       dir = "n"
-    },
-    {
-      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-      dir = "sw"
     },
     {
       levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
@@ -1229,120 +1171,11 @@ table.insert(levelsLDTK, {
     }
   }
 })
-	--9
-table.insert(levelsLDTK, {
-  identifier = "Room_9",
-  uniqueIdentifer = "dab87dc0-ac70-11f0-997a-63497867517d",
-  neighbourLevels = {
-    {
-      levelIid = "78785770-6fc0-11f1-b67a-cf9ecaa9adb5",
-      dir = "n"
-    }
-  },
-  customFields = {
-    shadow = true,
-    light = 0.5,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 9,
-    tile = 9,
-    DoorsConnection = {
-      "Top",
-      "Down",
-      "Left"
-    },
-    play = nil,
-    procGen = false,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    CrewMember = {
-      {
-        id = "CrewMember",
-        iid = "0c11a640-fa90-11f0-9f0d-c9ca42f46487",
-        x = 36,
-        y = 28,
-        width = 48,
-        height = 48,
-        customFields = {
-          isTaken = false,
-          crewID = "CM001",
-          forceSpawn = false
-        }
-      }
-    },
-    Brocorat = {
-      {
-        id = "Brocorat",
-        iid = "0531c050-21a0-11f1-ba67-436fa97866a9",
-        x = 36,
-        y = 204,
-        width = 32,
-        height = 32,
-        customFields = {
-          speed = 0.5,
-          dead = false,
-          forceSpawn = false
-        }
-      }
-    },
-    Doors = {
-      {
-        id = "Doors",
-        iid = "f1da76b0-fa90-11f0-9039-7f762bb19d4f",
-        x = 200,
-        y = 235,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "d524fbd0-48b0-11f1-98a2-bdd7901b9007",
-        x = 336,
-        y = 4,
-        width = 32,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "ffb48f40-6fc0-11f1-b67a-432da539a34b",
-        x = 200,
-        y = 4,
-        width = 16,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
 	--10
 table.insert(levelsLDTK, {
   identifier = "Room_10",
   uniqueIdentifer = "326d5080-48b0-11f1-a37f-1b74e05a8681",
   neighbourLevels = {
-    {
-      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-      dir = "w"
-    },
     {
       levelIid = "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
       dir = "nw"
@@ -1506,7 +1339,16 @@ table.insert(levelsLDTK, {
 table.insert(levelsLDTK, {
   identifier = "Room_11",
   uniqueIdentifer = "68b425c0-ac70-11f0-997a-7732cd72a5cc",
-  neighbourLevels = {},
+  neighbourLevels = {
+    {
+      levelIid = "bfb67140-96d0-11f1-ad82-3f89976fa342",
+      dir = "w"
+    },
+    {
+      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
+      dir = "s"
+    }
+  },
   customFields = {
     shadow = true,
     light = 0.2,
@@ -1587,95 +1429,18 @@ table.insert(levelsLDTK, {
     }
   }
 })
-	--13
-table.insert(levelsLDTK, {
-  identifier = "Room_13",
-  uniqueIdentifer = "715b4410-ac70-11f0-997a-156adb22b715",
-  neighbourLevels = {
-    {
-      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
-      dir = "e"
-    }
-  },
-  customFields = {
-    shadow = true,
-    light = 0.7,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 13,
-    tile = 13,
-    DoorsConnection = {
-      "Top",
-      "Left",
-      "Right"
-    },
-    play = nil,
-    procGen = true,
-    roomRole = "Normal",
-    requiredItems = {
-      "HasLamp"
-    },
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "e35e4010-ac70-11f0-8539-cfa071292c9d",
-        x = 4,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "f2cac460-ac70-11f0-8539-f32c05a0c6fe",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "5b6513e0-fa90-11f0-b965-f9db40bfdb74",
-        x = 396,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Right",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
 	--14
 table.insert(levelsLDTK, {
   identifier = "Room_14",
   uniqueIdentifer = "6de95960-ac70-11f0-998c-e3108c5f25c9",
   neighbourLevels = {
     {
-      levelIid = "715b4410-ac70-11f0-997a-156adb22b715",
-      dir = "w"
+      levelIid = "bfb67140-96d0-11f1-ad82-3f89976fa342",
+      dir = "nw"
     },
     {
-      levelIid = "723b72d0-6fc0-11f1-b67a-9309958fabf9",
-      dir = "e"
+      levelIid = "68b425c0-ac70-11f0-997a-7732cd72a5cc",
+      dir = "n"
     }
   },
   customFields = {
@@ -1752,338 +1517,6 @@ table.insert(levelsLDTK, {
         customFields = {
           NeedsKey = false,
           DoorsConnection = "Right",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
-	--15
-table.insert(levelsLDTK, {
-  identifier = "Room_15",
-  uniqueIdentifer = "708f7320-ac70-11f0-998c-737ddc0c343a",
-  neighbourLevels = {},
-  customFields = {
-    shadow = true,
-    light = 0.5,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 15,
-    tile = 15,
-    DoorsConnection = {
-      "Top",
-      "Left",
-      "Down",
-      "Right"
-    },
-    play = nil,
-    procGen = true,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "ebfdc080-48b0-11f1-a37f-87e869c0a45e",
-        x = 4,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "eddc92a0-48b0-11f1-a37f-f5ca81b969af",
-        x = 396,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Right",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
-	--16
-table.insert(levelsLDTK, {
-  identifier = "Room_16",
-  uniqueIdentifer = "5d9233e0-6fc0-11f1-b67a-e55e4363b0b6",
-  neighbourLevels = {},
-  customFields = {
-    shadow = true,
-    light = 0.5,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 16,
-    tile = 16,
-    DoorsConnection = {
-      "Left",
-      "Down"
-    },
-    play = nil,
-    procGen = true,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "aa58c0c0-6fc0-11f1-b67a-996c9da2dfab",
-        x = 396,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Right",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "b3934570-6fc0-11f1-b67a-8d5a19eefbe7",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
-	--17
-table.insert(levelsLDTK, {
-  identifier = "Room_17",
-  uniqueIdentifer = "78785770-6fc0-11f1-b67a-cf9ecaa9adb5",
-  neighbourLevels = {
-    {
-      levelIid = "dab87dc0-ac70-11f0-997a-63497867517d",
-      dir = "s"
-    }
-  },
-  customFields = {
-    shadow = false,
-    light = 0,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 17,
-    tile = 17,
-    DoorsConnection = {
-      "Left",
-      "Down"
-    },
-    play = nil,
-    procGen = true,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "78785777-6fc0-11f1-b67a-79514b1aa5d6",
-        x = 200,
-        y = 236,
-        width = 16,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "78785778-6fc0-11f1-b67a-6d0c150ad9d3",
-        x = 4,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "bca53840-6fc0-11f1-b96e-6d60e73b14e1",
-        x = 336,
-        y = 236,
-        width = 32,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "d3b5e9d0-6fc0-11f1-b96e-cb34d890b6e2",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
-	--18
-table.insert(levelsLDTK, {
-  identifier = "Room_18",
-  uniqueIdentifer = "723b72d0-6fc0-11f1-b67a-9309958fabf9",
-  neighbourLevels = {
-    {
-      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
-      dir = "w"
-    }
-  },
-  customFields = {
-    shadow = true,
-    light = 0.5,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 18,
-    tile = 18,
-    DoorsConnection = {
-      "Top",
-      "Left"
-    },
-    play = nil,
-    procGen = true,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "723b72d8-6fc0-11f1-b67a-874363e9f815",
-        x = 4,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "723b72d9-6fc0-11f1-b67a-2b8b5df21eb5",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
-	--19
-table.insert(levelsLDTK, {
-  identifier = "Room_19",
-  uniqueIdentifer = "831283a0-6fc0-11f1-b67a-cf68be7f737f",
-  neighbourLevels = {},
-  customFields = {
-    shadow = true,
-    light = 0.5,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 19,
-    tile = 19,
-    DoorsConnection = {
-      "Top",
-      "Left",
-      "Down"
-    },
-    play = nil,
-    procGen = true,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Doors = {
-      {
-        id = "Doors",
-        iid = "8312aab6-6fc0-11f1-b67a-bdf997b810ed",
-        x = 4,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = 1
-        }
-      },
-      {
-        id = "Doors",
-        iid = "8312aab7-6fc0-11f1-b67a-b7d52f44ead9",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "10abaff0-6fc0-11f1-b96e-01ed048a45df",
-        x = 200,
-        y = 236,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
           KeyNumber = nil
         }
       }
@@ -2490,7 +1923,7 @@ table.insert(levelsLDTK, {
   neighbourLevels = {
     {
       levelIid = "dd89a870-96d0-11f1-8259-cb287d7a3096",
-      dir = "s"
+      dir = "e"
     }
   },
   customFields = {
@@ -2511,20 +1944,6 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
-    Lamp = {
-      {
-        id = "Lamp",
-        iid = "af4da562-6fc0-11f1-989d-77b3e3bfc5f9",
-        x = 228,
-        y = 84,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "lamp",
-          isItem = true
-        }
-      }
-    },
     TubeExit = {
       {
         id = "TubeExit",
@@ -2535,6 +1954,89 @@ table.insert(levelsLDTK, {
         height = 32,
         customFields = {
           type = "TubeExit",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
+    Minifier = {
+      {
+        id = "Minifier",
+        iid = "8186e0b0-96d0-11f1-ad82-95d83dc2697b",
+        x = 132,
+        y = 68,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "minifier",
+          nocollider = false,
+          destroyed = false,
+          forceSpawn = false
+        }
+      }
+    },
+    Box = {
+      {
+        id = "Box",
+        iid = "888f4320-96d0-11f1-ad82-91b5864e3056",
+        x = 28,
+        y = 204,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Box",
+        iid = "8a7e9000-96d0-11f1-ad82-233ceb06860d",
+        x = 84,
+        y = 28,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Box",
+        iid = "8cc9df90-96d0-11f1-ad82-c5bca26de414",
+        x = 372,
+        y = 52,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Box",
+        iid = "8d8e4100-96d0-11f1-ad82-cf32821d1aea",
+        x = 332,
+        y = 28,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Box",
+        iid = "8ef9b7e0-96d0-11f1-ad82-89096913903b",
+        x = 84,
+        y = 212,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "box",
           nocollider = false,
           destroyed = false
         }
@@ -2715,6 +2217,321 @@ table.insert(levelsLDTK, {
     }
   }
 })
+	--22
+table.insert(levelsLDTK, {
+  identifier = "Room_24",
+  uniqueIdentifer = "bfb67140-96d0-11f1-ad82-3f89976fa342",
+  neighbourLevels = {
+    {
+      levelIid = "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
+      dir = "w"
+    },
+    {
+      levelIid = "68b425c0-ac70-11f0-997a-7732cd72a5cc",
+      dir = "e"
+    },
+    {
+      levelIid = "6de95960-ac70-11f0-998c-e3108c5f25c9",
+      dir = "se"
+    }
+  },
+  customFields = {
+    shadow = true,
+    light = 0.1,
+    visited = false,
+    comic_name = nil,
+    comic_wasPlayed = false,
+    level = 4,
+    roomNumber = 22,
+    tile = 24,
+    DoorsConnection = {},
+    play = nil,
+    procGen = true,
+    roomRole = "StartDown",
+    requiredItems = {},
+    requiredSkills = {},
+    hasForeground = true
+  },
+  entities = {
+    Lamp = {
+      {
+        id = "Lamp",
+        iid = "bfb69854-96d0-11f1-ad82-67cc62b30e7e",
+        x = 228,
+        y = 84,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "lamp",
+          isItem = true
+        }
+      }
+    },
+    Minifier = {
+      {
+        id = "Minifier",
+        iid = "079863b0-96d0-11f1-ad82-d9dd52471a07",
+        x = 268,
+        y = 196,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "minifier",
+          nocollider = false,
+          destroyed = false,
+          forceSpawn = false
+        }
+      }
+    },
+    Microwave = {
+      {
+        id = "Microwave",
+        iid = "0a424e00-96d0-11f1-ad82-c56d82c875a8",
+        x = 84,
+        y = 68,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "microwave",
+          nocollider = false,
+          destroyed = false,
+          forceSpawn = false
+        }
+      }
+    },
+    Food = {
+      {
+        id = "Food",
+        iid = "0e0410f0-96d0-11f1-ad82-298f259de645",
+        x = 324,
+        y = 60,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "food",
+          grants = "hasitemname:bool",
+          isItem = true
+        }
+      }
+    },
+    PneumaticTube = {
+      {
+        id = "PneumaticTube",
+        iid = "cbb8c120-96d0-11f1-ad82-5332d2a51eed",
+        x = 284,
+        y = 76,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "pneumaticTube",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
+    Tube = {
+      {
+        id = "Tube",
+        iid = "d5516b60-96d0-11f1-ad82-e3b447c88955",
+        x = 284,
+        y = 44,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "d635ff00-96d0-11f1-ad82-895f3e67cf88",
+        x = 284,
+        y = 12,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
+    CrewMember = {
+      {
+        id = "CrewMember",
+        iid = "bfb69857-96d0-11f1-ad82-1f192d5b24b6",
+        x = 68,
+        y = 100,
+        width = 48,
+        height = 48,
+        customFields = {
+          isTaken = false,
+          crewID = "100",
+          forceSpawn = false
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "bfb69859-96d0-11f1-ad82-2b5f16e72a8b",
+        x = 200,
+        y = 236,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb6985a-96d0-11f1-ad82-5de2ba31323d",
+        x = 200,
+        y = 4,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb6985b-96d0-11f1-ad82-5d7ef3a9195d",
+        x = 88,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb6985c-96d0-11f1-ad82-ebda792ff8f0",
+        x = 396,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb6985d-96d0-11f1-ad82-43735b45f2ec",
+        x = 396,
+        y = 56,
+        width = 8,
+        height = 16,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb6985e-96d0-11f1-ad82-578136606ef2",
+        x = 88,
+        y = 236,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb6985f-96d0-11f1-ad82-07133c980a6b",
+        x = 328,
+        y = 236,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb69860-96d0-11f1-ad82-afc7b5b93419",
+        x = 4,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb69861-96d0-11f1-ad82-f57420f5b019",
+        x = 4,
+        y = 200,
+        width = 8,
+        height = 16,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb69862-96d0-11f1-ad82-6fff52620b06",
+        x = 4,
+        y = 56,
+        width = 8,
+        height = 16,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb69863-96d0-11f1-ad82-b5c1478dc1e8",
+        x = 396,
+        y = 200,
+        width = 8,
+        height = 16,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "bfb69864-96d0-11f1-ad82-1fb5de7f40a5",
+        x = 328,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      }
+    }
+  }
+})
 	--23
 table.insert(levelsLDTK, {
   identifier = "Room_23",
@@ -2722,7 +2539,7 @@ table.insert(levelsLDTK, {
   neighbourLevels = {
     {
       levelIid = "af4d7e50-6fc0-11f1-989d-8151041b4734",
-      dir = "n"
+      dir = "w"
     }
   },
   customFields = {
