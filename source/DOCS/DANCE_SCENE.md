@@ -157,7 +157,7 @@ random roll**. Thresholds live in `Config.Dance` (`crewEvolve`, `crewBadass`, `c
 
 Because `amountTaken` only ever rises (it persists across runs), fights get harder the further
 along the roster you are. Tune the thresholds freely; the full roster is `Config.MapGen.totalCrew`
-(12).
+(21, subject to further tuning upward).
 
 > **History:** this replaced an earlier probabilistic system (`determineDifficultyUpgrade()`)
 > that rolled a weighted chance from `sanityCounter` + `EnemiesData.powerLevel` + `calories`.
@@ -519,7 +519,7 @@ State flow:
 | `isTiny` | `false` | Selects the alternate player spritesheet |
 | `lastEnemyTouched` | `{type=nil, id=nil, x=nil, y=nil}` | `type` selects the enemy spritesheet; `id` is used to kill the enemy on victory |
 | `danceThresholdHP` | `1` | Minimum HP at which combat is triggered |
-| `CrewMemberData.amountTaken` | `0` (max `totalCrew` = 12) | Determines the enemy difficulty tier (`determineEnemyType`) |
+| `CrewMemberData.amountTaken` | `0` (max `totalCrew` = 21) | Determines the enemy difficulty tier (`determineEnemyType`) |
 | `calories` | `100` (max 500) | Clamped to `Config.Dance.caloriesMax`; gained on victory (no longer feeds difficulty) |
 | `healedHP` | `2` | HP restored on victory |
 | `amountDances` | `0` | Combat counter; incremented on victory |

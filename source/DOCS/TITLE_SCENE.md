@@ -100,7 +100,7 @@ Each item is registered in `menuItems` with:
 - `action`: function to execute when A is pressed
 
 ### `updateMenuSelection()`
-Iterates `menuItems`. The item at `i == selectedIndex` gets `animation:setState(selectedState)`; all others get `animation:setState(defaultState)`. Then calls `background:changeState(menuItems[selectedIndex].backgroundState)`.
+Iterates `menuItems`. For each item calls `item.sprite:setSelected(item.defaultState, item.selectedState, i == selectedIndex)`, which internally calls `animation:setState(selectedState)` or `animation:setState(defaultState)` as before. Then calls `background:changeState(menuItems[selectedIndex].backgroundState)`.
 
 ### MenuTitle Sprite (`entities/ui/menuTitle.lua`)
 `NobleSprite`. Spritesheet: `assets/images/screens/menuTitle`. Size 180×56. ZIndex received as parameter (100 in all current cases). Collision group 3. Has 12 animation states (single frames):
@@ -113,6 +113,8 @@ Iterates `menuItems`. The item at `i == selectedIndex` gets `animation:setState(
 | `defAchievements` | 7 | `selAchievements` | 8 |
 | `defCredits` | 9 | `selCredits` | 10 |
 | `defPlayground` | 11 | `selPlayground` | 12 |
+
+`setSelected(defaultState, selectedState, selected)` also drives a periodic VCR-glitch flicker (via `playdate.graphics.image:vcrPauseFilterImage()`) on whichever item is currently selected: periodic bursts, tuned via `Config.UI.titleGlitch`, cleared immediately when the item is deselected.
 
 ---
 

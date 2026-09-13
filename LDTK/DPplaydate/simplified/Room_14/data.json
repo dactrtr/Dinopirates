@@ -1,15 +1,19 @@
 {
 	"identifier": "Room_14",
 	"uniqueIdentifer": "6de95960-ac70-11f0-998c-e3108c5f25c9",
-	"x": 1520,
-	"y": 240,
+	"x": 736,
+	"y": 1088,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "68b425c0-ac70-11f0-997a-7732cd72a5cc",
-			"dir": "n"
+			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
+			"dir": "w"
+		},
+		{
+			"levelIid": "723b72d0-6fc0-11f1-b67a-9309958fabf9",
+			"dir": "e"
 		}
 	],
 	"customFields": {
@@ -60,14 +64,14 @@
 				"iid": "e9b65690-ac70-11f0-8539-3392c72a1b66",
 				"layer": "Doors",
 				"x": 4,
-				"y": 176,
+				"y": 120,
 				"width": 8,
-				"height": 32,
+				"height": 48,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Left",
-					"KeyNumber": 1
+					"KeyNumber": null
 				}
 			},
 			{
@@ -90,9 +94,9 @@
 				"iid": "d0707a20-6fc0-11f1-989d-db5b0204b526",
 				"layer": "Doors",
 				"x": 396,
-				"y": 176,
+				"y": 120,
 				"width": 8,
-				"height": 32,
+				"height": 48,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,

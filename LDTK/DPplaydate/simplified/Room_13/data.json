@@ -1,31 +1,15 @@
 {
 	"identifier": "Room_13",
 	"uniqueIdentifer": "715b4410-ac70-11f0-997a-156adb22b715",
-	"x": 400,
-	"y": 480,
+	"x": 336,
+	"y": 1088,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-			"dir": "nw"
-		},
-		{
-			"levelIid": "326d5080-48b0-11f1-a37f-1b74e05a8681",
-			"dir": "n"
-		},
-		{
-			"levelIid": "831283a0-6fc0-11f1-b67a-cf68be7f737f",
-			"dir": "ne"
-		},
-		{
-			"levelIid": "723b72d0-6fc0-11f1-b67a-9309958fabf9",
+			"levelIid": "6de95960-ac70-11f0-998c-e3108c5f25c9",
 			"dir": "e"
-		},
-		{
-			"levelIid": "708f7320-ac70-11f0-998c-737ddc0c343a",
-			"dir": "w"
 		}
 	],
 	"customFields": {
@@ -91,9 +75,9 @@
 				"iid": "5b6513e0-fa90-11f0-b965-f9db40bfdb74",
 				"layer": "Doors",
 				"x": 396,
-				"y": 176,
+				"y": 120,
 				"width": 8,
-				"height": 32,
+				"height": 48,
 				"color": 16711680,
 				"customFields": {
 					"NeedsKey": false,

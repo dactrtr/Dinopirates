@@ -20,24 +20,8 @@
 			"dir": "n"
 		},
 		{
-			"levelIid": "715b4410-ac70-11f0-997a-156adb22b715",
-			"dir": "s"
-		},
-		{
-			"levelIid": "831283a0-6fc0-11f1-b67a-cf68be7f737f",
-			"dir": "e"
-		},
-		{
 			"levelIid": "f1f1b160-6fc0-11f1-b67a-957580c04f65",
 			"dir": "ne"
-		},
-		{
-			"levelIid": "723b72d0-6fc0-11f1-b67a-9309958fabf9",
-			"dir": "se"
-		},
-		{
-			"levelIid": "708f7320-ac70-11f0-998c-737ddc0c343a",
-			"dir": "sw"
 		}
 	],
 	"customFields": {
@@ -94,7 +78,7 @@
 				"height": 16,
 				"color": 16711748,
 				"customFields": {
-					"script": null,
+					"script": "TinySpaces",
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,

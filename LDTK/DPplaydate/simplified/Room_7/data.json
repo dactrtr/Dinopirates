@@ -24,20 +24,12 @@
 			"dir": "s"
 		},
 		{
-			"levelIid": "78785770-6fc0-11f1-b67a-cf9ecaa9adb5",
-			"dir": "w"
-		},
-		{
 			"levelIid": "d8b90440-ac70-11f0-997a-77d867841568",
 			"dir": "e"
 		},
 		{
 			"levelIid": "326d5080-48b0-11f1-a37f-1b74e05a8681",
 			"dir": "se"
-		},
-		{
-			"levelIid": "dab87dc0-ac70-11f0-997a-63497867517d",
-			"dir": "sw"
 		}
 	],
 	"customFields": {

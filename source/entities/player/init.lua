@@ -17,12 +17,14 @@ import "entities/player/hole"
 import "entities/player/projectile"
 import "entities/player/plunge"
 import "entities/player/grapple"
+import "entities/player/glitch"
 local dialogUI = nil
 local uiHud = nil
 
 function Player:init(x, y, speed, Zindex)
     Player.super.init(self, 'assets/images/player/player', true)
     self:initAnimations()
+    self:initGlitch()
     -- MARK: Basic properties
     self:setSize(48, 48)
     self:setZIndex(Zindex)

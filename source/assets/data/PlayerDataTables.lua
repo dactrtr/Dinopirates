@@ -23,7 +23,7 @@ local DefaultPlayerData = {
 	danceThresholdHP = 1,
 	healedHP = 2,
 	battery = 100, 
-	sanity = 100,
+	sanity = 100, -- moves from 0 to 100, reaching 0 adds a counter to sanity counter
 	calories = 100, -- top 500
 	food = 0, -- raw food carried; cooked at a microwave to heal
 	steps = 0,
@@ -102,8 +102,12 @@ local DefaultPlayerData = {
 	CrewMemberData ={
 		amountTaken = 0,
 		idNumbers={
-			
+
 		}
+	},
+	-- Ghost banish counter (not persisted; resets on new game like other counters).
+	GhostData ={
+		banished = 0,
 	}
 }
 

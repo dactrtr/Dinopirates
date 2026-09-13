@@ -22,11 +22,7 @@ scene.backgroundColor = Graphics.kColorWhite
 local function updateMenuSelection()
 	for i, item in ipairs(menuItems) do
 		if item.sprite then
-			if i == selectedIndex then
-				item.sprite.animation:setState(item.selectedState)
-			else
-				item.sprite.animation:setState(item.defaultState)
-			end
+			item.sprite:setSelected(item.defaultState, item.selectedState, i == selectedIndex)
 		end
 	end
 

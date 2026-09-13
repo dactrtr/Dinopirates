@@ -63,15 +63,22 @@ Config.Player = {
     hudEdgeTop              = 60,  -- px from top; below this the floating HUD flips under the player
     hudEdgeRight            = 350, -- px from left; past this the floating HUD flips to the player's left
     balancingSprite         = true,  -- swap the player sprite to 'balancing' while on hole/slime grace (false = keep walk sprite)
+    glitch = {
+        burstIntervalMinFrames = 500,   -- ~10s at 50fps: shortest wait before a glitch burst
+        burstIntervalMaxFrames = 1000,  -- ~20s at 50fps: longest wait before a glitch burst
+        burstDurationFrames = 20,       -- ~0.4s: how long a single burst lasts
+        burstRegenIntervalFrames = 3,   -- regenerate the distorted image every 3 frames during a burst (~16.7Hz flicker)
+    },
 }
 
--- Dash ability (double-tap a D-pad direction to trigger)
+-- Dash ability (tap a D-pad direction tapsToTrigger times to trigger)
 Config.Dash = {
     speed          = 6,
     totalDistance  = 56,
     bounceDistance = 16,
     cooldown       = 500,   -- ms, dash-to-dash
-    tapWindow      = 250,   -- ms, double-tap detection window
+    tapWindow      = 250,   -- ms, max gap between consecutive taps
+    tapsToTrigger  = 3,     -- number of taps in a row (within tapWindow each) that fire a dash
 }
 
 -- Microwave + Food healing
@@ -91,6 +98,10 @@ Config.MapGen = {
     roomsPerCrewSpawn = 4,    -- spawn ~1 crew per this many rooms in a run (crew density)
     utilityChance     = 0.4,  -- prob. of populating a FeatureSlot with a microwave/minifier
     totalCrew         = 21,   -- full crew roster; recruiting all of them reveals the final room
+    -- TODO(design): the final room should open once a minimum crew count is rescued,
+    -- not necessarily the full roster -- that minimum determines which of the 3 cockpit
+    -- endings (bad/normal/good) are reachable. Fine to require all 21 for now; revisit
+    -- once the roster grows toward the 41-crew target.
     enemyChance       = 0.6,  -- prob. of populating an enemy marker
 }
 
@@ -167,6 +178,12 @@ Config.Sanity = {
     batteryThresholdMid  = 40,
     batteryThresholdHigh = 50,
     focusCost            = 20,    -- sanity consumed by focus ability
+    dangerCounterThreshold = 20,  -- sanityCounter > this: ghosts become revealable and the
+                                  -- player sprite starts periodically glitching (both permanent
+                                  -- for the rest of the save, since sanityCounter never decreases).
+                                  -- Raised from 10 now that sanityCounter also ticks up on every
+                                  -- won dance battle (DanceScene.lua), not just on hitting 0 sanity,
+                                  -- so madness doesn't creep in too fast.
 
     -- HUD face animation (sanityHud, 4 states) — switch when sanity drops below each value
     hudFace = {
@@ -245,6 +262,7 @@ Config.Portals = {
 
 -- CrewMember AI
 Config.CrewMember = {
+    defaultSpeed             = 1.5,  -- escape/flee move speed
     hatDelta                 = 15,
     hidingTokensRequired     = 3,
     hidingVisionRange        = 80,   -- px
@@ -258,6 +276,16 @@ Config.CrewMember = {
     batteryThresholdStop     = Config.Battery.thresholdCritical,  -- shared with Enemy.batteryThresholdCritical
     batteryThresholdRestore  = Config.Battery.thresholdMid,       -- shared with Enemy.batteryThresholdMid
     collideRect              = {x=12, y=24, w=24, h=24},
+}
+
+-- Ghost (CrewMember subclass; visible/touchable once sanityCounter crosses Config.Sanity.dangerCounterThreshold)
+Config.Ghost = {
+    defaultSpeed     = 1.5,   -- flee speed
+    collideRect      = { x = 12, y = 12, w = 24, h = 24 }, -- tune to sprite
+    achievementId    = "ghostbuster",
+    achievementCount = 5,     -- banish this many to grant the achievement
+    banishWhileTiny  = true,  -- if false, tiny contact does NOT banish (crew-like
+                              -- pass-through instead). Currently true → banishes at any size.
 }
 
 -- Screen dimensions and random bounds
@@ -279,6 +307,16 @@ Config.Pedometer = {
 -- Input
 Config.Input = {
     crankMenuThreshold = 30,   -- degrees of crank rotation to navigate menu
+}
+
+-- UI (title screen, menus)
+Config.UI = {
+    titleGlitch = {
+        burstIntervalMinFrames = 60,   -- ~1.2s at 50fps: shortest wait before a glitch burst
+        burstIntervalMaxFrames = 100,  -- ~2.0s at 50fps: longest wait before a glitch burst
+        burstDurationFrames = 12,      -- ~0.24s: how long a single burst lasts
+        burstRegenIntervalFrames = 3,  -- regenerate the distorted image every 3 frames during a burst (~16.7Hz flicker)
+    },
 }
 
 -- Map (in-game run graph map drawn in the menu)
@@ -345,6 +383,11 @@ Config.Dance = {
     crewBoss   = 9,
 
     caloriesMax = 500,  -- calorie clamp ceiling (microwave cooking + dance win gains)
+
+    -- Accuracy pop-up (accuracyIndicator sprite). Each rating is a 6-frame band of the
+    -- imagetable; frameDuration = ticks per frame (~0.36s per pop at 50fps).
+    accuracyFrameDuration = 3,
+    accuracyPerfectMin    = 4,  -- self.accuracy >= this on a correct press = PERFECT, else GOOD
 }
 
 -- Cockpit scene
@@ -389,6 +432,21 @@ Config.Space = {
     -- hit shake
     shakeFrames           = 25,    -- frames the shake lasts
     shakeMagnitude        = 6,     -- max px offset at start of shake (decays to 0)
+
+    -- Animated background (SpaceBackground sprite): ticks per frame.
+    backgroundFrameDuration = 6,
+
+    -- Per-"finale" tuning. The finale is chosen in CockpitScene and passed to
+    -- SpaceScene via Noble sceneProperties. `background` is an imagetable base path
+    -- (SpaceScene probes it and falls back to the black background if the PNG is
+    -- missing). `cutscene` is a comics[] key (see assets/comics/spaceFinales.lua).
+    -- `maamaa` mirrors the legacy hardcoded values so the debug TitleScene->SpaceScene
+    -- path is unchanged.
+    finales = {
+        good   = { lives = 5, dangerFillRate = 0.0012, nearCount = 10, farCount = 8,  nearSpeed = 2.5, farSpeed = 1.2, background = 'assets/images/space/bg_good',   cutscene = 'space-good'   },
+        maamaa = { lives = 3, dangerFillRate = 0.0020, nearCount = 14, farCount = 10, nearSpeed = 3.0, farSpeed = 1.5, background = 'assets/images/space/bg_maamaa', cutscene = 'space-maamaa' },
+        shura  = { lives = 2, dangerFillRate = 0.0032, nearCount = 18, farCount = 12, nearSpeed = 3.6, farSpeed = 1.9, background = 'assets/images/space/bg_shura',  cutscene = 'space-shura'  },
+    },
 }
 
 return Config

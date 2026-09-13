@@ -521,31 +521,66 @@ function MapGenerator.generate(progress, entryRole)
 
 	-- Crew: assign uncollected roster members (CMxxx) to eligible nodes. LDtk CrewMember
 	-- entities are generic spawn markers; the generator picks which identity appears.
+	-- A marker with customFields.forceSpawn == true guarantees crew on its node (given the
+	-- node is part of this run), mirroring enemy/utility forceSpawn above. Forced nodes are
+	-- assigned first and are NOT subject to the random nCrew cap.
 	local takenIds = (PlayerData.CrewMemberData and PlayerData.CrewMemberData.idNumbers) or {}
 	local uncollected = {}
 	for i = 1, cfg.totalCrew do
 		local crewId = string.format("CM%03d", i)
 		if not takenIds[crewId] then table.insert(uncollected, crewId) end
 	end
-	local eligible = {}
+
+	-- Returns the first CrewMember marker with forceSpawn == true, or nil.
+	local function forcedMarker(node)
+		for _, mk in ipairs(markersOf(node.poolRoom, "CrewMember")) do
+			if mk.customFields and mk.customFields.forceSpawn == true then return mk end
+		end
+		return nil
+	end
+
+	-- Assigns a random uncollected identity to node at marker mk. Returns true if an
+	-- identity was available and consumed (false when the roster is already exhausted).
+	local function assignCrew(node, mk)
+		if #uncollected == 0 then return false end
+		local crewId = table.remove(uncollected, math.random(1, #uncollected))
+		node.content.crewId = crewId
+		node.content.crewSpawn = { x = mk.x, y = mk.y }
+		return true
+	end
+
+	-- Split eligible nodes into forced (guaranteed) and optional (random fill).
+	local forced, optional = {}, {}
 	for id = 1, #graph do
 		local node = graph[id]
 		if id ~= graph.startId and not node.isSecret and #markersOf(node.poolRoom, "CrewMember") > 0 then
-			table.insert(eligible, node)
+			local fm = forcedMarker(node)
+			if fm then
+				table.insert(forced, { node = node, marker = fm })
+			else
+				table.insert(optional, node)
+			end
 		end
 	end
-	for i = #eligible, 2, -1 do
-		local j = math.random(1, i)
-		eligible[i], eligible[j] = eligible[j], eligible[i]
+
+	-- 1) Forced nodes first, guaranteed (spawn at their forced marker).
+	local forcedAssigned = 0
+	for _, f in ipairs(forced) do
+		if assignCrew(f.node, f.marker) then forcedAssigned = forcedAssigned + 1 end
 	end
-	local nCrew = math.min(math.ceil(#graph / cfg.roomsPerCrewSpawn), #uncollected, #eligible)
+
+	-- 2) Random fill for the remaining slots among the non-forced eligible nodes.
+	for i = #optional, 2, -1 do
+		local j = math.random(1, i)
+		optional[i], optional[j] = optional[j], optional[i]
+	end
+	local desired = math.ceil(#graph / cfg.roomsPerCrewSpawn)
+	local nCrew = math.min(math.max(desired - forcedAssigned, 0), #uncollected, #optional)
 	for i = 1, nCrew do
-		local node = eligible[i]
-		local crewId = table.remove(uncollected, math.random(1, #uncollected))
+		local node = optional[i]
 		local markers = markersOf(node.poolRoom, "CrewMember")
 		local mk = markers[math.random(1, #markers)]
-		node.content.crewId = crewId
-		node.content.crewSpawn = { x = mk.x, y = mk.y }
+		assignCrew(node, mk)
 	end
 
 	graph.finalReserved = nil  -- set when the final room is revealed (RunState.revealFinalRoom)
@@ -584,6 +619,28 @@ function MapGenerator.debugRoomGraph(level, roomNumber)
 		for _, e in ipairs(ents[kind] or {}) do
 			if e.iid then node.content.utilities[e.iid] = true end
 		end
+	end
+
+	-- Crew: force-spawn in the playground so an authored CrewMember room can be tested in
+	-- isolation. generate() gates crew behind the random roster distribution / forceSpawn, but
+	-- the debug builder mirrors its force-all philosophy (enemies/utilities above). Prefer a
+	-- forceSpawn marker, else the first marker; pick an uncollected identity, falling back to
+	-- CM001 so the crew still appears even when the roster is already complete.
+	local crewMarkers = markersOf(template, "CrewMember")
+	if #crewMarkers > 0 then
+		local mk = crewMarkers[1]
+		for _, m in ipairs(crewMarkers) do
+			if m.customFields and m.customFields.forceSpawn == true then mk = m; break end
+		end
+		local takenIds = (PlayerData.CrewMemberData and PlayerData.CrewMemberData.idNumbers) or {}
+		local crewId
+		for i = 1, Config.MapGen.totalCrew do
+			local id = string.format("CM%03d", i)
+			if not takenIds[id] then crewId = id; break end
+		end
+		crewId = crewId or "CM001"
+		node.content.crewId = crewId
+		node.content.crewSpawn = { x = mk.x, y = mk.y }
 	end
 
 	local graph = { node }

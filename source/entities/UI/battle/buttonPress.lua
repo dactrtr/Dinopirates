@@ -14,9 +14,13 @@ function ButtonPress:init(beats, startPoint, keyProvider)
 	self.animation.empty.frameDuration = 6
 
 	self.bpm = beats
-	self.startPoint = startPoint 
+	self.startPoint = startPoint
 	self.active = false
 	self.range = 100
+	-- Set true when the button scrolls off the left edge without being pressed (a MISS).
+	-- DanceScene polls and clears this to fire the accuracy pop-up. hit() moves the button
+	-- back to startPoint, so a pressed button never reaches the wrap branch below.
+	self.missedPass = false
 	self:setSize(32, 32)
 	self:setZIndex(4)
 	self:setCollideRect(0, 0, 32, 32)
@@ -86,6 +90,7 @@ function ButtonPress:update()
 			self:tryMoveToFreePosition((self.x - (0.5 * self.bpm / 3)), self.y)
 
 			if self.x <= 32 then
+				self.missedPass = true -- scrolled past the hitzone unpressed
 				self:moveTo(self.startPoint, self.y)
 				self:changeButtonSprite() -- again, pulls from keyProvider
 			end

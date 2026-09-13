@@ -10,6 +10,287 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-10 — Fix: spawn is nudged out of walls if it clips one
+
+**What:** Right before the player is created, the spawn point is validated against the tilemap; if
+the player's collide-rect footprint overlaps any non-walkable tile, it is nudged to the nearest
+clear position (expanding-ring search, 2px steps, up to 64px).
+
+**Why:** A `TubeExit` (or any authored spawn) placed tight to a wall left the player clipping it on
+spawn. This is a general safety net, not TubeExit-specific.
+
+**Files (Playdate side):** `source/scenes/MazeScene.lua` — added locals `spawnFootprintClear(cx,cy)`
+(samples every tile the collide rect touches; out-of-bounds counts as wall) and
+`nudgeSpawnClearOfWalls(px,py)` (expanding-ring search). Called on `PlayerData.playerSpawn` just
+before `Player(...)`. No-op when the spawn is already clear.
+
+**Love2D mapping:** After computing any spawn, test the player's collide-rect footprint against the
+tile grid and push to the nearest wall-free position before placing the entity.
+
+---
+
+## 2026-08-10 — Fix: vertical entry spawns the player at the room's TubeExit
+
+**What:** When a new run is entered vertically (tube rise → `startup`, hole fall → `startdown`),
+the player now spawns at the entry room's authored `TubeExit` entity instead of the door-based
+spawn.
+
+**Why:** The spawn was always door-based (`entrySide = opposite(PlayerData.lastRoom)`), but
+`Player:riseAbove`/`fallBelow` never update `PlayerData.lastRoom` — so vertical entries used a
+stale door side (or the first authored door) and dropped the player at an arbitrary door, ignoring
+the authored `TubeExit` emergence point entirely.
+
+**Files (Playdate side):**
+- `source/utilities/RunState.lua` — added a one-shot `RunState.entryRole` set in `startRun` and read
+  via `RunState.consumeEntryRole()` (cleared in `clear`/`startDebugRoom`/`deserialize`).
+- `source/scenes/MazeScene.lua` — after the door-spawn block, if the consumed entry role is
+  `startup`/`startdown`, override `PlayerData.playerSpawn`:
+  - **StartDown** spawns at the room's **down** door by default (via `MapGenerator.doorsForSide(template, "down")`),
+    placed just inside the bottom — as if the player arrived from an **up** door in the room below.
+    Falls back to `entities.TubeExit[1]` if the room has no down door.
+  - **StartUp** spawns at `entities.TubeExit[1]`.
+  Both use the same body-offset math as the door spawn; if neither target exists it keeps the
+  door-based spawn.
+
+**Love2D mapping:** Track how a run was entered (door vs vertical). On a vertical entry: StartDown →
+the entry room's down door (bottom-inset); StartUp → its TubeExit marker; otherwise keep the
+door-based spawn. The role is one-shot — only the first room of the run.
+
+---
+
+## 2026-08-10 — Change: dash requires a configurable number of taps (now 3)
+
+**What:** The D-pad dash now triggers on `Config.Dash.tapsToTrigger` consecutive taps of a
+direction (set to 3) instead of a hard-coded double-tap.
+
+**Why:** Requested; also makes the tap count tunable instead of magic.
+
+**Files (Playdate side):** `source/scenes/MazeScene.lua` — `checkDoubleTap` replaced by
+`checkDashTaps(dir)`, which keeps a per-direction consecutive-tap counter (`dashTaps`) plus the
+last-tap timestamp (`lastTapTime`). Each tap within `Config.Dash.tapWindow` of the previous
+increments the count; a longer gap resets it to 1. Firing at `tapsToTrigger` clears the streak.
+`source/assets/data/Config.lua` — added `Config.Dash.tapsToTrigger = 3`.
+
+**Love2D mapping:** Mirror the per-direction tap counter; trigger dash at `tapsToTrigger` taps,
+each within `tapWindow`.
+
+## 2026-08-20 — Change: Ghost reveal gated by sanityCounter (was: current sanity)
+
+**What:** `Ghost:update()` (`entities/enemies/ghost.lua`) now gates visibility/collision on
+`PlayerData.sanityCounter > Config.Sanity.dangerCounterThreshold` (default 10) instead of the
+original `PlayerData.sanity < Config.Ghost.revealThreshold` (default 30, now removed from
+`Config.Ghost`). This supersedes the gate condition described in the 2026-08-07 entry below.
+Since `sanityCounter` is a lifetime counter that never decreases, this is a one-way, permanent
+unlock: once the player has bottomed out sanity more than 10 times, ghosts stay revealable for
+the rest of that save, regardless of the player's current (regenerating) sanity level. Everything
+else about Ghost (flee AI, banish-on-touch, achievement, no persistence) is unchanged.
+
+**Why:** `sanityCounter` is a better narrative fit for a permanent "you've broken down enough
+times" gate than a moment-to-moment check against regenerating sanity.
+
+**Files (Playdate side):**
+- `entities/enemies/ghost.lua` — one-line condition change in `update()`, header comment updated.
+- `assets/data/Config.lua` — added `Config.Sanity.dangerCounterThreshold`; removed
+  `Config.Ghost.revealThreshold` (now unused).
+
+**Love2D mapping:** Same as the original entry below, except the gate comparison is
+`sanityCounter > dangerCounterThreshold` instead of `sanity < revealThreshold` — both are plain
+numeric fields on the player-data equivalent, so the port's comparison just changes which field
+and operator it reads.
+
+---
+
+## 2026-08-20 — Feature: Title-menu selected-item VCR-glitch flicker
+
+**What:** The currently-selected item in the title menu (`MenuTitle` sprite) now
+periodically flickers into a VCR-pause-style distorted image for a short burst, then
+returns to normal. Timing (wait between bursts, burst duration, image-regen interval)
+is tuned via `Config.UI.titleGlitch`. The burst is cancelled immediately if the item is
+deselected mid-burst.
+
+**Why:** Cosmetic polish for the title-menu selection state.
+
+**Files (Playdate):** `assets/data/Config.lua` (`Config.UI.titleGlitch`);
+`entities/UI/menuTitle.lua` (`setSelected`/`update`/`draw` glitch state machine, using
+`playdate.graphics.image:vcrPauseFilterImage()`); `scenes/TitleScene.lua`
+(`updateMenuSelection()` now calls `MenuTitle:setSelected(...)`).
+
+**Love2D mapping:** N/A — `vcrPauseFilterImage()` is a Playdate-SDK-specific 1-bit
+dither/distortion filter with no Love2D equivalent. This is a platform-specific
+cosmetic feature; the Love2D port can skip it or reimplement the flicker with a
+different (e.g. shader-based) distortion effect if desired.
+
+---
+
+## 2026-08-15 — Feature: SpaceScene finale parameter (good / maamaa / shura)
+
+**What:** SpaceScene now takes a `finale` string via Noble sceneProperties, chosen in
+CockpitScene: sequence `1,3,2,4` → `good`, `A,B,C,D` → `maamaa`, fail-limit (only
+errors) → `shura`. The finale (data in `Config.Space.finales`) drives ship lives,
+danger-bar fill rate, meteorite near/far counts and speeds, an optional animated
+background (`SpaceBackground` sprite, probed with imagetable fallback to black), and a
+per-finale end-of-run Panels cutscene (`comics["space-*"]`, boilerplate reusing intro
+art) that plays on death before returning to TitleScene. `maamaa` reproduces the old
+hardcoded values, so the debug TitleScene→SpaceScene path is unchanged.
+
+**Why:** Requested — cockpit outcomes lead into distinct space "finales".
+
+**Files (Playdate):** `assets/data/Config.lua` (`Config.Space.finales`,
+`backgroundFrameDuration`); new `entities/space/SpaceBackground.lua`;
+`scenes/SpaceScene.lua` (finale param, config-driven values, background probe,
+`endRun()` cutscene + update guard, input re-enable); new
+`assets/comics/spaceFinales.lua`; `assets/comics/comicsData.lua` (register three
+comics); `scenes/CockpitScene.lua` (sequence/fail actions → SpaceScene with finale).
+
+**Love2D mapping:** Model the finale as a scene argument selecting a config row. Map
+the Panels cutscene to the port's comic/cutscene system; model the background as a
+looping animated backdrop layer with a missing-asset fallback. Cockpit routes the same
+three outcomes to the space scene with the finale key.
+
+---
+
+## 2026-08-14 — Feature: DanceScene accuracy pop-up (MISS / GOOD / PERFECT)
+
+**What:** A new `AccuracyIndicator` sprite flashes a rating on every button press during the
+rhythm combat. It uses one imagetable (`accuracyIndicator-table-400-240`, 20 frames, 5×4):
+frames 1–6 = MISS, 7–12 = GOOD, 13–18 = PERFECT, 19–20 = blank. Each rating is a 6-frame
+animation band that plays once (`loop = false`) then transitions to the blank `hidden` state,
+so the pop-up flashes and disappears. On a correct press the scene picks PERFECT when
+`self.accuracy >= Config.Dance.accuracyPerfectMin` (deeper in the hit window), else GOOD; a
+wrong-button press shows MISS, and so does a button that scrolls off the left edge unpressed
+(`ButtonPress.missedPass`, polled and cleared each frame in `DanceScene:update`).
+
+**Why:** Requested visual feedback for press timing.
+
+**Files (Playdate):** new `entities/UI/battle/accuracyIndicator.lua`;
+`scenes/DanceScene.lua` (import, file-scoped ref, instantiate in `enter()`, `:remove()` in
+`exit()`, `:show(rating)` calls in `update()`); `entities/UI/battle/buttonPress.lua`
+(`missedPass` flag set when a button wraps at `x <= 32`); `assets/data/Config.lua`
+(`Config.Dance.accuracyFrameDuration`, `Config.Dance.accuracyPerfectMin`).
+
+**Love2D mapping:** Full-screen (400×240) overlay drawn on top of the dancers. Model the three
+rating bands as one-shot animations over the same spritesheet (6 frames each,
+`accuracyFrameDuration` ticks/frame) that revert to an invisible/blank frame on completion.
+Trigger from the same press-resolution branches: correct press → good/perfect by the accuracy
+counter threshold, wrong press → miss, and a note/button that leaves the hit window unpressed →
+miss. Note Noble's `animation.next` must reference the state *object* (not its name string)
+because the engine dereferences `next.startFrame`.
+
+---
+
+## 2026-08-08 — Feature: Ghost is incorporeal (phases through everything but walls)
+
+**What:** `Ghost:collisionResponse` now returns `'overlap'` for everything except walls (`Box`),
+which stay `'slide'`. The ghost drifts through props, items, enemies, and other crew, and passes
+over holes; only walls stop it.
+
+**Why:** Requested ghost feel — incorporeal. Holes need no code: hole tiles are walkable
+(`WALKABLE_TILES`), so `CreateTileColliders` never puts a collider there and the ghost already
+drifts over them. Player contact still banishes via the player's own `collisionResponse` (invoked
+from the inherited `moveCollision`), so `'overlap'` doesn't break banishing.
+
+**Files (Playdate side):** `source/entities/enemies/ghost.lua` — added `Ghost:collisionResponse`.
+
+**Love2D mapping:** Mirror in the port: the ghost's collision resolver blocks only on wall tiles;
+all other overlaps are pass-through and non-blocking.
+
+**Also — vanish animation (touch AND sanity recovery):** the ghost never disappears instantly.
+A shared `Ghost:beginVanish()` becomes untouchable (collide rect zeroed), stops fleeing, and plays
+a `vanish` animation state (same frames as CrewMember's `stunned`, `loop=false`, with an
+`onComplete` that removes the ghost exactly once — guarded, since onComplete re-fires every frame
+at the end). Two triggers: (1) `Ghost:banish()` (player touch) counts the banish then calls
+beginVanish; (2) `Ghost:update` calls beginVanish when sanity recovers **above** the threshold
+**while the ghost is currently manifested** (`isVisible()`) — this fade is NOT counted. A ghost that
+never manifested (still hidden since spawn) just stays dormant; it does not vanish on spawn.
+`Ghost:update` early-returns while `isVanishing` so the sanity gate/flee AI don't interfere; the
+sprite still advances the animation via `NobleSprite:draw`. Port mapping: one-shot vanish animation
+on both triggers, removal deferred to its completion callback (fired once).
+
+Also added `CrewMember:drawDebug` (omnidirectional vision circle + state label; inherited by
+Ghost, gated on visibility) and wired `MazeScene`'s debug overlay to draw it for `CrewMember` too.
+
+
+**Ghosts never hide:** the inherited CrewMember corner-bounce "hide" behavior is disabled for
+ghosts — `bouncesRequiredToHide = math.huge` (so the inherited `moveCollision` never takes its
+`enterHiding` branch, while the normal wall-bounce redirect still works), plus an `enterHiding`
+no-op override as a defensive guard. The `hide` animation state and the hiding-token fields were
+dropped from `Ghost:init`; only `hidingVisionRange` remains (it is the flee vision radius, not a
+hiding field). Port mapping: ghosts reuse crew flee/bounce but skip the hide state machine.
+
+
+
+---
+
+## 2026-08-08 — Fix: CrewMember `forceSpawn` honored in map generation
+
+**What:** A `CrewMember` LDtk marker with `customFields.forceSpawn == true` now guarantees a
+crew member is assigned to that node (given the node is part of the run), instead of being
+subject to the random `nCrew` distribution like every other crew marker.
+
+**Why:** `forceSpawn` was already honored for enemies (`Brocorat`/`Bosscolli`) and utilities
+(`Microwave`/`Minifier`) in `MapGenerator.generate()`, but the crew-assignment block ignored
+it entirely — crew markers were treated as generic spawn points and only the first `nCrew`
+shuffled eligible nodes received crew. A forced crew room (e.g. room 20) therefore often got
+no crew. `markersOf` already preserved `customFields`; nothing was reading it.
+
+**Files (Playdate side):** `source/utilities/MapGenerator.lua` — the crew block splits eligible
+nodes into `forced` (any CrewMember marker with `forceSpawn == true`) and `optional`. Forced
+nodes are assigned first at their forced marker (guaranteed, not counted against the cap);
+`nCrew = max(desired - forcedAssigned, 0)` random slots then fill from the optional nodes.
+Roster identities are still consumed from `uncollected`; if the roster is exhausted a forced
+node gets nothing (expected). Also: `MapGenerator.debugRoomGraph` (TitleScene PLAYGROUND) never
+assigned crew at all — it now force-spawns crew when the room has a CrewMember marker (mirroring
+its force-all enemies/utilities), so authored crew rooms can be tested in isolation.
+
+**Love2D mapping:** Mirror the same forced/optional split in the port's map generator. Semantics:
+forceSpawn on a crew marker = "if this room is in the run, always place crew here" — it does NOT
+force the room into the graph (identical to enemy/utility forceSpawn).
+
+---
+
+## 2026-08-07 — Feature: Ghost entity (sanity-gated CrewMember subclass)
+
+**What:** New `Ghost` entity — a subclass of `CrewMember` that is only **visible and touchable
+when `PlayerData.sanity < Config.Ghost.revealThreshold`** (default 30). Above the threshold the
+ghost is invisible, has a zeroed collide rect, and banks no movement tokens; below it, it appears
+and runs the full inherited crew flee AI (`search` → `escape`). Touching a revealed ghost calls
+`Ghost:banish()` — removes it and increments `PlayerData.GhostData.banished`; at
+`Config.Ghost.achievementCount` it calls `Utilities.grantAchievementIfNeeded(Config.Ghost.achievementId)`
+(safe no-op until the `"ghostbuster"` id is registered). Ghosts have their **own spritesheet and no
+hat**, are authored per-room in LDtk as a `Ghost` entity type, and **do not persist** (respawn on
+re-entry). A `banishWhileTiny` flag (default true) gates whether tiny-player contact banishes or
+passes through crew-like.
+
+**Why:** Atmospheric enemy that manifests as the player goes insane, reusing the CrewMember flee AI
+and shared movement-token system with zero new plumbing.
+
+**Files (Playdate side):**
+- `entities/enemies/ghost.lua` — NEW. `Ghost` extends `CrewMember`; `init` reaches the grandparent
+  (`CrewMember.super.init`) to load its own sheet and skip the hat/hiding config; `update` adds the
+  sanity gate then delegates to `CrewMember.update`; `banish` counts + optional achievement.
+- `entities/enemies/crewmember.lua` — guarded the `self.hat:moveTo(...)` call in `moveCollision`
+  with `if self.hat then ... end` so hatless subclasses don't crash. No-op for real crew.
+- `entities/player/collisions.lua` — added an `elseif other:isa(Ghost)` branch BEFORE the
+  `isa(CrewMember)` branch (order matters: Ghost is-a CrewMember) that routes to `banish()`.
+- `scenes/MazeScene.lua` — imported `entities/enemies/ghost` (after crewmember) and spawn ghosts
+  from `levelsLDTK[room].entities.Ghost` in `enter()`.
+- `assets/data/Config.lua` — added `Config.Ghost` table; bounce math reuses `Config.CrewMember.*`.
+- `assets/data/PlayerDataTables.lua` — added `PlayerData.GhostData = { banished = 0 }` inside
+  `DefaultPlayerData` (reset on new game via the existing `ResetPlayerData` deepcopy).
+- `assets/images/enemies/ghost-table-48-48.png` — placeholder art (copied from crewmember sheet)
+  until the real ghost sheet exists; frame ranges in `Ghost:init` are placeholders.
+
+**Love2D mapping:** Ghost maps directly onto the port's `CrewMember` once the movement-token system
+is ported — it is a CrewMember subclass with two additions: (1) a **sanity-gated visibility +
+collision toggle** in `update` (compare `sanity < revealThreshold`; toggle `setVisible` and the
+collider), and (2) a **banish-on-touch counter** (`GhostData.banished`, optional achievement at a
+cap). No hat, own spritesheet, no persistence (respawn per room). Everything else (flee AI, bounce,
+token feed) is the already-ported CrewMember behavior.
+
+---
+
+
+
 ## 2026-08-06 — Fix: enemy wall-sliding (stop grinding/oscillating against walls)
 
 **What:** Enemies now **slide along walls** on the free axis instead of freezing and bouncing off
