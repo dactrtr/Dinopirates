@@ -178,9 +178,12 @@ Config.Sanity = {
     batteryThresholdMid  = 40,
     batteryThresholdHigh = 50,
     focusCost            = 20,    -- sanity consumed by focus ability
-    dangerCounterThreshold = 10,  -- sanityCounter > this: ghosts become revealable and the
+    dangerCounterThreshold = 20,  -- sanityCounter > this: ghosts become revealable and the
                                   -- player sprite starts periodically glitching (both permanent
-                                  -- for the rest of the save, since sanityCounter never decreases)
+                                  -- for the rest of the save, since sanityCounter never decreases).
+                                  -- Raised from 10 now that sanityCounter also ticks up on every
+                                  -- won dance battle (DanceScene.lua), not just on hitting 0 sanity,
+                                  -- so madness doesn't creep in too fast.
 
     -- HUD face animation (sanityHud, 4 states) — switch when sanity drops below each value
     hudFace = {
