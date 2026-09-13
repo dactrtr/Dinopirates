@@ -71,16 +71,16 @@ mid-run does **not** rebuild the graph.
 
 ```mermaid
 flowchart LR
-    Play["Explore runs, rescue crew"] --> Count{"amountTaken >= totalCrew (12)?"}
+    Play["Explore runs, rescue crew"] --> Count{"amountTaken >= totalCrew (21)?"}
     Count -- No --> Play
-    Count -- "Yes (12th recruited)" --> Reveal["CrewMember:taken() → RunState.revealFinalRoom()"]
+    Count -- "Yes (21st recruited)" --> Reveal["CrewMember:taken() → RunState.revealFinalRoom()"]
     Reveal --> Final["A 'Final' room is attached to the CURRENT graph"]
     Final --> Enter["Enter the Final room → MazeScene pendingEndgame"]
     Enter --> Credits["Noble.transition(CreditsScene)"]
 ```
 
-- The **only** win condition is recruiting the **entire crew roster**: `Config.MapGen.totalCrew = 12`.
-- Recruiting the 12th (`CrewMember:taken()`) calls `RunState.revealFinalRoom()`, which
+- The **only** win condition is recruiting the **entire crew roster**: `Config.MapGen.totalCrew = 21` (subject to further tuning upward).
+- Recruiting the last one (`CrewMember:taken()`) calls `RunState.revealFinalRoom()`, which
   **attaches** a `roomRole = "final"` room onto the current graph (no regeneration).
 - Entering that room sets `MazeScene.pendingEndgame`; on transition completion it runs
   `Noble.transition(CreditsScene)`.
@@ -303,7 +303,7 @@ that powers your lamp and gates your speed), **sanity** (which only light restor
 collapse is fatal), **health** (restored by winning rhythm fights or cooking food), and
 **calories**. The world only moves when you do. Your **lamp** and **plunger** unlock a
 context-sensitive **B** toolkit — LightBurst/Dark Reveal in darkness, Plungerang/Grapple in
-light. The goal is to **rescue all 12 crew members**; recruiting the last one opens the
+light. The goal is to **rescue the entire crew roster** (`Config.MapGen.totalCrew`, currently 21); recruiting the last one opens the
 **Final room**, and stepping into it rolls the credits. Combat difficulty rises with the
 crew you've rescued, so the deeper you get into the roster the tougher the fights. Death (from
 combat or lost sanity) just starts a bigger new run — your crew, items and skills carry forward.

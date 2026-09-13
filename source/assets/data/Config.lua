@@ -71,13 +71,14 @@ Config.Player = {
     },
 }
 
--- Dash ability (double-tap a D-pad direction to trigger)
+-- Dash ability (tap a D-pad direction tapsToTrigger times to trigger)
 Config.Dash = {
     speed          = 6,
     totalDistance  = 56,
     bounceDistance = 16,
     cooldown       = 500,   -- ms, dash-to-dash
-    tapWindow      = 250,   -- ms, double-tap detection window
+    tapWindow      = 250,   -- ms, max gap between consecutive taps
+    tapsToTrigger  = 3,     -- number of taps in a row (within tapWindow each) that fire a dash
 }
 
 -- Microwave + Food healing
@@ -97,6 +98,10 @@ Config.MapGen = {
     roomsPerCrewSpawn = 4,    -- spawn ~1 crew per this many rooms in a run (crew density)
     utilityChance     = 0.4,  -- prob. of populating a FeatureSlot with a microwave/minifier
     totalCrew         = 21,   -- full crew roster; recruiting all of them reveals the final room
+    -- TODO(design): the final room should open once a minimum crew count is rescued,
+    -- not necessarily the full roster -- that minimum determines which of the 3 cockpit
+    -- endings (bad/normal/good) are reachable. Fine to require all 21 for now; revisit
+    -- once the roster grows toward the 41-crew target.
     enemyChance       = 0.6,  -- prob. of populating an enemy marker
 }
 
@@ -173,9 +178,12 @@ Config.Sanity = {
     batteryThresholdMid  = 40,
     batteryThresholdHigh = 50,
     focusCost            = 20,    -- sanity consumed by focus ability
-    dangerCounterThreshold = 10,  -- sanityCounter > this: ghosts become revealable and the
+    dangerCounterThreshold = 20,  -- sanityCounter > this: ghosts become revealable and the
                                   -- player sprite starts periodically glitching (both permanent
-                                  -- for the rest of the save, since sanityCounter never decreases)
+                                  -- for the rest of the save, since sanityCounter never decreases).
+                                  -- Raised from 10 now that sanityCounter also ticks up on every
+                                  -- won dance battle (DanceScene.lua), not just on hitting 0 sanity,
+                                  -- so madness doesn't creep in too fast.
 
     -- HUD face animation (sanityHud, 4 states) — switch when sanity drops below each value
     hudFace = {

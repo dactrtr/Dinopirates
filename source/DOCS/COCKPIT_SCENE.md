@@ -3,7 +3,7 @@
 **File**: `scenes/CockpitScene.lua`
 **Entities**: `entities/UI/cockpit/`
 
-An interactive puzzle scene reached from TitleScene, from the debug menu, or from the **final room** — talking to the room 6 (floor 4) NPC, which carries `triggerScene = "Cockpit"`, transitions here once its dialog ends (see [NPC_SYSTEM.md §9](NPC_SYSTEM.md#9-scene-on-dialog-end-triggerscene)). The player moves a pointer using the accelerometer or D-pad, positions it over physical buttons, and presses them in the correct order. Completing a sequence triggers a scene transition; too many incorrect presses return the player to TitleScene.
+An interactive puzzle scene reached from TitleScene, from the debug menu, or from the **final room** — talking to the room 6 (floor 4) NPC, which carries `triggerScene = "Cockpit"`, transitions here once its dialog ends (see [NPC_SYSTEM.md §9](NPC_SYSTEM.md#9-scene-on-dialog-end-triggerscene)). The player moves a pointer using the accelerometer or D-pad, positions it over physical buttons, and presses them in the correct order. Completing a sequence transitions to `SpaceScene` with a `finale` prop selecting which of the three endings plays (`"good"`, `"maamaa"`, `"shura"`); too many incorrect presses also transitions to `SpaceScene` with `finale = "shura"`.
 
 ---
 
@@ -109,7 +109,7 @@ Config values (`Config.Cockpit`):
 | `lerpFactor` | 0.15 | Pointer smoothing (0 = frozen, 1 = instant) |
 | `accelSensitivity` | 2.0 | Multiplier on the raw tilt delta |
 | `dpadSpeed` | 3 | Pixels per frame with D-pad |
-| `failLimit` | 10 | Incorrect presses before returning to TitleScene |
+| `failLimit` | 10 | Incorrect presses before transitioning to `SpaceScene` with `finale = "shura"` |
 
 ---
 
@@ -141,8 +141,10 @@ where `bx/by` is the sprite position (center) and `w/h` are the stored dimension
 
 | Pattern | Result |
 |---|---|
-| `"1" → "3" → "2" → "4"` | `Noble.transition(CreditsScene, 0.3, Noble.Transition.MetroNexus)` |
-| `"A" → "B" → "C" → "D"` | `Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)` |
+| `"1" → "3" → "2" → "4"` | `Noble.transition(SpaceScene, 0.3, Noble.Transition.MetroNexus, {}, { finale = "good" })` |
+| `"A" → "B" → "C" → "D"` | `Noble.transition(SpaceScene, 0.3, Noble.Transition.MetroNexus, {}, { finale = "maamaa" })` |
+
+Both sequences are currently hardcoded and always available — which one the player types is not gated by crew count or any other run state today. The design intent (not yet implemented) is for rescued crew members to be the ones who tell the Captain what they believe the ship's code is once a minimum crew count is reached, and for the last crew member rescued to hand over the actual manual — all via comic/dialogue content that doesn't exist yet. See the GDD's "Finales" section and its Roadmap.
 
 To add a new sequence, add an entry to the `sequences` table at the top of the file — no other changes are required.
 
@@ -152,7 +154,7 @@ To add a new sequence, add an entry to the `sequences` table at the top of the f
 2. For each sequence: if `label == seq.pattern[seq.index]` — advances `seq.index += 1` and marks `advanced = true`.
    - If `seq.index > #seq.pattern` → calls `seq.action()`, resets all sequences, resets `failCount`, and returns.
    - If it does not match → resets that `seq.index = 1`.
-3. If no sequence was advanced (`not advanced`): increments `failCount`. If `failCount >= Config.Cockpit.failLimit` → `Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)`.
+3. If no sequence was advanced (`not advanced`): increments `failCount`. If `failCount >= Config.Cockpit.failLimit` → `Noble.transition(SpaceScene, 0.3, Noble.Transition.MetroNexus, {}, { finale = "shura" })`.
 
 Sequences run in parallel. A button can advance one sequence and reset another simultaneously.
 
@@ -164,7 +166,7 @@ Iterates `sequences` and sets `seq.index = 1` on all of them. Called automatical
 
 ## failLimit
 
-`Config.Cockpit.failLimit = 10`. When the player presses a button that does not advance any active sequence, `failCount` grows. Upon reaching 10 accumulated failures, `Noble.transition(TitleScene, 0.3, Noble.Transition.MetroNexus)` is executed. The counter resets to 0 when a sequence is completed successfully.
+`Config.Cockpit.failLimit = 10`. When the player presses a button that does not advance any active sequence, `failCount` grows. Upon reaching 10 accumulated failures, `Noble.transition(SpaceScene, 0.3, Noble.Transition.MetroNexus, {}, { finale = "shura" })` is executed. The counter resets to 0 when a sequence is completed successfully.
 
 ---
 

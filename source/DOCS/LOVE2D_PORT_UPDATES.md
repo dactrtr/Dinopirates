@@ -10,6 +10,70 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-08-10 — Fix: spawn is nudged out of walls if it clips one
+
+**What:** Right before the player is created, the spawn point is validated against the tilemap; if
+the player's collide-rect footprint overlaps any non-walkable tile, it is nudged to the nearest
+clear position (expanding-ring search, 2px steps, up to 64px).
+
+**Why:** A `TubeExit` (or any authored spawn) placed tight to a wall left the player clipping it on
+spawn. This is a general safety net, not TubeExit-specific.
+
+**Files (Playdate side):** `source/scenes/MazeScene.lua` — added locals `spawnFootprintClear(cx,cy)`
+(samples every tile the collide rect touches; out-of-bounds counts as wall) and
+`nudgeSpawnClearOfWalls(px,py)` (expanding-ring search). Called on `PlayerData.playerSpawn` just
+before `Player(...)`. No-op when the spawn is already clear.
+
+**Love2D mapping:** After computing any spawn, test the player's collide-rect footprint against the
+tile grid and push to the nearest wall-free position before placing the entity.
+
+---
+
+## 2026-08-10 — Fix: vertical entry spawns the player at the room's TubeExit
+
+**What:** When a new run is entered vertically (tube rise → `startup`, hole fall → `startdown`),
+the player now spawns at the entry room's authored `TubeExit` entity instead of the door-based
+spawn.
+
+**Why:** The spawn was always door-based (`entrySide = opposite(PlayerData.lastRoom)`), but
+`Player:riseAbove`/`fallBelow` never update `PlayerData.lastRoom` — so vertical entries used a
+stale door side (or the first authored door) and dropped the player at an arbitrary door, ignoring
+the authored `TubeExit` emergence point entirely.
+
+**Files (Playdate side):**
+- `source/utilities/RunState.lua` — added a one-shot `RunState.entryRole` set in `startRun` and read
+  via `RunState.consumeEntryRole()` (cleared in `clear`/`startDebugRoom`/`deserialize`).
+- `source/scenes/MazeScene.lua` — after the door-spawn block, if the consumed entry role is
+  `startup`/`startdown`, override `PlayerData.playerSpawn`:
+  - **StartDown** spawns at the room's **down** door by default (via `MapGenerator.doorsForSide(template, "down")`),
+    placed just inside the bottom — as if the player arrived from an **up** door in the room below.
+    Falls back to `entities.TubeExit[1]` if the room has no down door.
+  - **StartUp** spawns at `entities.TubeExit[1]`.
+  Both use the same body-offset math as the door spawn; if neither target exists it keeps the
+  door-based spawn.
+
+**Love2D mapping:** Track how a run was entered (door vs vertical). On a vertical entry: StartDown →
+the entry room's down door (bottom-inset); StartUp → its TubeExit marker; otherwise keep the
+door-based spawn. The role is one-shot — only the first room of the run.
+
+---
+
+## 2026-08-10 — Change: dash requires a configurable number of taps (now 3)
+
+**What:** The D-pad dash now triggers on `Config.Dash.tapsToTrigger` consecutive taps of a
+direction (set to 3) instead of a hard-coded double-tap.
+
+**Why:** Requested; also makes the tap count tunable instead of magic.
+
+**Files (Playdate side):** `source/scenes/MazeScene.lua` — `checkDoubleTap` replaced by
+`checkDashTaps(dir)`, which keeps a per-direction consecutive-tap counter (`dashTaps`) plus the
+last-tap timestamp (`lastTapTime`). Each tap within `Config.Dash.tapWindow` of the previous
+increments the count; a longer gap resets it to 1. Firing at `tapsToTrigger` clears the streak.
+`source/assets/data/Config.lua` — added `Config.Dash.tapsToTrigger = 3`.
+
+**Love2D mapping:** Mirror the per-direction tap counter; trigger dash at `tapsToTrigger` taps,
+each within `tapWindow`.
+
 ## 2026-08-20 — Change: Ghost reveal gated by sanityCounter (was: current sanity)
 
 **What:** `Ghost:update()` (`entities/enemies/ghost.lua`) now gates visibility/collision on
@@ -145,6 +209,16 @@ on both triggers, removal deferred to its completion callback (fired once).
 Also added `CrewMember:drawDebug` (omnidirectional vision circle + state label; inherited by
 Ghost, gated on visibility) and wired `MazeScene`'s debug overlay to draw it for `CrewMember` too.
 
+
+**Ghosts never hide:** the inherited CrewMember corner-bounce "hide" behavior is disabled for
+ghosts — `bouncesRequiredToHide = math.huge` (so the inherited `moveCollision` never takes its
+`enterHiding` branch, while the normal wall-bounce redirect still works), plus an `enterHiding`
+no-op override as a defensive guard. The `hide` animation state and the hiding-token fields were
+dropped from `Ghost:init`; only `hidingVisionRange` remains (it is the flee vision radius, not a
+hiding field). Port mapping: ghosts reuse crew flee/bounce but skip the hide state machine.
+
+
+
 ---
 
 ## 2026-08-08 — Fix: CrewMember `forceSpawn` honored in map generation
@@ -214,6 +288,8 @@ cap). No hat, own spritesheet, no persistence (respawn per room). Everything els
 token feed) is the already-ported CrewMember behavior.
 
 ---
+
+
 
 ## 2026-08-06 — Fix: enemy wall-sliding (stop grinding/oscillating against walls)
 

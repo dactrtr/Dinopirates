@@ -53,7 +53,7 @@ Scenes extend `NobleScene`. Lifecycle: `init → enter → update → exit`.
 | `MazeScene` | `scenes/MazeScene.lua` | Core gameplay — loads rooms, spawns entities |
 | `DanceScene` | `scenes/DanceScene.lua` | Rhythm combat when player touches an enemy |
 | `DeadScene` | `scenes/DeadScene.lua` | Game over — Retry / Exit menu with crank support |
-| `CockpitScene` | `scenes/CockpitScene.lua` | Accelerometer + D-pad button-sequence puzzle; leads to CreditsScene or TitleScene |
+| `CockpitScene` | `scenes/CockpitScene.lua` | Accelerometer + D-pad button-sequence puzzle; correct/wrong/fail sequences transition to `SpaceScene` with a `finale` param (`"good"`/`"maamaa"`/`"shura"`) |
 | `SpaceScene` | `scenes/SpaceScene.lua` | Space escape shooter with crank-toggled fighter/travel modes |
 | `CreditsScene` | `scenes/CreditsScene.lua` | Scrolling credits sequence |
 | `Floor407` / `Floor409` | `scenes/Floors.lua` | Debug-menu entry points only (TitleScene "GAME" / "PLAYGROUND") |
