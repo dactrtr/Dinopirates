@@ -212,7 +212,7 @@ See [DIALOG_SYSTEM.md](DIALOG_SYSTEM.md#crew-count-greetings-crewmembermatchgree
 
 When the player (at normal size) collides with a CrewMember:
 
-1. If `PlayerData.isTiny == true`: `self.currentTrigger = other` is assigned and returns `'overlap'`. No capture occurs; the CrewMember acts as a dialog trigger — pressing A later calls `CrewMember:returnScript()`, which checks `Config.CrewMember.greetingScriptsTiny` before falling back to the per-crewId dialog (`crewId .. "_tiny"`).
+1. If `PlayerData.isTiny == true`: `self.currentTrigger = other` is assigned and returns `'overlap'`. No capture occurs; the CrewMember acts as a dialog trigger — pressing A later calls `CrewMember:returnScript()`, which checks `Config.CrewMember.greetingScriptsTiny` before falling back to the per-crewId dialog (`crewId .. "IsTiny"`).
 2. Otherwise, `Config.CrewMember.greetingScripts` is checked against `amountTaken` (before this capture); a match shows that dialog (e.g. `0CM` on the very first capture).
 3. `other:taken()` is called — capture proceeds regardless of whether a greeting matched.
 

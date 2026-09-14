@@ -10,6 +10,14 @@
 		{
 			"levelIid": "39589ba0-96d0-11f1-ad82-85b08eec6ff7",
 			"dir": "e"
+		},
+		{
+			"levelIid": "6f779590-96d0-11f1-ad82-e9ac94736365",
+			"dir": "n"
+		},
+		{
+			"levelIid": "75f4cf00-96d0-11f1-ad82-092e0aa551b5",
+			"dir": "s"
 		}
 	],
 	"customFields": {
@@ -24,7 +32,7 @@
 		"DoorsConnection": [],
 		"play": null,
 		"procGen": true,
-		"roomRole": "StartDown",
+		"roomRole": "Normal",
 		"requiredItems": [],
 		"requiredSkills": []
 	},

@@ -20,6 +20,14 @@
 			"dir": "n"
 		},
 		{
+			"levelIid": "9ecf2ec0-96d0-11f1-ad82-bdebf0f90720",
+			"dir": "nw"
+		},
+		{
+			"levelIid": "96c561e0-96d0-11f1-ad82-ad17bbc84496",
+			"dir": "ne"
+		},
+		{
 			"levelIid": "2125b130-96d0-11f1-ad82-81c4cee9fd1a",
 			"dir": "sw"
 		}
@@ -36,7 +44,7 @@
 		"DoorsConnection": [],
 		"play": null,
 		"procGen": true,
-		"roomRole": "StartUp",
+		"roomRole": "Normal",
 		"requiredItems": [],
 		"requiredSkills": []
 	},

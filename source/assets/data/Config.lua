@@ -288,7 +288,7 @@ Config.CrewMember = {
         "crew==2:3CM",
     },
     greetingScriptsTiny = {
-        "crew==0:0CM_tiny",
+        "crew==0:0CMIsTiny",
     },
 }
 

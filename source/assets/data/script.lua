@@ -368,7 +368,7 @@ script = {
         }
     },
     {
-        name = "CM001_tiny",
+        name = "CM001IsTiny",
         dialog = {
             {
                 video = 'playerWorry',
@@ -439,7 +439,7 @@ script = {
         }
     },
     {
-        name = "smallSpacesTiny",
+        name = "smallSpacesIsTiny",
         dialog = {
             {
                 video = 'player',
@@ -605,7 +605,7 @@ script = {
         }
     },
     {
-        name = "0CM_tiny",
+        name = "0CMIsTiny",
         dialog = {
             {
                 video = 'player',

@@ -40,7 +40,7 @@
 		"DoorsConnection": [],
 		"play": null,
 		"procGen": true,
-		"roomRole": "StartDown",
+		"roomRole": "Normal",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
