@@ -164,9 +164,9 @@ function lineHTML(ln, i, total) {
     </div>
     <div class="grid2">
       <div><label>Texto EN <span class="cnt ${cntClass(en.length)}" id="cnt_en_${i}">${en.length}/${MAXLEN}</span></label>
-        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'en',this.value)">${esc(en)}</textarea></div>
+        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'en',this.value,this)">${esc(en)}</textarea></div>
       <div><label>Texto JP <span class="cnt ${cntClass(jp.length)}" id="cnt_jp_${i}">${jp.length}/${MAXLEN}</span></label>
-        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'jp',this.value)">${esc(jp)}</textarea></div>
+        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'jp',this.value,this)">${esc(jp)}</textarea></div>
     </div>
     <label>screen (ruta imagen, opcional)</label>
     <input style="width:100%" value="${esc(ln.screen||'')}" placeholder="assets/images/ui/dialog/img/file.png"
@@ -184,7 +184,17 @@ window.addLine = () => { state.scripts[state.selected].lines.push({video:'player
 window.delLine = i => { state.scripts[state.selected].lines.splice(i,1); reKeyScript(state.selected); save(); render(); };
 window.moveLine = (i,d) => { const a=state.scripts[state.selected].lines; const j=i+d; if(j<0||j>=a.length)return; [a[i],a[j]]=[a[j],a[i]]; reKeyScript(state.selected); save(); render(); };
 window.setLine = (i,k,v) => { state.scripts[state.selected].lines[i][k]=v; save(); };
-window.onText = (i,lang,v) => {
+window.onText = (i,lang,v,el) => {
+  // macOS/Safari's text substitution turns "..." into "…" while typing, before this
+  // handler ever sees the value. Normalize it back so saved strings stay plain ASCII,
+  // and fix the visible textarea too (keeping the cursor in place).
+  const fixed = v.replace(/…/g, '...');
+  if (el && fixed !== v) {
+    const pos = el.selectionStart + (fixed.length - v.length);
+    el.value = fixed;
+    el.setSelectionRange(pos, pos);
+  }
+  v = fixed;
   const key = state.scripts[state.selected].lines[i].text;
   if(key) state.strings[lang][key]=v;
   const c = document.getElementById('cnt_'+lang+'_'+i);

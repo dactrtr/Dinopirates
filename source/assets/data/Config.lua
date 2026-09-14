@@ -276,6 +276,20 @@ Config.CrewMember = {
     batteryThresholdStop     = Config.Battery.thresholdCritical,  -- shared with Enemy.batteryThresholdCritical
     batteryThresholdRestore  = Config.Battery.thresholdMid,       -- shared with Enemy.batteryThresholdMid
     collideRect              = {x=12, y=24, w=24, h=24},
+
+    -- Crew-count greeting dialogs, evaluated with Conditions.eval() against
+    -- PlayerData.CrewMemberData.amountTaken (the count BEFORE this pickup/talk).
+    -- First matching entry wins; no match = fall through to the normal per-crewId dialog.
+    -- greetingScripts: shown on touch (not tiny), before the crew is auto-recruited.
+    -- greetingScriptsTiny: shown on A-press while tiny; takes priority over crewId.."_tiny".
+    greetingScripts = {
+        "crew==0:0CM",
+        "crew==1:2CM",
+        "crew==2:3CM",
+    },
+    greetingScriptsTiny = {
+        "crew==0:0CM_tiny",
+    },
 }
 
 -- Ghost (CrewMember subclass; visible/touchable once sanityCounter crosses Config.Sanity.dangerCounterThreshold)

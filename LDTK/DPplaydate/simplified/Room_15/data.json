@@ -1,8 +1,8 @@
 {
 	"identifier": "Room_15",
 	"uniqueIdentifer": "39589ba0-96d0-11f1-ad82-85b08eec6ff7",
-	"x": 1584,
-	"y": 752,
+	"x": 1568,
+	"y": 1408,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
@@ -14,6 +14,10 @@
 		{
 			"levelIid": "36aeb150-96d0-11f1-ad82-b10fc3715a0d",
 			"dir": "ne"
+		},
+		{
+			"levelIid": "206f7330-96d0-11f1-ad82-275c2a8b39b9",
+			"dir": "w"
 		},
 		{
 			"levelIid": "3d0f8920-96d0-11f1-ad82-6736b96083c7",

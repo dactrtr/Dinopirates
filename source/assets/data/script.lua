@@ -493,7 +493,7 @@ script = {
         }
     },
     {
-        name = "noCM",
+        name = "0CM",
         dialog = {
             {
                 video = 'playerWorry',
@@ -506,7 +506,7 @@ script = {
         }
     },
     {
-        name = "oneCM",
+        name = "2CM",
         dialog = {
             {
                 video = 'player',
@@ -515,7 +515,7 @@ script = {
         }
     },
     {
-        name = "twoCM",
+        name = "3CM",
         dialog = {
             {
                 video = 'playerCry',
@@ -601,6 +601,35 @@ script = {
             {
                 video = 'playerHappy',
                 text = "tinyspaces-02",
+            }
+        }
+    },
+    {
+        name = "0CM_tiny",
+        dialog = {
+            {
+                video = 'player',
+                text = "0cmtiny-01",
+            },
+            {
+                video = 'player',
+                text = "0cmtiny-02",
+            },
+            {
+                video = 'player',
+                text = "0cmtiny-03",
+            },
+            {
+                video = 'player',
+                text = "0cmtiny-04",
+            },
+            {
+                video = 'player',
+                text = "0cmtiny-05",
+            },
+            {
+                video = 'player',
+                text = "0cmtiny-06",
             }
         }
     }

@@ -47,14 +47,10 @@ function Player:collisionResponse(other)
         return 'overlap'
     end
     
-    -- Validate having the capture bag
-    if PlayerData.CrewMemberData.amountTaken == 0 then
-      if other.crewId == 'CM001' then
-        -- custom screen here after validating the crewId
-      end
-      
-      
-      self.dialogUI:addScreen("gotcha",other.sourceFeed) -- default screen for the 1st time
+    -- Crew-count greeting, evaluated against amountTaken BEFORE this pickup.
+    local greeting = CrewMember.matchGreeting(Config.CrewMember.greetingScripts)
+    if greeting then
+      self.dialogUI:addScreen(greeting, other.sourceFeed)
     end
     other:taken()
 

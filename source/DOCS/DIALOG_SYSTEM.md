@@ -119,14 +119,50 @@ Same flow as a manual Trigger. The NPC implements `returnScript()` which evaluat
 ### From a cutscene / crewmember event
 
 ```lua
--- collisions.lua — crewmember capture
-self.dialogUI:addScreen("gotcha", other.sourceFeed)
+-- collisions.lua — crewmember capture (not tiny): crew-count greeting, if any
+local greeting = CrewMember.matchGreeting(Config.CrewMember.greetingScripts)
+if greeting then
+    self.dialogUI:addScreen(greeting, other.sourceFeed)
+end
+other:taken()
 
 -- collisions.lua — blocked portal
 self.dialogUI:addScreen(other.blockedDialog or "nokeys")
 
 -- collisions.lua — locked door without key
 self.dialogUI:addScreen("nokeys")
+```
+
+### Crew-count greetings (`CrewMember.matchGreeting`)
+
+Two entry points into crew dialog are gated by how many crew are already recruited
+(`PlayerData.CrewMemberData.amountTaken`, read **before** this pickup/talk):
+
+- **Touch, not tiny** (`collisions.lua`, `other:isa(CrewMember)` branch): evaluated
+  against `Config.CrewMember.greetingScripts` right before `other:taken()`. No match =
+  no extra dialog, capture proceeds silently.
+- **Talk, tiny** (`CrewMember:returnScript()`, called via `trigger:returnScript()` on
+  A-press): evaluated against `Config.CrewMember.greetingScriptsTiny`, and **takes
+  priority over the per-crewId dialog** (`crewId .. "_tiny"`). No match = falls back to
+  the normal per-crewId dialog.
+
+Both lists live in `Config.CrewMember` and share one evaluator,
+`CrewMember.matchGreeting(list)` (`entities/enemies/crewmember.lua`): each entry is a
+`"<condition>:<scriptName>"` string (same grammar as [Conditions.lua](#) — e.g.
+`"crew==0:0CM"`), checked top-to-bottom with `Conditions.eval()`; the first match wins.
+This is data-driven from one shared place instead of per-entity `conditionalScripts`,
+since every `CrewMember` instance calls the same code path.
+
+```lua
+-- Config.lua
+Config.CrewMember.greetingScripts = {
+    "crew==0:0CM",
+    "crew==1:2CM",
+    "crew==2:3CM",
+}
+Config.CrewMember.greetingScriptsTiny = {
+    "crew==0:0CM_tiny",
+}
 ```
 
 ---

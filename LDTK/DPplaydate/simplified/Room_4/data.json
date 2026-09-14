@@ -1,8 +1,8 @@
 {
 	"identifier": "Room_4",
 	"uniqueIdentifer": "e0227920-96d0-11f1-ad82-1da941d0a645",
-	"x": 2384,
-	"y": 752,
+	"x": 2368,
+	"y": 1408,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
@@ -10,6 +10,18 @@
 		{
 			"levelIid": "bfb67140-96d0-11f1-ad82-3f89976fa342",
 			"dir": "w"
+		},
+		{
+			"levelIid": "c2a74570-96d0-11f1-ad82-97f41ea8aab4",
+			"dir": "e"
+		},
+		{
+			"levelIid": "f02f6040-96d0-11f1-ad82-e3a055f1db21",
+			"dir": "se"
+		},
+		{
+			"levelIid": "e361a2b0-96d0-11f1-ad82-d786a9f051e2",
+			"dir": "ne"
 		},
 		{
 			"levelIid": "36aeb150-96d0-11f1-ad82-b10fc3715a0d",
@@ -104,21 +116,6 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "e0227933-96d0-11f1-ad82-c5956fe92573",
-				"layer": "Doors",
-				"x": 396,
-				"y": 56,
-				"width": 8,
-				"height": 16,
-				"color": 16711680,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Right",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
 				"iid": "e0227934-96d0-11f1-ad82-f5d0c329c357",
 				"layer": "Doors",
 				"x": 88,
@@ -189,21 +186,6 @@
 				"customFields": {
 					"NeedsKey": false,
 					"DoorsConnection": "Left",
-					"KeyNumber": null
-				}
-			},
-			{
-				"id": "Doors",
-				"iid": "e0227939-96d0-11f1-ad82-07394d413969",
-				"layer": "Doors",
-				"x": 396,
-				"y": 200,
-				"width": 8,
-				"height": 16,
-				"color": 16711680,
-				"customFields": {
-					"NeedsKey": false,
-					"DoorsConnection": "Right",
 					"KeyNumber": null
 				}
 			},

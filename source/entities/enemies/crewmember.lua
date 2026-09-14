@@ -2,6 +2,20 @@ import 'entities/props/hats'
 
 CrewMember = {}
 class('CrewMember').extends('NobleSprite')
+
+-- Returns the first script name whose condition matches (evaluated against current
+-- PlayerData state via Conditions.eval), or nil if the list is empty/nothing matches.
+-- Shared by the touch (collisions.lua) and talk (returnScript) crew-greeting checks.
+function CrewMember.matchGreeting(list)
+	for _, entry in ipairs(list or {}) do
+		local condExpr, scriptName = entry:match("^([^:]+):(.+)$")
+		if condExpr and scriptName and Conditions.eval(condExpr) then
+			return scriptName
+		end
+	end
+	return nil
+end
+
 -- TODO check animation
 function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	CrewMember.super.init(self, 'assets/images/enemies/crewmember', true)
@@ -308,6 +322,11 @@ function CrewMember:isPlayerOutOfVision()
 end
 
 function CrewMember:returnScript()
+    -- Crew-count greeting takes priority over the per-crewId dialog (e.g. a special
+    -- line for "no crew yet" while tiny). No match = fall through as before.
+    local greeting = CrewMember.matchGreeting(Config.CrewMember.greetingScriptsTiny)
+    if greeting then return greeting end
+
     -- Marker is generic in procgen: the dialog is keyed by the assigned crewId.
     -- Fall back to the first crew line if this crew's dialog isn't authored yet.
     local name = self.crewId and (self.crewId .. "_tiny") or "CM001_tiny"
