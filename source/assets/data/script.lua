@@ -609,27 +609,35 @@ script = {
         dialog = {
             {
                 video = 'player',
-                text = "0cmtiny-01",
+                text = "0cmistiny-01",
             },
             {
                 video = 'player',
-                text = "0cmtiny-02",
+                text = "0cmistiny-02",
             },
             {
                 video = 'player',
-                text = "0cmtiny-03",
+                text = "0cmistiny-03",
             },
             {
                 video = 'player',
-                text = "0cmtiny-04",
+                text = "0cmistiny-04",
             },
             {
                 video = 'player',
-                text = "0cmtiny-05",
+                text = "0cmistiny-05",
             },
             {
                 video = 'player',
-                text = "0cmtiny-06",
+                text = "0cmistiny-06",
+            },
+            {
+                video = 'playerSurprise',
+                text = "0cmistiny-07",
+            },
+            {
+                video = 'playerSurprise',
+                text = "0cmistiny-08",
             }
         }
     }
