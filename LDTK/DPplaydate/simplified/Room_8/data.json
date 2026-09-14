@@ -123,6 +123,22 @@
 					"isItem": true,
 					"SpawnConditions": []
 				}
+			},
+			{
+				"id": "Notes",
+				"iid": "0abcbad0-96d0-11f1-ad82-53e5374439ea",
+				"layer": "Items_and_Props",
+				"x": 348,
+				"y": 196,
+				"width": 32,
+				"height": 32,
+				"color": 15389866,
+				"customFields": {
+					"type": "notes",
+					"grants": "canDance:true",
+					"isItem": true,
+					"SpawnConditions": []
+				}
 			}
 		],
 		"Doors": [
