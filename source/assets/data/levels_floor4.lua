@@ -760,7 +760,9 @@ table.insert(levelsLDTK, {
           usedTrigger = false,
           type = "Story",
           mapPercent = 0,
-          conditionalScripts = {},
+          conditionalScripts = {
+            "isTiny:smallSpacesisTiny"
+          },
           SpawnConditions = {}
         }
       },
@@ -2179,7 +2181,7 @@ table.insert(levelsLDTK, {
           type = "Search",
           mapPercent = 0,
           conditionalScripts = {
-            "isTiny:smallSpacesisTiny"
+            "isTiny:TinySpacesisTiny"
           },
           SpawnConditions = {}
         }

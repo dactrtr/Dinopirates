@@ -193,7 +193,9 @@
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,
-					"conditionalScripts": [],
+					"conditionalScripts": [
+						"isTiny:smallSpacesisTiny"
+					],
 					"SpawnConditions": []
 				}
 			},

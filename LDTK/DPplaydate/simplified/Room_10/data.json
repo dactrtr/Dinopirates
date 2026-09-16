@@ -79,7 +79,7 @@
 					"type": "Search",
 					"mapPercent": 0,
 					"conditionalScripts": [
-						"isTiny:smallSpacesisTiny"
+						"isTiny:TinySpacesisTiny"
 					],
 					"SpawnConditions": []
 				}
