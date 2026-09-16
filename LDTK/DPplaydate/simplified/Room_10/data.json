@@ -81,6 +81,24 @@
 					"conditionalScripts": [],
 					"SpawnConditions": []
 				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "7a809360-96d0-11f1-ad82-ad4f4ec8f201",
+				"layer": "Triggers",
+				"x": 188,
+				"y": 60,
+				"width": 128,
+				"height": 8,
+				"color": 16711748,
+				"customFields": {
+					"script": null,
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": [],
+					"SpawnConditions": []
+				}
 			}
 		],
 		"Minifier": [

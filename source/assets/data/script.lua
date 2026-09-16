@@ -586,6 +586,15 @@ script = {
         }
     },
     {
+        name = "TinySpacesisTiny",
+        dialog = {
+            {
+                video = 'playerHappy',
+                text = "tinyspacesistiny-01",
+            }
+        }
+    },
+    {
         name = "0CMIsTiny",
         dialog = {
             {

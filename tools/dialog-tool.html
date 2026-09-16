@@ -71,6 +71,7 @@ const NUM_PATHS = ['crew','mapPercent','battery','healthPoints','storyCounter'];
 const SPAWN_NUM_PATHS = ['run','crew','mapPercent','battery','healthPoints','storyCounter'];
 const OPS = ['>','<','>=','<=','==','!='];
 const LS_KEY = 'dinopirates-dialog-tool-v1';
+const SAVE_SERVER = 'http://localhost:8791';
 
 // ---------- State ----------
 let state = {
@@ -403,6 +404,14 @@ window.setSpawnSub = (ei,si,k,v) => { state.spawnCond[ei].subs[si][k]=v; save();
 // ================= IMPORT / EXPORT =================
 function renderData(m) {
   m.innerHTML = `
+  <h3>Guardar directo en el proyecto</h3>
+  <p class="muted">Requiere <code>node tools/dialog-server.js</code> corriendo en una terminal. Escribe directo en
+    <code>source/assets/data/script.lua</code>, <code>source/en.strings</code> y <code>source/jp.strings</code> — sin pasar por Descargas.</p>
+  <div class="toolbar">
+    <button onclick="saveToProject()">💾 Guardar en el proyecto</button>
+    <span class="pill" id="serverPill">servidor: ?</span>
+  </div>
+  <hr style="border-color:#333;margin:20px 0">
   <h3>Importar (pega y parsea)</h3>
   <div class="grid2">
     <div>
@@ -439,7 +448,39 @@ function renderData(m) {
   </div>
   <hr style="border-color:#333;margin:20px 0">
   <button class="danger" onclick="if(confirm('¿Borrar TODO el estado guardado?')){localStorage.removeItem(LS_KEY);location.reload();}">Resetear herramienta</button>`;
+  checkServerHealth();
 }
+
+// ----- Save server (tools/dialog-server.js) -----
+async function checkServerHealth() {
+  const p = document.getElementById('serverPill');
+  if (!p) return;
+  try {
+    const r = await fetch(SAVE_SERVER + '/health', { signal: AbortSignal.timeout(1500) });
+    if (!r.ok) throw new Error();
+    p.textContent = 'servidor: conectado ✓';
+    p.className = 'pill ok';
+  } catch {
+    p.textContent = 'servidor: no conectado';
+    p.className = 'pill warn';
+  }
+}
+window.saveToProject = async () => {
+  const p = document.getElementById('serverPill');
+  try {
+    const r = await fetch(SAVE_SERVER + '/save-all', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ script: exportScript(), en: exportStrings('en'), jp: exportStrings('jp') }),
+    });
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(j.error || ('HTTP ' + r.status));
+    if (p) { p.textContent = 'guardado en el proyecto ✓'; p.className = 'pill ok'; }
+  } catch (e) {
+    alert('No se pudo guardar en el proyecto.\n¿Está corriendo `node tools/dialog-server.js`?\n\n' + e.message);
+    if (p) { p.textContent = 'servidor: no conectado'; p.className = 'pill warn'; }
+  }
+};
 
 // ----- Parsers -----
 function importScript() {

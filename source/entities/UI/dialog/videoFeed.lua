@@ -65,10 +65,9 @@ function videoFeed:init(x,y, sourceFeed,Zindex)
 		
 	self.animation:addState('watchRing', 18, 18)
 	self.animation.watchRing.frameDuration = 12
-	self.animation:addState('watchRing-tiny', 18, 18) 
+	self.animation:addState('watchRing-tiny', 18, 18)
 	self.animation['watchRing-tiny'].frameDuration = 12
-	self.animation:setState(sourceFeed)
-	
+
 	self.animation:addState('crewMember', 19, 19)
 	self.animation.crewMember.frameDuration = 12
 	self.animation:addState('crewMember-tiny', 20, 20) 

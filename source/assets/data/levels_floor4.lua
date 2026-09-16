@@ -1651,20 +1651,6 @@ table.insert(levelsLDTK, {
           isItem = true,
           SpawnConditions = {}
         }
-      },
-      {
-        id = "Notes",
-        iid = "0abcbad0-96d0-11f1-ad82-53e5374439ea",
-        x = 348,
-        y = 196,
-        width = 32,
-        height = 32,
-        customFields = {
-          type = "notes",
-          grants = "canDance:true",
-          isItem = true,
-          SpawnConditions = {}
-        }
       }
     },
     Doors = {
@@ -6143,169 +6129,6 @@ table.insert(levelsLDTK, {
     }
   }
 })
-	--31
-table.insert(levelsLDTK, {
-  identifier = "Room_42",
-  uniqueIdentifer = "d8aba2a0-96d0-11f1-ad82-27bb13a10c31",
-  neighbourLevels = {
-    {
-      levelIid = "75f4cf00-96d0-11f1-ad82-092e0aa551b5",
-      dir = "nw"
-    },
-    {
-      levelIid = "3d0f8920-96d0-11f1-ad82-6736b96083c7",
-      dir = "ne"
-    },
-    {
-      levelIid = "fa27f350-96d0-11f1-ad82-f52ab256a7ef",
-      dir = "e"
-    }
-  },
-  customFields = {
-    shadow = true,
-    light = 0.1,
-    visited = false,
-    comic_name = nil,
-    comic_wasPlayed = false,
-    level = 4,
-    roomNumber = 31,
-    tile = 31,
-    DoorsConnection = {},
-    play = nil,
-    procGen = true,
-    roomRole = "Normal",
-    requiredItems = {},
-    requiredSkills = {},
-    hasForeground = true
-  },
-  entities = {
-    Brocorat = {
-      {
-        id = "Brocorat",
-        iid = "57dc5d80-96d0-11f1-ad82-f97e2df09999",
-        x = 324,
-        y = 188,
-        width = 32,
-        height = 32,
-        customFields = {
-          speed = 0.5,
-          dead = false,
-          forceSpawn = false
-        }
-      }
-    },
-    CrewMember = {
-      {
-        id = "CrewMember",
-        iid = "73bff3e0-96d0-11f1-ad82-a9010d3d93e1",
-        x = 52,
-        y = 180,
-        width = 48,
-        height = 48,
-        customFields = {
-          isTaken = false,
-          crewID = "100",
-          forceSpawn = false
-        }
-      }
-    },
-    Ghost = {
-      {
-        id = "Ghost",
-        iid = "83d7fa70-96d0-11f1-ad82-ff942dab79df",
-        x = 324,
-        y = 52,
-        width = 48,
-        height = 48,
-        customFields = {
-          isTaken = false,
-          crewID = "100",
-          forceSpawn = false
-        }
-      }
-    },
-    Doors = {
-      {
-        id = "Doors",
-        iid = "d8aba2a7-96d0-11f1-ad82-3729539f521e",
-        x = 200,
-        y = 236,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Down",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "d8aba2a8-96d0-11f1-ad82-fdcc0b084ae3",
-        x = 200,
-        y = 4,
-        width = 48,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "d8aba2a9-96d0-11f1-ad82-e7e20183ec6b",
-        x = 88,
-        y = 4,
-        width = 16,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "d8aba2aa-96d0-11f1-ad82-c1314584334c",
-        x = 396,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Right",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "d8aba2ab-96d0-11f1-ad82-a56205c7a9e4",
-        x = 4,
-        y = 120,
-        width = 8,
-        height = 48,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Left",
-          KeyNumber = nil
-        }
-      },
-      {
-        id = "Doors",
-        iid = "d8aba2ac-96d0-11f1-ad82-ab82e6680c1d",
-        x = 328,
-        y = 4,
-        width = 16,
-        height = 8,
-        customFields = {
-          NeedsKey = false,
-          DoorsConnection = "Top",
-          KeyNumber = nil
-        }
-      }
-    }
-  }
-})
 	--32
 table.insert(levelsLDTK, {
   identifier = "Room_32",
@@ -8073,6 +7896,169 @@ table.insert(levelsLDTK, {
       {
         id = "Doors",
         iid = "ce5ca512-96d0-11f1-ad82-79fd97040c7b",
+        x = 328,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      }
+    }
+  }
+})
+	--42
+table.insert(levelsLDTK, {
+  identifier = "Room_42",
+  uniqueIdentifer = "d8aba2a0-96d0-11f1-ad82-27bb13a10c31",
+  neighbourLevels = {
+    {
+      levelIid = "75f4cf00-96d0-11f1-ad82-092e0aa551b5",
+      dir = "nw"
+    },
+    {
+      levelIid = "3d0f8920-96d0-11f1-ad82-6736b96083c7",
+      dir = "ne"
+    },
+    {
+      levelIid = "fa27f350-96d0-11f1-ad82-f52ab256a7ef",
+      dir = "e"
+    }
+  },
+  customFields = {
+    shadow = true,
+    light = 0.1,
+    visited = false,
+    comic_name = nil,
+    comic_wasPlayed = false,
+    level = 4,
+    roomNumber = 42,
+    tile = 42,
+    DoorsConnection = {},
+    play = nil,
+    procGen = true,
+    roomRole = "Normal",
+    requiredItems = {},
+    requiredSkills = {},
+    hasForeground = true
+  },
+  entities = {
+    Brocorat = {
+      {
+        id = "Brocorat",
+        iid = "57dc5d80-96d0-11f1-ad82-f97e2df09999",
+        x = 324,
+        y = 188,
+        width = 32,
+        height = 32,
+        customFields = {
+          speed = 0.5,
+          dead = false,
+          forceSpawn = false
+        }
+      }
+    },
+    CrewMember = {
+      {
+        id = "CrewMember",
+        iid = "73bff3e0-96d0-11f1-ad82-a9010d3d93e1",
+        x = 52,
+        y = 180,
+        width = 48,
+        height = 48,
+        customFields = {
+          isTaken = false,
+          crewID = "100",
+          forceSpawn = false
+        }
+      }
+    },
+    Ghost = {
+      {
+        id = "Ghost",
+        iid = "83d7fa70-96d0-11f1-ad82-ff942dab79df",
+        x = 324,
+        y = 52,
+        width = 48,
+        height = 48,
+        customFields = {
+          isTaken = false,
+          crewID = "100",
+          forceSpawn = false
+        }
+      }
+    },
+    Doors = {
+      {
+        id = "Doors",
+        iid = "d8aba2a7-96d0-11f1-ad82-3729539f521e",
+        x = 200,
+        y = 236,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Down",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "d8aba2a8-96d0-11f1-ad82-fdcc0b084ae3",
+        x = 200,
+        y = 4,
+        width = 48,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "d8aba2a9-96d0-11f1-ad82-e7e20183ec6b",
+        x = 88,
+        y = 4,
+        width = 16,
+        height = 8,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Top",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "d8aba2aa-96d0-11f1-ad82-c1314584334c",
+        x = 396,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Right",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "d8aba2ab-96d0-11f1-ad82-a56205c7a9e4",
+        x = 4,
+        y = 120,
+        width = 8,
+        height = 48,
+        customFields = {
+          NeedsKey = false,
+          DoorsConnection = "Left",
+          KeyNumber = nil
+        }
+      },
+      {
+        id = "Doors",
+        iid = "d8aba2ac-96d0-11f1-ad82-ab82e6680c1d",
         x = 328,
         y = 4,
         width = 16,
