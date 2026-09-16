@@ -143,7 +143,7 @@ Two entry points into crew dialog are gated by how many crew are already recruit
   no extra dialog, capture proceeds silently.
 - **Talk, tiny** (`CrewMember:returnScript()`, called via `trigger:returnScript()` on
   A-press): evaluated against `Config.CrewMember.greetingScriptsTiny`, and **takes
-  priority over the per-crewId dialog** (`crewId .. "IsTiny"`). No match = falls back to
+  priority over the per-crewId dialog** (`crewId .. "isTiny"`). No match = falls back to
   the normal per-crewId dialog.
 
 Both lists live in `Config.CrewMember` and share one evaluator,
@@ -161,7 +161,7 @@ Config.CrewMember.greetingScripts = {
     "crew==2:3CM",
 }
 Config.CrewMember.greetingScriptsTiny = {
-    "crew==0:0CMIsTiny",
+    "crew==0:0CMisTiny",
 }
 ```
 

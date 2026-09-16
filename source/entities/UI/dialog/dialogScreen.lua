@@ -57,12 +57,23 @@ function dialogScreen:addScreen(scriptName)
 		end
 	end
 
-	-- Si no se encuentra el diálogo, imprimir error
-	printDebug("Warning: Dialog '" .. scriptName .. "' not found")
+	-- Not found: don't leave isTalking stuck true (the caller usually sets it before
+	-- calling addScreen) — a bad/missing name must not soft-lock input on the next A-press.
+	printDebug("⚠️ Warning: Dialog '" .. tostring(scriptName) .. "' not found")
+	PlayerData.isTalking = false
+	PlayerData.isGaming = true
 end
 function dialogScreen:nextDialog()
+	local entry = script[dialogPosition]
+	if not entry then
+		-- Defensive: dialogPosition is nil/stale (e.g. a prior addScreen() with a bad
+		-- name left state inconsistent). Close cleanly instead of crashing on `.dialog`.
+		printDebug("⚠️ dialogScreen:nextDialog with no active dialog (dialogPosition=" .. tostring(dialogPosition) .. ")")
+		self:removeAll()
+		return
+	end
 	dialogbg:add()
-	local dialogArray = script[dialogPosition].dialog
+	local dialogArray = entry.dialog
 	if video ~= nil then
 		video:remove()
 	end

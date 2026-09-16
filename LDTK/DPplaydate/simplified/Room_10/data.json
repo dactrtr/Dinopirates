@@ -78,7 +78,9 @@
 					"usedTrigger": false,
 					"type": "Search",
 					"mapPercent": 0,
-					"conditionalScripts": [],
+					"conditionalScripts": [
+						"isTiny:smallSpacesisTiny"
+					],
 					"SpawnConditions": []
 				}
 			},
@@ -92,7 +94,7 @@
 				"height": 8,
 				"color": 16711748,
 				"customFields": {
-					"script": null,
+					"script": "secondCall",
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,

@@ -107,7 +107,7 @@
 				"id": "Triggers",
 				"iid": "f2317670-ac70-11f0-ae64-133829c2c353",
 				"layer": "Triggers",
-				"x": 260,
+				"x": 252,
 				"y": 124,
 				"width": 32,
 				"height": 24,
@@ -190,6 +190,24 @@
 				"color": 16711748,
 				"customFields": {
 					"script": "smallSpaces",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": [],
+					"SpawnConditions": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "db9a6d10-96d0-11f1-ad82-e9f0ba4bccec",
+				"layer": "Triggers",
+				"x": 340,
+				"y": 180,
+				"width": 24,
+				"height": 24,
+				"color": 16711748,
+				"customFields": {
+					"script": "aLamp",
 					"usedTrigger": false,
 					"type": "Story",
 					"mapPercent": 0,

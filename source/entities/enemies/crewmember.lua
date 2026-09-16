@@ -329,12 +329,12 @@ function CrewMember:returnScript()
 
     -- Marker is generic in procgen: the dialog is keyed by the assigned crewId.
     -- Fall back to the first crew line if this crew's dialog isn't authored yet.
-    local name = self.crewId and (self.crewId .. "IsTiny") or "CM001IsTiny"
+    local name = self.crewId and (self.crewId .. "isTiny") or "CM001isTiny"
     local exists = false
     for _, s in ipairs(script) do
         if s.name == name then exists = true break end
     end
-    if not exists then name = "CM001IsTiny" end
+    if not exists then name = "CM001isTiny" end
     return name
 end
 

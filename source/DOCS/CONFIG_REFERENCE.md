@@ -221,7 +221,7 @@ See `MICROWAVE_AND_FOOD.md` for the full system.
 | CrewMember | `batteryThresholdRestore` | 60 | % | Battery level where crew member restores movement (= `Battery.thresholdMid`) |
 | CrewMember | `collideRect` | `{x=12,y=24,w=24,h=24}` | px | Crew member collision rect |
 | CrewMember | `greetingScripts` | `{"crew==0:0CM", "crew==1:2CM", "crew==2:3CM"}` | list | Crew-count greeting dialogs on touch (not tiny), evaluated with `Conditions.eval()` against `amountTaken` before capture; first match wins. See [DIALOG_SYSTEM.md](DIALOG_SYSTEM.md#crew-count-greetings-crewmembermatchgreeting). |
-| CrewMember | `greetingScriptsTiny` | `{"crew==0:0CMIsTiny"}` | list | Same grammar, checked in `CrewMember:returnScript()` on tiny A-press; takes priority over the per-crewId dialog. |
+| CrewMember | `greetingScriptsTiny` | `{"crew==0:0CMisTiny"}` | list | Same grammar, checked in `CrewMember:returnScript()` on tiny A-press; takes priority over the per-crewId dialog. |
 
 ---
 

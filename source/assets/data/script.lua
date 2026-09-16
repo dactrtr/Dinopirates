@@ -7,11 +7,11 @@ script = {
                 text = "secondcall-01",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-02",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-03",
             },
             {
@@ -19,19 +19,19 @@ script = {
                 text = "secondcall-04",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-05",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-06",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-07",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-08",
             },
             {
@@ -113,15 +113,6 @@ script = {
             {
                 video = 'player',
                 text = "whyxmas-01",
-            }
-        }
-    },
-    {
-        name = "nolamp",
-        dialog = {
-            {
-                video = 'playerSleepy',
-                text = "nolamp-01",
             }
         }
     },
@@ -374,7 +365,7 @@ script = {
         name = "aLamp",
         dialog = {
             {
-                video = 'player',
+                video = 'playerHappy',
                 text = "alamp-01",
             }
         }
@@ -420,11 +411,11 @@ script = {
         }
     },
     {
-        name = "smallSpacesIsTiny",
+        name = "smallSpacesisTiny",
         dialog = {
             {
                 video = 'player',
-                text = "smallspacestiny-01",
+                text = "smallspacesistiny-01",
             }
         }
     },
@@ -595,7 +586,7 @@ script = {
         }
     },
     {
-        name = "0CMIsTiny",
+        name = "0CMisTiny",
         dialog = {
             {
                 video = 'crewMember',
@@ -628,6 +619,32 @@ script = {
             {
                 video = 'playerSurprise',
                 text = "0cmistiny-08",
+            }
+        }
+    },
+    {
+        name = "CM001isTiny",
+        dialog = {
+            {
+                video = 'crewMember',
+                text = "cm001istiny-01",
+            }
+        }
+    },
+    {
+        name = "shootOut",
+        dialog = {
+            {
+                video = 'playerSurprise',
+                text = "shootout-01",
+            },
+            {
+                video = 'playerWorry',
+                text = "shootout-02",
+            },
+            {
+                video = 'playerScared',
+                text = "shootout-03",
             }
         }
     }
