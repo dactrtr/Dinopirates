@@ -113,6 +113,7 @@ function Player:collisionResponse(other)
     return 'overlap'
 
   elseif other:isa(Items) and other.type == 'notes' then
+    if other.iid then findAndCollectItemById(other.iid) end
     other:removeAll()
     self:grabNotes(other.grants)
     return 'overlap'
