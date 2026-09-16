@@ -143,16 +143,6 @@ script = {
         }
     },
     {
-        name = "gotcha",
-        dialog = {
-            {
-                video = 'playerSurprise',
-                text = "gotcha-01",
-                screen = Graphics.image.new('assets/images/ui/dialog/img/captured.png')
-            }
-        }
-    },
-    {
         name = "brocomess",
         dialog = {
             {
@@ -246,7 +236,7 @@ script = {
                 text = "inneficientcutting-01",
             },
             {
-                video = 'player',
+                video = 'playerSurprise',
                 text = "inneficientcutting-02",
             }
         }
@@ -259,7 +249,7 @@ script = {
                 text = "entrancemess-01",
             },
             {
-                video = 'player',
+                video = 'playerWorry',
                 text = "entrancemess-02",
             }
         }
@@ -368,15 +358,6 @@ script = {
         }
     },
     {
-        name = "CM001IsTiny",
-        dialog = {
-            {
-                video = 'playerWorry',
-                text = "CM001-01",
-            }
-        }
-    },
-    {
         name = "tinyfier",
         dialog = {
             {
@@ -384,7 +365,7 @@ script = {
                 text = "tinyfier-01",
             },
             {
-                video = 'player',
+                video = 'playerWorry',
                 text = "tinyfier-02",
             }
         }
@@ -496,11 +477,11 @@ script = {
         name = "0CM",
         dialog = {
             {
-                video = 'playerWorry',
+                video = 'crewMember',
                 text = "nocm-01",
             },
             {
-                video = 'playerAngry',
+                video = 'playerWorry',
                 text = "nocm-02",
             }
         }
@@ -509,7 +490,7 @@ script = {
         name = "2CM",
         dialog = {
             {
-                video = 'player',
+                video = 'playerHappy',
                 text = "onecm-01",
             }
         }
@@ -586,7 +567,7 @@ script = {
                 text = "flashcrewmember-04",
             },
             {
-                video = 'radioHand',
+                video = 'radioPocket',
                 text = "flashcrewmember-05",
             }
         }
@@ -608,27 +589,27 @@ script = {
         name = "0CMIsTiny",
         dialog = {
             {
-                video = 'player',
+                video = 'crewMember',
                 text = "0cmistiny-01",
             },
             {
-                video = 'player',
+                video = 'crewMember',
                 text = "0cmistiny-02",
             },
             {
-                video = 'player',
+                video = 'crewMember',
                 text = "0cmistiny-03",
             },
             {
-                video = 'player',
+                video = 'crewMember',
                 text = "0cmistiny-04",
             },
             {
-                video = 'player',
+                video = 'crewMember',
                 text = "0cmistiny-05",
             },
             {
-                video = 'player',
+                video = 'crewMember',
                 text = "0cmistiny-06",
             },
             {

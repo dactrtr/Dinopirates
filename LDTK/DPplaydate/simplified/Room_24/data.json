@@ -41,6 +41,23 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "3aa719d0-96d0-11f1-ad82-1de994561935",
+				"layer": "CM_and_enemies",
+				"x": 276,
+				"y": 188,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",

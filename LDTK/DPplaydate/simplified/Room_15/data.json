@@ -53,6 +53,23 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"Ghost": [
+			{
+				"id": "Ghost",
+				"iid": "7c4b73e0-96d0-11f1-ad82-63e385463f0c",
+				"layer": "CM_and_enemies",
+				"x": 108,
+				"y": 52,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",

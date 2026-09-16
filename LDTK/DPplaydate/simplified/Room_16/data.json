@@ -26,6 +26,10 @@
 		{
 			"levelIid": "02e961e0-96d0-11f1-ad82-d9257f2f4abf",
 			"dir": "se"
+		},
+		{
+			"levelIid": "d8aba2a0-96d0-11f1-ad82-27bb13a10c31",
+			"dir": "sw"
 		}
 	],
 	"customFields": {
@@ -49,6 +53,23 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"Ghost": [
+			{
+				"id": "Ghost",
+				"iid": "78fc9700-96d0-11f1-ad82-e32633301f32",
+				"layer": "CM_and_enemies",
+				"x": 68,
+				"y": 60,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",

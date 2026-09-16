@@ -14,6 +14,10 @@
 		{
 			"levelIid": "206f7330-96d0-11f1-ad82-275c2a8b39b9",
 			"dir": "n"
+		},
+		{
+			"levelIid": "d8aba2a0-96d0-11f1-ad82-27bb13a10c31",
+			"dir": "se"
 		}
 	],
 	"customFields": {
@@ -37,6 +41,57 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "58e87650-96d0-11f1-ad82-d1bfa3d53e7c",
+				"layer": "CM_and_enemies",
+				"x": 68,
+				"y": 36,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "72336070-96d0-11f1-ad82-6157d6b2e173",
+				"layer": "CM_and_enemies",
+				"x": 332,
+				"y": 180,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
+		"Ghost": [
+			{
+				"id": "Ghost",
+				"iid": "8226a0f0-96d0-11f1-ad82-ebe7e5065d31",
+				"layer": "CM_and_enemies",
+				"x": 84,
+				"y": 172,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
 		"Doors": [
 			{
 				"id": "Doors",
