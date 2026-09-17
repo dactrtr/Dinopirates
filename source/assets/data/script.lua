@@ -7,11 +7,11 @@ script = {
                 text = "secondcall-01",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-02",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-03",
             },
             {
@@ -19,19 +19,19 @@ script = {
                 text = "secondcall-04",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-05",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-06",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-07",
             },
             {
-                video = 'radioHand',
+                video = 'watchRing',
                 text = "secondcall-08",
             },
             {
@@ -117,15 +117,6 @@ script = {
         }
     },
     {
-        name = "nolamp",
-        dialog = {
-            {
-                video = 'playerSleepy',
-                text = "nolamp-01",
-            }
-        }
-    },
-    {
         name = "wakeup",
         dialog = {
             {
@@ -139,16 +130,6 @@ script = {
             {
                 video = 'playerSurprise',
                 text = "wakeup-03",
-            }
-        }
-    },
-    {
-        name = "gotcha",
-        dialog = {
-            {
-                video = 'playerSurprise',
-                text = "gotcha-01",
-                screen = Graphics.image.new('assets/images/ui/dialog/img/captured.png')
             }
         }
     },
@@ -246,7 +227,7 @@ script = {
                 text = "inneficientcutting-01",
             },
             {
-                video = 'player',
+                video = 'playerSurprise',
                 text = "inneficientcutting-02",
             }
         }
@@ -259,7 +240,7 @@ script = {
                 text = "entrancemess-01",
             },
             {
-                video = 'player',
+                video = 'playerWorry',
                 text = "entrancemess-02",
             }
         }
@@ -368,15 +349,6 @@ script = {
         }
     },
     {
-        name = "CM001_tiny",
-        dialog = {
-            {
-                video = 'playerWorry',
-                text = "CM001-01",
-            }
-        }
-    },
-    {
         name = "tinyfier",
         dialog = {
             {
@@ -384,7 +356,7 @@ script = {
                 text = "tinyfier-01",
             },
             {
-                video = 'player',
+                video = 'playerWorry',
                 text = "tinyfier-02",
             }
         }
@@ -393,7 +365,7 @@ script = {
         name = "aLamp",
         dialog = {
             {
-                video = 'player',
+                video = 'playerHappy',
                 text = "alamp-01",
             }
         }
@@ -439,11 +411,11 @@ script = {
         }
     },
     {
-        name = "smallSpacesTiny",
+        name = "smallSpacesisTiny",
         dialog = {
             {
                 video = 'player',
-                text = "smallspacestiny-01",
+                text = "smallspacesistiny-01",
             }
         }
     },
@@ -493,29 +465,29 @@ script = {
         }
     },
     {
-        name = "noCM",
+        name = "0CM",
         dialog = {
             {
-                video = 'playerWorry',
+                video = 'crewMember',
                 text = "nocm-01",
             },
             {
-                video = 'playerAngry',
+                video = 'playerWorry',
                 text = "nocm-02",
             }
         }
     },
     {
-        name = "oneCM",
+        name = "2CM",
         dialog = {
             {
-                video = 'player',
+                video = 'playerHappy',
                 text = "onecm-01",
             }
         }
     },
     {
-        name = "twoCM",
+        name = "3CM",
         dialog = {
             {
                 video = 'playerCry',
@@ -586,7 +558,7 @@ script = {
                 text = "flashcrewmember-04",
             },
             {
-                video = 'radioHand',
+                video = 'radioPocket',
                 text = "flashcrewmember-05",
             }
         }
@@ -601,6 +573,78 @@ script = {
             {
                 video = 'playerHappy',
                 text = "tinyspaces-02",
+            }
+        }
+    },
+    {
+        name = "TinySpacesisTiny",
+        dialog = {
+            {
+                video = 'playerHappy',
+                text = "tinyspacesistiny-01",
+            }
+        }
+    },
+    {
+        name = "0CMisTiny",
+        dialog = {
+            {
+                video = 'crewMember',
+                text = "0cmistiny-01",
+            },
+            {
+                video = 'crewMember',
+                text = "0cmistiny-02",
+            },
+            {
+                video = 'crewMember',
+                text = "0cmistiny-03",
+            },
+            {
+                video = 'crewMember',
+                text = "0cmistiny-04",
+            },
+            {
+                video = 'crewMember',
+                text = "0cmistiny-05",
+            },
+            {
+                video = 'crewMember',
+                text = "0cmistiny-06",
+            },
+            {
+                video = 'playerSurprise',
+                text = "0cmistiny-07",
+            },
+            {
+                video = 'playerSurprise',
+                text = "0cmistiny-08",
+            }
+        }
+    },
+    {
+        name = "CM001isTiny",
+        dialog = {
+            {
+                video = 'crewMember',
+                text = "cm001istiny-01",
+            }
+        }
+    },
+    {
+        name = "shootOut",
+        dialog = {
+            {
+                video = 'playerSurprise',
+                text = "shootout-01",
+            },
+            {
+                video = 'playerWorry',
+                text = "shootout-02",
+            },
+            {
+                video = 'playerScared',
+                text = "shootout-03",
             }
         }
     }

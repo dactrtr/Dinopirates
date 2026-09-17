@@ -63,17 +63,22 @@
 
 <script>
 // ---------- Constants ----------
-const VIDEO_STATES = ['player','playerWorry','playerSurprise','playerHappy','playerAngry','playerSleepy','playerScared','playerCry','radioHand','radioPocket','radioRing','notesHand'];
+const VIDEO_STATES = ['player','playerWorry','playerSurprise','playerHappy','playerAngry','playerSleepy','playerScared','playerCry','radioHand','radioPocket','radioRing','notesHand','watchRing','crewMember'];
 const BOOL_PATHS = ['isTiny','items.hasLamp','items.hasBoots','items.hasRadio','items.hasBag','items.hasPlunger','items.hasDWatch','keys[1]','keys[2]','keys[3]'];
-const NUM_PATHS = ['mapPercent','battery','healthPoints','storyCounter'];
+// 'crew' is a valid alias in conditionalScripts too (npc.lua/trigger.lua evaluateCondition),
+// but 'run' is NOT — that alias only exists in Conditions.lua (spawnConditions' evaluator).
+const NUM_PATHS = ['crew','mapPercent','battery','healthPoints','storyCounter'];
+const SPAWN_NUM_PATHS = ['run','crew','mapPercent','battery','healthPoints','storyCounter'];
 const OPS = ['>','<','>=','<=','==','!='];
 const LS_KEY = 'dinopirates-dialog-tool-v1';
+const SAVE_SERVER = 'http://localhost:8791';
 
 // ---------- State ----------
 let state = {
   scripts: [],          // [{name, lines:[{video,text,screen}]}]
   strings: { en:{}, jp:{} },  // {key: text}
-  cond: [],             // builder rows
+  cond: [],             // conditionalScripts builder rows
+  spawnCond: [],        // spawnConditions builder rows: [{subs:[{type,path,custom,op,num}]}]
   selected: 0,
 };
 let activeTab = 'dialogs';
@@ -164,9 +169,9 @@ function lineHTML(ln, i, total) {
     </div>
     <div class="grid2">
       <div><label>Texto EN <span class="cnt ${cntClass(en.length)}" id="cnt_en_${i}">${en.length}/${MAXLEN}</span></label>
-        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'en',this.value)">${esc(en)}</textarea></div>
+        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'en',this.value,this)">${esc(en)}</textarea></div>
       <div><label>Texto JP <span class="cnt ${cntClass(jp.length)}" id="cnt_jp_${i}">${jp.length}/${MAXLEN}</span></label>
-        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'jp',this.value)">${esc(jp)}</textarea></div>
+        <textarea rows="2" maxlength="${MAXLEN}" oninput="onText(${i},'jp',this.value,this)">${esc(jp)}</textarea></div>
     </div>
     <label>screen (ruta imagen, opcional)</label>
     <input style="width:100%" value="${esc(ln.screen||'')}" placeholder="assets/images/ui/dialog/img/file.png"
@@ -184,7 +189,17 @@ window.addLine = () => { state.scripts[state.selected].lines.push({video:'player
 window.delLine = i => { state.scripts[state.selected].lines.splice(i,1); reKeyScript(state.selected); save(); render(); };
 window.moveLine = (i,d) => { const a=state.scripts[state.selected].lines; const j=i+d; if(j<0||j>=a.length)return; [a[i],a[j]]=[a[j],a[i]]; reKeyScript(state.selected); save(); render(); };
 window.setLine = (i,k,v) => { state.scripts[state.selected].lines[i][k]=v; save(); };
-window.onText = (i,lang,v) => {
+window.onText = (i,lang,v,el) => {
+  // macOS/Safari's text substitution turns "..." into "…" while typing, before this
+  // handler ever sees the value. Normalize it back so saved strings stay plain ASCII,
+  // and fix the visible textarea too (keeping the cursor in place).
+  const fixed = v.replace(/…/g, '...');
+  if (el && fixed !== v) {
+    const pos = el.selectionStart + (fixed.length - v.length);
+    el.value = fixed;
+    el.setSelectionRange(pos, pos);
+  }
+  v = fixed;
   const key = state.scripts[state.selected].lines[i].text;
   if(key) state.strings[lang][key]=v;
   const c = document.getElementById('cnt_'+lang+'_'+i);
@@ -232,31 +247,74 @@ window.renameKey = (oldK,newK) => {
 };
 
 // ================= CONDICIONALES =================
+// Shared by both builders below: the condition-only part (no script, no OR-join, no
+// LDtk quoting). Grammar matches Conditions.lua / npc.lua / trigger.lua's evaluateCondition.
+function buildRawCond(c) {
+  const path = c.custom || c.path || '';
+  if (c.type==='true') return 'true';
+  if (c.type==='bool') return path;
+  if (c.type==='neg') return '!'+path;
+  if (c.type==='num') return path + (c.op||'>') + (c.num??'');
+  return '';
+}
+// Renders the type selector + path/op/value inputs for one condition row. `onChange(key)`
+// returns the inline-handler JS for that field (differs between the two builders since
+// they address state at different nesting depths).
+function condMidHTML(c, onChange, numPaths) {
+  const boolO = BOOL_PATHS.map(p=>`<option ${p===c.path?'selected':''}>${p}</option>`).join('');
+  const numO = (numPaths||NUM_PATHS).map(p=>`<option ${p===c.path?'selected':''}>${p}</option>`).join('');
+  const opO = OPS.map(p=>`<option ${p===c.op?'selected':''}>${p}</option>`).join('');
+  if (c.type==='bool'||c.type==='neg') {
+    return `<select onchange="${onChange('path')}"><option value="">— path —</option>${boolO}</select>
+           <input placeholder="o path custom" value="${esc(c.custom||'')}" oninput="${onChange('custom')}" style="width:140px">`;
+  } else if (c.type==='num') {
+    return `<select onchange="${onChange('path')}"><option value="">— path —</option>${numO}</select>
+           <input placeholder="custom" value="${esc(c.custom||'')}" oninput="${onChange('custom')}" style="width:90px">
+           <select onchange="${onChange('op')}">${opO}</select>
+           <input type="number" value="${esc(c.num??'')}" oninput="${onChange('num')}" style="width:70px" placeholder="n">`;
+  }
+  return '';
+}
+
 function renderCond(m) {
   const scriptOpts = ['<option value="">— script —</option>'].concat(state.scripts.map(s=>`<option>${esc(s.name)}</option>`)).join('');
-  let rows = state.cond.map((c,i)=>condRowHTML(c,i,scriptOpts)).join('');
-  m.innerHTML = `<p class="muted">Construye entradas de <code>conditionalScripts</code>. Se evalúan de arriba a abajo; la primera que aplica gana. Copia el array y pégalo en el Trigger/NPC en LDtk.</p>
+  const condRows = state.cond.map((c,i)=>condRowHTML(c,i,scriptOpts)).join('');
+  const spawnRows = state.spawnCond.map((e,i)=>spawnEntryHTML(e,i)).join('');
+
+  m.innerHTML = `
+    <h3>Conditional Scripts (selección de diálogo)</h3>
+    <p class="muted">Se evalúan de arriba a abajo; la primera que aplica gana. Formato: <code>condición:script</code>, opcionalmente con sufijo <code>!</code> o <code>:grantKey:grantVal</code>. Va en Triggers/NPCs.</p>
     <div class="toolbar"><button onclick="addCond()">+ Añadir condición</button></div>
-    ${rows||'<p class="muted">Sin condiciones aún.</p>'}
-    <label>Resultado (array para LDtk)</label>
-    <textarea class="out" style="height:160px" readonly>${esc(buildCondOutput())}</textarea>
-    <div class="toolbar"><button onclick="copyText(buildCondOutput())">Copiar array</button></div>`;
+    ${condRows||'<p class="muted">Sin condiciones aún.</p>'}
+    <div class="grid2">
+      <div><label>Lua (script.lua / fixtures)</label>
+        <textarea class="out" style="height:140px" readonly>${esc(buildCondOutput())}</textarea>
+        <div class="toolbar"><button onclick="copyText(buildCondOutput())">Copiar (Lua)</button></div></div>
+      <div><label>LDtk (una línea por valor, sin comillas — pegar directo en el campo Array del Trigger/NPC)</label>
+        <textarea class="out" style="height:140px" readonly>${esc(buildCondLdtkOutput())}</textarea>
+        <div class="toolbar"><button onclick="copyText(buildCondLdtkOutput())">Copiar (LDtk)</button></div></div>
+    </div>
+
+    <hr style="border-color:#333;margin:24px 0">
+
+    <h3>Spawn Conditions (gate de spawn)</h3>
+    <p class="muted">Evaluado por <code>Conditions.met()</code> antes de crear el Item/Trigger — independiente de conditionalScripts, no elige diálogo. Cada entrada (fila) es un item del array y se combinan entre sí con AND; las condiciones dentro de una misma entrada se combinan con OR (<code>|</code>).</p>
+    <div class="toolbar"><button onclick="addSpawnEntry()">+ Añadir entrada</button></div>
+    ${spawnRows||'<p class="muted">Sin condiciones aún.</p>'}
+    <div class="grid2">
+      <div><label>Lua (script.lua / fixtures)</label>
+        <textarea class="out" style="height:140px" readonly>${esc(buildSpawnCondOutput())}</textarea>
+        <div class="toolbar"><button onclick="copyText(buildSpawnCondOutput())">Copiar (Lua)</button></div></div>
+      <div><label>LDtk (una línea por valor, sin comillas — pegar directo en el campo Array del Item/Trigger)</label>
+        <textarea class="out" style="height:140px" readonly>${esc(buildSpawnCondLdtkOutput())}</textarea>
+        <div class="toolbar"><button onclick="copyText(buildSpawnCondLdtkOutput())">Copiar (LDtk)</button></div></div>
+    </div>`;
 }
+
+// ----- Conditional Scripts (dialog selection) -----
 function condRowHTML(c,i,scriptOpts) {
   const typeOpts = ['bool','neg','num','true'].map(t=>`<option value="${t}" ${c.type===t?'selected':''}>${({bool:'Booleano',neg:'Negado (!)',num:'Numérico',true:'true (catch-all)'})[t]}</option>`).join('');
-  let mid = '';
-  if (c.type==='bool'||c.type==='neg') {
-    const o = BOOL_PATHS.map(p=>`<option ${p===c.path?'selected':''}>${p}</option>`).join('');
-    mid = `<select onchange="setCond(${i},'path',this.value)"><option value="">— path —</option>${o}</select>
-           <input placeholder="o path custom" value="${esc(c.custom||'')}" oninput="setCond(${i},'custom',this.value)" style="width:140px">`;
-  } else if (c.type==='num') {
-    const o = NUM_PATHS.map(p=>`<option ${p===c.path?'selected':''}>${p}</option>`).join('');
-    const op = OPS.map(p=>`<option ${p===c.op?'selected':''}>${p}</option>`).join('');
-    mid = `<select onchange="setCond(${i},'path',this.value)"><option value="">— path —</option>${o}</select>
-           <input placeholder="custom" value="${esc(c.custom||'')}" oninput="setCond(${i},'custom',this.value)" style="width:90px">
-           <select onchange="setCond(${i},'op',this.value)">${op}</select>
-           <input type="number" value="${esc(c.num??'')}" oninput="setCond(${i},'num',this.value)" style="width:70px" placeholder="n">`;
-  }
+  const mid = condMidHTML(c, k=>`setCond(${i},'${k}',this.value)`, NUM_PATHS);
   const sfOpts = [['','(ninguno)'],['!','! consume trigger'],['grant','grant NPC']].map(([v,l])=>`<option value="${v}" ${c.suffix===v?'selected':''}>${l}</option>`).join('');
   let grant = '';
   if (c.suffix==='grant') grant = `<input placeholder="grantKey (ej: hasBoots o key)" value="${esc(c.grantKey||'')}" oninput="setCond(${i},'grantKey',this.value)" style="width:160px">
@@ -282,13 +340,7 @@ function condRowHTML(c,i,scriptOpts) {
   </div>`;
 }
 function buildCondLine(c) {
-  let cond = '';
-  const path = c.custom || c.path || '';
-  if (c.type==='true') cond = 'true';
-  else if (c.type==='bool') cond = path;
-  else if (c.type==='neg') cond = '!'+path;
-  else if (c.type==='num') cond = path + (c.op||'>') + (c.num??'');
-  let line = cond + ':' + (c.script||'');
+  let line = buildRawCond(c) + ':' + (c.script||'');
   if (c.suffix==='!') line += '!';
   else if (c.suffix==='grant') line += ':' + (c.grantKey||'') + ':' + (c.grantVal||'');
   return line;
@@ -297,14 +349,69 @@ function buildCondOutput() {
   const lines = state.cond.map(c=>'    "'+buildCondLine(c)+'"').join(',\n');
   return 'conditionalScripts = {\n'+lines+'\n}';
 }
+function buildCondLdtkOutput() {
+  return state.cond.map(buildCondLine).join('\n');
+}
 window.addCond = () => { state.cond.push({type:'bool',path:'',op:'>',num:'',script:'',suffix:''}); save(); render(); };
 window.delCond = i => { state.cond.splice(i,1); save(); render(); };
 window.moveCond = (i,d) => { const j=i+d; if(j<0||j>=state.cond.length)return; [state.cond[i],state.cond[j]]=[state.cond[j],state.cond[i]]; save(); render(); };
 window.setCond = (i,k,v) => { state.cond[i][k]=v; save(); render(); };
 
+// ----- Spawn Conditions (render gate) -----
+function spawnEntryHTML(entry, ei) {
+  const subs = entry.subs.map((c,si)=>spawnSubHTML(c,ei,si,entry.subs.length)).join('');
+  return `<div class="line">
+    <div class="line-head">
+      <span class="idx">#${ei+1}</span>
+      <span class="muted">entrada del array (AND con las demás; subs de abajo = OR)</span>
+      <span style="margin-left:auto"></span>
+      <button class="tiny sec" onclick="moveSpawnEntry(${ei},-1)">↑</button>
+      <button class="tiny sec" onclick="moveSpawnEntry(${ei},1)">↓</button>
+      <button class="tiny danger" onclick="delSpawnEntry(${ei})">✕ entrada</button>
+    </div>
+    ${subs}
+    <button class="tiny sec" onclick="addSpawnSub(${ei})">+ OR</button>
+    <div style="margin-top:6px"><code>${esc(buildSpawnEntryLine(entry))}</code></div>
+  </div>`;
+}
+function spawnSubHTML(c, ei, si, total) {
+  const typeOpts = ['bool','neg','num','true'].map(t=>`<option value="${t}" ${c.type===t?'selected':''}>${({bool:'Booleano',neg:'Negado (!)',num:'Numérico',true:'true'})[t]}</option>`).join('');
+  const mid = condMidHTML(c, k=>`setSpawnSub(${ei},${si},'${k}',this.value)`, SPAWN_NUM_PATHS);
+  return `<div class="line-head" style="margin-left:8px;padding-left:8px;border-left:2px solid #383838">
+    <select onchange="setSpawnSub(${ei},${si},'type',this.value)">${typeOpts}</select>
+    ${mid}
+    <span style="margin-left:auto"></span>
+    ${total>1?`<button class="tiny danger" onclick="delSpawnSub(${ei},${si})">✕</button>`:''}
+  </div>`;
+}
+function buildSpawnEntryLine(entry) {
+  return (entry.subs||[]).map(buildRawCond).filter(Boolean).join('|');
+}
+function buildSpawnCondOutput() {
+  const lines = state.spawnCond.map(e=>'    "'+buildSpawnEntryLine(e)+'"').join(',\n');
+  return 'spawnConditions = {\n'+lines+'\n}';
+}
+function buildSpawnCondLdtkOutput() {
+  return state.spawnCond.map(buildSpawnEntryLine).join('\n');
+}
+window.addSpawnEntry = () => { state.spawnCond.push({subs:[{type:'bool',path:'',op:'>',num:'',custom:''}]}); save(); render(); };
+window.delSpawnEntry = i => { state.spawnCond.splice(i,1); save(); render(); };
+window.moveSpawnEntry = (i,d) => { const j=i+d; if(j<0||j>=state.spawnCond.length)return; [state.spawnCond[i],state.spawnCond[j]]=[state.spawnCond[j],state.spawnCond[i]]; save(); render(); };
+window.addSpawnSub = ei => { state.spawnCond[ei].subs.push({type:'bool',path:'',op:'>',num:'',custom:''}); save(); render(); };
+window.delSpawnSub = (ei,si) => { state.spawnCond[ei].subs.splice(si,1); save(); render(); };
+window.setSpawnSub = (ei,si,k,v) => { state.spawnCond[ei].subs[si][k]=v; save(); render(); };
+
 // ================= IMPORT / EXPORT =================
 function renderData(m) {
   m.innerHTML = `
+  <h3>Guardar directo en el proyecto</h3>
+  <p class="muted">Requiere <code>node tools/dialog-server.js</code> corriendo en una terminal. Escribe directo en
+    <code>source/assets/data/script.lua</code>, <code>source/en.strings</code> y <code>source/jp.strings</code> — sin pasar por Descargas.</p>
+  <div class="toolbar">
+    <button onclick="saveToProject()">💾 Guardar en el proyecto</button>
+    <span class="pill" id="serverPill">servidor: ?</span>
+  </div>
+  <hr style="border-color:#333;margin:20px 0">
   <h3>Importar (pega y parsea)</h3>
   <div class="grid2">
     <div>
@@ -341,7 +448,39 @@ function renderData(m) {
   </div>
   <hr style="border-color:#333;margin:20px 0">
   <button class="danger" onclick="if(confirm('¿Borrar TODO el estado guardado?')){localStorage.removeItem(LS_KEY);location.reload();}">Resetear herramienta</button>`;
+  checkServerHealth();
 }
+
+// ----- Save server (tools/dialog-server.js) -----
+async function checkServerHealth() {
+  const p = document.getElementById('serverPill');
+  if (!p) return;
+  try {
+    const r = await fetch(SAVE_SERVER + '/health', { signal: AbortSignal.timeout(1500) });
+    if (!r.ok) throw new Error();
+    p.textContent = 'servidor: conectado ✓';
+    p.className = 'pill ok';
+  } catch {
+    p.textContent = 'servidor: no conectado';
+    p.className = 'pill warn';
+  }
+}
+window.saveToProject = async () => {
+  const p = document.getElementById('serverPill');
+  try {
+    const r = await fetch(SAVE_SERVER + '/save-all', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ script: exportScript(), en: exportStrings('en'), jp: exportStrings('jp') }),
+    });
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(j.error || ('HTTP ' + r.status));
+    if (p) { p.textContent = 'guardado en el proyecto ✓'; p.className = 'pill ok'; }
+  } catch (e) {
+    alert('No se pudo guardar en el proyecto.\n¿Está corriendo `node tools/dialog-server.js`?\n\n' + e.message);
+    if (p) { p.textContent = 'servidor: no conectado'; p.className = 'pill warn'; }
+  }
+};
 
 // ----- Parsers -----
 function importScript() {

@@ -1,9 +1,9 @@
-name=DinoPirates from inner space Brocolation
+name=DinoPirates from Outer Space
 author=Tangara Studios
 description=Can you survive in space, alone, and with only broccoli
 bundleID=com.tangara.dinopirates
-version=0.9.107
-buildNumber=131
+version=0.9.110
+buildNumber=132
 imagePath=/assets/launcher
 launchSoundPath=/assets/launcher
 contentWarning= This game contains dinosaurs and dances.

@@ -422,6 +422,12 @@ function scene:enter()
 						local keyNum = keyNumber or 1
 						shouldGenerate = not PlayerData.keys[keyNum]
 						printDebug("Checking keycard - KeyNumber:", keyNum, "shouldGenerate:", shouldGenerate)
+					elseif itemType == "food" or itemType == "notes" then
+						-- Food and notes can exist in multiple rooms at once (notes all
+						-- grant the same shared skill, e.g. canDance) — persist per-iid via
+						-- the 'collected' flag instead of gating on the shared grant below,
+						-- or picking up one would stop every other instance from spawning.
+						shouldGenerate = cf.collected ~= true
 					elseif cf.grants then
 						shouldGenerate = true
 						for pair in string.gmatch(cf.grants, "([^,]+)") do
@@ -434,9 +440,6 @@ function scene:enter()
 								end
 							end
 						end
-					elseif itemType == "food" then
-						-- Food is stackable: persist per-iid via the 'collected' flag
-						shouldGenerate = cf.collected ~= true
 					elseif itemRequirements[itemType] then
 						local itemPath = itemRequirements[itemType]
 						if itemPath:match("^items%.") then

@@ -1,34 +1,42 @@
 {
 	"identifier": "Room_9",
-	"uniqueIdentifer": "dab87dc0-ac70-11f0-997a-63497867517d",
-	"x": -944,
-	"y": 624,
+	"uniqueIdentifer": "af4d7e50-6fc0-11f1-989d-8151041b4734",
+	"x": 2000,
+	"y": -592,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "78785770-6fc0-11f1-b67a-cf9ecaa9adb5",
+			"levelIid": "d995d660-96d0-11f1-ad82-7bd6ddf00333",
+			"dir": "e"
+		},
+		{
+			"levelIid": "197eebe0-96d0-11f1-ad82-255366b1b178",
 			"dir": "n"
+		},
+		{
+			"levelIid": "2125b130-96d0-11f1-ad82-81c4cee9fd1a",
+			"dir": "w"
+		},
+		{
+			"levelIid": "2a2ace00-96d0-11f1-ad82-f535a8702a37",
+			"dir": "s"
 		}
 	],
 	"customFields": {
-		"shadow": true,
-		"light": 0.5,
+		"shadow": false,
+		"light": 0.1,
 		"visited": false,
 		"comic_name": null,
 		"comic_wasPlayed": false,
 		"level": 4,
 		"roomNumber": 9,
 		"tile": 9,
-		"DoorsConnection": [
-			"Top",
-			"Down",
-			"Left"
-		],
+		"DoorsConnection": [],
 		"play": null,
-		"procGen": false,
-		"roomRole": "Normal",
+		"procGen": true,
+		"roomRole": "StartUp",
 		"requiredItems": [],
 		"requiredSkills": []
 	},
@@ -37,36 +45,131 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"TubeExit": [
+			{
+				"id": "TubeExit",
+				"iid": "e602f690-6fc0-11f1-90a3-07815a3b0243",
+				"layer": "Items_and_Props",
+				"x": 324,
+				"y": 180,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "TubeExit",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Minifier": [
+			{
+				"id": "Minifier",
+				"iid": "8186e0b0-96d0-11f1-ad82-95d83dc2697b",
+				"layer": "Items_and_Props",
+				"x": 132,
+				"y": 68,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "minifier",
+					"nocollider": false,
+					"destroyed": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"Box": [
+			{
+				"id": "Box",
+				"iid": "888f4320-96d0-11f1-ad82-91b5864e3056",
+				"layer": "Items_and_Props",
+				"x": 28,
+				"y": 204,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "8a7e9000-96d0-11f1-ad82-233ceb06860d",
+				"layer": "Items_and_Props",
+				"x": 84,
+				"y": 28,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "8cc9df90-96d0-11f1-ad82-c5bca26de414",
+				"layer": "Items_and_Props",
+				"x": 372,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "8d8e4100-96d0-11f1-ad82-cf32821d1aea",
+				"layer": "Items_and_Props",
+				"x": 332,
+				"y": 28,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Box",
+				"iid": "8ef9b7e0-96d0-11f1-ad82-89096913903b",
+				"layer": "Items_and_Props",
+				"x": 84,
+				"y": 212,
+				"width": 32,
+				"height": 32,
+				"color": 12470831,
+				"customFields": {
+					"type": "box",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
 		"CrewMember": [
 			{
 				"id": "CrewMember",
-				"iid": "0c11a640-fa90-11f0-9f0d-c9ca42f46487",
+				"iid": "af4da560-6fc0-11f1-989d-cdee7b47a7a1",
 				"layer": "CM_and_enemies",
-				"x": 36,
-				"y": 28,
+				"x": 68,
+				"y": 100,
 				"width": 48,
 				"height": 48,
 				"color": 14984818,
 				"customFields": {
 					"isTaken": false,
-					"crewID": "CM001",
-					"forceSpawn": false
-				}
-			}
-		],
-		"Brocorat": [
-			{
-				"id": "Brocorat",
-				"iid": "0531c050-21a0-11f1-ba67-436fa97866a9",
-				"layer": "CM_and_enemies",
-				"x": 36,
-				"y": 204,
-				"width": 32,
-				"height": 32,
-				"color": 14120515,
-				"customFields": {
-					"speed": 0.5,
-					"dead": false,
+					"crewID": "100",
 					"forceSpawn": false
 				}
 			}
@@ -74,10 +177,10 @@
 		"Doors": [
 			{
 				"id": "Doors",
-				"iid": "f1da76b0-fa90-11f0-9039-7f762bb19d4f",
+				"iid": "af4da564-6fc0-11f1-989d-9b10dae8155e",
 				"layer": "Doors",
 				"x": 200,
-				"y": 235,
+				"y": 236,
 				"width": 48,
 				"height": 8,
 				"color": 16711680,
@@ -89,11 +192,11 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "d524fbd0-48b0-11f1-98a2-bdd7901b9007",
+				"iid": "af4da565-6fc0-11f1-989d-e569b633a73f",
 				"layer": "Doors",
-				"x": 336,
+				"x": 200,
 				"y": 4,
-				"width": 32,
+				"width": 48,
 				"height": 8,
 				"color": 16711680,
 				"customFields": {
@@ -104,9 +207,144 @@
 			},
 			{
 				"id": "Doors",
-				"iid": "ffb48f40-6fc0-11f1-b67a-432da539a34b",
+				"iid": "af4da566-6fc0-11f1-989d-0f8a38709c36",
 				"layer": "Doors",
-				"x": 200,
+				"x": 88,
+				"y": 4,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "af4da567-6fc0-11f1-989d-a14e745f4ad6",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "63376b20-96d0-11f1-8259-9d5a7be014a5",
+				"layer": "Doors",
+				"x": 396,
+				"y": 56,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "78018810-96d0-11f1-8259-71280a48a613",
+				"layer": "Doors",
+				"x": 88,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "79caaf50-96d0-11f1-8259-2571c33c5ddd",
+				"layer": "Doors",
+				"x": 328,
+				"y": 236,
+				"width": 16,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "7beec7d0-96d0-11f1-8259-67ee15f9de54",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "7dfd5c80-96d0-11f1-8259-2703138c14b8",
+				"layer": "Doors",
+				"x": 4,
+				"y": 200,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "801d5650-96d0-11f1-8259-99d6a1004336",
+				"layer": "Doors",
+				"x": 4,
+				"y": 56,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "85a75620-96d0-11f1-8259-d192e98f0088",
+				"layer": "Doors",
+				"x": 396,
+				"y": 200,
+				"width": 8,
+				"height": 16,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "88296d20-96d0-11f1-8259-9dd3d6395e74",
+				"layer": "Doors",
+				"x": 328,
 				"y": 4,
 				"width": 16,
 				"height": 8,

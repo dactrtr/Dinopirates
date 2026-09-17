@@ -1,0 +1,158 @@
+{
+	"identifier": "Room_30",
+	"uniqueIdentifer": "f02f6040-96d0-11f1-ad82-e3a055f1db21",
+	"x": 2768,
+	"y": 1648,
+	"width": 400,
+	"height": 240,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "e0227920-96d0-11f1-ad82-1da941d0a645",
+			"dir": "nw"
+		},
+		{
+			"levelIid": "c2a74570-96d0-11f1-ad82-97f41ea8aab4",
+			"dir": "n"
+		},
+		{
+			"levelIid": "02e961e0-96d0-11f1-ad82-d9257f2f4abf",
+			"dir": "sw"
+		}
+	],
+	"customFields": {
+		"shadow": true,
+		"light": 0.1,
+		"visited": false,
+		"comic_name": null,
+		"comic_wasPlayed": false,
+		"level": 4,
+		"roomNumber": 30,
+		"tile": 30,
+		"DoorsConnection": [],
+		"play": null,
+		"procGen": true,
+		"roomRole": "Normal",
+		"requiredItems": [],
+		"requiredSkills": []
+	},
+	"layers": [
+		"Gameplay.png",
+		"Foreground.png"
+	],
+	"entities": {
+		"Brocorat": [
+			{
+				"id": "Brocorat",
+				"iid": "626a3d30-96d0-11f1-ad82-09fbb84993d4",
+				"layer": "CM_and_enemies",
+				"x": 340,
+				"y": 52,
+				"width": 32,
+				"height": 32,
+				"color": 14120515,
+				"customFields": {
+					"speed": 0.5,
+					"dead": false,
+					"forceSpawn": false
+				}
+			}
+		],
+		"CrewMember": [
+			{
+				"id": "CrewMember",
+				"iid": "65905c60-96d0-11f1-ad82-c3e7b3870758",
+				"layer": "CM_and_enemies",
+				"x": 108,
+				"y": 172,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
+		"Ghost": [
+			{
+				"id": "Ghost",
+				"iid": "874b9d60-96d0-11f1-ad82-5b49d5eb956a",
+				"layer": "CM_and_enemies",
+				"x": 300,
+				"y": 172,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
+			}
+		],
+		"Doors": [
+			{
+				"id": "Doors",
+				"iid": "f02f6047-96d0-11f1-ad82-6793298c911d",
+				"layer": "Doors",
+				"x": 200,
+				"y": 236,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Down",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f02f6048-96d0-11f1-ad82-b366d49e717a",
+				"layer": "Doors",
+				"x": 200,
+				"y": 4,
+				"width": 48,
+				"height": 8,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Top",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f02f6049-96d0-11f1-ad82-41543854bb12",
+				"layer": "Doors",
+				"x": 396,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Right",
+					"KeyNumber": null
+				}
+			},
+			{
+				"id": "Doors",
+				"iid": "f02f604a-96d0-11f1-ad82-7147b9ec179c",
+				"layer": "Doors",
+				"x": 4,
+				"y": 120,
+				"width": 8,
+				"height": 48,
+				"color": 16711680,
+				"customFields": {
+					"NeedsKey": false,
+					"DoorsConnection": "Left",
+					"KeyNumber": null
+				}
+			}
+		]
+	}
+}

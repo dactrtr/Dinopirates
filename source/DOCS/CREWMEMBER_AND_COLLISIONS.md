@@ -185,7 +185,7 @@ If the difference between the target position and the actual position exceeds 0.
 
 In the current system, capturing a CrewMember does **not** explicitly validate whether the player has the bag in `collisions.lua`. The collision always calls `other:taken()` when the player (at normal size) touches the CrewMember.
 
-However, there is preparatory logic for the first encounter:
+However, there is a crew-count greeting check for the encounter:
 
 ```lua
 elseif other:isa(CrewMember) then
@@ -194,16 +194,17 @@ elseif other:isa(CrewMember) then
         return 'overlap'
     end
 
-    if PlayerData.CrewMemberData.amountTaken == 0 then
-        if other.crewId == 'CM001' then
-            -- custom screen for first crewmember (TODO: implement)
-        end
-        self.dialogUI:addScreen("gotcha", other.sourceFeed)  -- first capture screen
+    -- Crew-count greeting, evaluated against amountTaken BEFORE this pickup.
+    local greeting = CrewMember.matchGreeting(Config.CrewMember.greetingScripts)
+    if greeting then
+      self.dialogUI:addScreen(greeting, other.sourceFeed)
     end
     other:taken()
 ```
 
-The field `PlayerData.items.hasBag` exists in `PlayerDataTables.lua` but validation of the bag before capturing is marked as pending (the `-- custom screen here` comment indicates incomplete work).
+The field `PlayerData.items.hasBag` exists in `PlayerDataTables.lua` but validation of the bag before capturing is not implemented — capture is unconditional at normal size.
+
+See [DIALOG_SYSTEM.md](DIALOG_SYSTEM.md#crew-count-greetings-crewmembermatchgreeting) for the greeting-lookup mechanism (`CrewMember.matchGreeting`, `Config.CrewMember.greetingScripts` / `greetingScriptsTiny`).
 
 ---
 
@@ -211,9 +212,9 @@ The field `PlayerData.items.hasBag` exists in `PlayerDataTables.lua` but validat
 
 When the player (at normal size) collides with a CrewMember:
 
-1. If `PlayerData.isTiny == true`: `self.currentTrigger = other` is assigned and returns `'overlap'`. No capture occurs; the CrewMember acts as a dialog trigger.
-2. If it is the first capture (`amountTaken == 0`): the "gotcha" screen is shown with `dialogUI:addScreen("gotcha", other.sourceFeed)`.
-3. `other:taken()` is called.
+1. If `PlayerData.isTiny == true`: `self.currentTrigger = other` is assigned and returns `'overlap'`. No capture occurs; the CrewMember acts as a dialog trigger — pressing A later calls `CrewMember:returnScript()`, which checks `Config.CrewMember.greetingScriptsTiny` before falling back to the per-crewId dialog (`crewId .. "isTiny"`).
+2. Otherwise, `Config.CrewMember.greetingScripts` is checked against `amountTaken` (before this capture); a match shows that dialog (e.g. `0CM` on the very first capture).
+3. `other:taken()` is called — capture proceeds regardless of whether a greeting matched.
 
 ### taken()
 

@@ -1,7 +1,7 @@
 {
 	"identifier": "Room_3",
 	"uniqueIdentifer": "bf654080-ac70-11f0-997a-e578ba2da2ac",
-	"x": 400,
+	"x": 16,
 	"y": -240,
 	"width": 400,
 	"height": 240,
@@ -108,9 +108,9 @@
 				"iid": "f2317670-ac70-11f0-ae64-133829c2c353",
 				"layer": "Triggers",
 				"x": 252,
-				"y": 108,
+				"y": 124,
 				"width": 32,
-				"height": 32,
+				"height": 24,
 				"color": 16711748,
 				"customFields": {
 					"script": "kitchenWeapons",
@@ -176,6 +176,44 @@
 					"conditionalScripts": [
 						"runCount>=2:notTheFirstTime"
 					],
+					"SpawnConditions": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "f1620960-96d0-11f1-ad82-25dfea33b69d",
+				"layer": "Triggers",
+				"x": 276,
+				"y": 92,
+				"width": 24,
+				"height": 24,
+				"color": 16711748,
+				"customFields": {
+					"script": "smallSpaces",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": [
+						"isTiny:smallSpacesisTiny"
+					],
+					"SpawnConditions": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "db9a6d10-96d0-11f1-ad82-e9f0ba4bccec",
+				"layer": "Triggers",
+				"x": 340,
+				"y": 180,
+				"width": 24,
+				"height": 24,
+				"color": 16711748,
+				"customFields": {
+					"script": "aLamp",
+					"usedTrigger": false,
+					"type": "Story",
+					"mapPercent": 0,
+					"conditionalScripts": [],
 					"SpawnConditions": []
 				}
 			}

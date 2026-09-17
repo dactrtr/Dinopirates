@@ -1,16 +1,12 @@
 {
 	"identifier": "Room_10",
 	"uniqueIdentifer": "326d5080-48b0-11f1-a37f-1b74e05a8681",
-	"x": 400,
+	"x": 16,
 	"y": 240,
 	"width": 400,
 	"height": 240,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
-		{
-			"levelIid": "c118e3f0-ac70-11f0-997a-a35ec59b96eb",
-			"dir": "w"
-		},
 		{
 			"levelIid": "cf8f2160-ac70-11f0-997a-c71a3a3308ed",
 			"dir": "nw"
@@ -81,6 +77,26 @@
 					"script": "TinySpaces",
 					"usedTrigger": false,
 					"type": "Search",
+					"mapPercent": 0,
+					"conditionalScripts": [
+						"isTiny:TinySpacesisTiny"
+					],
+					"SpawnConditions": []
+				}
+			},
+			{
+				"id": "Triggers",
+				"iid": "7a809360-96d0-11f1-ad82-ad4f4ec8f201",
+				"layer": "Triggers",
+				"x": 188,
+				"y": 60,
+				"width": 128,
+				"height": 8,
+				"color": 16711748,
+				"customFields": {
+					"script": "secondCall",
+					"usedTrigger": false,
+					"type": "Story",
 					"mapPercent": 0,
 					"conditionalScripts": [],
 					"SpawnConditions": []

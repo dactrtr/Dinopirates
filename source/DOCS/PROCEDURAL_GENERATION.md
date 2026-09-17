@@ -175,7 +175,7 @@ For each node, `generate` rolls which authored markers become active this run (s
 - Eligible nodes: non-start, non-secret, with at least one `CrewMember` marker. About `ceil(#graph / roomsPerCrewSpawn)` crew are placed per run, capped by uncollected count.
 - Recruiting the **whole roster** calls `RunState.revealFinalRoom()`, which attaches a `Final`-role template to a node with a free side. Entering the final room ends the run → CreditsScene.
 
-Each crew member has its own hat (`Hats(crewId)`) and dialog (`<crewId>_tiny`, fallback `CM001_tiny`).
+Each crew member has its own hat (`Hats(crewId)`) and dialog (`<crewId>isTiny`, fallback `CM001isTiny`).
 
 ---
 

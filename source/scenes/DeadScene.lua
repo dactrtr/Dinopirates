@@ -21,6 +21,10 @@ local menu
 local crankTick = 0
 local bg = nil
 
+-- Maps PlayerData.deathCause ("hp" | "sanity" | "void", see PlayerDataTables.lua) to a
+-- frame index in the dead-screen-table-400-240 imagetable (frame 1 = top cell).
+local DEATH_CAUSE_FRAME = { hp = 1, sanity = 2, void = 3 }
+
 
 
 -- It is recommended that you declare, but don't yet define,
@@ -61,7 +65,9 @@ DeadScene.inputHandler = {
 -- first thing that happens when transitining away from another scene.
 function scene:init()
 	scene.super.init(self)
-	bg = Graphics.image.new('assets/images/screens/dead-screen.png')
+	local frames = Graphics.imagetable.new('assets/images/screens/dead-screen-table-400-240')
+	local frameIndex = DEATH_CAUSE_FRAME[PlayerData.deathCause] or DEATH_CAUSE_FRAME.hp
+	bg = frames and frames:getImage(frameIndex)
 	menu = Noble.Menu.new(
 		true,
 		Noble.Text.ALIGN_RIGHT,
@@ -104,17 +110,15 @@ function scene:update()
 	elseif PlayerData.deathCause == "void" then
 		msg = "you fell into the void"
 	end
+	-- Draw the background and the message as two separate layers on screen every frame,
+	-- instead of baking the text into `bg` via lockFocus — that permanently mutated the
+	-- loaded image's pixels every frame with no clear, so text from a previous death
+	-- (same session) could remain and get overdrawn by the next one, looking doubled.
 	if bg then
-		Graphics.lockFocus(bg)
-			Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
-			Graphics.drawText(msg, 2, 220)
-		Graphics.unlockFocus()
 		bg:draw(0, 0)
-	else
-		-- No dead-screen art yet: draw the message directly on the scene background.
-		Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
-		Graphics.drawText(msg, 2, 220)
 	end
+	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
+	Graphics.drawText(msg, 2, 220)
 	menu:draw(400, 60)
 end
 
