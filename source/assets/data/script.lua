@@ -307,6 +307,15 @@ script = {
         }
     },
     {
+        name = "toofat",
+        dialog = {
+            {
+                video = 'playerWorry',
+                text = "toofat-01",
+            }
+        }
+    },
+    {
         name = "notnormalBrocoli",
         dialog = {
             {

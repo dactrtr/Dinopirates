@@ -279,6 +279,35 @@ function IsTileWalkable(tileValue)
 	return WALKABLE_TILES[tileValue] == true
 end
 
+-- mark: Calories (the fat loop)
+
+--- Re-evaluates PlayerData.isFat from the current calorie count, with hysteresis.
+-- Two thresholds on purpose: you become fat at `fatThreshold` but must walk back down to the
+-- lower `leanThreshold` to shed it. A single threshold would flicker the state (and the
+-- minifier prompt) every step taken at the boundary.
+-- See docs/superpowers/GAME_DESIGN.md §4.
+function UpdateFatState()
+	local calories = PlayerData.calories or 0
+	if PlayerData.isFat then
+		if calories <= Config.Calories.leanThreshold then PlayerData.isFat = false end
+	elseif calories >= Config.Calories.fatThreshold then
+		PlayerData.isFat = true
+	end
+end
+
+--- Adds calories (eating), clamped to the ceiling. Keeps isFat in sync.
+function GainCalories(amount)
+	PlayerData.calories = math.min((PlayerData.calories or 0) + amount, Config.Calories.max)
+	UpdateFatState()
+end
+
+--- Removes calories (walking, cranking), clamped at the floor so they never go negative.
+-- Keeps isFat in sync.
+function BurnCalories(amount)
+	PlayerData.calories = math.max((PlayerData.calories or 0) - amount, Config.Calories.min)
+	UpdateFatState()
+end
+
 --- Creates colliders for all non-walkable tiles (everything except slime/hole/floor).
 -- @param tileData table The 2D matrix of tile IDs
 -- @return table List of created Box sprites

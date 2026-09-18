@@ -10,6 +10,113 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-09-18 — Fix: dialogs hitched on every line (per-line asset reloads)
+
+**What:** `dialogScreen:nextDialog()` re-read two assets from flash on **every dialog line**:
+the 264 KB `KH-Dot-Akihabara-16.fnt` (into a local that was discarded immediately), and the
+58 KB / 26-frame `videoFeed-table-118-94.png` by constructing a fresh `videoFeed` — Noble's
+`Animation.new` has no imagetable cache (`Noble.Animation.lua:88`). ~320 KB of I/O plus decode
+per line, which is the stutter.
+
+Both now load **once at module scope**, matching how `dialogbox` was always handled in the same
+file:
+- `dialogFont` is a module-level `<const>`.
+- `video` is built on first use; later lines only call `video.animation:setState(videoState)`.
+  All portraits including `-tiny` variants live on that one animation object.
+- `removeAll()` removes `video` from the scene but never nils it — that's what keeps the reuse
+  alive across dialogs.
+- The dead `videoActive` flag is gone; it guarded only the construction that no longer happens.
+
+**Also fixed:** `Graphics.setFont` now runs **inside** the `pushContext(dialogtext)` block so
+`popContext` restores it. It used to set the global font and never restore, so after the first
+dialog of a playthrough every text drawn without an explicit `setFont` rendered in the dialog
+typeface instead of the `JF-Dot-Shinonome16` default from `main.lua`.
+
+**Files:** `entities/UI/dialog/dialogScreen.lua`, `DOCS/DIALOG_SYSTEM.md`.
+
+**Love2D mapping:** The same trap exists — `love.graphics.newFont` and `newImage` are file loads
+and must never sit inside a per-line function. Load both at module scope. Love2D has no
+`pushContext`/`popContext` font save-restore, so set the font before drawing the dialog text and
+explicitly set it back afterwards.
+
+**Not yet measured:** the fix is from static analysis (file sizes on disk + confirming Noble has
+no imagetable cache). The frame-time improvement has not been measured in the simulator.
+
+---
+
+## 2026-09-18 — Feature: debug stat readout on the in-game menu
+
+**What:** With the `debug` global on, the in-game menu paints a two-column stat block on its
+empty right-hand page: room / run / map%, calories / fat / steps, size / food, hp / battery /
+sanity / madness, crew / power / dances. Debug off = the menu is exactly as before.
+
+- New `Config.DebugStats` (panel rect, line height, column gap, font — no magic numbers).
+- `inGameMenu:drawDebugStats()` paints onto the same `menuImage` buffer the map uses, so it
+  inherits the pristine-art reset and needs no sprite of its own to tear down.
+- Values are **right-aligned** at the column edge rather than at a fixed offset: `totalSteps`
+  is a lifetime counter that can reach six digits, and right alignment keeps a long value from
+  overrunning the neighbouring column.
+
+**Why:** The fat loop added state (`isFat`, fractional `calories`) that is invisible in normal
+play and can't be verified without reading it somewhere. The menu's right page was already
+empty in the art.
+
+**Files:** `assets/data/Config.lua`, `entities/UI/inGameMenu.lua`, `DOCS/INGAME_MENU.md`.
+
+**Love2D mapping:** Pure drawing — port `Config.DebugStats` and `buildStatColumns()` verbatim.
+One gotcha: the Playdate version leans on `pushContext`/`popContext` to save and restore the
+active font, so the global `shinonome` default survives. Love2D has no equivalent — call
+`love.graphics.setFont()` back to the default explicitly after drawing.
+
+**Known limitation:** the menu still requires `hasDWatch` to open at all
+(`displayMenu()` returns early without it), so the readout is unreachable on a save that
+hasn't found the D-Watch yet. Left as-is deliberately; flipping it is a one-line change.
+
+---
+
+## 2026-09-18 — Feature: the calorie "fat loop" — eating gates the minifier
+
+**What:** Calories became a real system instead of an unused counter. Eating an enemy (dance win)
+grants `Config.Calories.perMeal`; walking and cranking burn it back down. Past
+`Config.Calories.fatThreshold` the player is **too fat to use the minifier** — every tiny-only
+route (pneumatic tubes, tiny holes) closes until they walk back down to `leanThreshold`.
+
+- New `Config.Calories` block. **One knob, `roomsPerMeal = 2`** — `fatThreshold` (300),
+  `leanThreshold` (200), `max` (500), `burnPerMove` (0.2) and `perFood` (25) all derive from it.
+- **Two thresholds, on purpose (hysteresis).** A single one would flicker the state every step at
+  the boundary. The 100-calorie gap between them *is* the cost of coming back: ~501 moves,
+  i.e. 2 rooms of walking.
+- `PlayerData.isFat` is the hysteresis flag, kept in sync by `UpdateFatState()`.
+- All calorie mutation now routes through `GainCalories()` / `BurnCalories()` (`Utilities.lua`),
+  which clamp to `[0, max]`. Calories can no longer go negative.
+- Only **shrinking** is gated. Growing back is never blocked — a player who fattened up while
+  tiny would otherwise be stranded in tiny-only routes.
+- Refusal shows the `toofat` dialog (`toofat-01` in `en.strings`) rather than failing silently.
+
+**Why:** Calories are the anti-heal-spam tax — healing must have a running cost so that past a
+point the player chooses to walk wounded. The old numbers made that impossible: eating gave +60
+while walking burned 10 per 400 moves, so working off one enemy took ~2,400 moves and the player
+crossed the threshold once, never to return. The cost is deliberately **lost access**, not a stat
+penalty: being lean *opens* something, which keeps it on the right side of pillar P3.
+See `docs/superpowers/GAME_DESIGN.md` §4 "Calories: the fat loop".
+
+**Files:** `assets/data/Config.lua`, `assets/data/PlayerDataTables.lua`, `assets/data/script.lua`,
+`en.strings`, `utilities/Utilities.lua`, `utilities/SaveSystem.lua`,
+`entities/player/state.lua`, `scenes/MazeScene.lua`, `scenes/DanceScene.lua`.
+
+**Love2D mapping:** Pure data + logic, no Playdate APIs involved — port `Config.Calories`, the
+three `Utilities` helpers and the `startMinifying` guard verbatim. Two gotchas: (1) `isFat` is
+**derived state** — recompute it via `UpdateFatState()` after loading a save, never trust the
+stored flag alone (the Playdate `SaveSystem.load` does this, for saves written before the field
+existed); (2) `burnPerMove` is fractional, so `calories` is a float — never `string.format("%d",
+calories)`, floor it at the draw site.
+
+**Still to tune:** `movesPerRoom = 250` is an estimate (400px room / 2px per move, plus
+wandering). It is the only value in the block not derived from code, and it sets the real feel of
+`roomsPerMeal`. Validate in play.
+
+---
+
 ## 2026-09-18 — Fix: Retry after death spawns at the run-start point, not at a door
 
 **What:** `DeadScene`'s Retry now sets `PlayerData.playerSpawn` to `Config.Player.runStartSpawn`

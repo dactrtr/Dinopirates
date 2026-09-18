@@ -24,10 +24,9 @@ end
 |-----------------|-------|-------------|
 | `dialogbg` | module-local | `dialogBG` sprite: the background image of the dialog box (`assets/images/ui/dialog/dialogbox.png`), positioned at `(0, 138)`. |
 | `screenimg` | module-local | `imageScreen` sprite: displays optional static images positioned at `(50, 4)`. |
-| `video` | module-local | Current `videoFeed` instance: the animated portrait. Recreated on each line. |
+| `video` | module-local | The animated portrait. Built on FIRST use and then reused for the rest of the game — see Performance below. |
 | `dialogcounter` | module-local | Index of the current line within the `dialog` array. Starts at `1`. Reset to `1` when closed. |
 | `dialogPosition` | module-local | Index in the global `script` table of the active entry. |
-| `videoActive` | module-local | Boolean that prevents recreating the videoFeed if it is already active in the current frame. |
 
 ### Helper Classes
 
@@ -212,17 +211,43 @@ nextDialog()
   3. If dialogcounter <= array size:
      a. Determines the video state for the current line
      b. If PlayerData.isTiny == true: appends "-tiny" to the state
-     c. Creates videoFeed(400, 240, videoState, ZIndex.alert)
+     c. video == nil -> build it once; otherwise just
+        video.animation:setState(videoState) and re-add it
      d. If the line has .screen: screenimg:addScreenfeed(screen)
         If not: screenimg:remove()
      e. Renders the localized text in dialogtext (250×64 image)
-        using font KH-Dot-Akihabara-16 and Graphics.getLocalizedText()
+        using the module-level dialogFont and Graphics.getLocalizedText()
      f. Adds self (dialogScreen) to the scene
      g. Increments dialogcounter
   4. If dialogcounter > array size:
      a. Resets dialogcounter = 1
      b. Calls self:removeAll() to close the dialog
 ```
+
+### Performance — why assets are loaded at module scope
+
+Dialogs used to visibly hitch the game on **every line**, because `nextDialog()` read two
+assets off the flash each time it ran:
+
+| What | Size | Was |
+|---|---|---|
+| `KH-Dot-Akihabara-16.fnt` | 264 KB | `Graphics.font.new(...)` into a **local**, discarded immediately, reloaded next line |
+| `videoFeed-table-118-94.png` | 58 KB, 26 frames | a fresh `videoFeed()` per line → `Noble.Animation.new` → `Graphics.imagetable.new`. **Noble does not cache imagetables** (`Noble.Animation.lua:88`) |
+
+That was ~320 KB of disk I/O plus decode per line. Both are now loaded **once at module
+scope**, the same way `dialogbox` always was:
+
+- `dialogFont` is a module-level `<const>`.
+- `video` is built on first use and afterwards only ever has `animation:setState()` called on
+  it. Every portrait, `-tiny` variants included, is registered on that single animation
+  object, so switching faces touches no files. `NobleScene:addSprite` de-duplicates
+  (`NobleScene.lua:80`), so re-adding the same sprite never grows the scene's sprite list.
+
+**Font scoping:** `Graphics.setFont` is called **inside** the `pushContext(dialogtext)` block,
+so `popContext` restores the previous font. It used to be set on the global graphics state and
+never restored — meaning that after the first dialog of a playthrough, every piece of text
+drawn without an explicit `setFont` silently rendered in the dialog typeface instead of the
+`JF-Dot-Shinonome16` default from `main.lua`.
 
 **Note**: The binding is `AButtonDown` in MazeScene, not `AButtonHeld` or `AButtonHold`. This prevents the same frame that opens the dialog from immediately closing it.
 
@@ -236,7 +261,6 @@ nextDialog()
 function dialogScreen:removeAll()
     PlayerData.isTalking = false   -- unblocks input
     PlayerData.isGaming  = true    -- restores gameplay
-    videoActive = false
     if dialogbg    ~= nil then dialogbg:remove()    end
     if video       ~= nil then video:remove()       end
     if screenimg   ~= nil then screenimg:remove()   end
@@ -244,7 +268,11 @@ function dialogScreen:removeAll()
 end
 ```
 
-All dialog system sprites are removed. `dialogcounter` was already reset to `1` before calling `removeAll()`.
+All dialog system sprites are removed from the scene. `dialogcounter` was already reset to `1`
+before calling `removeAll()`.
+
+Note that `video` is **removed but never set to `nil`** — keeping the object alive is exactly
+what lets the next dialog reuse it instead of reloading its imagetable. See Performance below.
 
 ### Behavior When Script is Not Found
 

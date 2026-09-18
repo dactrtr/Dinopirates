@@ -111,6 +111,14 @@ end
 function Player:startMinifying()
     if not self.currentMinifier or PlayerData.isTalking or not PlayerData.isGaming then return end
 
+    -- The fat gate: eating heals but fattens, and a fat dino doesn't fit through the minifier.
+    -- Refuse with a line rather than silently doing nothing, so the player learns the rule.
+    if self:isTooFatToShrink() then
+        PlayerData.isGaming = false
+        self.dialogUI:addScreen("toofat")
+        return
+    end
+
     -- Lock player and center
     PlayerData.isGaming = false
     self.triggerEnteredOnce = true -- Stop trigger checks
@@ -199,11 +207,21 @@ function Player:pedometer()
   PlayerData.totalSteps += Config.Pedometer.stepsPerMovement
   if PlayerData.steps >= Config.Pedometer.stepsToTrigger then
     PlayerData.steps = 0
-    self:burnCalories(Config.Pedometer.caloriesPerBurn)
   end
+  -- Walking is the only way back down from fat: burn a slice of a meal every move, rather
+  -- than a lump every N steps, so the fat gauge moves visibly while the player walks.
+  self:burnCalories(Config.Calories.burnPerMove)
 end
 function Player:burnCalories(calories)
-    PlayerData.calories -= calories
+    BurnCalories(calories)
+end
+
+--- True when the player is too fat to use the minifier.
+-- Only ever blocks SHRINKING. Growing back to normal size is never gated -- a player who
+-- fattened up while tiny must always be able to return, or they'd be stranded in the routes
+-- that only tiny can walk.
+function Player:isTooFatToShrink()
+    return PlayerData.isFat and not PlayerData.isTiny
 end
 
 function Player:deFocus()

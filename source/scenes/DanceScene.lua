@@ -504,7 +504,8 @@ function scene:checkDanceResults()
       
       -- Sets the power level of the enemies
       PlayerData.amountDances += 1
-      PlayerData.calories = math.min((PlayerData.calories or 0) + 60, Config.Dance.caloriesMax)
+      -- Eating the enemy is what heals you -- and what fattens you. One meal.
+      GainCalories(Config.Calories.perMeal)
       -- winning still costs the Captain a piece of his sanity, narratively the guilt of
       -- what it takes to survive; ghosts/glitching trigger once dangerCounterThreshold is passed
       PlayerData.sanityCounter += 1

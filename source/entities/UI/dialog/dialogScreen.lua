@@ -2,11 +2,18 @@ import "entities/UI/dialog/videoFeed"
 
 local dialogbox <const> = Graphics.image.new('assets/images/ui/dialog/dialogbox.png')
 
+-- Loaded once, here, for the same reason dialogbox is: this .fnt is 264KB, and it used to be
+-- re-read from disk inside nextDialog() on EVERY dialog line, which is what made each line
+-- hitch.
+local dialogFont <const> = Graphics.font.new('assets/fonts/KH-Dot-Akihabara-16')
+
 local dialogtext <const> = Graphics.image.new(250, 64)
 local screen <const> = Graphics.image.new(277,146)
+-- Built on first use and then reused for the rest of the game. Constructing a videoFeed
+-- reloads a 26-frame, 58KB imagetable from disk (Noble.Animation.new has no cache), so
+-- rebuilding it per line was the other half of the hitch.
 local video = nil
 local screenImg = nil
-local videoActive = false
 local dialogcounter = 1
 local dialogPosition = nil
 dialogBG = {}
@@ -74,42 +81,44 @@ function dialogScreen:nextDialog()
 	end
 	dialogbg:add()
 	local dialogArray = entry.dialog
-	if video ~= nil then
-		video:remove()
-	end
 	self:setImage(dialogtext)
 	if table.getsize(dialogArray) ~= nil then
-		
+
 		if dialogcounter <= table.getsize(dialogArray)then
-			if videoActive == false then
-				local videoState = dialogArray[dialogcounter].video
-				if PlayerData.isTiny == true then
-					-- Check if a tiny version of this state exists, otherwise fallback to 'tiny'
-					video = videoFeed(400,240,videoState .. '-tiny', ZIndex.alert)
-				else	
-					video = videoFeed(400,240,videoState, ZIndex.alert)
-				end
-				videoActive = true
+			local videoState = dialogArray[dialogcounter].video
+			if PlayerData.isTiny == true then
+				videoState = videoState .. '-tiny'
 			end
-			
+			-- Build once, then just switch state. Every face -- including the '-tiny'
+			-- variants -- is already registered on this one animation object, so changing
+			-- portrait costs nothing and never touches the disk.
+			if video == nil then
+				video = videoFeed(400, 240, videoState, ZIndex.alert)
+			else
+				video.animation:setState(videoState)
+				video:add(400, 240)
+			end
+
 			if dialogArray[dialogcounter].screen  then
 				screenimg:addScreenfeed(dialogArray[dialogcounter].screen)
 			else
 				screenimg:remove()
 			end
-			
+
 			local lang = Panels.vars.lang
-			local shinonome = Graphics.font.new('assets/fonts/KH-Dot-Akihabara-16')
-			Graphics.setFont(shinonome, 'normal')
 			dialogtext:clear(Graphics.kColorClear)
 			Graphics.pushContext(dialogtext)
+				-- setFont inside the context: popContext restores the previous font, so the
+				-- global default set in main.lua survives. It used to be set globally here
+				-- and never restored, so every text drawn after the first dialog of a
+				-- playthrough silently switched typeface.
+				Graphics.setFont(dialogFont, 'normal')
 				local textString = Graphics.getLocalizedText(script[dialogPosition].dialog[dialogcounter].text, lang)
 				Graphics.drawTextInRect(textString, 0, 0, dialogtext.width, dialogtext.height)
 			Graphics.popContext()
-			
+
 			self:add()
 			dialogcounter += 1
-			videoActive = false
 		else
 			dialogcounter = 1
 			self:removeAll()
@@ -120,7 +129,8 @@ end
 function dialogScreen:removeAll()
 	PlayerData.isTalking = false
 	PlayerData.isGaming = true
-	videoActive = false
+	-- `video` is only removed from the scene, never nil'd: keeping the object alive is what
+	-- lets the next dialog reuse it instead of reloading its imagetable.
 	if dialogbg ~= nil then dialogbg:remove() end
 	if video ~= nil then video:remove() end
 	if screenimg ~= nil then screenimg:remove() end

@@ -142,6 +142,31 @@ Falling through a hole or rising through a tube does **not** go to a fixed neigh
 
 - **Never run `git commit`** during implementation, fixes, or any other work. The user commits manually. Skip all commit steps in plans. Compiling with `pdc` to verify is fine, but stop before committing.
 
+### Design intent
+
+`docs/superpowers/GAME_DESIGN.md` is the **why** layer — pillars, resource roles, anti-goals,
+and open design questions. `source/DOCS/` says how the systems work; the GDD says what they are
+for. A new feature's spec opens with one line naming the pillar it serves. If that line can't be
+written honestly, the feature doesn't belong or a pillar is wrong.
+
+The code is the GDD's source of truth. Where code and intent disagree, the gap goes in the
+GDD's **Divergences** table — never silently resolved.
+
+### Version bumping
+
+Edit `source/pdxinfo` — the only authoritative copy. The two `*.pdx/pdxinfo` files are `pdc`
+build output and regenerate themselves; never edit them by hand.
+
+| Field | When to bump |
+|---|---|
+| `buildNumber` | **+1 on every change that touches `source/`** — Lua, `Config.lua`, assets, LDtk. Always. |
+| `version` (`0.9.X`) | **+1 on the patch only when a feature or a player-visible fix lands.** Not per commit. |
+
+Changes that touch **only** `docs/`, `source/DOCS/`, specs, plans, or `CLAUDE.md` **do not bump
+anything** — they don't change the `.pdx`.
+
+Bump as part of the change itself, before reporting the work done.
+
 ---
 
 ## Noble Engine Notes

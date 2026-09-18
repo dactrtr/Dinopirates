@@ -9,6 +9,9 @@ hats of the captured crew members. There is no skill or item selection — abili
 fire directly from the B button based on context (see `PLAYER_SYSTEMS.md` and
 `entities/player/abilities.lua`).
 
+When the `debug` global is on, a **stat readout** is also painted on the menu's empty
+right-hand page — see [Debug stat readout](#debug-stat-readout) below.
+
 ---
 
 ## Files Involved
@@ -201,3 +204,52 @@ end
 ### Key Difference: Input Held
 
 In Playdate, `AButtonHeld` is a Noble Engine callback that fires after 1 second. In Love2D, it must be detected manually with a timer in `love.update(dt)`.
+
+---
+
+## Debug stat readout
+
+Only drawn when the `debug` global is on (System Menu → "debug", or the `up up up down`
+cheat code). With debug off the menu is byte-for-byte what it was before.
+
+The menu art is a two-page book: the left page carries the map and the crew hats, and the
+**right page is empty** — that is where the readout goes. It is painted straight onto
+`menuImage` from `drawDebugStats()`, called at the end of `drawMapOnMenu()`. Because it
+shares the map's buffer, it inherits the pristine-art reset done there and needs **no sprite
+of its own** — nothing extra to tear down in `closeMenu()`.
+
+All values are read fresh from `PlayerData` on each open, so they are never stale.
+
+| Column | Section | Rows |
+|---|---|---|
+| Left | `RUN` | `room` (`RunState.currentNodeId`), `run` (`runCount`), `map` (`mapPercent`) |
+| Left | `FAT LOOP` | `calories`, `fat` (`isFat`), `steps` (`totalSteps`) |
+| Left | `STATE` | `size` (BIG/TINY), `food` |
+| Right | `BODY` | `hp`, `battery`, `sanity`, `madness` (`sanityCounter`) |
+| Right | `PROGRESS` | `crew` (`amountTaken`/`totalCrew`), `power` (`EnemiesData.powerLevel`), `dances` |
+
+Two labelling choices worth keeping:
+
+- **`madness` is `sanityCounter`**, deliberately *not* labelled "sanity". The 0–100 resource
+  and the lifetime counter are different numbers with different lifetimes, and conflating
+  them has caused doc errors before.
+- **`calories` prints one decimal.** Calories became a float when the fat loop landed
+  (`Config.Calories.burnPerMove = 0.2`).
+
+### Layout
+
+Everything lives in `Config.DebugStats` — panel rect, line height, column gap, font.
+
+Values are **right-aligned** at `panel.x + valueRight`, not drawn at a fixed offset from the
+label. `totalSteps` is a lifetime counter that can reach six digits; right alignment lets a
+long value grow back toward its own label instead of overrunning the next column. The
+rightmost pixel lands at 380, inside the page border at ~385.
+
+The block is vertically centred inside `panel` against whichever column has more rows.
+
+### Love2D notes
+
+Pure drawing code — port `Config.DebugStats` and `buildStatColumns()` as-is. The Playdate
+version relies on `pushContext`/`popContext` saving and restoring the active font, so the
+global `shinonome` default is left untouched; Love2D needs an explicit
+`love.graphics.setFont()` back to the default after drawing the readout.

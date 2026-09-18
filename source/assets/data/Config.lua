@@ -85,10 +85,46 @@ Config.Dash = {
     tapsToTrigger  = 3,     -- number of taps in a row (within tapWindow each) that fire a dash
 }
 
+-- Calories — the anti-heal-spam tax.
+-- See docs/superpowers/GAME_DESIGN.md §4 "Calories: the fat loop" for the why.
+--
+-- Eating heals but fattens; walking burns it back off. Past `fatThreshold` the player is too
+-- fat to use the minifier, which closes every tiny-only route (tubes, tiny holes) until they
+-- walk back down to `leanThreshold`.
+--
+-- The two thresholds are deliberate: a single one would make the state flicker at the
+-- boundary (eat -> fat -> one step -> lean -> eat). The gap between them IS the cost of
+-- coming back, and it is exactly `roomsPerMeal` rooms of walking.
+--
+-- TUNE `roomsPerMeal`. Everything below it derives.
+Config.Calories = {
+    roomsPerMeal = 2,     -- <-- THE knob: rooms of walking to burn off one eaten enemy
+    perMeal      = 100,   -- scale unit: calories granted by eating one enemy (dance win)
+    fatAtMeals   = 3,     -- meals eaten from lean before the minifier refuses
+    leanAtMeals  = 2,     -- meals to walk back down to before shrinking is allowed again
+    maxMeals     = 5,     -- cap
+    min          = 0,     -- floor; calories never go negative
+    movesPerRoom = 250,   -- ESTIMATE (~400px room / 2px per move, plus wandering). The only
+                          -- value here NOT derived from code — validate it in the simulator.
+}
+
+-- NOTE: burnPerMove is fractional, so PlayerData.calories is a float from here on (same as
+-- PlayerData.battery, which already drains by 0.5). Never string.format("%d", calories) --
+-- Lua 5.4 raises "number has no integer representation". Floor it at the draw site.
+--
+-- Derived. Don't tune these directly — move roomsPerMeal / perMeal above instead.
+Config.Calories.fatThreshold  = Config.Calories.perMeal * Config.Calories.fatAtMeals   -- 300
+Config.Calories.leanThreshold = Config.Calories.perMeal * Config.Calories.leanAtMeals  -- 200
+Config.Calories.max           = Config.Calories.perMeal * Config.Calories.maxMeals     -- 500
+Config.Calories.burnPerMove   = Config.Calories.perMeal /
+                                (Config.Calories.roomsPerMeal * Config.Calories.movesPerRoom) -- 0.2
+Config.Calories.perFood       = Config.Calories.perMeal / 4  -- 25: cooked food fattens far
+                                                             -- less than eating a whole enemy
+
 -- Microwave + Food healing
 Config.Microwave = {
     hpPerFood       = 1,   -- HP restored per food cooked (1:1 for now; tune later)
-    caloriesPerFood = 1,   -- calories gained per food cooked (byproduct; tune later)
+    caloriesPerFood = Config.Calories.perFood,  -- byproduct; scales with the calorie economy
     carryMax        = 10,  -- max food the player can carry
     perPickup       = 1,   -- food granted per food item picked up
     crankPerFood    = 1,   -- crank ticks (getCrankTicks(4)) accumulated to cook 1 food (~90 deg)
@@ -315,12 +351,12 @@ Config.Screen = {
     randomBoundsY = {min=20, max=220},
 }
 
--- Pedometer
+-- Pedometer (lifetime step counter — calorie burn lives in Config.Calories.burnPerMove)
 Config.Pedometer = {
     stepsPerMovement = 0.5,
     stepsToTrigger   = 200,
-    caloriesPerBurn  = 10,
-    crankCalorieBurn = 1,   -- calories burned per crank tick while charging the battery
+    crankCalorieBurn = Config.Calories.burnPerMove * 2,  -- per crank tick: cranking is work,
+                                                         -- so it burns faster than walking
 }
 
 -- Input
@@ -336,6 +372,20 @@ Config.UI = {
         burstDurationFrames = 12,      -- ~0.24s: how long a single burst lasts
         burstRegenIntervalFrames = 3,  -- regenerate the distorted image every 3 frames during a burst (~16.7Hz flicker)
     },
+}
+
+-- Debug stat readout drawn on the in-game menu (only when the `debug` global is on).
+-- The menu art is a two-page book: the left page holds the map and the crew hats, the right
+-- page is empty — that's where this block lives.
+Config.DebugStats = {
+    panel      = { x = 210, y = 34, w = 172, h = 176 },  -- right page, inside the border
+    lineHeight = 11,   -- px per row (Nano Sans is 6x10)
+    columnGap  = 88,   -- px from one column's label x to the next column's label x
+    valueRight = 82,   -- px from a label's x to the column's right edge; values are RIGHT
+                       -- aligned there, so a long one (totalSteps is a lifetime counter and
+                       -- can reach 6 digits) grows back toward its label instead of
+                       -- overrunning the next column.
+    font       = 'assets/fonts/Nano Sans',
 }
 
 -- Map (in-game run graph map drawn in the menu)
@@ -401,7 +451,7 @@ Config.Dance = {
     crewBadass = 6,
     crewBoss   = 9,
 
-    caloriesMax = 500,  -- calorie clamp ceiling (microwave cooking + dance win gains)
+    caloriesMax = Config.Calories.max,  -- kept as an alias; the ceiling lives in Config.Calories
 
     -- Accuracy pop-up (accuracyIndicator sprite). Each rating is a 6-frame band of the
     -- imagetable; frameDuration = ticks per frame (~0.36s per pop at 50fps).

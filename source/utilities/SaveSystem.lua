@@ -56,6 +56,11 @@ function SaveSystem.load()
 
     PlayerData = saveData.player
 
+    -- Derive isFat from the restored calorie count. Saves written before the fat gate existed
+    -- carry no isFat field, and a hysteresis flag must never be restored out of sync with the
+    -- number it tracks.
+    UpdateFatState()
+
     if not RunState.deserialize(saveData.run) then
         printDebug("❌ Failed to restore run graph from save")
         return false

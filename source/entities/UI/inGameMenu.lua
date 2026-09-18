@@ -11,7 +11,55 @@ local menuSprite = nil
 
 -- Crew member hat images
 local hatImages = {}
-local hatSpriteSheet = Graphics.imagetable.new('assets/images/props/hats') 
+local hatSpriteSheet = Graphics.imagetable.new('assets/images/props/hats')
+
+-- Debug readout font. Loaded once; only ever used inside a pushContext, which restores the
+-- previous font on pop, so the global shinonome default is never disturbed.
+local statsFont = Graphics.font.new(Config.DebugStats.font)
+
+--- Builds the two columns of the debug readout, as {label, value} rows.
+-- `header` rows are section titles; `blank` rows are spacers. Everything is read fresh on
+-- each menu open, so the numbers are always current.
+local function buildStatColumns()
+    local pd      = PlayerData
+    local crew    = pd.CrewMemberData or {}
+    local enemies = pd.EnemiesData or {}
+
+    local left = {
+        { header = 'RUN' },
+        { 'room',     tostring(RunState.currentNodeId or '-') },
+        { 'run',      tostring(pd.runCount or 0) },
+        { 'map',      string.format('%d%%', math.floor(pd.mapPercent or 0)) },
+        { blank = true },
+        { header = 'FAT LOOP' },
+        -- calories is a float since the fat loop landed (burnPerMove = 0.2)
+        { 'calories', string.format('%.1f', pd.calories or 0) },
+        { 'fat',      pd.isFat and 'YES' or 'NO' },
+        { 'steps',    string.format('%d', math.floor(pd.totalSteps or 0)) },
+        { blank = true },
+        { header = 'STATE' },
+        { 'size',     pd.isTiny and 'TINY' or 'BIG' },
+        { 'food',     tostring(pd.food or 0) },
+    }
+
+    local right = {
+        { header = 'BODY' },
+        { 'hp',       string.format('%d/%d', pd.healthPoints or 0, Config.Player.maxHealthPoints) },
+        { 'battery',  string.format('%d', math.floor(pd.battery or 0)) },
+        { 'sanity',   string.format('%d', math.floor(pd.sanity or 0)) },
+        -- sanityCounter, labelled apart from `sanity`: one is the 0-100 resource, the other
+        -- the lifetime counter that drives the horror escalation. Conflating them has bitten
+        -- the docs before.
+        { 'madness',  tostring(pd.sanityCounter or 0) },
+        { blank = true },
+        { header = 'PROGRESS' },
+        { 'crew',     string.format('%d/%d', crew.amountTaken or 0, Config.MapGen.totalCrew) },
+        { 'power',    tostring(enemies.powerLevel or 0) },
+        { 'dances',   tostring(pd.amountDances or 0) },
+    }
+
+    return { left, right }
+end
 
 function inGameMenu:init()
   self:moveTo(200,120)
@@ -48,6 +96,43 @@ function inGameMenu:drawMapOnMenu()
         baseMenuImage:draw(0, 0)
     Graphics.popContext()
     MapDrawer.drawMap(menuImage)
+    if debug == true then
+        self:drawDebugStats()
+    end
+end
+
+--- Paints the debug stat readout onto the menu buffer's empty right-hand page.
+-- Drawn into the same buffer as the map, so it inherits the pristine-art reset above and
+-- needs no sprite of its own to tear down in closeMenu().
+function inGameMenu:drawDebugStats()
+    local cfg     = Config.DebugStats
+    local columns = buildStatColumns()
+
+    -- Vertically centre the taller column inside the panel.
+    local rows = 0
+    for _, column in ipairs(columns) do
+        rows = math.max(rows, #column)
+    end
+    local blockHeight = rows * cfg.lineHeight
+    local startY = cfg.panel.y + math.max(0, math.floor((cfg.panel.h - blockHeight) / 2))
+
+    Graphics.pushContext(menuImage)
+        Graphics.setFont(statsFont)
+        Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
+        for columnIndex, column in ipairs(columns) do
+            local x = cfg.panel.x + (columnIndex - 1) * cfg.columnGap
+            local y = startY
+            for _, row in ipairs(column) do
+                if row.header then
+                    Graphics.drawText('*' .. row.header .. '*', x, y)  -- * wraps text in bold
+                elseif not row.blank then
+                    Graphics.drawText(row[1], x, y)
+                    Graphics.drawTextAligned(row[2], x + cfg.valueRight, y, kTextAlignment.right)
+                end
+                y = y + cfg.lineHeight
+            end
+        end
+    Graphics.popContext()
 end
 
 function inGameMenu:drawCrewHats()

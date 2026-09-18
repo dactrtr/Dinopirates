@@ -1053,7 +1053,7 @@ scene.inputHandler = {
 						player.cookProgress -= Config.Microwave.crankPerFood
 						PlayerData.food -= 1
 						PlayerData.healthPoints = math.min(PlayerData.healthPoints + Config.Microwave.hpPerFood, Config.Player.maxHealthPoints)
-						PlayerData.calories = math.min((PlayerData.calories or 0) + Config.Microwave.caloriesPerFood, Config.Dance.caloriesMax)
+						GainCalories(Config.Microwave.caloriesPerFood)
 					end
 					-- Auto-finish when full or out of food
 					if PlayerData.healthPoints >= Config.Player.maxHealthPoints or (PlayerData.food or 0) <= 0 then
