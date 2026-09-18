@@ -378,6 +378,14 @@ PlayerData.direction = 'idle'
 
 `spawnPoint` comes from `PlayerData.playerSpawn` (set by the door system when exiting the previous room).
 
+**Spawn safety pass.** Just before `Player(...)`, the spawn is validated with `nudgeSpawnClear(px, py)`:
+
+- `spawnFootprintClear(cx, cy)` — the player's collide-rect footprint must cover only walkable tiles (out-of-bounds counts as wall, so the spawn is never pushed off the map).
+- `spawnPropsClear(cx, cy)` — the same footprint must not overlap a solid prop. Uses `Graphics.sprite.querySpritesInRect` over the world-space collide rect; any `PropItem` with a collide rect blocks, except `minifier` and `microwave` (pass-through, `'overlap'`). This is what fixes the **pneumatic tube exit**: the `TubeExit` marker sits on the tube prop, which answers `'freeze'`, so the player used to spawn stuck against it.
+- If either fails, an expanding-ring search (2px steps, 8 directions, 64px cap) returns the nearest position clear of both. If nothing is found it keeps the original point.
+
+The pass runs after props and items are spawned, so props are present in the sprite world when it queries.
+
 ### 5.12 Darkness FX
 
 If `customFields.shadow == true`:

@@ -10,6 +10,109 @@ or door flow, those documents are the authoritative model.
 
 ---
 
+## 2026-09-18 — Fix: Retry after death spawns at the run-start point, not at a door
+
+**What:** `DeadScene`'s Retry now sets `PlayerData.playerSpawn` to `Config.Player.runStartSpawn`
+(200, 200) and `returningInPlace = true`, exactly like New Game.
+
+**Why:** Retry only called `RunState.startRun()`, so `MazeScene:enter()` fell through to the
+door-based spawn. `PlayerData.lastRoom` is stale after a death, so it used the start room's *first*
+door — the player appeared next to a doorway instead of the authored start point.
+
+**Files (Playdate side):** `source/scenes/DeadScene.lua` (Retry), `source/scenes/TitleScene.lua`
+(New Game now reads the same constant), `source/assets/data/Config.lua`
+(`Config.Player.runStartSpawn`).
+
+**Love2D mapping:** Treat "run start" as its own spawn source, separate from door-to-door entry:
+New Game and Retry both place the player at the run-start point and skip the door-spawn logic.
+
+---
+
+## 2026-09-18 — Fix: seen dialog triggers replayed after Continue / Retry
+
+**What:** A consumed dialog trigger now stays consumed across sessions. `Trigger:setUsed(cf)` writes
+both `cf.usedTrigger` (live `levelsLDTK`, session-only) and `PlayerData.usedTriggers[iid]` (saved),
+and `MazeScene`'s spawn gate checks both.
+
+**Why:** Save 3.0 persists only `PlayerData` + the run graph, never `levelsLDTK` — so `usedTrigger`
+died on reboot, and every already-seen dialog fired again after coming back from the title screen or
+retrying after death. The state is meta (like `seenComics`): it should survive runs and only reset on
+New Game / Delete.
+
+**Files (Playdate side):** `source/entities/props/trigger.lua` — new `Trigger:setUsed(cf)`, used by
+the terminal-conditional path, the legacy fallback and `markAsUsed()`.
+`source/assets/data/PlayerDataTables.lua` — `usedTriggers = {}`.
+`source/scenes/MazeScene.lua` — spawn gate `cf.usedTrigger or PlayerData.usedTriggers[iid]`.
+Repeatable triggers (`Search`, non-terminal `conditionalScripts`) never call `setUsed`, so they still
+repeat. Old saves have no `usedTriggers` field; every read is nil-guarded.
+
+**Love2D mapping:** Keep the consumed-trigger set in the player save blob keyed by entity id, not in
+the level data. Room templates are reloaded from disk each boot, so any flag written into them is
+lost — mirror the `seenComics` pattern.
+
+---
+
+## 2026-09-18 — Fix: DeadScene went black after a second; death message centred
+
+**What:** The death screen showed its image + message for a moment and then turned fully black.
+Cause: `scene:update()` set `kDrawModeFillBlack` for the message and never reset it, so from the
+next frame on the background image was drawn in fill-black mode — every opaque pixel became black.
+The draw mode is now reset to `kDrawModeCopy` before drawing the image (and again before the menu),
+and the message is centred horizontally (same y = 220).
+
+**Files (Playdate side):** `source/scenes/DeadScene.lua` — `scene:update()`: `setImageDrawMode(kDrawModeCopy)`
+before `bg:draw`, `FillBlack` only around the message, x computed as
+`(Config.Screen.width - Graphics.getTextSize(msg)) / 2`.
+
+**Love2D mapping:** No global draw-mode state in Love2D, but mirror the layout: death image at (0,0),
+message horizontally centred at y = 220, menu right-aligned. Reset any tinted color state
+(`love.graphics.setColor`) between the image and the text for the same reason.
+
+---
+
+## 2026-09-18 — Spawn nudge also avoids solid props (tube exit)
+
+**What:** The spawn-validation pass that already pushed the player out of walls now also checks the
+already-spawned props. If the player's collide-rect footprint overlaps a solid prop, the same
+expanding-ring search picks the nearest position clear of BOTH walls and props.
+
+**Why:** Leaving a pneumatic tube spawned the player inside the tube prop itself (the `TubeExit`
+marker sits on the tube), which answers `'freeze'` in `Player:collisionResponse` — the player got
+stuck against it (and while tiny, overlapping the tube can instantly re-trigger `riseAbove`).
+
+**Files (Playdate side):** `source/scenes/MazeScene.lua` — new local `spawnPropsClear(cx,cy)`
+(`Graphics.sprite.querySpritesInRect` over the player's world-space collide rect; a `PropItem` with
+a collide rect blocks, except `minifier`/`microwave`, which are pass-through), new `spawnClear(cx,cy)`
+= tiles AND props, and `nudgeSpawnClearOfWalls` renamed to `nudgeSpawnClear`. The check runs where
+it did (just before `Player(...)`), which is after props are spawned.
+
+**Love2D mapping:** Before placing the player, test the footprint against both the tile grid and the
+prop colliders already in the room; ring-search outward (2px steps, 64px cap) for the nearest
+position clear of both. Treat minifier/microwave as non-blocking.
+
+---
+
+## 2026-09-18 — CrewMembers fall into holes and are removed from the room
+
+**What:** A fleeing CrewMember that steps onto a hole tile (IntGrid `3`) now plays a one-shot
+`'fall'` animation and is removed from the room instead of walking over it. It is not counted as
+recruited (`node.cleared.crewTaken` stays false), so re-entering the room respawns it.
+
+**Why:** Holes are walkable tiles with no collider, so crew members were visibly walking across
+them. Enemies already refuse to step on holes; crew now fall instead.
+
+**Files (Playdate side):** `source/entities/enemies/crewmember.lua` — `IsHoleAt()` check at the top
+of `moveCollision`, new `fallIntoHole()` (zeroes collide rect + groups, drops the hat, plays
+`'fall'` frames 9–11 whose `onComplete` removes the sprite), `isFalling` early-return in `update()`,
+`fallsInHoles` flag set in `init`. `source/assets/data/Config.lua` — `Config.CrewMember.fallFrameDuration`.
+Ghosts skip `CrewMember:init`, so `fallsInHoles` is nil and they still float over holes.
+
+**Love2D mapping:** In the crew flee-movement step, sample the tile at the target position; on a
+hole value, switch the entity to a `falling` state (no collision, no AI) that despawns it when the
+fall animation ends. Keep the "not recruited" semantics so the run stays completable.
+
+---
+
 ## 2026-08-10 — Fix: spawn is nudged out of walls if it clips one
 
 **What:** Right before the player is created, the spawn point is validated against the tilemap; if

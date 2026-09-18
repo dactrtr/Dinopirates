@@ -45,6 +45,10 @@ local DefaultPlayerData = {
 	isTalking = false,
 	isCutscene = false,
 	seenComics = {},  -- story cutscenes already watched, keyed by comic_name (persists across runs; wiped on delete)
+	usedTriggers = {},-- dialog triggers already consumed, keyed by LDtk entity iid. Lives here (not in
+	                  -- levelsLDTK) because only PlayerData is saved: the `usedTrigger` customField is
+	                  -- in-memory only and was lost on reboot/Continue/Retry, replaying seen dialogs.
+	                  -- Persists across runs; wiped by NewGame/Delete via ResetPlayerData.
 	runCount = 0,     -- runs started (incremented on NewGame, death/Retry, and hole fall/tube rise); used by spawnConditions
 	isFocused = false,
 	isCharging = false,
@@ -87,7 +91,7 @@ local DefaultPlayerData = {
 		hasPlunger = false,
 	},
 	skills ={
-		canDance = false,
+		canDance = true,
 		canFlash = false,
 		canPlungerang = false,
 		canCrossSlime = false,

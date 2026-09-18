@@ -163,7 +163,7 @@
 				"customFields": {
 					"script": "firstCall",
 					"usedTrigger": false,
-					"type": "Story",
+					"type": "Call",
 					"mapPercent": 0,
 					"conditionalScripts": [],
 					"SpawnConditions": []

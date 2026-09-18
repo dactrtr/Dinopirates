@@ -30,6 +30,7 @@ The whole `PlayerData` blob, including the cross-run meta:
 - `sanityCounter` (madness count — drives difficulty and the room-repeat rule)
 - `runCount` (runs started; NewGame=1, +1 per death, +1 per hole fall/tube rise)
 - `seenComics` (story cutscenes already watched, keyed by `comic_name`)
+- `usedTriggers` (dialog triggers already consumed, keyed by LDtk `iid` — the persistent twin of the in-memory `customFields.usedTrigger`, which `levelsLDTK` never saves)
 - run-local player state (battery, sanity, health, position) so **Continue** resumes exactly where you left off
 
 ### `run` — the active run graph (`RunState.serialize()`)
@@ -131,7 +132,7 @@ function SaveSystem.delete()
 end
 ```
 
-Both reset `PlayerData` (wiping meta: items/skills/crew/`sanityCounter`/`runCount`/`seenComics`), clear the active run, and restore the template table. `delete()` additionally removes the file from disk.
+Both reset `PlayerData` (wiping meta: items/skills/crew/`sanityCounter`/`runCount`/`seenComics`/`usedTriggers`), clear the active run, and restore the template table. `delete()` additionally removes the file from disk.
 
 | | `reset()` | `delete()` |
 |--|-----------|------------|

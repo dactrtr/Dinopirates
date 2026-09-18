@@ -68,6 +68,21 @@
 					"crewID": "100",
 					"forceSpawn": false
 				}
+			},
+			{
+				"id": "Ghost",
+				"iid": "31c829e0-96d0-11f1-868e-770471ddaf97",
+				"layer": "CM_and_enemies",
+				"x": 44,
+				"y": 116,
+				"width": 48,
+				"height": 48,
+				"color": 14984818,
+				"customFields": {
+					"isTaken": false,
+					"crewID": "100",
+					"forceSpawn": false
+				}
 			}
 		],
 		"Doors": [

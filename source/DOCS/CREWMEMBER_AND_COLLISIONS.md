@@ -108,6 +108,20 @@ Direction is chosen based on the blocked axis and the player's relative position
 
 When the CrewMember has bounced 2 times (`bouncesRequiredToHide = 2`) within a short period. See the "Hiding State" section below.
 
+### 5. Falling into a hole
+
+Hole tiles (IntGrid `3`) are walkable and get no wall collider, so a fleeing CrewMember can wander onto one. At the top of `moveCollision` the target position is sampled with `IsHoleAt(movementX, movementY)`; a hit calls `CrewMember:fallIntoHole()` instead of moving:
+
+- `isFalling = true` (guarded — runs once), `movementFrames = 0`, bounce state cleared.
+- Collide rect zeroed and groups cleared → untouchable while falling (no recruit-on-touch).
+- The hat is removed immediately (it doesn't fall with them).
+- Animation `'fall'` (frames 9–11, non-looping, `Config.CrewMember.fallFrameDuration`) plays once; its `onComplete` calls `self:remove()` (guarded by `isRemoved`).
+- `CrewMember:update()` returns early while `isFalling` so the flee AI stops.
+
+The crew is **not** counted as recruited: `node.cleared.crewTaken` stays `false`, so re-entering the room respawns it and the run stays completable.
+
+Ghosts float: `Ghost:init` skips `CrewMember:init`, so `self.fallsInHoles` is `nil` and they drift over holes as before. The hunter `Enemy` still refuses to step on a hole (it halts at the edge) — only crew fall.
+
 ---
 
 ## hidingTokens — Amount and Consumption

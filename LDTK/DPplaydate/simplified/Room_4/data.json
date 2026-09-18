@@ -53,6 +53,100 @@
 		"Foreground.png"
 	],
 	"entities": {
+		"PneumaticTube": [
+			{
+				"id": "PneumaticTube",
+				"iid": "7bc6cfe0-96d0-11f1-868e-b7b405fbfa8c",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 172,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "pneumaticTube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
+		"Tube": [
+			{
+				"id": "Tube",
+				"iid": "7d9cef70-96d0-11f1-868e-fb21c17171eb",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 140,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Tube",
+				"iid": "7dfd5ef0-96d0-11f1-868e-19b7788b9693",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 108,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Tube",
+				"iid": "7eaa19b0-96d0-11f1-868e-7fe80bf93d54",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 76,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Tube",
+				"iid": "7f2abb60-96d0-11f1-868e-479aca1d5385",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 44,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			},
+			{
+				"id": "Tube",
+				"iid": "7f91e1a0-96d0-11f1-868e-535607f532cc",
+				"layer": "Items_and_Props",
+				"x": 36,
+				"y": 12,
+				"width": 32,
+				"height": 32,
+				"color": 2943221,
+				"customFields": {
+					"type": "Tube",
+					"nocollider": false,
+					"destroyed": false
+				}
+			}
+		],
 		"Ghost": [
 			{
 				"id": "Ghost",

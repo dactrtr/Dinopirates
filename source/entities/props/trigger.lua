@@ -16,6 +16,19 @@ function Trigger:init(x, y, width, height, script, iid, room, type)
     printDebug("🎯 Trigger creado - iid:", self.iid, "type:", self.type, "script:", self.script)
 end
 
+-- Marks this trigger as consumed in BOTH places:
+--   * cf.usedTrigger — the live levelsLDTK template (in-memory only, used this session)
+--   * PlayerData.usedTriggers[iid] — the persistent record. PlayerData is the only thing the
+--     save system writes, so without this the flag died on reboot/Continue/Retry and every
+--     already-seen dialog fired again. Cleared only by NewGame/Delete (ResetPlayerData).
+function Trigger:setUsed(cf)
+    cf.usedTrigger = true
+    if self.iid then
+        PlayerData.usedTriggers = PlayerData.usedTriggers or {}
+        PlayerData.usedTriggers[self.iid] = true
+    end
+end
+
 function Trigger:returnScript()
     self:clearCollideRect()
     
@@ -104,7 +117,7 @@ function Trigger:returnScript()
 
                 if isMet then
                     if isTerminal then
-                        cf.usedTrigger = true
+                        self:setUsed(cf)
                         printDebug("✅ Trigger marcado como usado (Terminal):", triggerData.iid)
                     else
                         printDebug("ℹ️ Trigger mantenido activo (Transient):", triggerData.iid)
@@ -120,7 +133,7 @@ function Trigger:returnScript()
     -- By default, legacy/fallback scripts consume the trigger (backward compatibility)
     -- EXCEPT if it is a "Search" trigger, which should persist by default.
     if self.type ~= "Search" then
-        cf.usedTrigger = true
+        self:setUsed(cf)
         printDebug("✅ Trigger fallback marcado como usado:", triggerData.iid)
     else
         printDebug("ℹ️ Trigger Search mantenido activo (Fallback):", triggerData.iid)
@@ -141,7 +154,7 @@ function Trigger:markAsUsed()
     for _, triggerData in ipairs(roomData.entities.Triggers) do
         if triggerData.iid == self.iid then
             local cf = triggerData.customFields or {}
-            cf.usedTrigger = true
+            self:setUsed(cf)
             printDebug("✅ Trigger marcado como usado:", triggerData.iid)
             break
         end

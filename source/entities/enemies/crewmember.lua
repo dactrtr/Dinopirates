@@ -34,7 +34,15 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	self.animation.hide.frameDuration = 6
 	self.animation:addState('stunned', 15, 18)
 	self.animation.stunned.frameDuration = 6
-	-- self.animation.hole.frameDuration = 4
+	-- 'fall' plays once when the crew member steps into a hole, then removes it from the room
+	-- via onComplete. loop=false freezes on the last frame; isRemoved guards the one-shot
+	-- removal (onComplete re-fires every frame once the animation is finished).
+	self.animation:addState('fall', 9, 11, nil, false, function()
+		if self.isRemoved then return end
+		self.isRemoved = true
+		self:remove()
+	end)
+	self.animation.fall.frameDuration = Config.CrewMember.fallFrameDuration
 		
 	self:setSize(48, 48)
 	self:moveTo(x, y)
@@ -91,6 +99,14 @@ function CrewMember:init(x, y, moveSpeed, Zindex, player, iid, room, crewId)
 	-- Store original collide rect for restoration
 	self.originalCollideRect = Config.CrewMember.collideRect
 
+	-- Falling state: hole tiles (IntGrid 3) are walkable and have no collider, so a fleeing
+	-- crew member can wander onto one. Unlike the hunter Enemy (which refuses to step on a
+	-- hole), crew DO fall: they play 'fall' and are removed from the room. Ghosts float and
+	-- never set this flag (they skip CrewMember:init) — see Ghost:collisionResponse.
+	self.fallsInHoles = true
+	self.isFalling = false
+	self.isRemoved = false
+
 	-- Blinded state
 	self.isBlinded = false
 	self.blindFrames = 0
@@ -134,6 +150,12 @@ function CrewMember:search(player)
 	end
 end
 function CrewMember:moveCollision(movementX, movementY, player)
+	-- Stepping onto a hole (IntGrid 3): the crew member drops and is gone from the room.
+	if self.fallsInHoles and not self.isFalling and IsHoleAt(movementX, movementY) then
+		self:fallIntoHole()
+		return
+	end
+
 	if PlayerData.battery < Config.CrewMember.batteryThresholdStop and PlayerData.isInDarkness == true then
 		self.moveSpeed = 0
 	elseif PlayerData.battery > Config.CrewMember.batteryThresholdRestore and PlayerData.isInDarkness == true then
@@ -363,6 +385,33 @@ function CrewMember:taken()
     self:remove()
 end
 
+-- The crew member walked into a hole: become untouchable, stop the flee AI and play the
+-- 'fall' animation to completion (its onComplete removes the sprite). The crew is NOT
+-- counted as recruited — node.cleared.crewTaken stays false, so re-entering the room
+-- respawns it and the run stays completable. Guarded so it only starts once.
+function CrewMember:fallIntoHole()
+	if self.isFalling then return end
+	self.isFalling = true
+
+	self.movementFrames = 0
+	self.bounceDirection = nil
+	self.bounceFrames = 0
+
+	-- Untouchable while falling: no recruit-on-touch, no pushing props around.
+	self:setCollideRect(0, 0, 0, 0)
+	self:setGroups({})
+
+	-- The hat doesn't fall with them — drop it immediately.
+	if self.hat then
+		self.hat:remove()
+		self.hat = nil
+	end
+
+	self.animation:setState('fall')
+
+	printDebug("🕳️ CrewMember fell into a hole - CrewID:", self.crewId)
+end
+
 function CrewMember:remove()
 	if self.hat then
 		self.hat:remove()
@@ -443,6 +492,9 @@ function CrewMember:escape(player)
 end
 
 function CrewMember:update()
+	-- Mid-fall: let the 'fall' animation play out (its onComplete removes the sprite).
+	if self.isFalling then return end
+
 	self:setZIndex(self.y)
 	-- Performance: Only update AI every 3 frames
 	self.updateFrameCounter = (self.updateFrameCounter + 1) % 2
@@ -505,7 +557,9 @@ function CrewMember:drawDebug()
 	Graphics.drawCircleAtPoint(self.x, self.y, self.hidingVisionRange or 0)
 
 	local state = "idle"
-	if self.isHiding then
+	if self.isFalling then
+		state = "falling"
+	elseif self.isHiding then
 		state = "hiding"
 	elseif self.isBlinded then
 		state = "blind"

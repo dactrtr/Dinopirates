@@ -8,7 +8,7 @@ function videoFeed:init(x,y, sourceFeed,Zindex)
 	self.animation:addState('player-tiny', 14, 14) 
 	self.animation['player-tiny'].frameDuration = 12
 	
-	self.animation:addState('radioHand', 2, 2)
+	self.animation:addState('radioHand', 6, 6)
 	self.animation.radioHand.frameDuration = 12
 	self.animation:addState('radioHand-tiny', 14, 14) 
 	self.animation['radioHand-tiny'].frameDuration = 12
@@ -23,7 +23,7 @@ function videoFeed:init(x,y, sourceFeed,Zindex)
 	self.animation:addState('radioRing-tiny', 16, 16) 
 	self.animation['radioRing-tiny'].frameDuration = 12
 	
-	self.animation:addState('notesHand', 6, 6)
+	self.animation:addState('notesHand', 2, 2)
 	self.animation.notesHand.frameDuration = 12
 	self.animation:addState('notesHand-tiny', 17, 17) 
 	self.animation['notesHand-tiny'].frameDuration = 12

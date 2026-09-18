@@ -205,8 +205,8 @@
 				"layer": "Triggers",
 				"x": 340,
 				"y": 180,
-				"width": 24,
-				"height": 24,
+				"width": 32,
+				"height": 32,
 				"color": 16711748,
 				"customFields": {
 					"script": "aLamp",

@@ -40,6 +40,7 @@ PlayerData = deepcopy(DefaultPlayerData) -- resets to default values (without re
 | `totalSteps` | number | `1000` | 0 – ∞ (lifetime, never resets) | `state.lua:pedometer()` (+0.5 per each `move()`) | — (not used in active logic, potential for achievements) | Yes |
 | `mapPercent` | number | `0` | 0 – 100 | — (no documented active writer) | `Trigger:conditionalScript()` (script conditions) | Yes |
 | `runCount` | number | `0` | 0 – ∞ | `TitleScene` NewGame (set to `1`), `DeadScene` Retry (`+1` on death), `Player:fallBelow`/`riseAbove` (`+1` per hole fall/tube rise) | `Conditions.eval` (alias `run`) for `spawnConditions` gates on items/triggers | Yes |
+| `usedTriggers` | table | `{}` | set of LDtk `iid` → `true` | `Trigger:setUsed()` (every consumed dialog trigger) | `MazeScene:enter()` trigger spawn gate (a consumed trigger is never re-created) | Yes |
 
 ---
 

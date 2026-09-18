@@ -111,23 +111,47 @@ local function spawnFootprintClear(cx, cy)
 	return true
 end
 
--- If the spawn point clips a wall, return the nearest position (expanding-ring search, 2px steps)
--- whose collide-rect footprint is fully clear; otherwise return the point unchanged. Gives up
--- (returns the original) if nothing clear is found within maxRadius.
-local function nudgeSpawnClearOfWalls(px, py)
-	if spawnFootprintClear(px, py) then return px, py end
+-- Returns true if the player's collide-rect footprint centred at (cx,cy) touches no solid prop.
+-- Props answer 'freeze' in Player:collisionResponse, so spawning inside one leaves the player
+-- stuck — this is what happens on a pneumatic tube exit, whose TubeExit marker sits on the tube
+-- itself (and while tiny, overlapping the tube would instantly re-trigger riseAbove).
+-- Minifier and microwave are pass-through ('overlap'), so they don't count as blockers.
+-- Props are already spawned when this runs (prop → item → player ordering in enter()).
+local function spawnPropsClear(cx, cy)
+	local cr = PlayerData.isTiny and Config.Player.collideRectTiny or Config.Player.collideRect
+	local left = cx - 24 + cr.x
+	local top  = cy - 24 + cr.y
+	for _, s in ipairs(Graphics.sprite.querySpritesInRect(left, top, cr.w, cr.h)) do
+		if s.isa and s:isa(PropItem) and s:getCollideRect() ~= nil
+		   and s.type ~= 'minifier' and s.type ~= 'microwave' then
+			return false
+		end
+	end
+	return true
+end
+
+-- True when the spawn is safe: clear of walls (tilemap) AND of solid props (sprites).
+local function spawnClear(cx, cy)
+	return spawnFootprintClear(cx, cy) and spawnPropsClear(cx, cy)
+end
+
+-- If the spawn point clips a wall or a solid prop, return the nearest safe position (expanding-ring
+-- search, 2px steps) whose collide-rect footprint is fully clear; otherwise return the point
+-- unchanged. Gives up (returns the original) if nothing clear is found within maxRadius.
+local function nudgeSpawnClear(px, py)
+	if spawnClear(px, py) then return px, py end
 	local step, maxRadius = 2, 64
 	local dirs = { {-1,0},{1,0},{0,-1},{0,1},{-1,-1},{1,-1},{-1,1},{1,1} }
 	for r = step, maxRadius, step do
 		for _, d in ipairs(dirs) do
 			local nx, ny = px + d[1] * r, py + d[2] * r
-			if spawnFootprintClear(nx, ny) then
-				printDebug("🧱 Spawn was clipping a wall — nudged to", nx, ny)
+			if spawnClear(nx, ny) then
+				printDebug("🧱 Spawn was blocked — nudged to", nx, ny)
 				return nx, ny
 			end
 		end
 	end
-	printDebug("⚠️ Spawn clipping a wall and no clear spot found within", maxRadius)
+	printDebug("⚠️ Spawn blocked and no clear spot found within", maxRadius)
 	return px, py
 end
 
@@ -460,10 +484,11 @@ function scene:enter()
 	end
 		-- MARK: Player
 	local spawnPoint = PlayerData.playerSpawn
-	-- Safety: never spawn clipping a wall (e.g. a TubeExit authored tight to a wall). Check the
-	-- player's collide-rect footprint against the tilemap and, if it overlaps any non-walkable
-	-- tile, nudge to the nearest position that is fully clear. No-op when the spawn is already OK.
-	spawnPoint.x, spawnPoint.y = nudgeSpawnClearOfWalls(spawnPoint.x, spawnPoint.y)
+	-- Safety: never spawn clipping a wall or a solid prop (e.g. a TubeExit marker sitting on the
+	-- pneumatic tube itself, or authored tight to a wall). Check the player's collide-rect
+	-- footprint against the tilemap and the already-spawned props and, if it overlaps anything,
+	-- nudge to the nearest fully clear position. No-op when the spawn is already OK.
+	spawnPoint.x, spawnPoint.y = nudgeSpawnClear(spawnPoint.x, spawnPoint.y)
 	player = Player(spawnPoint.x, spawnPoint.y, PlayerData.speed, ZIndex.player)
 	uiScreen = playerHud(player)
 	PlayerData.x = player.x
@@ -550,7 +575,11 @@ function scene:enter()
 	if entities and entities.Triggers then
 		for i, triggerData in ipairs(entities.Triggers) do
 			local cf = triggerData.customFields or {}
-			local used = cf.usedTrigger or false
+			-- Consumed triggers never respawn. cf.usedTrigger only survives the session (it lives
+			-- in levelsLDTK, which is never saved); PlayerData.usedTriggers is the persistent
+			-- record, so a seen dialog stays seen across Continue, Retry and reboots.
+			local seen = PlayerData.usedTriggers and PlayerData.usedTriggers[triggerData.iid]
+			local used = cf.usedTrigger or seen or false
 
 			-- spawnConditions: optional render gate (e.g. {"run>=4"}). The trigger is only
 			-- created when all conditions pass; its conditionalScripts (which dialog to show)

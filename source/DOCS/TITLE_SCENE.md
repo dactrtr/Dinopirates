@@ -179,8 +179,8 @@ SaveSystem.reset()          -- resets PlayerData + levelsLDTK, RunState.clear()
 PlayerData.runCount = 1     -- first run of a brand-new game
 PlayerData.fromTitle = true
 RunState.startRun()         -- builds the run graph, picks the Start node as current
-PlayerData.playerSpawn.x = 200   -- fixed spawn for the start room
-PlayerData.playerSpawn.y = 200
+PlayerData.playerSpawn.x = Config.Player.runStartSpawn.x  -- run-start spawn (200, 200)
+PlayerData.playerSpawn.y = Config.Player.runStartSpawn.y
 PlayerData.returningInPlace = true   -- keep this spawn; don't override with a door-spawn
 Noble.transition(MazeScene, 1, Noble.Transition.Spotlight, {
     x      = 200,                      -- spotlight center (screen)
@@ -194,7 +194,9 @@ Noble.transition(MazeScene, 1, Noble.Transition.Spotlight, {
 
 `RunState.startRun()` generates the graph (via `MapGenerator`) and sets the current
 node to a `Start` room. `returningInPlace = true` tells `MazeScene` to honor the fixed
-`playerSpawn` (200, 200) instead of snapping the player to a door. See
+`playerSpawn` (`Config.Player.runStartSpawn`, 200/200) instead of snapping the player to a
+door. `DeadScene`'s **Retry** uses the exact same three lines, so a run started after a death
+begins at the same place as a brand-new game. See
 [PROCEDURAL_GENERATION.md](PROCEDURAL_GENERATION.md).
 
 > The dead `Floors.lua` / `RoomTranslate` path (fixed `FloorXXX` scenes) is only used by

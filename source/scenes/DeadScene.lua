@@ -81,6 +81,12 @@ function scene:init()
 	menu:addItem("Retry", function()
 		PlayerData.runCount = (PlayerData.runCount or 0) + 1  -- a death starts a new run
 		RunState.startRun()
+		-- Same entry as New Game: a fresh run starts at the authored run-start point, not at a
+		-- door. Without this, MazeScene fell back to the start room's first door (PlayerData.lastRoom
+		-- is stale after a death), so Retry dropped the player next to a doorway.
+		PlayerData.playerSpawn.x = Config.Player.runStartSpawn.x
+		PlayerData.playerSpawn.y = Config.Player.runStartSpawn.y
+		PlayerData.returningInPlace = true
 		Noble.transition(MazeScene)
 	 end)
 	menu:select("Exit")
@@ -114,11 +120,18 @@ function scene:update()
 	-- instead of baking the text into `bg` via lockFocus — that permanently mutated the
 	-- loaded image's pixels every frame with no clear, so text from a previous death
 	-- (same session) could remain and get overdrawn by the next one, looking doubled.
+	-- Draw mode MUST be reset to Copy before the background: the text below leaves the mode on
+	-- kDrawModeFillBlack, and on the next frame that turned every opaque pixel of `bg` black —
+	-- the screen went fully black a moment after the death image appeared.
+	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 	if bg then
 		bg:draw(0, 0)
 	end
+	-- Message centred horizontally, same baseline as before.
 	Graphics.setImageDrawMode(Graphics.kDrawModeFillBlack)
-	Graphics.drawText(msg, 2, 220)
+	local msgWidth = Graphics.getTextSize(msg)
+	Graphics.drawText(msg, (Config.Screen.width - msgWidth) / 2, 220)
+	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 	menu:draw(400, 60)
 end
 

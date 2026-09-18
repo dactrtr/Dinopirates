@@ -46,6 +46,10 @@ Config.Player = {
     collideRect      = {x=8,  y=24, w=30, h=24},
     collideRectTiny  = {x=19, y=32, w=10, h=10},
     collideRectHead  = {x=8,  y=8, w=16, h=16},
+    -- Where the player appears when a run STARTS (New Game and Retry after death), instead of
+    -- the door-based spawn MazeScene uses for room-to-room navigation. Both paths set
+    -- PlayerData.returningInPlace so MazeScene keeps this point as-is.
+    runStartSpawn    = {x = 200, y = 200},
     uiOffsetX        = 30,
     uiOffsetY        = 30,
     feetOffsetY      = 12,   -- px from sprite position down to the player's feet (tile sampling / grapple landing)
@@ -276,6 +280,7 @@ Config.CrewMember = {
     batteryThresholdStop     = Config.Battery.thresholdCritical,  -- shared with Enemy.batteryThresholdCritical
     batteryThresholdRestore  = Config.Battery.thresholdMid,       -- shared with Enemy.batteryThresholdMid
     collideRect              = {x=12, y=24, w=24, h=24},
+    fallFrameDuration        = 6,    -- frames per 'fall' animation frame (crew dropping into a hole)
 
     -- Crew-count greeting dialogs, evaluated with Conditions.eval() against
     -- PlayerData.CrewMemberData.amountTaken (the count BEFORE this pickup/talk).

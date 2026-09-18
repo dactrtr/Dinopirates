@@ -22,7 +22,7 @@ table.insert(levelsLDTK, {
   },
   customFields = {
     shadow = true,
-    light = 0.1,
+    light = 0.5,
     visited = false,
     comic_name = nil,
     comic_wasPlayed = false,
@@ -949,6 +949,88 @@ table.insert(levelsLDTK, {
     hasForeground = true
   },
   entities = {
+    PneumaticTube = {
+      {
+        id = "PneumaticTube",
+        iid = "7bc6cfe0-96d0-11f1-868e-b7b405fbfa8c",
+        x = 36,
+        y = 172,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "pneumaticTube",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
+    Tube = {
+      {
+        id = "Tube",
+        iid = "7d9cef70-96d0-11f1-868e-fb21c17171eb",
+        x = 36,
+        y = 140,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "7dfd5ef0-96d0-11f1-868e-19b7788b9693",
+        x = 36,
+        y = 108,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "7eaa19b0-96d0-11f1-868e-7fe80bf93d54",
+        x = 36,
+        y = 76,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "7f2abb60-96d0-11f1-868e-479aca1d5385",
+        x = 36,
+        y = 44,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      },
+      {
+        id = "Tube",
+        iid = "7f91e1a0-96d0-11f1-868e-535607f532cc",
+        x = 36,
+        y = 12,
+        width = 32,
+        height = 32,
+        customFields = {
+          type = "Tube",
+          nocollider = false,
+          destroyed = false
+        }
+      }
+    },
     Ghost = {
       {
         id = "Ghost",
@@ -1152,6 +1234,19 @@ table.insert(levelsLDTK, {
         iid = "7b2d0b90-96d0-11f1-ad82-09097eba62c0",
         x = 356,
         y = 44,
+        width = 48,
+        height = 48,
+        customFields = {
+          isTaken = false,
+          crewID = "100",
+          forceSpawn = false
+        }
+      },
+      {
+        id = "Ghost",
+        iid = "31c829e0-96d0-11f1-868e-770471ddaf97",
+        x = 44,
+        y = 116,
         width = 48,
         height = 48,
         customFields = {
@@ -3611,7 +3706,7 @@ table.insert(levelsLDTK, {
       {
         id = "Brocorat",
         iid = "617a10d0-96d0-11f1-ad82-e1dc40523c5d",
-        x = 52,
+        x = 284,
         y = 196,
         width = 32,
         height = 32,
@@ -5347,9 +5442,9 @@ table.insert(levelsLDTK, {
     Ghost = {
       {
         id = "Ghost",
-        iid = "8ce5f0e0-96d0-11f1-ad82-8913e5ccc7ca",
-        x = 300,
-        y = 68,
+        iid = "2ec06820-96d0-11f1-868e-cbd361c5e7fa",
+        x = 284,
+        y = 76,
         width = 48,
         height = 48,
         customFields = {
@@ -5560,7 +5655,7 @@ table.insert(levelsLDTK, {
         id = "Brocorat",
         iid = "5ed1ad20-96d0-11f1-ad82-876bd97c0d8e",
         x = 124,
-        y = 196,
+        y = 204,
         width = 32,
         height = 32,
         customFields = {

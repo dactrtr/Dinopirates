@@ -78,10 +78,10 @@
 		"Ghost": [
 			{
 				"id": "Ghost",
-				"iid": "8ce5f0e0-96d0-11f1-ad82-8913e5ccc7ca",
+				"iid": "2ec06820-96d0-11f1-868e-cbd361c5e7fa",
 				"layer": "CM_and_enemies",
-				"x": 300,
-				"y": 68,
+				"x": 284,
+				"y": 76,
 				"width": 48,
 				"height": 48,
 				"color": 14984818,
