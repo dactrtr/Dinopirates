@@ -74,6 +74,7 @@ function Player:init(x, y, speed, Zindex)
     self.invincibilityTimer = 0
     self.lightBurstCooldown = 0 -- Cooldown timer for light burst
     self.dashCooldown = 0     -- Cooldown timer for dash attack
+    self.grappleCooldown = 0  -- Cooldown timer for the grappling hook (set on launch)
 
     -- Dash state variables
     self.isDashing = false

@@ -213,6 +213,9 @@ function scene:enter()
 	self.pendingEndgame = (node.content and node.content.isFinal) or false
 	-- Per-node, run-scoped visited tracking for the in-game run-graph map.
 	node.visited = true
+	-- Lifetime, template-scoped: counts this room toward the explorer achievement even if
+	-- the run ends badly. Distinct from node.visited, which dies with the graph.
+	RoomAtlas.discover(template)
 	-- Map the template back to its levelsLDTK index so all existing levelsLDTK[room]
 	-- reads (background, tilemap, entities, door metadata) keep working unchanged.
 	room = nil
@@ -1033,7 +1036,17 @@ scene.inputHandler = {
 		
 		if PlayerData.isGaming == true then
 			if ticksValue > 0 then
-				if PlayerData.battery < Config.Battery.max and PlayerData.readyToShrink == false and (Config.Battery.chargeWhileTiny or PlayerData.isTiny == false) then
+				-- Standing on a utility suppresses crank-charging: the crank belongs to that
+				-- utility while you are on it, even if its interaction hasn't started yet
+				-- (cooking bails out on full HP or no food, and startMinifying on the fat
+				-- gate). Without the readyToCook half, cranking at a microwave you can't
+				-- currently use silently charged the battery instead — invisible in lit
+				-- rooms, but in darkness the crank is the lamp verb, so it read as "the
+				-- microwave charges my battery and won't heal me".
+				if PlayerData.battery < Config.Battery.max
+					and PlayerData.readyToShrink == false
+					and PlayerData.readyToCook == false
+					and (Config.Battery.chargeWhileTiny or PlayerData.isTiny == false) then
 					player:chargeBattery(Config.Battery.chargePerCrankTick)
 					if shadow then
 						shadow:refresh()

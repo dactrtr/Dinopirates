@@ -29,6 +29,7 @@ import 'utilities/Conditions'
 import 'utilities/SaveSystem'
 import 'utilities/MapGenerator'
 import 'utilities/RunState'
+import 'utilities/RoomAtlas'
 
 import 'scenes/DeadScene'
 import 'scenes/MazeScene'
@@ -46,6 +47,10 @@ import 'assets/data/script'
 
 achievementData = import 'assets/data/achievements'
 local configToast = import 'assets/data/toastConfig'
+
+-- Must precede initialize(): the explorer achievement's progressMax is the authored
+-- procGen room count, which only exists once levelsLDTK is imported (above).
+RoomAtlas.stampAchievementTotal(achievementData)
 
 achievements.initialize(achievementData)
 achievements.forceSaveOnGrantOrRevoke=true
@@ -92,6 +97,10 @@ if levelsLDTK then
 		end
 	end
 end
+
+-- After roomsByIid: the atlas drops stored room ids that no longer exist in LDtk, and
+-- needs the lookup to tell which those are.
+RoomAtlas.load()
 
 local menu = playdate.getSystemMenu()
 

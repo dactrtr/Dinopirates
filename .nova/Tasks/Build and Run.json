@@ -1,0 +1,13 @@
+{
+  "actions" : {
+    "build" : {
+      "enabled" : true,
+      "script" : "\"$WORKSPACE_DIR\"\/tools\/build.sh"
+    },
+    "run" : {
+      "enabled" : true,
+      "script" : "open \"$WORKSPACE_DIR\/DinoPirates from inner space Brocolation.pdx\""
+    }
+  },
+  "openLogOnRun" : "start"
+}

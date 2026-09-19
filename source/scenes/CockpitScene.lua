@@ -25,6 +25,12 @@ local indicators = nil
 local failCount  = 0
 
 -- Add or modify entries here to create new sequences with different outcomes.
+--
+-- Which ending the player reaches is gated by KNOWLEDGE, not by code: the sequences are
+-- taught in crew dialogue. Crew member `Config.MapGen.crewToFinish` gives you "maamaa";
+-- the last one of the roster (`Config.MapGen.totalCrew`) gives you "good". Nothing here
+-- reads the crew count, and that is deliberate -- a decision, not an oversight.
+-- Do not add a crew check without asking.
 local sequences = {
     {
         pattern = { "1", "3", "2", "4" },

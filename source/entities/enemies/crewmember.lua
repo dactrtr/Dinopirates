@@ -376,8 +376,10 @@ function CrewMember:taken()
         self.player:idle()
     end
 
-    -- Win condition: full roster recruited → open the final room this run.
-    if PlayerData.CrewMemberData.amountTaken >= Config.MapGen.totalCrew then
+    -- Win condition: enough of the roster recruited → open the final room this run.
+    -- Not the WHOLE roster (see Config.MapGen.crewToFinish) — requiring every last member made
+    -- the endgame hostage to one unlucky spawn.
+    if PlayerData.CrewMemberData.amountTaken >= Config.MapGen.crewToFinish then
         RunState.revealFinalRoom()
     end
 

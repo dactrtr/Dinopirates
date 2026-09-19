@@ -186,20 +186,27 @@ function Player:finishCooking()
 end
 
 function Player:checkMicrowave()
-    if self.currentMicrowave then
-        local stillInside = false
-        for _, sprite in ipairs(self:overlappingSprites()) do
-            if sprite == self.currentMicrowave then
-                stillInside = true
-                break
-            end
+    -- Clear the flag whenever the prop reference is gone, not only while we still hold one.
+    -- PlayerData is persisted wholesale and pause() saves, so saving while standing on a
+    -- microwave writes readyToCook = true; on load the Player is rebuilt with
+    -- currentMicrowave = nil and the branch below could never run again. A stale true now
+    -- suppresses crank-charging, so it would have disabled the battery permanently.
+    if not self.currentMicrowave then
+        PlayerData.readyToCook = false
+        return
+    end
+    local stillInside = false
+    for _, sprite in ipairs(self:overlappingSprites()) do
+        if sprite == self.currentMicrowave then
+            stillInside = true
+            break
         end
+    end
 
-        if not stillInside then
-            self.uiHud:setVisible(false)
-            self.currentMicrowave = nil
-            PlayerData.readyToCook = false
-        end
+    if not stillInside then
+        self.uiHud:setVisible(false)
+        self.currentMicrowave = nil
+        PlayerData.readyToCook = false
     end
 end
 function Player:pedometer()
@@ -253,20 +260,25 @@ function Player:showUIHUD()
 end
 
 function Player:checkMinifier()
-    if self.currentMinifier then
-        local stillInside = false
-        for _, sprite in ipairs(self:overlappingSprites()) do
-            if sprite == self.currentMinifier then
-                stillInside = true
-                break
-            end
+    -- Same stale-flag hazard as checkMicrowave, and live before this change: readyToShrink
+    -- has always suppressed crank-charging, so a save taken while standing on a minifier
+    -- came back with a battery that could never be recharged.
+    if not self.currentMinifier then
+        PlayerData.readyToShrink = false
+        return
+    end
+    local stillInside = false
+    for _, sprite in ipairs(self:overlappingSprites()) do
+        if sprite == self.currentMinifier then
+            stillInside = true
+            break
         end
+    end
 
-        if not stillInside then
-            self.uiHud:setVisible(false)
-            self.currentMinifier = nil
-            PlayerData.readyToShrink = false
-        end
+    if not stillInside then
+        self.uiHud:setVisible(false)
+        self.currentMinifier = nil
+        PlayerData.readyToShrink = false
     end
 end
 

@@ -130,6 +130,28 @@ Config.Microwave = {
     crankPerFood    = 1,   -- crank ticks (getCrankTicks(4)) accumulated to cook 1 food (~90 deg)
 }
 
+-- Crew hat grid on the in-game menu's left page. This layout is what CAPS THE ROSTER:
+-- every rescued crew member must have a visible hat slot, so Config.MapGen.totalCrew is
+-- derived from `capacity` below rather than authored independently.
+--
+-- The bounds come from the menu art. The left page's content area ends at y ~= 210 (the
+-- right page, Config.DebugStats.panel, runs y 34..210) and the map occupies y 18..93
+-- (Config.Map.panel), so the hats get y 108..210. Five rows of 20 px put the last row's
+-- bottom edge at 204, just inside the page. A sixth row would end at 224 and overflow.
+-- Seven columns from x = 43 end at x = 183, clear of the spine.
+--
+-- Growing the roster means growing this grid (and the art): add rows/columns here, then
+-- add the matching states to entities/props/hats.lua and frames to the hats spritesheet.
+Config.CrewHats = {
+    x          = 43,   -- px, top-left of the first hat
+    y          = 108,
+    spacing    = 20,   -- px between hat columns (the hat sprite is 20x16)
+    rowSpacing = 20,   -- px between hat rows
+    columns    = 7,
+    rows       = 5,
+}
+Config.CrewHats.capacity = Config.CrewHats.columns * Config.CrewHats.rows  -- 35
+
 -- Procedural map generation (roguelike run graph)
 Config.MapGen = {
     roomsBase         = 6,    -- minimum run size (rooms in the smallest run)
@@ -137,13 +159,23 @@ Config.MapGen = {
     roomsMax          = 20,   -- run size cap
     roomsPerCrewSpawn = 4,    -- spawn ~1 crew per this many rooms in a run (crew density)
     utilityChance     = 0.4,  -- prob. of populating a FeatureSlot with a microwave/minifier
-    totalCrew         = 21,   -- full crew roster; recruiting all of them reveals the final room
-    -- TODO(design): the final room should open once a minimum crew count is rescued,
-    -- not necessarily the full roster -- that minimum determines which of the 3 cockpit
-    -- endings (bad/normal/good) are reachable. Fine to require all 21 for now; revisit
-    -- once the roster grows toward the 41-crew target.
+    -- Full crew roster. DERIVED from the menu's hat grid: the roster is however many crew
+    -- fit in that space, so a rescued member can never lack a hat slot. To change it, change
+    -- Config.CrewHats (and author the matching hats + LDtk crew markers).
+    totalCrew         = Config.CrewHats.capacity,
+    crewLeftBehind    = 1,    -- how many of the roster may stay unrescued and still open the
+                              -- final room. See Config.MapGen.crewToFinish below.
     enemyChance       = 0.6,  -- prob. of populating an enemy marker
 }
+
+-- Crew needed to open the final room. Deliberately SHORT of the full roster: requiring every
+-- last crew member made the endgame hostage to one unlucky spawn. Derived from totalCrew so it
+-- re-scales with the roster instead of going stale (the same mistake that flattened the dance
+-- difficulty curve).
+--
+-- TODO(design): which of the 3 cockpit endings (good/maamaa/shura) is reachable should key off
+-- how far PAST crewToFinish the player got. See D1 in docs/superpowers/GAME_DESIGN.md.
+Config.MapGen.crewToFinish = math.max(1, Config.MapGen.totalCrew - Config.MapGen.crewLeftBehind)
 
 -- Dark Reveal skill (hold B + crank in darkness)
 Config.DarkReveal = {
@@ -164,7 +196,7 @@ Config.Grapple = {
     pixelsPerDegree = 0.4,   -- crank degrees -> launch distance
     projectileSpeed = 8,     -- px/frame the hook flies out
     pullSpeed       = 8,     -- px/frame the player slides toward the tile
-    cooldown        = 500,   -- ms between uses (reserved; not yet enforced)
+    cooldown        = 1000,  -- ms after a launch before another charge may start
     ropeWidth       = 2,     -- px width of the black rope drawn from player to hook
 }
 
@@ -172,17 +204,28 @@ Config.Grapple = {
 -- triggers later. Both measured in px of movement while the feet are over slime.
 Config.Slide = {
     speed          = 4,
-    warningPixels  = 0,     -- px before the warning shows (0 = the moment the player steps on)
-    slidePixels    = 8,     -- px before the slide actually starts (~4 walk-frames of visible warning)
-    warningEnabled = false,  -- false → slime slides immediately on contact (no grace/warning)
+    -- NOTE: the player walks at Config.Player.speed = 2 px/frame at 50 fps, so every px
+    -- threshold here is HALF A FRAME. Divide by 2 to read these as frames of grace.
+    warningPixels  = 3,     -- px moved on slime before the warning shows (~1.5 frames)
+    slidePixels    = 8,     -- px before the slide actually starts (~4 frames total, ~2.5 after the warning)
+    warningEnabled = true,  -- false → slime slides immediately on contact (no grace/warning)
 }
 
 -- Hole fall grace ("balancing"). Two thresholds: the warning (HUD + balancing sprite) shows
 -- first, the fall triggers later. Both measured in px of movement while over the hole.
 Config.Hole = {
-    warningPixels  = 0,  -- px before the warning shows (0 = the moment the player steps on)
-    fallPixels     = 10,  -- px over a normal hole before the player falls (~4 walk-frames of warning)
-    fallPixelsTiny = 8,  -- px over a tiny hole before falling (smaller player, smaller grace)
+    -- Same scale warning as Config.Slide: at 2 px/frame these are half-frames, not frames.
+    --
+    -- CEILING, not a taste knob: these count px moved WHILE OVER the hole, so a value above
+    -- the crossing distance makes the hole walkable. IsPlayerOnHole samples +/-8 px around
+    -- the feet, so a 1-tile (16 px) hole is "on" for ~32 px of travel and a 2-tile hole for
+    -- ~48 px. Anything at or past 32 turns single-tile holes into floor. 0.5 s (50 px) would
+    -- have made every hole up to 2 tiles wide safe to walk across.
+    warningPixels  = 3,   -- px moved over the hole before the warning shows (~1.5 frames)
+    fallPixels     = 20,  -- px over a normal hole before falling (10 frames = 0.2 s; 62% of
+                          -- the 32 px single-tile crossing, leaving margin for corner grazes)
+    fallPixelsTiny = 16,  -- px over a tiny hole before falling (tiny player samples +/-5 px,
+                          -- so a tiny hole is "on" for ~26 px -- same 62% ratio)
 }
 
 -- Invincibility
@@ -445,11 +488,20 @@ Config.Dance = {
     boss   = { bpm = 32, buttons = 12, sprite = 'assets/images/ui/battle/enemyDanceBoss'    },
 
     -- Difficulty scales with how many crew members have been recruited
-    -- (PlayerData.CrewMemberData.amountTaken, 0..Config.MapGen.totalCrew). These are the
-    -- minimum crew captured needed to reach each tier (below crewEvolve = basic). Tune freely.
-    crewEvolve = 3,
-    crewBadass = 6,
-    crewBoss   = 9,
+    -- (PlayerData.CrewMemberData.amountTaken, 0..Config.MapGen.totalCrew).
+    --
+    -- The tier gates are expressed as FRACTIONS OF THE WHOLE ROSTER, not absolute counts, so
+    -- growing Config.MapGen.totalCrew re-spaces them automatically. They used to be absolute
+    -- (3 / 6 / 9 against a roster of 21), which meant difficulty topped out at 43% of the game
+    -- and everything past the 9th rescue was flat.
+    --
+    -- Front-loaded on purpose (0.15 / 0.40 / 0.70 rather than even quarters): the player's
+    -- toolkit expands fastest during the early-middle rescues, so the difficulty slope should
+    -- peak there too. See docs/superpowers/GAME_DESIGN.md §5.
+    --
+    --   totalCrew = 21  ->  evolve 3, badass 8, boss 14
+    --   totalCrew = 41  ->  evolve 6, badass 16, boss 28
+    tierSpacing = { 0.15, 0.40, 0.70 },
 
     caloriesMax = Config.Calories.max,  -- kept as an alias; the ceiling lives in Config.Calories
 
@@ -458,6 +510,20 @@ Config.Dance = {
     accuracyFrameDuration = 3,
     accuracyPerfectMin    = 4,  -- self.accuracy >= this on a correct press = PERFECT, else GOOD
 }
+
+-- Derived tier gates: the minimum crew recruited to reach evolve / badass / boss.
+-- Don't tune these — move Config.Dance.tierSpacing above instead.
+-- Forced strictly ascending so no band can collapse to zero width on a small roster.
+do
+    local gates, previous = {}, 0
+    for i, fraction in ipairs(Config.Dance.tierSpacing) do
+        gates[i] = math.max(math.floor(Config.MapGen.totalCrew * fraction), previous + 1)
+        previous = gates[i]
+    end
+    Config.Dance.crewEvolve = gates[1]
+    Config.Dance.crewBadass = gates[2]
+    Config.Dance.crewBoss   = gates[3]
+end
 
 -- Cockpit scene
 Config.Cockpit = {

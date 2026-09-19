@@ -95,6 +95,10 @@ function SaveSystem.delete()
         printDebug("⚠️ Could not delete save file (may not exist)")
     end
 
+    -- The room atlas is a lifetime record kept outside PlayerData precisely so death and
+    -- New Game cannot touch it. Deleting the save is the one wipe that must reach it.
+    RoomAtlas.clear()
+
     ResetPlayerData()
     RunState.clear()
     if levelsLDTKOriginal then

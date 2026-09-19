@@ -5,7 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Run
 
 ```bash
-# Compile to Playdate package
+# Build (bumps buildNumber, rolls it back if pdc fails) -- see DOCS/BUILD.md
+tools/build.sh          # compile
+tools/build.sh --run    # compile + open the Simulator
+
+# Or invoke pdc directly (does NOT bump)
 pdc source "DinoPirates from inner space Brocolation.pdx"
 
 # Run in simulator (macOS)
@@ -145,7 +149,7 @@ Falling through a hole or rising through a tube does **not** go to a fixed neigh
 ### Design intent
 
 `docs/superpowers/GAME_DESIGN.md` is the **why** layer — pillars, resource roles, anti-goals,
-and open design questions. `source/DOCS/` says how the systems work; the GDD says what they are
+and open design questions. `DOCS/` says how the systems work; the GDD says what they are
 for. A new feature's spec opens with one line naming the pillar it serves. If that line can't be
 written honestly, the feature doesn't belong or a pillar is wrong.
 
@@ -159,13 +163,14 @@ build output and regenerate themselves; never edit them by hand.
 
 | Field | When to bump |
 |---|---|
-| `buildNumber` | **+1 on every change that touches `source/`** — Lua, `Config.lua`, assets, LDtk. Always. |
-| `version` (`0.9.X`) | **+1 on the patch only when a feature or a player-visible fix lands.** Not per commit. |
+| `buildNumber` | **Automated** — `tools/build.sh` bumps it on every build (and rolls back if `pdc` fails). Don't edit it by hand; just build. |
+| `version` (`0.9.X`) | **Manual. +1 on the patch only when a feature or a player-visible fix lands.** Not per commit, never automated — it marks intent, not "a build happened". |
 
-Changes that touch **only** `docs/`, `source/DOCS/`, specs, plans, or `CLAUDE.md` **do not bump
-anything** — they don't change the `.pdx`.
+Changes that touch **only** `docs/`, `DOCS/`, specs, plans, or `CLAUDE.md` **do not change the
+`.pdx`** — system docs live in `DOCS/` at the repo root, outside `source/`, precisely so this
+stays true. See [DOCS/BUILD.md](DOCS/BUILD.md).
 
-Bump as part of the change itself, before reporting the work done.
+Bump `version` as part of the change itself, before reporting the work done.
 
 ---
 
@@ -178,7 +183,7 @@ Bump as part of the change itself, before reporting the work done.
 
 ## Key Docs
 
-Detailed system documentation lives in `source/DOCS/`:
+Detailed system documentation lives in `DOCS/`:
 - `LEVEL_LOADING.md` — full room loading + vertical navigation
 - `PROCEDURAL_GENERATION.md` — roguelike run graph: pool/nodes, door-signature matching, loops, secret rooms (portals), wall plugs, requiredItems, runCount/spawnConditions, vertical=new run, save 3.0, LDtk authoring + Love2D port
 - `PLAYER_SYSTEMS.md` — battery, sanity, inventory, skills
@@ -193,4 +198,6 @@ Detailed system documentation lives in `source/DOCS/`:
 - `COCKPIT_SCENE.md` — CockpitScene: accelerometer pointer, button layout, sequence matching, fail system
 - `SPACE_SCENE.md` — SpaceScene: ship modes, meteorites, danger bar, accelerometer controls
 - `ACHIEVEMENTS.md` — PlaydateSquad achievements lib: definitions, grant wrappers (story/sanity), toasts, viewer, crossgame, Delete-clears
+- `BUILD.md` — build script, buildNumber automation, why docs live outside `source/`
+- `ROOM_ATLAS.md` — lifetime exploration record across runs: template-scoped, own datastore key, `cartographer` achievement
 - `DOORS_AND_KEYS.md`, `TRIGGER_SYSTEM.md`, `PROPS_AND_ITEMS.md`, `DIALOG_SYSTEM.md`, `HUD_SYSTEM.md`, `TILE_LOADING.md`, `CREWMEMBER_AND_COLLISIONS.md`

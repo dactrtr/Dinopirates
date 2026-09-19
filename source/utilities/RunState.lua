@@ -19,6 +19,15 @@ function RunState.startRun(entryRole)
 	-- Remember how the run was entered so MazeScene:enter can spawn the player at the entry
 	-- room's TubeExit (vertical entry) instead of the door-based spawn. Consumed on first enter.
 	RunState.entryRole = entryRole and entryRole:lower() or nil
+
+	-- Re-open the final room if the crew threshold was already met before this run started.
+	-- revealFinalRoom() is otherwise only called on recruitment, and every fresh graph starts
+	-- with finalReserved = nil -- so a player who hit the threshold and then died (or fell
+	-- through a hole) would enter a run with no final room and no crew left to trigger one,
+	-- leaving the save permanently uncompletable.
+	if progress >= Config.MapGen.crewToFinish then
+		RunState.revealFinalRoom()
+	end
 end
 
 -- Read and clear the pending vertical entry role. Returns "startup"/"startdown"/nil. One-shot:

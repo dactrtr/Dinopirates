@@ -38,7 +38,19 @@ local achievementData = {
 			isSecret = true,
 			icon = "assets/images/achievements/achievements-6"
 		},
-		
+		{
+			id = "cartographer",
+			name = "I've seen this corridor before",
+			descriptionLocked = "Every room on this ship. Every single one.",
+			description = "There is nowhere left on board you haven't walked.",
+			icon = "assets/images/achievements/achievements-6",
+			-- progressMax is stamped at boot by RoomAtlas.stampAchievementTotal(): the
+			-- room count lives in levelsLDTK and would go stale as a literal here.
+			progressMax = 1,
+			progressIsPercentage = true,
+			scoreValue = 5
+		},
+
 	}
 }
 

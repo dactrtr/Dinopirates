@@ -130,6 +130,13 @@ function Player:beginGrappleCharge()
     if PlayerData.isTiny then return end
     if not self.isAlive or PlayerData.isGaming ~= true then return end
     if self.isGrappleCharging or self.isPlunging or self.isGrapplePulling or self.isGrappling then return end
+    -- Cooldown starts when the hook actually LAUNCHES (endGrappleCharge), not when the
+    -- charge begins: charging is free, so merely holding B and releasing without a
+    -- direction must not cost the player a second. Mirrors dash.lua / lightburst.lua.
+    if self.grappleCooldown and playdate.getCurrentTimeMilliseconds() < self.grappleCooldown then
+        printDebug("Grapple on cooldown!")
+        return
+    end
 
     self.isGrappleCharging = true
     self.grappleCrankAccum = 0
@@ -160,6 +167,7 @@ function Player:endGrappleCharge()
     if distance > g.maxDistance then distance = g.maxDistance end
     self.grappleCrankAccum = 0
 
+    self.grappleCooldown = playdate.getCurrentTimeMilliseconds() + g.cooldown
     self.isGrappling = true
     self.grappleHook = GrappleHook(self, dir, distance)
     self.grappleRope = GrappleRope(self, self.grappleHook)

@@ -33,6 +33,10 @@ function Conditions.eval(expr)
 			currentVal = PlayerData.runCount or 0
 		elseif path == "crew" then
 			currentVal = (PlayerData.CrewMemberData and PlayerData.CrewMemberData.amountTaken) or 0
+		elseif path == "mapPercent" then
+			-- Aliased to the lifetime atlas. PlayerData.mapPercent was a fixed-grid leftover
+			-- that nothing ever wrote, so every authored "mapPercent>=N" silently read 0.
+			currentVal = RoomAtlas.percent()
 		else
 			currentVal = tonumber(resolvePath(path)) or 0
 		end

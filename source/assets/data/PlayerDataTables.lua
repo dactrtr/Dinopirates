@@ -32,7 +32,9 @@ local DefaultPlayerData = {
 	totalSteps = 1000,
 	sanityCounter = 0, -- top 100
 	deathCause = "hp",   -- "hp" | "sanity" | "void"; set on death, read by DeadScene
-	mapPercent = 0, -- Percentage of map explored (0-100)
+	-- mapPercent removed: it was a fixed-grid leftover that nothing ever wrote. Map
+	-- exploration is now a lifetime record outside PlayerData -- see RoomAtlas.percent(),
+	-- which death and New Game must not reset.
 	keys = {}, -- Table to store collected keys by number: {[1] = true, [2] = true, ...}
 	
 	readyToShrink = false,
