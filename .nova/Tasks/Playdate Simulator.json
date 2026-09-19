@@ -1,4 +1,14 @@
 {
+  "actions" : {
+    "build" : {
+      "preActions" : [
+        {
+          "script" : "tools\/build.sh",
+          "type" : "runScript"
+        }
+      ]
+    }
+  },
   "extension" : {
     "identifier" : "com.panic.Playdate",
     "name" : "Playdate"
@@ -6,6 +16,7 @@
   "extensionTemplate" : "simulator",
   "extensionValues" : {
     "playdate.base-path" : ".",
+    "playdate.build-type" : "custom",
     "playdate.main-path" : "source"
   }
 }

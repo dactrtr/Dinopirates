@@ -14,11 +14,21 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 SOURCE_DIR="source"
-PDX_NAME="DinoPirates from inner space Brocolation.pdx"
 PDXINFO="$SOURCE_DIR/pdxinfo"
 
 if [[ ! -f "$PDXINFO" ]]; then
     echo "error: $PDXINFO not found (run from anywhere inside the repo)" >&2
+    exit 1
+fi
+
+# Output name is DERIVED from pdxinfo's `name`, matching what Nova's Playdate extension does
+# when Product Name is "Automatic". Hardcoding a different name here is how this project ended
+# up with two .pdx folders -- Nova building one and the terminal building the other, so
+# whichever you ran was whichever you last built by hand.
+PDX_NAME="$(grep -E '^name=' "$PDXINFO" | cut -d= -f2-).pdx"
+
+if [[ "$PDX_NAME" == ".pdx" ]]; then
+    echo "error: could not read 'name' from $PDXINFO" >&2
     exit 1
 fi
 

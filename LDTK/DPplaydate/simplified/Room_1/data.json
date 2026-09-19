@@ -50,7 +50,7 @@
 				"id": "Lamp",
 				"iid": "bfb69854-96d0-11f1-ad82-67cc62b30e7e",
 				"layer": "Items_and_Props",
-				"x": 228,
+				"x": 196,
 				"y": 84,
 				"width": 32,
 				"height": 32,
@@ -75,7 +75,7 @@
 					"type": "minifier",
 					"nocollider": false,
 					"destroyed": false,
-					"forceSpawn": false
+					"forceSpawn": true
 				}
 			}
 		],
@@ -93,7 +93,7 @@
 					"type": "microwave",
 					"nocollider": false,
 					"destroyed": false,
-					"forceSpawn": false
+					"forceSpawn": true
 				}
 			}
 		],

@@ -5,18 +5,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Run
 
 ```bash
-# Build (bumps buildNumber, rolls it back if pdc fails) -- see DOCS/BUILD.md
+# Build (bumps buildNumber, rolls it back if pdc fails) -- see docs/systems/BUILD.md
 tools/build.sh          # compile
 tools/build.sh --run    # compile + open the Simulator
 
 # Or invoke pdc directly (does NOT bump)
-pdc source "DinoPirates from inner space Brocolation.pdx"
+pdc source "DinoPirates from Outer Space.pdx"
 
 # Run in simulator (macOS)
-open "DinoPirates from inner space Brocolation.pdx"
+open "DinoPirates from Outer Space.pdx"
 
 # Push to device
-pdutil push "DinoPirates from inner space Brocolation.pdx"
+pdutil push "DinoPirates from Outer Space.pdx"
 ```
 
 The Playdate SDK must be installed. There is no test runner — validate changes by running in the simulator.
@@ -149,7 +149,7 @@ Falling through a hole or rising through a tube does **not** go to a fixed neigh
 ### Design intent
 
 `docs/superpowers/GAME_DESIGN.md` is the **why** layer — pillars, resource roles, anti-goals,
-and open design questions. `DOCS/` says how the systems work; the GDD says what they are
+and open design questions. `docs/systems/` says how the systems work; the GDD says what they are
 for. A new feature's spec opens with one line naming the pillar it serves. If that line can't be
 written honestly, the feature doesn't belong or a pillar is wrong.
 
@@ -158,17 +158,17 @@ GDD's **Divergences** table — never silently resolved.
 
 ### Version bumping
 
-Edit `source/pdxinfo` — the only authoritative copy. The two `*.pdx/pdxinfo` files are `pdc`
-build output and regenerate themselves; never edit them by hand.
+Edit `source/pdxinfo` — the only authoritative copy. The `*.pdx/pdxinfo` file is `pdc` build
+output and regenerates itself; never edit it by hand.
 
 | Field | When to bump |
 |---|---|
 | `buildNumber` | **Automated** — `tools/build.sh` bumps it on every build (and rolls back if `pdc` fails). Don't edit it by hand; just build. |
 | `version` (`0.9.X`) | **Manual. +1 on the patch only when a feature or a player-visible fix lands.** Not per commit, never automated — it marks intent, not "a build happened". |
 
-Changes that touch **only** `docs/`, `DOCS/`, specs, plans, or `CLAUDE.md` **do not change the
-`.pdx`** — system docs live in `DOCS/` at the repo root, outside `source/`, precisely so this
-stays true. See [DOCS/BUILD.md](DOCS/BUILD.md).
+Changes that touch **only** `docs/`, `docs/systems/`, specs, plans, or `CLAUDE.md` **do not change the
+`.pdx`** — system docs live in `docs/systems/` at the repo root, outside `source/`, precisely so this
+stays true. See [docs/systems/BUILD.md](docs/systems/BUILD.md).
 
 Bump `version` as part of the change itself, before reporting the work done.
 
@@ -183,7 +183,7 @@ Bump `version` as part of the change itself, before reporting the work done.
 
 ## Key Docs
 
-Detailed system documentation lives in `DOCS/`:
+Detailed system documentation lives in `docs/systems/`:
 - `LEVEL_LOADING.md` — full room loading + vertical navigation
 - `PROCEDURAL_GENERATION.md` — roguelike run graph: pool/nodes, door-signature matching, loops, secret rooms (portals), wall plugs, requiredItems, runCount/spawnConditions, vertical=new run, save 3.0, LDtk authoring + Love2D port
 - `PLAYER_SYSTEMS.md` — battery, sanity, inventory, skills

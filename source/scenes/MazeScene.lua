@@ -207,10 +207,10 @@ function scene:enter()
 	end
 	local node = RunState.currentNode()
 	local template = node.poolRoom
-	-- Endgame: mark the final room (revealed once all crew are recruited). The actual
-	-- transition fires in start() — calling Noble.transition here would BONK because
-	-- enter() runs at the transition midpoint (still transitioning).
-	self.pendingEndgame = (node.content and node.content.isFinal) or false
+	-- Endgame: the final room is played like any other room. It is authored with an NPC
+	-- carrying triggerScene = "Cockpit", and THAT is the ending's entry point -- see the
+	-- note in start(). `node.content.isFinal` still marks the node for RunState and the map;
+	-- MazeScene deliberately does nothing with it.
 	-- Per-node, run-scoped visited tracking for the in-game run-graph map.
 	node.visited = true
 	-- Lifetime, template-scoped: counts this room toward the explorer achievement even if
@@ -604,12 +604,13 @@ end
 -- This runs once a transition from another scene is complete.
 function scene:start()
 	scene.super.start(self)
-	-- Endgame: the transition is complete now, so it's safe to leave for the closing
-	-- sequence (swap CreditsScene for the real ending scene when authored).
-	if self.pendingEndgame then
-		Noble.transition(CreditsScene, 0.3, Noble.Transition.MetroNexus)
-		return
-	end
+	-- The endgame used to fire here: entering the final room transitioned straight to
+	-- CreditsScene as a placeholder, with a `return` ABOVE the isGaming = true below. That
+	-- meant the player never took control of the final room -- and the final room is exactly
+	-- where the ending lives, as the NPC carrying triggerScene = "Cockpit". The whole authored
+	-- chain (final room -> NPC -> Cockpit -> sequence -> SpaceScene -> finale comic) was
+	-- unreachable in normal play; the Cockpit could only be opened from TitleScene or the
+	-- debug menu. Removed: the final room is now played, and the ending starts by talking.
 	self:setDiagonalMovement(diagonalMovement)
 	if PlayerData.fromTitle then
 		PlayerData.fromTitle = false

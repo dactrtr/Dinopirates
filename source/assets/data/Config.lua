@@ -222,8 +222,15 @@ Config.Hole = {
     -- ~48 px. Anything at or past 32 turns single-tile holes into floor. 0.5 s (50 px) would
     -- have made every hole up to 2 tiles wide safe to walk across.
     warningPixels  = 3,   -- px moved over the hole before the warning shows (~1.5 frames)
-    fallPixels     = 20,  -- px over a normal hole before falling (10 frames = 0.2 s; 62% of
-                          -- the 32 px single-tile crossing, leaving margin for corner grazes)
+    -- 20 px = 10 frames = 0.2 s, 62% of the 32 px single-tile crossing. Settled at 20 on
+    -- purpose. A full sweep (4 directions x 25 entry points into a 1-tile hole) found every
+    -- straight crossing falls at exactly 20 px, and exactly ONE path survives: a diagonal
+    -- up-right graze of the bottom-right corner, which accumulates 19.8 px. Clipping a corner
+    -- and staying up is good feel, so it is kept -- but note it is kept by a 0.2 px margin.
+    -- If Player.speed, the tile size, or IsPlayerOnHole's sample span ever change, re-run the
+    -- sweep: that margin flips without any symptom you would notice in play. Dropping to
+    -- 16 px closes it entirely, at the cost of 0.04 s of grace.
+    fallPixels     = 20,
     fallPixelsTiny = 16,  -- px over a tiny hole before falling (tiny player samples +/-5 px,
                           -- so a tiny hole is "on" for ~26 px -- same 62% ratio)
 }
